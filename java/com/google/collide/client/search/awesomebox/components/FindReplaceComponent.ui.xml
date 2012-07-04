@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.search.awesomebox.shared.AwesomeBoxResources" />
+  <ui:with field="css"
+    type="com.google.collide.client.search.awesomebox.shared.AwesomeBoxResources.ComponentCss" />
+  <div class="{css.findComponent}">
+    <div class="{css.findContainer}">
+      <div class="{css.findRow}">
+        <div ui:field="closeButton" class="{css.closeButton}"></div>
+        <div class="{css.findRowLabel}">Find</div>
+        <input ui:field="findInput" class="{css.findInput}" type="text" placeholder="Type to find in your document" />
+      </div>
+      <div ui:field="replaceRow" class="{css.findRow}">
+        <div class="{css.findRowLabel}">Replace</div>
+        <input ui:field="replaceInput" class="{css.replaceInput}" type="text" />
+      </div>
+      <div class="{css.findActions}">
+        <div class="{css.actionGroup} {css.navActions}">
+          <a href="javascript:;" ui:field="prevButton"
+            class="{res.baseCss.button} {res.baseCss.buttonSmall}">
+            <img src="{res.pageUpArrow.getSafeUri}" width="15px" height="15px" />
+          </a>
+          <a href="javascript:;" ui:field="nextButton"
+            class="{res.baseCss.button} {res.baseCss.buttonSmall}">
+            <img src="{res.pageDownArrow.getSafeUri}" width="15px" height="15px" />
+          </a>
+        </div>
+        <div ui:field="totalMatchesContainer" class="{css.actionGroup} {css.totalMatchesContainer}">
+          <span ui:field="numMatches" class="{css.numMatches}">0</span>
+          <span>matches</span>
+        </div>
+        <div ui:field="replaceActions" class="{css.actionGroup} {css.replaceActions}">
+          <a href="javascript:;" ui:field="replaceButton"
+            class="{res.baseCss.button} {res.baseCss.buttonRed} {res.baseCss.buttonSmall}">Replace</a>
+          <a href="javascript:;" ui:field="replaceAllButton"
+            class="{res.baseCss.button} {res.baseCss.buttonRed} {res.baseCss.buttonSmall}">All</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</ui:UiBinder>

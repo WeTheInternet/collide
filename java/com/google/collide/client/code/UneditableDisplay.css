@@ -1,0 +1,16 @@
+.top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 250%;
+  color: #c8c8c8;
+  font-style: italic;
+}
+
+.image {
+  margin: 10px;
+  border-color: #888888;
+  border-width: 1px;
+}

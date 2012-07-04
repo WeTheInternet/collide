@@ -1,0 +1,30 @@
+@def spacing 10px;
+
+.root {
+  text-align: center;
+}
+
+.rule {
+  background-color: #e9e9e9;
+  height: 1px;
+  margin-top: 4px;
+  text-align: center;
+  width: 100%;
+}
+
+.label {
+  color: #999999;
+  font-size: 12px;
+  text-align: center;
+  margin: 0px;
+  padding: spacing 10px 0 10px;
+}
+
+.url {
+  background-color: white solid;
+  border: solid 1px #ddd;
+  font-size: 12px;
+  margin: spacing 0;
+  padding: 2px;
+  width: 200px;
+}

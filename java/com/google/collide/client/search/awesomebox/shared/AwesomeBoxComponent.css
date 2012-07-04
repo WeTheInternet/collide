@@ -1,0 +1,136 @@
+/* Contains css related to awesome box components */
+@sprite .closeButton {
+  gwt-image: 'cancel';
+  position: absolute;
+  top: 1px;
+  right: 5px;
+  width: 15px;
+  height: awesomeBarHeight;
+  line-height: awesomeBarHeight;
+  
+  background-repeat: no-repeat;
+  background-position: right;
+  z-index: 2;
+}
+
+/* Snapshot Styles */
+@sprite .snapshot {
+  gwt-image: 'snapshotCamera';
+  background-position: 3px;
+  width: auto;
+  height: auto;
+}
+
+.snapshotComponent {
+  padding: 5px;
+  width: 280px;
+}
+
+.snapshotMessageInput {
+  resize: none;
+  border: none;
+  outline: none;
+
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.snapshotLabelContainer {
+  display: -webkit-box;
+  -webkit-box-pack: justify;
+  
+  display: -moz-box;
+  -moz-box-pack: justify;
+  
+  display: box;
+  box-pack: justify;
+  
+  padding-top: 2px;
+}
+
+.snapshotTextAreaContainer {
+  position: relative;
+  border-bottom: 1px solid #EBEBEB;
+}
+
+.snapshotLabel {
+  color: gray;
+}
+
+/* Find/Replace Dialog */
+.findComponent {
+  font-size: 13px;
+  line-height: 1.7em;
+  border-bottom: 1px solid #ebebeb;
+  color: #333;
+  
+  width: 330px;
+}
+
+.findContainer {
+  position: relative;
+  float: right;
+  border-left: 1px solid #d9d9d9;
+  width: 250px;
+}
+
+.findInput, .replaceInput {
+  outline: none;
+  border: none;
+  height: 20px;
+  width: 100%;
+  
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.findInput {
+  padding-right: 25px;
+}
+
+.findRow {
+  padding: 3px 3px 3px 5px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.findRowLabel {
+  font-family: Arial;
+  position: absolute;
+  right: 260px;
+  text-align: right;
+}
+
+.findActions {
+  line-height: 25px;
+  padding: 2px 5px 2px 5px;
+  height: 25px;
+}
+
+.actionGroup {
+  display: inline-block;
+  position: absolute;
+}
+
+.navActions > a {
+  width: 20px;
+}
+
+.replaceActions {
+  right: 5px;
+}
+
+.replaceActions > a {
+  padding: 0px 4px;
+  width: auto;
+}
+
+.totalMatchesContainer {
+  color: #888;
+  position: absolute;
+  right: 5px;
+}
+
+.numMatches {
+  font-weight: bold;
+}

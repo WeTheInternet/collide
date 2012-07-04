@@ -1,0 +1,29 @@
+/* Annotated CSS for DebuggingSidebarWatchExpressionsPane.java */
+
+.root {
+  margin: 2px 0 2px 18px;
+}
+
+.button {
+  float: right;
+  background-repeat: no-repeat;
+  margin-top: 2px;
+}
+
+@sprite .plusButton {
+  gwt-image: "plusButton";
+  width: 23px;
+}
+
+@sprite .refreshButton {
+  gwt-image: "refreshButton";
+  width: 23px;
+}
+
+.button:hover {
+  background-position: -23px 0;
+}
+
+.button:active {
+  background-position: -46px 0;
+}

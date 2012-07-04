@@ -1,0 +1,4 @@
+<!-- GWT Module for the code shared by client and server -->
+<module>
+  <source path=""/>
+</module>

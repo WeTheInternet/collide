@@ -1,0 +1,26 @@
+.lineNumber {
+  font-family: alternativeFontFamily;
+  font-weight: 600;
+  font-size: 9px;
+  right: 0px;
+  position: absolute;
+}
+
+.animationEnabled .lineNumber {
+  -moz-transition-duration: 0.10s;
+  -moz-transition-timing-function: ease-in;
+  -moz-transition-property: top, left, bottom, right, height, width;
+  -webkit-transition-duration: 0.10s;
+  -webkit-transition-timing-function: ease-in;
+  -webkit-transition-property: top, left, bottom, right, height, width;
+  transition-duration: 0.10s;
+  transition-timing-function: ease-in;
+  transition-property: top, left, bottom, right, height, width;
+}
+
+.activeLineNumber {
+  color: #333;
+}
+
+.scrollable {
+}

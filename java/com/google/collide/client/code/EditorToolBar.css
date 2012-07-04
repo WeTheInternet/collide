@@ -1,0 +1,42 @@
+.toolButtons {
+  float: right;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.button {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  margin: 0px 5px;
+}
+
+.historyButton {
+  display: none;
+}
+
+@sprite .historyIcon {
+  gwt-image: 'historyIcon';
+  
+  opacity: .8;
+}
+
+.historyIcon:hover {
+  opacity: 1; 
+}
+
+.debugButton {
+}
+
+@sprite .debugIcon {
+  gwt-image: 'debugIcon';
+}
+
+.hspace {
+  display: inline-block;
+}
+
+@sprite .hspaceIcon {
+  gwt-image: 'hspaceIcon';
+  height: 14px;
+}

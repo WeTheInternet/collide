@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="baseCss"
+    type="com.google.collide.client.common.BaseResources.Css" />
+  <ui:with field="css"
+    type="com.google.collide.client.code.WorkspaceDeltaSection.Css" />
+
+  <div ui:field="baseElem" class="{css.baseElem}">
+    <div ui:field="fileListing" class="{css.fileListing}">
+      <div ui:field="filenameColumn" class="{css.filenameColumn}"></div>
+      <div ui:field="diffStatsColumn" class="{css.diffStatsColumn}"></div>
+    </div>
+
+    <!-- The message displayed when there are no files to show. -->
+    <table ui:field="noChangesPositioner" class="{css.noChangesPositioner}">
+      <tr>
+        <td align="center" valign="middle">
+          No edits have been
+          <br />
+          made to this branch.
+        </td>
+      </tr>
+    </table>
+  </div>
+</ui:UiBinder>

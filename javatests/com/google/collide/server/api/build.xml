@@ -1,0 +1,34 @@
+<project name="api_tests" default="build">
+  <property name="dirs.root" location="../../../../../.."/>
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml"/>
+
+  <property name="api_tests.src"
+            location="${dirs.test}/${dirs.toppkg}/server/api"/>
+  <property name="api_tests.out" location="${dirs.testbin}/${dirs.toppkg}/server/api"/>
+
+  <target name="build" description="Copies the API level test scripts to the testbin."
+          depends="">
+    <copy todir="${api_tests.out}">
+      <fileset dir="${api_tests.src}">
+        <exclude name="**/*.java"/>
+        <exclude name="build.xml"/>
+      </fileset>
+    </copy>
+
+    <!-- To preserve executable file permissions on script. -->
+    <chmod dir="${api_tests.out}" perm="ugo+rx"  includes="run_api_test"/>
+  </target>
+
+  <!-- WARNING: Note that currently vertx does not exit the process after running these
+       testing scripts. Probably don't want to call this from the main test runner just
+       yet. -->
+  <target name="test" description="Runs the API level tests." depends="build">
+    <exec executable="${api_tests.out}/run_api_test" failonerror="true">
+      <arg file="${dirs.vertx}"/>
+      <arg value="all_tests.js"/>
+      <arg file="${dirs.bin}"/>
+      <arg file="${dirs.testbin}"/>
+    </exec>
+  </target>
+</project>

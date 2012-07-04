@@ -1,0 +1,5 @@
+<!-- GWT Module for the data transport object generator's "library" code -->
+<module>
+  <source path="" includes="client/**"/>
+  <source path="" includes="shared/**"/>
+</module>

@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.filehistory.FileHistory.Resources" />
+  <ui:with field="css"
+    type="com.google.collide.client.filehistory.FileHistory.Css" />
+  <div class="{res.fileHistoryCss.base}">
+    <div title="History" ui:field="diff" class="{res.fileHistoryCss.diff}">
+    </div>
+    <div ui:field="timelineBar" class="{res.fileHistoryCss.timelineBar}">
+      <div ui:field="timelineWrapper" class="{res.fileHistoryCss.timelineWrapper}">
+        <div ui:field="timelineTitle" class="{res.fileHistoryCss.timelineTitle}">File Revision History</div>
+        <div ui:field="filters" class="{res.fileHistoryCss.filters}"></div>
+      </div>
+    </div>
+  </div>
+</ui:UiBinder>

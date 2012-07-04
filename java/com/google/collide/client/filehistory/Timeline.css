@@ -1,0 +1,59 @@
+@def timelineTop 55%;
+@def rangeLineColor #A09FA4;
+@def rangeLinePadding 10px;
+
+.base {
+  margin-top: 2em;
+}
+
+.rangeLineWrapper {
+  padding: rangeLinePadding;
+  position: absolute;
+  top: timelineTop;
+  width: 100%;
+  cursor: -webkit-grab;
+
+  margin-top: -10px;
+  margin-left: -10px;
+}
+
+@sprite .rangeLineWrapper:before{
+  content: "";
+  gwt-image: 'rangeLeft';
+  position: absolute;
+  left: 2px;
+  top: 2px;
+}
+
+@sprite .rangeLineWrapper:after{
+  content: "";
+  gwt-image: 'rangeRight';
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
+.rangeLine {
+  height: 6px;
+  width: 100%;
+
+  background: rangeLineColor;
+}
+
+.baseLine {
+  position: absolute;
+  top: timelineTop;
+  height: 3px;
+  width: 100%;
+
+  background: #e5e5e5;
+  margin-top: 2px;
+}
+
+.nodeContainer {
+  position: absolute;
+  top: timelineTop;
+  width: 100%;
+}
+
+.notice {}

@@ -1,0 +1,81 @@
+.button {
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.buttonLabel {
+  -webkit-box-flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@sprite .buttonArrow {
+  gwt-image: 'disclosureArrowDkGreyDown';
+  display: inline-block;
+  opacity: .8;
+  margin-right: -1px;
+}
+
+.splitButtonLabel + .splitButtonArrow {
+  margin-left: 0px;
+}
+
+.splitButtonArrow {
+  width: 25px;
+  min-width: 0;
+  border-left-color: transparent;
+  padding: 0 8px 0 2px;
+
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+}
+
+.splitButtonArrow:hover {
+  border-left-color: transparent;
+}
+
+.splitButtonLabel {
+  margin-right: 0px;
+  -webkit-border-radius: 2px 0 0 2px;
+  -moz-border-radius: 2px 0 0 2px;
+  border-radius: 2px 0 0 2px;
+}
+
+.button:hover > .buttonArrow {
+  opacity: 1;
+}
+
+.inputContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.input {
+  padding-right: 20px;
+}
+
+@sprite .inputArrow {
+  gwt-image: 'disclosureArrowDkGreyDown';
+  background-position: center;
+
+  position: absolute;
+  display: inline-block;
+  right: 0px;
+  cursor: default;
+  -webkit-user-select: none;
+
+  height: auto;
+  width: 20px;
+  opacity: .6;
+}
+
+.inputArrow:hover {
+  opacity: .75;
+}
+
+.inputArrow:active, .inputArrowActive {
+  opacity: 1.0;
+}
+

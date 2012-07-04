@@ -1,0 +1,52 @@
+/* Annotated CSS for DebuggingSidebarControlsPane.java */
+
+.root {
+  height: 28px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.root > div {
+  float: left;
+  width: 25%;
+  height: 18px;
+  margin-top: 5px;
+  border-left: 1px solid #ccc;
+  margin-left: -1px;
+  cursor: pointer;
+  opacity: 0.4;
+}
+
+.buttonEnabled {
+  opacity: 1.0 !important;
+}
+
+.buttonEnabled:active {
+  background-color: #aaa;
+  margin-top: 0 !important;
+  padding: 5px 0;
+}
+
+@sprite .pauseButton {
+  gwt-image: "pauseButton";
+  background-position: center;
+}
+
+@sprite .resumeButton {
+  gwt-image: "resumeButton";
+  background-position: center;
+}
+
+@sprite .stepOverButton {
+  gwt-image: "stepOverButton";
+  background-position: center;
+}
+
+@sprite .stepIntoButton {
+  gwt-image: "stepIntoButton";
+  background-position: center;
+}
+
+@sprite .stepOutButton {
+  gwt-image: "stepOutButton";
+  background-position: center;
+}

@@ -1,0 +1,27 @@
+/* Goto File Actions */
+@sprite .fileItem {
+  gwt-image: 'file';
+  background-position: 5px;
+  width: auto;
+  height: auto;
+}
+
+.folder {
+  color: #AAA;
+}
+
+/* Goto Branch Actions */
+@sprite .branchIcon {
+  gwt-image: 'forkIconOff';
+  background-position: 3px;
+  width: auto;
+  height: auto;
+}
+
+/* Find/Search Actions */
+@sprite .searchIcon {
+  gwt-image: 'search';
+  background-position: 3px;
+  width: auto;
+  height: auto;
+}

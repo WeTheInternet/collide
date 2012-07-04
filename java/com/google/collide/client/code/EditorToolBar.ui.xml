@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.code.EditorToolBar.Resources" />
+  <div ui:field="toolButtons" class="{res.editorToolBarCss.toolButtons}">
+    <div ui:field="historyButton" class="{res.editorToolBarCss.historyButton}">
+      <div class="{res.editorToolBarCss.button}">
+        <div class="{res.editorToolBarCss.historyIcon}" ui:field="historyIcon"></div>
+      </div>
+      <div class="{res.editorToolBarCss.hspace}">
+        <div class="{res.editorToolBarCss.hspaceIcon}"></div>
+      </div>
+    </div>
+    <div ui:field="debugButton" class="{res.editorToolBarCss.button} {res.editorToolBarCss.debugButton}">
+      <div class="{res.editorToolBarCss.debugIcon}" ui:field="debugIcon"></div>
+    </div>
+  </div>
+</ui:UiBinder>

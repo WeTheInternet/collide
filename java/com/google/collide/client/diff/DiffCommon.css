@@ -1,0 +1,31 @@
+.commonIcon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 0 -2px 0;
+}
+
+.iconLabel {
+  padding: 0 0 0 6px;
+  display: inline-block;
+}
+
+@sprite .addedIcon {
+  gwt-image: "addedIcon";
+}
+
+@sprite .removedIcon {
+  gwt-image: "removedIcon";
+}
+
+@sprite .deltaIcon {
+  gwt-image: "deltaIcon";
+}
+
+@sprite .conflictIcon {
+  gwt-image: "fileLabelErrorIcon";
+}
+
+@sprite .resolvedIcon {
+  gwt-image: "resolvedIcon";
+}

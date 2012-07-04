@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.CannotSubmitOverlay.Resources" />
+  <div class="{res.cannotSubmitOverlayCss.base}">
+    <div class="{res.cannotSubmitOverlayCss.overhangTop}"></div>
+    <div ui:field="message" class="{res.cannotSubmitOverlayCss.message}"></div>
+    <div class="{res.cannotSubmitOverlayCss.buttonBar}">
+      <a href="javascript:;" ui:field="closeButton" class="{res.baseCss.button}">Close</a>
+    </div>
+  </div>
+</ui:UiBinder>

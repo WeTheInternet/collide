@@ -1,0 +1,146 @@
+/* Annotated CSS for Header.java */
+@def startGradient #595959;
+@def endGradient #484848;
+@def borderRadius 3px;
+@def buttonWidth 36px;
+@def toggleButtonWidth 30px;
+@def selectWidth 240px;
+
+.selectBg {
+  width: selectWidth;
+  color: #fff;
+  font-family: 'Lucida Grande';
+  font-size: 12px;
+  overflow: visible;
+}
+
+@sprite .selectArrows {
+  gwt-image: 'selectArrows';
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.leftButtonGroup {
+  display: -moz-box;
+  display: -webkit-box;
+  display: box;
+  
+  -moz-box-align: center;
+  -webkit-box-align: center;
+  box-align: center;
+}
+
+/* TODO: Make this now absolute positioned */
+.rightButtonGroup {
+  position: absolute;
+  right: 10px;
+  top:14px;
+}
+
+.gray {
+  /* I would like to use the defs for the gradient
+     colors, but we can't use them within literals */
+  background: literal("-webkit-gradient(linear, left top, left bottom, from(#595959), to(#484848))");
+  background: literal("-moz-linear-gradient(top, #595959, #484848)");
+}
+
+.runButtonContainer {
+  /* Account for the shadows on the sync/submit buttons */
+  margin-top: 3px;
+}
+
+.runButton {
+  width: 16px;
+  -webkit-transition: none;
+
+  /* Override Button Minimum Width */
+  min-width: 0px !important;
+}
+
+.runDropdownButton {
+  width: 10px;
+  min-width: 10px;
+
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+
+  -webkit-transition: none;
+  padding: 0;
+  opacity: .6667;
+
+  position: relative;
+  left: -3px;
+  margin-left: 0px !important;
+}
+
+.runDropdownButton:hover, .runDropdownButton:active {
+  opacity: 1.0;
+}
+
+.runIcon {
+  /* We don't want the buttonImage fading in and out */
+  opacity: 1.0 !important;
+}
+
+.syncButtons {
+  margin-left: 10px;
+
+  /* Discount the positioning effect of shadows on sync/submit buttons */
+  margin-top: 1px;
+}
+
+.readOnlyMessage {
+  display: none;
+  color: white;
+  text-align: center;
+  font-size: buttonFontSize;
+  font-weight: buttonFontWeight;
+  height: buttonHeight;
+  line-height: buttonHeight;
+  padding: 0 10px;
+  border-radius: buttonBorderRadius;
+  background-color: #FF9900;
+  border: 1px solid #FF9900;
+}
+
+.newWorkspaceButton {
+  display: none;
+  margin-left: 10px;
+}
+
+.triangle {
+  position: absolute;
+  border-style: solid;
+  border-color: transparent transparent #f7f7f7 transparent;
+  border-width: 8px;
+  width: 0;
+  height: 0;
+  -moz-transition: left ease-out 0.2s;
+  -webkit-transition: left ease-out 0.2s;
+  left: 15px;
+}
+
+.awesomeBoxContainer {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.feedbackButton,
+.shareButton {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.shareButton {
+  /* Remove the default min-width for this button */
+  min-width: 0px;
+}
+
+.profileImage {
+  margin: 0px 1px 0px 1px;
+  vertical-align: top;
+  display: inline-block;
+}
+

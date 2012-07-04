@@ -1,0 +1,27 @@
+.feedbackPane {
+  position: absolute;
+  top: 0px;
+  left: 400px;
+  height: 30px;
+  width: 100px;
+  z-index: 999;
+}
+
+.happyButton {
+  height: 19px;
+  width: 19px;
+  position: relative;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  background: red;
+}
+
+.sadButton {
+  height: 19px;
+  width: 19px;
+  position: relative;
+  top: -14px;
+  left: 5px;
+  cursor: pointer;
+}

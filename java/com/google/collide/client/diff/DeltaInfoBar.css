@@ -1,0 +1,31 @@
+.inline {
+  display: inline-block;
+}
+
+.count {
+  padding-left: 5px;
+}
+
+.bar {
+  width: 4px;
+  height: 8px;
+  border: 0;
+  margin-right: 1px;
+  display: inline-block;
+}
+
+.modified {
+  background-color: #9184b0;
+}
+
+.unmodified {
+  background-color: #d9cff1;
+}
+
+.deleted {
+  background-color: #ac8081;
+}
+
+.added {
+  background-color: #c8dfc2;
+}

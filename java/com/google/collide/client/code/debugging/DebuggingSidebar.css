@@ -1,0 +1,101 @@
+/* Annotated CSS for DebuggingSidebar.java */
+@url triangleRightUrl triangleRightResource;
+@url triangleDownUrl triangleDownResource;
+
+.root {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f4f5f7;
+  min-width: 210px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  
+  -moz-box-shadow: -1px 0 8px #ddd;
+  box-shadow: -1px 0 8px #ddd;
+}
+
+.unscrollable {
+  overflow: hidden;
+}
+
+.scrollable {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.expandablePane {
+}
+
+.paneTitle {
+  height: 20px;
+  padding-left: 10px;
+  border-bottom: 1px solid #d1d1d1;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: #6e6e6e;
+  text-shadow: white 0 1px 0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.paneTitleText {
+  float: left;
+}
+
+.paneTitle:active {
+  border-bottom: 1px solid #b2b2b2;
+}
+
+.paneTitle::before {
+  content: triangleRightUrl;
+  float: left;
+  width: 11px;
+  height: 12px;
+  margin-right: 2px;
+  margin-top: 1px;
+}
+
+.paneExpanded .paneTitle::before {
+  content: triangleDownUrl;
+}
+
+.paneBody {
+  display: none;
+}
+
+.paneInfo {
+  padding: 20px 20px 0;
+  text-align: center;
+}
+
+.paneInfoHeader {
+  color: black;
+  padding-bottom: 20px;
+}
+
+.paneInfoBody {
+  color: #999;
+  padding-bottom: 20px;
+}
+
+.paneData {
+}
+
+.paneExpanded {
+}
+
+.paneExpanded .paneBody {
+  display: block;
+}

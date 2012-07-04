@@ -1,0 +1,112 @@
+@def nodePadding 15px;
+@def nodeTop 15px;
+
+.base {
+  position: absolute;
+  cursor: pointer;
+}
+
+.currentRight {
+  cursor: col-resize;
+}
+
+.currentLeft {
+  cursor: col-resize;
+}
+
+.nodeWrapper {
+  padding: nodePadding;
+  margin-top: -15px;
+  margin-left: -15px;
+}
+
+.largeNodeWrapper {
+  margin-top: -19px;
+}
+
+/* Regular Node */
+
+@sprite .node {
+  gwt-image: 'node';
+  position: relative;
+  top: nodeTop;
+}
+
+@sprite .node:hover {
+  gwt-image: 'nodeHover';
+  position: relative;
+  top: nodeTop;
+}
+
+@sprite .nodeRange {
+  gwt-image: 'nodeRange';
+  position: relative;
+  top: nodeTop;
+}
+
+/* Branch Node */
+@sprite .nodeBranch {
+  gwt-image: 'nodeBranch';
+  position: relative;
+  top: nodeTop;
+}
+
+@sprite .nodeBranch:hover {
+  gwt-image: 'nodeBranchHover';
+  position: relative;
+  top: nodeTop;
+}
+
+@sprite .nodeBranchRange {
+  gwt-image: 'nodeBranchRange';
+  position: relative;
+  top: nodeTop;
+}
+
+/* Sync Node */
+@sprite .nodeSync {
+  gwt-image: 'nodeSync';
+  position: relative;
+  top: nodeTop;
+}
+
+@sprite .nodeSync:hover {
+  gwt-image: 'nodeSyncHover';
+}
+
+@sprite .nodeSyncRange {
+  gwt-image: 'nodeSyncRange';
+  position: relative;
+  top: nodeTop;
+}
+
+/* Node Indicator */
+
+.nodeIndicator {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+}
+
+@sprite .conflictIcon {
+  gwt-image: 'conflictIcon';
+  display: block;
+}
+
+@sprite .conflictResolvedIcon {
+  gwt-image: 'conflictResolvedIcon';
+  display: block;
+  right: -2px;
+}
+
+.label {
+  color: #666;
+  font-size: 0.8em;
+  width: 50px;
+  text-align: center;
+  position: absolute;
+  left: -25px;
+  top: 25px;
+  text-transform: uppercase;
+}

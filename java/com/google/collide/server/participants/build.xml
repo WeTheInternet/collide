@@ -1,0 +1,20 @@
+<project name="participants" default="build">
+  <property name="dirs.root" location="../../../../../.."/>
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml"/>
+
+  <property name="participants.src"
+            location="${dirs.src}/${dirs.toppkg}/server/participants"/>
+  <property name="participants.out" location="${dirs.bin}/${dirs.toppkg}/server/participants"/>
+
+  <target name="build" description="Builds the participant list verticle."
+          depends="">
+  	<do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+  	  <include name="${dirs.toppkg}/server/participants/**/*.java" />
+  	  <classpath>
+  	    <path refid="paths.server.build" />
+  	    <pathelement location="${dirs.bin}" />
+  	  </classpath>
+  	</do.javac>
+  </target>
+</project>

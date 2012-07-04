@@ -1,0 +1,103 @@
+/* Annotated CSS for the Editor presenter. */
+@def scrollableLeftPadding 3px;
+@def backgroundColor white;
+
+.root {
+  height: 100%;
+  position: relative;
+  
+  /* TODO: clean up the invalid negative z-indexes and
+     remove this */
+  /* This makes the this element not cover the float-lefted gutters */
+  overflow: auto;
+}
+
+/*
+ * We use a virtual "scrollbar" so the page does not flicker when
+ * scrolling using the scrollbar thumb. (It flickers because it paints
+ * the scrolled position, then gives the callback, then we fill it in.
+ * So there was a split second where it visibly empty before we filled
+ * in the contents of the new viewport.)  
+ *
+ * If "scrollable" has overflow-y none, then scroll wheel scrolling
+ * will not work. Even though we have a dedicated "scrollbar" element,
+ * we allow "scrollable" to still have a scrollbar so that scroll wheel
+ * scrolling will work. The "scrollbar" element will be positioned on
+ * top of the "scrollable"'s scrollbar.
+ */
+ 
+.scrollbar {
+  position: absolute;
+  height: 100%;
+  width: scrollbarSize;
+  top: 0;
+  right: 0;
+  overflow-y: scroll;
+  /* Needed so it doesn't leave room for a horizontal scrollbar at the bottom */
+  overflow-x: hidden;
+  outline: none;
+  background-color: backgroundColor;
+}
+
+.scrollable {
+  background-color: backgroundColor;
+  height: 100%;
+  overflow: auto;
+  outline: none;
+  padding-left: scrollableLeftPadding;
+  position: relative;
+  /* Allow decorations with z-index:-1 such as execution line */
+  z-index: 0;
+  cursor: text;
+}
+
+.textLayer { /*
+   * This is required in the case that the longest line has less width
+   * than the viewport width. Without this, a multiline selection's
+   * width would be that of the longest line, instead of spanning
+   * the entire viewport.
+   */
+  min-width: 100%;
+  /* This layer must be part of layout since it defines document height */
+  position: relative;
+}
+
+.columnMarkerLine {
+  position: absolute;
+  top: 0;
+  height: 0;
+  min-height: 100%;
+  line-height: 0;
+  background-color: #eee;
+  width: 1px;
+}
+
+.line {
+  height: editorLineHeight;
+  width: 100%;
+  
+  /* 
+    We do some float magic in the LineRendererController to provide a whitespace
+    element which can be styled by LineRenderers.  Due to floating the width of
+    the whitespace element extends beyond the line's bounding box by width of
+    the text in the line.  To prevent that from affecting layout we hide any
+    overflow on the line.
+  */
+  overflow: hidden;
+}
+
+.spacer {
+  
+}
+
+.animationEnabled .line,.animationEnabled .spacer {
+  -moz-transition-duration: 0.10s;
+  -moz-transition-timing-function: ease-in;
+  -moz-transition-property: top, left, bottom, right, height, width, margin;
+  -webkit-transition-duration: 0.10s;
+  -webkit-transition-timing-function: ease-in;
+  -webkit-transition-property: top, left, bottom, right, height, width, margin;
+  transition-duration: 0.10s;
+  transition-timing-function: ease-in;
+  transition-property: top, left, bottom, right, height, width, margin;
+}

@@ -1,0 +1,40 @@
+/* Annotated CSS for DebuggingSidebarCallStackPane.java */
+
+.root {
+}
+
+.callFrame {
+  padding: 3px 8px 4px 18px;
+  min-height: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.callFrame.callFrameSelected {
+  background-color: #91a0c0;
+}
+
+.callFrameTitle {
+  color: black;
+  font-size: 12px;
+  font-weight: normal;
+  word-wrap: break-word;
+  white-space: normal;
+}
+.callFrameSelected .callFrameTitle {
+  color: white;
+  font-weight: bold;
+}
+
+.callFrameSubTitle {
+  float: right;
+  font-size: 10px;
+  margin: 2px 0 0 5px;
+  max-width: 55%;
+  color: rgba(0, 0, 0, 0.7);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.callFrameSelected .callFrameSubTitle {
+  color: rgba(255, 255, 255, 0.7);
+}

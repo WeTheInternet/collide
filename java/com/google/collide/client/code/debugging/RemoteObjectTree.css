@@ -1,0 +1,22 @@
+/* Annotated CSS for RemoteObjectTree.java */
+
+.root {
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+/* TODO: HACK to override .treeRoot CSS selector */
+.root > * {
+  position: static ! important;
+  min-height: inherit ! important;
+}
+
+.nodeNameInput {
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #D9D9D9;
+  border-top: 1px solid #C0C0C0;
+  height: 16px;
+}

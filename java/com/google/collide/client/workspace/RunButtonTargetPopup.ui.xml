@@ -1,0 +1,45 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.RunButtonTargetPopup.Resources" />
+
+  <div class="{res.runButtonTargetPopupCss.container}">
+    <div>
+      <input ui:field="runPreviewRadio" type="radio" name="runType" checked="checked"
+        class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
+      <div class="{res.runButtonTargetPopupCss.stackedContainer}">
+        <div>
+          <label ui:field="runPreviewLabel">Preview active file</label>
+        </div>
+        <div>
+          <span ui:field="runPreviewCurrentFile" class="{res.runButtonTargetPopupCss.smallPreviewText}">
+            Select a file
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="{res.runButtonTargetPopupCss.alwaysRunRow}">
+      <input ui:field="runAlwaysRadio" type="radio" name="runType"
+        class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
+      <div class="{res.runButtonTargetPopupCss.stackedContainer}">
+        <div ui:field="runAlwaysRow">
+          <label class="{res.runButtonTargetPopupCss.alwaysRunLabel}"
+            ui:field="runAlwaysLabel">Always run</label>
+          <!-- Dropdown Input Ends Up Here -->
+        </div>
+        <div>
+          <label
+            class="{res.runButtonTargetPopupCss.alwaysRunLabel} {res.runButtonTargetPopupCss.appUrlLabel}"
+            ui:field="userExtraLabel">Query</label>
+          <input ui:field="userExtraInput" type="text"
+            class="{res.baseCss.textInput} {res.runButtonTargetPopupCss.alwaysRunInput} {res.dropdownWidgetsCss.input}"
+            placeholder="?query_string (optional)" />
+        </div>
+        <div ui:field="runHintText" class="{res.runButtonTargetPopupCss.smallPreviewText} {res.runButtonTargetPopupCss.alwaysRunUrl}">
+          Type a filename
+        </div>
+      </div>
+    </div>
+  </div>
+
+</ui:UiBinder>

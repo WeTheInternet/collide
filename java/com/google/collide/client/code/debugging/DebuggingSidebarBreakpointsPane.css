@@ -1,0 +1,66 @@
+/* Annotated CSS for DebuggingSidebar.java */
+@url fileImageUrl fileImageResource;
+
+.root {
+  padding: 0 10px;
+}
+
+.section {
+  padding: 5px 2px;
+}
+
+.section + .section {
+  border-top: 1px solid #e0e0e0;
+}
+
+.section::before {
+  content: fileImageUrl;
+  float: left;
+  width: 10px;
+  height: 12px;
+  margin-right: 10px;
+  margin-top: 1px;
+}
+
+.sectionHeader {
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+
+.sectionFileName {
+  font-weight: bold;
+  padding-right: 4px;
+}
+
+.sectionFilePath {
+  padding-left: 4px;
+}
+
+.breakpoint {
+  padding: 2px 0;
+  margin-left: 21px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.breakpointLine {
+}
+
+@sprite .breakpointIcon {
+  gwt-image: "breakpointActiveResource";
+  display: inline-block;
+  background-position: 0 center;
+  padding-right: 6px;
+}
+
+@sprite .breakpointInactive .breakpointIcon {
+  gwt-image: "breakpointInactiveResource";
+}
+
+.breakpointLineNumber {
+  color: #999;
+  padding-left: 4px;
+  white-space: nowrap;
+}

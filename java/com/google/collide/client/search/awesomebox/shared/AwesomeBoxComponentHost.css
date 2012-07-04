@@ -1,0 +1,24 @@
+.container {
+  position: relative;
+  border: 1px solid #d9d9d9;
+  border-top: 1px solid #C0C0C0;
+  background-color: white;
+  z-index: 10;
+}
+
+@sprite .base {
+  width: 190px;
+  height: awesomeBarHeight;
+  line-height: awesomeBarHeight;
+  padding-left: 10px;
+  background-color: white;
+  color: #CCC;
+
+  gwt-image: 'disclosureArrowLtGreyDown';
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position: 95%;
+  outline: none;
+  
+  cursor: text;
+}

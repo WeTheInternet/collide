@@ -1,0 +1,53 @@
+@def arrowSize 12px;
+@def negativeArrowSize -12px;
+@def negativeArrowSizePlusOne -11px;
+
+.base {
+  position: absolute;
+  
+  background-color: white;
+  outline: 1px solid rgba(0, 0, 0, 0.2);
+  
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+
+  -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+}
+
+.container {
+  padding: 16px;
+}
+
+.arrow, .arrowInner {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+  
+  border: arrowSize solid transparent;
+  border-bottom-color: #CCC;
+  pointer-events: none;
+}
+
+.arrowInner {
+  top: negativeArrowSizePlusOne;
+  left: negativeArrowSize;
+
+  border-bottom-color: white;
+}
+
+/* Future Styles */
+.alert {
+  background: #F9EDBE;
+  outline: 1px solid #F0C36D;
+}
+
+.disclaimer {
+  background: #F9EDBE;
+  border-bottom: 1px solid #DDD8C0;
+}

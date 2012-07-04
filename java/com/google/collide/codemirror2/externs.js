@@ -1,0 +1,2 @@
+var JSON;
+var console;

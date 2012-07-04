@@ -1,0 +1,11 @@
+/* CSS for the Error Renderer. */
+
+@sprite .errorBackground {
+  gwt-image: "squiggle";
+  background-position: bottom;
+  background-repeat: repeat-x;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+}

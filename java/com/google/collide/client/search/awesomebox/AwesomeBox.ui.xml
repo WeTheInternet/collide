@@ -1,0 +1,12 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.search.awesomebox.AwesomeBox.Resources" />
+  <div class="{res.awesomeBoxCss.awesomeContainer}">
+    <div ui:field="mainInput">
+      <div ui:field="closeButton" class="{res.awesomeBoxCss.closeButton}">&nbsp;</div>
+      <input ui:field="awesomeBoxInput" class="{res.awesomeBoxCss.awesomeBox}"
+        type="text"></input>
+    </div>
+  </div>
+</ui:UiBinder>

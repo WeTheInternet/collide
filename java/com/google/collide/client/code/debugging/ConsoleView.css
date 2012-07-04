@@ -1,0 +1,128 @@
+/* Annotated CSS for ConsoleView.java */
+
+.root {
+  padding: 2px 0;
+  height: 400px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: auto;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.consoleMessages {
+}
+
+.messageRoot {
+  position: relative;
+  padding: 1px 0;
+  border-bottom: 1px solid rgb(225, 225, 225);
+  margin-left: 24px;
+  min-height: 16px;
+  white-space: pre-wrap;
+  clear: both;
+}
+
+.messageLink {
+  float: right;
+  margin: 0 4px;
+  color: #545454;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.messageLink:hover {
+  color: #262626;
+}
+
+.repeatCountBubble {
+  height: 14px;
+  padding: 1px 4px;
+  margin: -2px 4px 0 0;
+  text-align: left;
+  background-color: #8097BD;
+  color: white;
+  font-weight: bold;
+  vertical-align: middle;
+  white-space: nowrap;
+  -webkit-border-radius: 7px;
+}
+
+.consoleObject {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.consolePrimitiveValue {
+  vertical-align: middle;
+}
+.consoleObject + .consolePrimitiveValue {
+  margin-left: 8px;
+}
+
+.consoleStackTrace {
+  padding: 2px 0 2px 24px;
+}
+.consoleStackTraceCollapsed .consoleStackTrace {
+  display: none;
+}
+.consoleStackTraceExpanded .consoleStackTrace {
+  display: block;
+}
+
+.consoleStackTraceController {
+  margin-right: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+@sprite .consoleStackTraceCollapsed .consoleStackTraceController {
+  gwt-image: "triangleRight";
+}
+@sprite .consoleStackTraceExpanded .consoleStackTraceController {
+  gwt-image: "triangleDown";
+}
+
+.consoleStackTraceItem {
+}
+
+.consoleDebugLevel {
+}
+
+.consoleErrorLevel {
+  color: red;
+}
+.consoleErrorLevel .repeatCountBubble {
+  background-color: #D82323;
+}
+
+.consoleLogLevel {
+}
+
+.consoleTipLevel {
+}
+
+.consoleWarningLevel {
+}
+
+.consoleErrorLevel::before, .consoleWarningLevel::before {
+  position: absolute;
+  display: block;
+  content: "";
+  left: -14px;
+  top: 0.8em;
+  margin-top: -5px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@sprite .consoleErrorLevel::before {
+  gwt-image: "errorIcon";
+}
+
+@sprite .consoleWarningLevel::before {
+  gwt-image: "warningIcon";
+}

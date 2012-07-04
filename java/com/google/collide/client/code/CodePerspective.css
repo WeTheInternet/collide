@@ -1,0 +1,62 @@
+@def navWidth 275px;
+@def collapsedRightSplitterRight -10px;
+@def buttonSize 15px;
+@def borderColor #EBEBEB;
+@def contentHeaderHeight 24px;
+
+/* splitterLeft = navWidth - .5 * splitterWidth */
+@def splitterLeft 271px;
+
+.base {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+}
+
+.navArea {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: navWidth;
+  -webkit-transition: width 0.15s ease-in;
+  -moz-transition: width 0.15s ease-in;
+  
+  background-color: #F9F9F9;
+}
+
+.splitter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: splitterLeft;
+  width: splitterWidth;
+  z-index: 9;
+}
+
+.rightSplitter {
+  position: absolute;
+  top: contentHeaderHeight;
+  bottom: 0;
+  width: splitterWidth;
+  right: collapsedRightSplitterRight;
+  z-index: 9;
+}
+
+.rightSidebarContentContainer {
+  position: absolute;
+  top: contentHeaderHeight;
+  bottom: 0;
+  width: 0;
+  right: 0;
+  border-top: 1px solid borderColor;
+}
+
+/* This should be after the regular style rules because it
+ * replaces attributes */
+.resizing {
+  -webkit-transition: none 0s ease-in;
+  -moz-transition: none 0s ease-in;
+}

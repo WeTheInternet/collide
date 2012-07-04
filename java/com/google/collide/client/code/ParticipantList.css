@@ -1,0 +1,27 @@
+/* Annotated CSS for the ParticipantList presenter. */
+
+.root {
+}
+
+.row {
+  line-height: 13px;
+  padding-left: 12px;
+  padding-bottom: 5px;
+  white-space: pre;
+}
+
+.swatch {
+  width: 13px;
+  height: 13px;
+  vertical-align: middle;
+  display: inline-block;
+
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+.name {
+  color: #000000;
+  vertical-align: middle;
+  margin-left: 6px;
+}

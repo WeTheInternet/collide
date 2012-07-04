@@ -1,0 +1,39 @@
+@def contentHeaderHeight 24px;
+@def editableContentAreaRight -1px;
+
+.base {
+  position: absolute;
+  background-color: #f7f7f7;
+  top: 0;
+  bottom: 0;
+  left: value('codePerspectiveCss.navWidth', 'px');
+  right: 0;
+  -webkit-transition: left 0.15s ease-in;
+  -moz-transition: left 0.15s ease-in;
+}
+
+.contentHeader {
+  font-family: fileTreeFontFamily;
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+  height: contentHeaderHeight;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  z-index: 9;
+}
+
+.contentContainer {
+  position: absolute;
+  top: contentHeaderHeight;
+  bottom: 0;
+  left: 0;
+  /*
+   * The border-right should only be visible if the right sidebar is
+   * showing, so by default set the right to offset the border-right
+   */
+  right: editableContentAreaRight;
+  border-right: 1px solid #F0F1F3;
+  border-top: 1px solid #F0F1F3;
+}

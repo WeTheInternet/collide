@@ -1,0 +1,28 @@
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="login.css" />
+</head>
+<body>
+  <div id="login">
+  <div id="connecting" class="showing">Connecting...</div>
+  <div id="username-dialog" class="inputBubble toTheRight">
+    <div class="title">Who are you?</div>
+    <input type="text" placeholder="username" id="username" />
+    <input type="button" value="Let me in" onclick="Login.doLoginWithoutPassword()" />
+  </div>
+  <div id="password-dialog" class="inputBubble toTheRight">
+    <div class="title">What's the secret password?</div>
+    <input type="text" placeholder="password" id="password" />
+    <input type="button" value="Pretty Please :)" onclick="Login.doLoginWithPassword()" />
+  </div>
+  <div id="fail-dialog" class="inputBubble toTheRight">
+    <div class="title">Im sorry. I can't let you do that Dave.</div>
+    <div>Would you like to <a href="javascript:;" onclick="Login.transition('fail-dialog','username-dialog')">try again</a>?</div>
+  </div>
+</div>
+
+<script src="sockjs-0.2.1.min.js"></script>
+<script src="vertxbus.js"></script>
+<script src="login.js"></script>
+</body>
+</html>

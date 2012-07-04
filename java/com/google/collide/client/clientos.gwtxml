@@ -1,0 +1,25 @@
+<!-- This provides deferred binding for the client windowing system.
+     This can be used to make labels for "native" accelerators, etc. -->
+
+<define-property name="webide.clientOs" values="macintosh,windows,x11,other"/>
+<property-provider name="webide.clientOs"><![CDATA[
+  var ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf("(macintosh;") != -1) {
+    return "macintosh";
+  } else if (ua.indexOf("(windows;") != -1) {
+    return "windows";
+  } else if (ua.indexOf("(x11;") != -1) {
+    return "x11";
+  } else {
+    return "other";
+  }
+]]></property-provider>
+
+<!-- replace-with rules go here, as we make internal/external differences. -->
+<replace-with class="com.google.collide.client.ClientOsOther">
+  <when-type-is class="com.google.collide.client.ClientOs" />
+</replace-with>
+<replace-with class="com.google.collide.client.ClientOsMacintosh">
+  <when-type-is class="com.google.collide.client.ClientOs" />
+  <when-property-is name="webide.clientOs" value="macintosh" />
+</replace-with>

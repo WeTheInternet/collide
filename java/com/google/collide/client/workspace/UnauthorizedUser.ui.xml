@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.UnauthorizedUser.Resources" />
+
+  <div class="{res.unauthorizedUserCss.base}">
+    <div class="{res.unauthorizedUserCss.title}">You need permission to access this branch.</div>
+    <div>
+      You are signed in as <span ui:field="email" class="{res.unauthorizedUserCss.email}"></span>,
+      but you don't have permission to access this branch.
+      <br/>
+      Consider contacting the branch owner or sign-in as a different user.
+    </div>
+  </div>
+</ui:UiBinder>

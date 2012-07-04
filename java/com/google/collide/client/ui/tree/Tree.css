@@ -1,0 +1,99 @@
+/* Default annotated CSS for Tree.java */
+@def treeIndent 19px;
+@def itemHeight 20px;
+@def arrowImgOffset 5px;
+@def hoverBackground #ECEEF1;
+@def selectionBackground #DCDFE6;
+
+.treeRoot {
+  font-family: alternativeFontFamily;
+  padding-left: 7px;
+  margin: 0;
+  min-height: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.treeNode {
+  list-style-type: none;
+  display: block;
+  min-height: 21px;
+}
+
+.childrenContainer {
+  position: relative;
+  padding-left: 0;
+  margin-left: treeIndent;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.treeNodeBody {
+  height: itemHeight;
+  min-width: 100%;
+  display: inline-block;
+  position: relative;
+  white-space: pre;
+  margin-top: 1px;
+}
+
+.treeNodeBody:hover {
+  background-color: hoverBackground;
+}
+
+.expandControl {
+  display: inline-block;
+  vertical-align: middle;
+  /*
+    This is disabled for now due to chrome bug:
+    http://code.google.com/p/chromium/issues/detail?id=85438
+
+  -moz-transition: -moz-transform 0.2s ease-out;
+  -webkit-transition: -webkit-transform 0.2s ease-out;
+  */
+}
+
+@sprite .openedIcon {
+  /* TODO: expandControl should have the image, but
+   * right now it looks like files have the expandControl rule also.
+   * I'm doing the least amount of change for the demo, so
+   * don't want to refactor anything. */
+  gwt-image: 'expansionIcon';
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+}
+
+@sprite .closedIcon {
+  gwt-image: 'expansionIcon';
+  -moz-transform: rotate(0);
+  -webkit-transform: rotate(0);
+}
+
+.openedIcon, .closedIcon {
+  position: relative;
+  background-position: arrowImgOffset arrowImgOffset;
+  height: itemHeight;
+  width: itemHeight;
+}
+
+/* We have no icon, just a spacer */
+.leafIcon {
+  width: itemHeight;
+  height: itemHeight;
+}
+
+.treeNodeLabel {
+}
+
+.active, .selected {
+  background-color: selectionBackground ! important;
+}
+
+.isDropTarget {
+  background-color: #dfdfdf;
+  margin: -2px;
+  padding: 2px;
+}

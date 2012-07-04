@@ -1,0 +1,34 @@
+@def horizontalPadding 20px;
+@def verticalPadding 15px;
+@def borderRadius 3px;
+@def overhangWidth 26px;
+@def overhangOffsetY -20px; /* overhang is 20 px tall */
+@def overhangOffsetX 131px;
+@def overlayWidth 300px;
+
+.base {
+  position: absolute;
+  background-color: white;
+  display: inline-block;
+  z-index: 101;
+  width: overlayWidth;
+  border: 1px solid #ccc;
+  -moz-box-shadow: 0 1px 8px #ccc;
+  box-shadow: 0 1px 8px #ccc;
+  overflow: visible;
+}
+
+@sprite .overhangTop {
+  gwt-image: 'overhang_top';
+  position: absolute;
+  top: overhangOffsetY;
+  left: overhangOffsetX;
+}
+
+.message {
+  padding: verticalPadding horizontalPadding;
+}
+
+.buttonBar {
+  padding: 0 horizontalPadding verticalPadding;
+}

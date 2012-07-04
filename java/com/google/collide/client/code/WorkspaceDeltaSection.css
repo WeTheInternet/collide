@@ -1,0 +1,75 @@
+@def ROW_PADDING_SIDE 10px;
+@def ROW_PADDING_BOTTOM 4px;
+@def CELL_SPACING_SIDE 6px;
+
+.baseElem {
+  min-width: 190px;
+  -webkit-transition: opacity mediumTransitionDuration;
+  -moz-transition: opacity mediumTransitionDuration;
+}
+
+.baseElemRefreshing {
+  opacity: 0.5;
+}
+
+.fileListing {
+  display: box;
+  display: -moz-box;
+  display: -webkit-box;
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+  box-orient: horizontal;
+  padding-top: 8px;
+}
+
+.filenameColumn {
+  position: relative;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1; 
+  box-flex: 1;
+}
+
+.filenameCell {
+  position: relative;
+  padding: 0 CELL_SPACING_SIDE ROW_PADDING_BOTTOM 30px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-transition: opacity mediumTransitionDuration;
+  -moz-transition: opacity mediumTransitionDuration;
+  transition: opacity mediumTransitionDuration;
+}
+
+.filenameCellForDirectory {
+  cursor: default;
+  font-style: italic;
+}
+
+.fileCellDirty {
+  opacity: 0.5;
+}
+
+.fileIcon {
+  position: absolute;
+  top: 0;
+  left: ROW_PADDING_SIDE;
+}
+
+.diffStatsColumn {
+}
+
+.diffStatsCell {
+  padding: 0 ROW_PADDING_SIDE ROW_PADDING_BOTTOM 0;
+  -webkit-transition: opacity mediumTransitionDuration;
+  -moz-transition: opacity mediumTransitionDuration;
+  transition: opacity mediumTransitionDuration;
+}
+
+.noChangesPositioner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  color: lightTextColor;
+}

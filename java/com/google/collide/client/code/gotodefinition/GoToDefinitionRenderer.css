@@ -1,0 +1,11 @@
+/* CSS for Go To Definition. */
+
+.referenceLink {
+  text-decoration: underline;
+  color: #0000ff !important;
+  cursor: pointer;
+}
+
+.referencePopup {
+  margin: 0;
+}

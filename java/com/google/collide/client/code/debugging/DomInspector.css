@@ -1,0 +1,17 @@
+/* Annotated CSS for DomInspector.java */
+
+.root {
+  padding: 10px 0 0 10px;
+  height: 400px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.domIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}

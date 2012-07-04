@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+  <ui:with field="baseCss"
+    type="com.google.collide.client.common.BaseResources.Css" />
+
+  <ui:with field="res"
+    type="com.google.collide.client.code.WorkspaceNavigationSection.Resources" />
+
+  <ui:with field="css"
+    type="com.google.collide.client.code.WorkspaceNavigationSection.Css" />
+
+  <div class="{css.root}">
+
+    <div ui:field="header" class="{css.header}">
+      <a ui:field="title" />
+      <a href="javascript:;" ui:field="closeX" class="{baseCss.closeX} {css.closeX}"></a>
+      <a href="javascript:;" ui:field="menuButton" class="{css.menuButton}"></a>
+    </div>
+
+    <div ui:field="contentArea" class="{css.contentArea}" />
+
+  </div>
+
+</ui:UiBinder>

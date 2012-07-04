@@ -1,0 +1,43 @@
+@def labelSize 20px;
+
+.root {
+  position: relative;
+  width: 100%;
+  
+  text-align: center;
+  
+  display: -webkit-box;
+  display: -moz-box;
+  
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+
+  -moz-box-orient: vertical;
+  -moz-box-pack: center;
+}
+
+.label {
+  margin-bottom: 5px;
+  font-family: alternativeFontFamily;
+  font-size: 11px;
+  color: #666;
+}
+
+.itemLabel {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: top;
+  line-height: labelSize;
+}
+
+.icon {
+  display: inline-block;
+  width: labelSize;
+  height: labelSize;
+}
+
+.button {
+  width: 70%;
+  text-align: left;
+  margin: 0 auto;
+}

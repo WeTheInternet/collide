@@ -1,0 +1,78 @@
+@def bottomSectionsHeight 200px;
+
+.root {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+
+  display: -webkit-box;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -webkit-user-select: none;
+
+  -webkit-box-shadow: inset -6px 0 6px -6px #ccc;
+  -moz-box-shadow: inset -6px 0 6px -6px #ccc;
+  box-shadow: inset -6px 0 6px -6px #ccc;
+}
+
+.topSections {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+
+  display: -webkit-box;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+}
+
+.bottomSections {
+  height: bottomSectionsHeight;
+  -webkit-transition: height mediumTransitionDuration;
+  -moz-transition: height mediumTransitionDuration;
+  -moz-box-shadow: 0 -1px 8px #ddd;
+  box-shadow: 0 -1px 8px #ddd;
+
+  /* for absolute-positioned splitter */
+  position: relative;
+}
+
+.bottomSectionsClosed {
+  /* Must override the style attribute set by the ResizeController */
+  height: 0 !important;
+}
+
+.splitter {
+  position: absolute;
+  /* TODO: sensitive area is vertically misplaced on 2px */
+  top: -10px;
+  left: 0;
+  right:0;
+  height: value('codePerspectiveCss.splitterWidth', 'px');
+  z-index: 9;
+}
+
+.bottomSectionsAnimator {
+  position: relative;
+  overflow: hidden;
+  height: bottomSectionsHeight;
+  -webkit-transition: height mediumTransitionDuration;
+  -moz-transition: height mediumTransitionDuration;
+}
+
+.bottomSectionsContent {
+  position: absolute;
+  top: 0;
+  height: bottomSectionsHeight;
+  left: 0;
+  right: 0;
+}

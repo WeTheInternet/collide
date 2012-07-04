@@ -1,0 +1,119 @@
+@def contentHeaderHeight 24px;
+
+.base {
+  height: 100%;
+}
+
+.diff {
+  height: 80%;
+}
+
+.timelineBar {
+  position: relative;
+  height: 20%;
+  min-height: 90px;
+  border-top: 1px solid #ddd;
+  background: literal("-webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#EDEDED))");
+  background: literal("-moz-linear-gradient(top, #FFFFFF, #EDEDED)");
+}
+
+.timelineWrapper {
+  width: 80%;
+  height: 90%;
+  position: relative;
+  margin: auto;
+  padding-top: 1.5em;
+}
+
+.timelineTitle {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #444;
+  float: left;
+  margin-right: 2em;
+}
+
+.filters{
+  float: left;
+}
+
+.filter {
+  padding: 0.4em;
+  margin-right: 0.5em;
+  color: #666;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.filter:hover {
+  color: #6AB9FF;
+}
+
+.currentFilter {
+  background: #eee;
+  cursor: default;
+}
+
+.currentFilter:hover {
+  color: #666;
+}
+
+.closeButton {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.8;
+  z-index: 10;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+@sprite .closeIcon {
+  gwt-image: 'closeIcon';
+}
+
+.button {
+  display: inline-block;
+  text-transform: uppercase;
+  font-family: "Helvetica";
+  font-size: 9.5px;
+  padding: 7px;
+  border-radius: 2px;
+
+  color: #333;
+  background: #dedede;
+
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 1;
+}
+
+.disabledButton {
+  opacity: 0.3;
+}
+
+.titleBar {
+  height: contentHeaderHeight;
+  line-height: contentHeaderHeight;
+  position: absolute;
+  width: 100%;
+}
+
+.title {
+  display: inline-block;
+  font-size: 0.8em;
+  width: 49.5%;
+  text-align: center;
+  color: #666;
+}
+
+.leftRevisionTitle {}
+.rightRevisionTitle {}

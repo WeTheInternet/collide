@@ -1,0 +1,6 @@
+<module>
+  <inherits name="com.google.collide.json.Json" />
+  <inherits name="com.google.collide.dtogen.Dtogen" />
+  <source path="client"/>
+  <source path="definitions"/>
+</module>

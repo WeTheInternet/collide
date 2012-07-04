@@ -1,0 +1,33 @@
+@def hInset 15px;
+
+.toolBar {
+  position: relative;
+  padding: 0 hInset;
+  /*
+     Wait for the current section to animate almost out of view
+     before fading the background color.
+   */
+  -webkit-transition: all shortTransitionDuration ease 0.1s;
+  -moz-transition: all shortTransitionDuration ease 0.1s;
+}
+
+.outerBorder {
+  position: absolute;
+  top: -1px;
+  left: hInset;
+  right: hInset;
+  height: 1px;
+  background-color: #E5E5E5;
+}
+
+@sprite .collaborateIcon {
+  gwt-image: 'collaborateIcon';
+}
+
+@sprite .deltaIcon {
+  gwt-image: 'workspaceDeltaIcon';
+}
+
+@sprite .navigatorIcon {
+  gwt-image: 'navigatorIcon';
+}

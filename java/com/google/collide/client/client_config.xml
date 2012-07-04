@@ -1,0 +1,132 @@
+
+  <!--
+    Release Mode is either "debug" or "release", and will be so by a
+    set-property rather than by a property provider.
+  -->
+<define-property name="webide.release_mode" values="debug, release" />
+
+  <!--
+    We are not using the GWT JRE logging code because we want cleaner APIs than
+    java.util.logging.Logger provides. If we ever bring in shared code, that
+    uses java.util.logging, then we should add: extra_inherits =
+    ['com.google.gwt.logging.Logging'] to the build file and uncomment the
+    property settings below.
+  -->
+  <!--
+    <set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />
+    <set-property name="gwt.logging.consoleHandler" value="ENABLED" />
+    <set-property name="gwt.logging.firebugHandler" value="DISABLED" />
+    <set-property name="gwt.logging.popupHandler" value="DISABLED" />
+    <set-property name="gwt.logging.systemHandler" value="DISABLED" />
+    <set-property name="gwt.logging.simpleRemoteHandler" value="DISABLED" />
+  -->
+
+  <!--
+    Logging is enabled for debug builds explicitly. But for release builds, we
+    lean on a property provider that peaks at the URL, whose default is false.
+    Note that the log level is also configurable via URL so long as logging is
+    enabled.
+    Metrics gathering is enabled/disabled in the same manner as logging.
+  -->
+<define-property name="webide.logging.enabled" values="true, false" />
+<define-property name="webide.metrics.enabled" values="true, false" />
+
+<property-provider name="webide.metrics.enabled"><![CDATA[
+  var loc = window.location.href;
+  if (loc.indexOf("metrics=true") != -1) {
+    return "true";
+  } else {
+    return "false";
+  }
+]]></property-provider>
+
+<!-- This provides deferred binding for whether we are or are not on an
+     internal IP address.  The actual value from this property provider will
+     always be false, but server side selection might set it true instead. -->
+
+<define-property name="webide.is_internal" values="false,true"/>
+<property-provider name="webide.is_internal"><![CDATA[
+  return "false";
+]]></property-provider>
+
+<set-configuration-property name="UiBinder.useLazyWidgetBuilders" value="true"/>
+
+<replace-with class="com.google.collide.client.ClientConfig.DebugMode">
+  <when-type-is class="com.google.collide.client.ClientConfig.DebugOrReleaseMode" />
+  <when-property-is name="webide.release_mode" value="debug" />
+</replace-with>
+<replace-with class="com.google.collide.client.ClientConfig.ReleaseMode">
+  <when-type-is class="com.google.collide.client.ClientConfig.DebugOrReleaseMode" />
+  <when-property-is name="webide.release_mode" value="release" />
+</replace-with>
+<replace-with class="com.google.collide.client.ClientConfig.InternalCheck">
+  <when-type-is class="com.google.collide.client.ClientConfig.PublicOrInternalCheck" />
+  <when-property-is name="webide.is_internal" value="true" />
+</replace-with>
+<replace-with class="com.google.collide.client.ClientConfig.PublicCheck">
+  <when-type-is class="com.google.collide.client.ClientConfig.PublicOrInternalCheck" />
+  <when-property-is name="webide.is_internal" value="false" />
+</replace-with>
+<replace-with class="com.google.collide.client.util.logging.LogConfig.Enabled">
+  <when-type-is class="com.google.collide.client.util.logging.LogConfig" />
+  <when-property-is name="webide.logging.enabled" value="true" />
+</replace-with>
+<replace-with class="com.google.collide.client.util.logging.LogConfig.Disabled">
+  <when-type-is class="com.google.collide.client.util.logging.LogConfig" />
+  <when-property-is name="webide.logging.enabled" value="false" />
+</replace-with>
+<replace-with class="com.google.collide.client.metrics.MetricsConfig.Enabled">
+  <when-type-is class="com.google.collide.client.metrics.MetricsConfig" />
+  <when-property-is name="webide.metrics.enabled" value="true" />
+</replace-with>
+<replace-with class="com.google.collide.client.metrics.MetricsConfig.Disabled">
+  <when-type-is class="com.google.collide.client.metrics.MetricsConfig" />
+  <when-property-is name="webide.metrics.enabled" value="false" />
+</replace-with>
+<replace-with class='com.google.collide.client.metrics.CollideLatencyReporting'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.LatencyReporting'/>
+  <when-property-is name='webide.metrics.enabled' value="true"/>
+</replace-with>
+
+<!-- For instrumented binaries, bind to the actual implementations.
+     Because CsiLatencyReporting has constructor arguments, the user is
+     reponsible for subclassing it and binding it to LatencyReporting in a
+     separate *.gwt.xml file. -->
+<replace-with class='com.google.gwt.corp.instrumentation.client.LatencyMeasurementImpl'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.LatencyMeasurement'/>
+  <when-property-is name='webide.metrics.enabled' value='true'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.MeasuredActionImpl'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.MeasuredAction'/>
+  <when-property-is name='webide.metrics.enabled' value='true'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.ToolbarInterfaceImpl'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.ToolbarInterface'/>
+  <when-property-is name='webide.metrics.enabled' value='true'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.ClockImpl'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.Clock'/>
+  <when-property-is name='webide.metrics.enabled' value='true'/>
+</replace-with>
+
+<!-- For non-instrumented binary, bind to the dummy implementations. -->
+<replace-with class='com.google.gwt.corp.instrumentation.client.DummyLatencyMeasurement'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.LatencyMeasurement'/>
+  <when-property-is name='webide.metrics.enabled' value='false'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.DummyMeasuredAction'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.MeasuredAction'/>
+  <when-property-is name='webide.metrics.enabled' value='false'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.DummyLatencyReporting'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.LatencyReporting'/>
+  <when-property-is name='webide.metrics.enabled' value='false'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.DummyToolbarInterface'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.ToolbarInterface'/>
+  <when-property-is name='webide.metrics.enabled' value='false'/>
+</replace-with>
+<replace-with class='com.google.gwt.corp.instrumentation.client.DummyClock'>
+  <when-type-is class='com.google.gwt.corp.instrumentation.client.Clock'/>
+  <when-property-is name='webide.metrics.enabled' value='false'/>
+</replace-with>

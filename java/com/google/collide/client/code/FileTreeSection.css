@@ -1,0 +1,20 @@
+.root {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  /* Will end up vertically centering */
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  box-pack: center;
+}

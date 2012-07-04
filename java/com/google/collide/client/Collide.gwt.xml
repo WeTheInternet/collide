@@ -1,0 +1,153 @@
+<module>
+  <entry-point class="com.google.collide.client.Collide" />
+
+  <source path=""/>
+
+  <inherits name="com.google.gwt.user.User"/>
+  <!-- <inherits name="com.google.gwt.dev.codeserver.hook" /> -->
+
+  <inherits name="elemental.Elemental" />
+
+  <inherits name="com.google.common.base.Base" />
+  <inherits name="com.google.common.collect.Collect" />
+  <inherits name="com.google.common.annotations.Annotations" />
+
+  <inherits name="org.waveprotocol.wave.client.Client"/>
+  <inherits name="org.waveprotocol.wave.model.Model"/>
+
+  <inherits name="com.google.collide.clientlibs.ClientLibs"/>
+  <inherits name="com.google.collide.codemirror2.CodeMirror2"/>
+  <inherits name="com.google.collide.dto.Dto"/>
+  <inherits name="com.google.collide.dtogen.Dtogen"/>
+  <inherits name="com.google.collide.json.Json"/>
+  <inherits name="com.google.collide.mvp.Mvp"/>
+  <inherits name="com.google.collide.shared.Shared"/>
+
+  <!-- Debugging API permutations -->
+  <define-property name="webide.debuggingApi" values="chrome,none"/>
+  <property-provider name="webide.debuggingApi"><![CDATA[
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("chrome") != -1) {
+      return "chrome";
+    } else {
+      return "none";
+    }
+  ]]></property-provider>
+
+  <!-- replace-with rules for debug API go here -->
+  <replace-with
+      class="com.google.collide.client.code.debugging.NoDebuggerApi">
+    <when-type-is
+       class="com.google.collide.client.code.debugging.DebuggerApi" />
+  </replace-with>
+  <replace-with class=
+      "com.google.collide.client.code.debugging.DebuggerChromeApi">
+    <when-type-is
+       class="com.google.collide.client.code.debugging.DebuggerApi" />
+    <when-property-is name="webide.debuggingApi" value="chrome" />
+  </replace-with>
+
+
+  <!-- This provides deferred binding for the client windowing system.
+       This can be used to make labels for "native" accelerators, etc. -->
+  <define-property name="webide.clientOs" values="macintosh,windows,x11,other"/> 
+  <property-provider name="webide.clientOs"><![CDATA[
+    var ua = navigator.userAgent.toLowerCase();
+    if (ua.indexOf("(macintosh;") != -1) {
+      return "macintosh";
+    } else if (ua.indexOf("(windows;") != -1) {
+      return "windows";
+    } else if (ua.indexOf("(x11;") != -1) {
+      return "x11";
+    } else {
+      return "other";
+    }
+  ]]></property-provider>
+
+  <!-- replace-with rules for client environment. -->
+  <replace-with class="com.google.collide.client.ClientOsOther">
+    <when-type-is class="com.google.collide.client.ClientOs" />
+  </replace-with>
+  <replace-with class="com.google.collide.client.ClientOsMacintosh">
+    <when-type-is class="com.google.collide.client.ClientOs" />
+    <when-property-is name="webide.clientOs" value="macintosh" />
+  </replace-with>
+
+
+  <!--
+    Release Mode is either "debug" or "release", and will be so by a
+    set-property rather than by a property provider.
+  -->
+  <define-property name="webide.release_mode" values="debug, release"/>
+  <property-provider name="webide.release_mode"><![CDATA[
+    if (location.search.match(/[?&]debug([=&].*)?$/)) {
+      return "debug";
+    } else {
+      return "release";
+    }
+  ]]></property-provider>
+
+  <!-- This provides deferred binding for the debugging API implementation. -->
+  <set-configuration-property name='CssResource.style' value='stable' />
+
+  <!-- Right now, just turn logging on.  We may want to revisit that later, but
+       for now we're just debugging and we want fewer permutations.
+    -->
+  <set-property name="loglevel" value="debug"/>
+  <extend-property name="locale" values="en_US"/>
+  <set-property name="locale" value="en_US"/>
+  <set-property-fallback name="locale" value="en_US"/>
+ 
+  <!-- Restrict the build to Chrome, FF and english only for now. -->
+  <set-property name="user.agent" value="safari,gecko1_8" />
+     
+  <!-- This is a wavey thing we don't particularly want... -->
+  <set-property name="mobile.user.agent" value="not_mobile" />
+
+  <replace-with
+     class="com.google.collide.client.util.BrowserUtils.Chrome">
+    <when-type-is
+       class="com.google.collide.client.util.BrowserUtils"/>
+    <when-property-is name="user.agent" value="safari"/>
+  </replace-with>
+  <replace-with
+     class="com.google.collide.client.util.BrowserUtils.Firefox">
+    <when-type-is
+       class="com.google.collide.client.util.BrowserUtils"/>
+    <when-property-is name="user.agent" value="gecko1_8"/>
+  </replace-with>
+
+  <replace-with
+     class="com.google.collide.client.ClientConfig.DebugMode">
+    <when-type-is
+       class="com.google.collide.client.ClientConfig.DebugOrReleaseMode"/>
+    <when-property-is name="webide.release_mode" value="debug"/>
+  </replace-with>
+  <replace-with
+     class="com.google.collide.client.util.logging.LogConfig.Enabled">
+    <when-type-is
+       class="com.google.collide.client.util.logging.LogConfig"/>
+    <when-property-is name="webide.release_mode" value="debug"/>
+  </replace-with>
+
+  <replace-with
+     class="com.google.collide.client.ClientConfig.ReleaseMode">
+    <when-type-is
+       class="com.google.collide.client.ClientConfig.DebugOrReleaseMode"/>
+    <when-property-is name="webide.release_mode" value="release"/>
+  </replace-with>
+  <replace-with
+     class="com.google.collide.client.util.logging.LogConfig.Disabled">
+    <when-type-is
+       class="com.google.collide.client.util.logging.LogConfig"/>
+    <when-property-is name="webide.release_mode" value="release"/>
+  </replace-with>
+
+  <!-- Single permutation settings for development.
+  <set-property name="webide.debuggingApi" value="chrome"/>
+  <set-property name="webide.clientOs" value="x11"/>
+  <set-property name="webide.release_mode" value="debug"/>
+  <set-property name="user.agent" value="safari" />
+  -->
+
+</module>

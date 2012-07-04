@@ -1,0 +1,22 @@
+<project name="fe" default="build">
+  <property name="dirs.root" location="../../../../../.."/>
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml"/>
+
+  <include optional="false" as="src.dto" file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
+
+  <target name="build" description="Builds the fe verticle." depends="src.dto.server">
+    <!-- Copy all bundles resources to the bin folder. -->
+    <copy todir="${dirs.bin}">
+      <fileset dir="${dirs.src}/${dirs.toppkg}/server/fe">
+        <exclude name="**/*.java"/>
+        <exclude name="build.xml"/>
+      </fileset>
+    </copy>
+
+    <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      <include name="${dirs.toppkg}/server/fe/**/*.java"/>
+      <classpath refid="paths.server.build"/>
+    </do.javac>
+  </target>
+</project>

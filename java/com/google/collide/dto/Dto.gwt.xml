@@ -1,0 +1,4 @@
+<!-- GWT Module for the data transport object (DTO) code -->
+<module>
+  <source path="" excludes="server/**"/>
+</module>

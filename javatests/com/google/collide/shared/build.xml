@@ -1,0 +1,40 @@
+<project name="shared-tests" default="test">
+  <property name="dirs.root" location="../../../../.."/>
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml"/>
+
+  <include optional="false" as="src.shared"
+	   file="${dirs.src}/${dirs.toppkg}/shared/build.xml"/>
+  <include optional="false" as="src.dto"
+	   file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
+
+  <target name="build" depends="src.shared.build,src.dto.build"
+        description="compile tests for 'shared'">
+    <do.javac srcdir="${dirs.test}" destdir="${dirs.testbin}">
+      <include name="${dirs.toppkg}/shared/**/*.java"/>
+      <classpath>
+        <pathelement path="${dirs.bin}"/>
+        <path refid="paths.shared"/>
+        <path refid="paths.test"/>
+        <pathelement location="${dirs.lib}/wave-${libs.wave}/model.jar"/>
+      </classpath>
+    </do.javac>
+  </target>
+
+  <target name="test" description="Run tests for 'shared' subproject only"
+	  depends="build">
+    <do.junit reportdir="shared">
+      <testpackages>
+        <fileset dir="${dirs.test}">
+          <include name="${dirs.toppkg}/shared/**/${junit.testpattern}"/>
+          <include name="${dirs.toppkg}/shared/**/*Tests.java"/>
+        </fileset>
+      </testpackages>
+      <libraries>
+        <!-- Shared tests need server path for vertx.JsonObject &co. -->
+        <path refid="paths.server.build"/>
+        <pathelement location="${dirs.lib}/wave-${libs.wave}/model.jar"/>
+      </libraries>
+    </do.junit>
+  </target>
+</project>

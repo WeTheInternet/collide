@@ -1,0 +1,93 @@
+/* Annotated CSS for Nav.java */
+@def sectionHeight 24px;
+
+.root {
+  /* Required due to the box-shadow second border used to draw the header */
+  margin-top: 1px;
+  overflow: hidden;
+  position: relative;
+}
+
+.header {
+  /* Allow icons to position themselves absolutely */
+  position: relative;
+  width: 100%;
+  height: sectionHeight;
+
+  /* Text positioning */
+  line-height: 22px;
+  padding: 0 0 0 sideBarHorizontalPadding;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  /* Text style */
+  font-family: alternativeFontFamily;
+  font-size: 11px;
+  font-weight: bold;
+  color: collideBlack;
+
+  cursor: default;
+}
+
+.contentArea {
+}
+
+.contentAreaScrollable {
+  position: absolute;
+  top: sectionHeight;
+  bottom: 0px;
+  left: 0px;
+  right: splitterOverlap;
+  overflow: auto;
+}
+
+/* Class for a content area that stretches to available area */
+.stretch {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+}
+
+/* TODO: We should rename this */
+.blue {
+  height: 100%;
+}
+
+.underlineHeader {
+  /* Draw the border on the bottom */
+  border-bottom: 1px solid #EBEBEB;
+}
+
+.headerLink {
+}
+
+.headerLink:hover {
+  text-decoration: underline;
+}
+
+.closeX {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+}
+
+@sprite .menuButton {
+  gwt-image: 'disclosureArrowDkGreyDown';
+  background-position: 50%;
+
+  position: absolute;
+  right: 5px;
+  top: 4px;
+  width: 20px;
+  height: 14px;
+
+  vertical-align:middle;
+  border-left: 1px solid #DEDEDE;
+  text-align: center;
+  cursor: pointer;
+  
+  opacity: .8;
+}
+
+.menuButton:hover {
+  opacity: 1;
+}

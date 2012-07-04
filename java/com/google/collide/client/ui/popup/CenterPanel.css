@@ -1,0 +1,73 @@
+@def animationDuration 300ms;
+
+.popup,.glass {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.popup {
+  z-index: popupZIndex;
+}
+
+.glass {
+  background: #fff;
+  opacity: 0.0;
+  -moz-transition: all animationDuration;
+  -webkit-transition: all animationDuration;
+  transition: all animationDuration;
+}
+
+.glassVisible {
+  opacity: 0.4;
+}
+
+.positioner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+
+  display: box;
+  box-orient: vertical;
+  box-pack: center;
+  box-align: center;
+}
+
+.content {
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #ccc;
+  -moz-box-shadow: 0 2px 4px 2px #ebebeb;
+  -webkit-box-shadow: 0 2px 4px 2px #ebebeb;
+  box-shadow: 0 2px 4px 2px #ebebeb;
+/* Re-enable once http://code.google.com/p/chromium/issues/detail?id=100614 is resolved
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  -moz-transition: all animationDuration;
+  -webkit-transition: all animationDuration;
+  transition: all animationDuration;
+*/
+  opacity: 0.0;
+}
+
+.contentVisible {
+/* Re-enable once http://code.google.com/p/chromium/issues/detail?id=100614 is resolved
+  -moz-transform: scale(1.0);
+  -webkit-transform: scale(1.0);
+  transform: scale(1.0);
+*/
+  opacity: 1.0;
+}

@@ -1,0 +1,40 @@
+/* Annotated CSS for DebuggingModelRenderer.java */
+@url activeBreakpointBorderUrl breakpointGutterActiveResource;
+@url inactiveBreakpointBorderUrl breakpointGutterInactiveResource;
+
+.breakpoint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 -5px;
+  height: editorLineHeight;
+  border-width: 0 18px 0 2px;
+  border-image: activeBreakpointBorderUrl 0 18 0 2;
+  -webkit-border-image: activeBreakpointBorderUrl 0 18 0 2;
+  -moz-border-image: activeBreakpointBorderUrl 0 18 0 2;
+  z-index: -2;
+}
+
+.breakpointInactive {
+  border-image: inactiveBreakpointBorderUrl 0 18 0 2;
+  -webkit-border-image: inactiveBreakpointBorderUrl 0 18 0 2;
+  -moz-border-image: inactiveBreakpointBorderUrl 0 18 0 2;
+}
+
+.executionLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: editorLineHeight;
+  background-color: #ABBFFE;
+  outline: 1px solid #4073F4;
+  z-index: -1;
+}
+
+@sprite .gutterExecutionLine {
+  gwt-image: "gutterExecutionLine";
+  background-position: -1px 1px;
+  position: absolute;
+  height: editorLineHeight;
+  z-index: -1;
+}

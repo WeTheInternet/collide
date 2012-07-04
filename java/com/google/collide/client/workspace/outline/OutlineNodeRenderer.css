@@ -1,0 +1,42 @@
+@sprite .clazz {
+  gwt-image: "clazz";
+  display: inline-block;
+  background-position: center center;
+}
+
+@sprite .function {
+  gwt-image: "function";
+  display: inline-block;
+  background-position: center center;
+}
+
+@sprite .cssClazz {
+  gwt-image: "cssClazz";
+  display: inline-block;
+  background-position: center center;
+}
+
+@sprite .jsField {
+  gwt-image: "jsField";
+  display: inline-block;
+  background-position: center center;
+}
+
+.root {
+  display: inline-block;
+}
+
+.icon {
+  margin: 0px 0px -1px 5px;
+}
+
+.label {
+  font-family: "Lucida Grande", Verdana, Arial;
+  font-size: 11px;
+  padding: 0px 5px 0px 6px;
+  display: inline-block;
+}
+
+.disabled {
+    color: gray;
+}

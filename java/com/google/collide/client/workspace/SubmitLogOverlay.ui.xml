@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.SubmitLogOverlay.Resources" />
+  <div class="{res.submitLogOverlayCss.base}">
+    <div class="{res.submitLogOverlayCss.overhangTop}"></div>
+    <div class="{res.submitLogOverlayCss.nameLabel}">Branch name</div>
+    <input ui:field="nameInput" type="text"
+      class="{res.submitLogOverlayCss.nameInput} {res.baseCss.textInput}" />
+    <div class="{res.submitLogOverlayCss.descriptionLabel}">Description of changes</div>
+    <textarea ui:field="descriptionInput" rows="3"
+      class="{res.submitLogOverlayCss.descriptionInput} {res.baseCss.textArea}"></textarea>
+    <div class="{res.submitLogOverlayCss.buttonBar}">
+      <a href="javascript:;" ui:field="submitWorkspaceButton"
+        class="{res.baseCss.button} {res.baseCss.buttonBlue}">Submit Changes</a>
+      <a href="javascript:;" ui:field="cancelButton" class="{res.baseCss.button}">Cancel</a>
+    </div>
+  </div>
+</ui:UiBinder>

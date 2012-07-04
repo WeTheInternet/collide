@@ -1,0 +1,135 @@
+.statusArea, .statusLoading, .statusConfirmation, .statusError {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: statusMessageZIndex;
+  text-align: center;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-border-radius-bottomleft: 4px;
+  -moz-border-radius-bottomright: 4px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 4px;
+  white-space: pre;
+}
+
+.statusLoading {
+  background-color: #fff1a8;
+  color: black;
+}
+
+.statusConfirmation {
+  background-color: #fff1a8;
+  color: black;
+}
+
+.statusError {
+  background-color: #f8c3c3;
+  color: #a13131;
+  font-weight: bold;
+}
+
+@sprite .statusDismiss {
+  gwt-image: "close";
+  visibility: hidden;
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  cursor: pointer;
+}
+
+.statusText {
+  display: inline-block;
+}
+
+.more, .actionsContainer {
+  cursor: pointer;
+  margin-top: 1em;
+
+  display: none;
+}
+
+.more {
+  margin-left: 2em;
+  font-style: italic;
+  text-decoration: underline;
+}
+
+.action {
+  font-weight: bold;
+  margin-right: 2em;
+  text-decoration: underline;
+}
+
+.longText {
+  font-weight: normal;
+  font-size: 11px;
+  display: none;
+  font-family: monospace;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  white-space: inherit;
+}
+
+.fatal {
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  top: 15px;
+  right: 0px;
+  left: 0px;
+  padding: 0 0 0 30px;
+  background-color: #333333;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  opacity: .9;
+  z-index: 1001;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  white-space: pre;
+}
+
+@sprite .fatalImage {
+  gwt-image: "fatalBorder";
+  background-position: top;
+  background-repeat: repeat-x;
+  position: fixed;
+  width: 100%;
+  height: 15px;
+  top: 0;
+  left: 0;
+  display: none;
+  opacity: 1;
+}
+
+.expandedRegular {
+  height: 300px;
+  overflow-y: auto;
+  white-space: normal;
+}
+
+.expandedFatal {
+  height: 400px;
+  overflow: auto;
+}
+
+.actionsContainer {
+  color: blue;
+}
+
+.fatal > .actionsContainer {
+  color: yellow;
+}
+
+.fatal > .statusText {
+  margin-top: 1em;
+}
+
+.inline {
+  display: inline-block;
+}

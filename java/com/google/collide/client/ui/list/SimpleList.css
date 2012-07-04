@@ -1,0 +1,63 @@
+@def menuListBorderPx 1px;
+@def listItemTopPadding 6px;
+@def listItemBottomPadding 6px;
+@def listItemLeftPadding 16px;
+@def listItemRightPadding 44px;
+
+.listBase {
+  background: #FFF;
+  border: menuListBorderPx solid rgba(0,0,0,0.2);
+  outline: none;
+  white-space: nowrap;
+
+  -webkit-box-shadow: dropdownShadow;
+  -moz-box-shadow: dropdownShadow;
+  box-shadow: dropdownShadow;
+}
+
+.listContainer {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.listItem {
+  padding: listItemTopPadding listItemRightPadding listItemBottomPadding listItemLeftPadding;
+  color: #333;
+  font-size: 13px;
+  cursor: default;
+  margin: 0;
+
+  -moz-transition: background 0.130s;
+  -webkit-transition: background 0.130s;
+  transition: background 0.130s;
+}
+
+/* For tables, the <tr> (which would be the listItem) cannot have padding */
+.listItem>td {
+  padding-top: listItemTopPadding;
+  padding-bottom: listItemBottomPadding;
+}
+
+.listItem>td:first-child {
+  padding-left: listItemLeftPadding;
+}
+
+.listItem>td:last-child {
+  padding-right: listItemLeftPadding;
+}
+
+.listItem[selected], .listItem:hover {
+  color: #222;
+
+  -moz-transition: background 0s;
+  -webkit-transition: background 0s;
+  transition: background 0s;  
+}
+
+.listItem[selected] {
+  background-color: keyboardSelectionBackgroundColor;
+}
+
+.listItem:hover {
+  background-color: hoverBackgroundColor;
+}

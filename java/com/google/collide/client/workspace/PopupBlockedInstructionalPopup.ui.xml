@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="baseCss"
+    type="com.google.collide.client.common.BaseResources.Css" />
+  <ui:with field="css"
+    type="com.google.collide.client.workspace.PopupBlockedInstructionalPopup.Css" />
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.PopupBlockedInstructionalPopup.Resources" />
+
+  <div ui:field="root" class="{css.root}">
+    <div class="{baseCss.modalDialogTitle}">You pressed RUN but nothing happened?</div>
+    <div class="{baseCss.modalDialogMessage}">
+      <p>
+        TODO: update the text.
+      </p>
+      <p>
+        Your application page is usually is opened in a distinct window.
+      </p>
+      <p>
+        Unfortunately, this time browser has prevented us to open this new window (blocked popup).
+      </p>
+      <p>
+        To resolve this issue you can click <div class="{css.popupBlockedIcon}"/> icon in omnibox
+        and allow popup windows in Collide.
+      </p>
+    </div>
+    <a ui:field="doneButton" href="javascript:;" class="{baseCss.button} {baseCss.buttonBlue}">
+        Back
+    </a>
+  </div>
+</ui:UiBinder>

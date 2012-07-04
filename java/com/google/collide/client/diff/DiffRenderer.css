@@ -1,0 +1,31 @@
+.addedLine {
+  background-color: #E0FFDF;
+}
+
+.removedLine {
+  background-color: #FFEDED;
+}
+
+.changedLine {
+  background-color: #E5E1F9;
+}
+
+.added {
+  background-color: #A8E8A6;
+}
+
+.removed {
+  background-color: #EEBABA;
+}
+
+.changed {
+  background-color: #CEC6F3;
+}
+
+.unchanged {
+  background-color: inherit;
+}
+
+.diffBlock {
+  background-color: #f7f7f7;
+}

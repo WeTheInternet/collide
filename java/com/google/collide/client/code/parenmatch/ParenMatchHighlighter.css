@@ -1,0 +1,20 @@
+.match {
+  box-shadow: inset 0 0 -1px dividerColorDark;
+  -moz-box-shadow: inset 0 0 -1px dividerColorDark;
+  -webkit-box-shadow: inset 0 0 -1px dividerColorDark;
+}
+
+.animationEnabled .match {
+  -moz-transition-duration: 0.10s;
+  -moz-transition-timing-function: ease-in;
+  -moz-transition-property: top, left, bottom, right, height, width;
+  -webkit-transition-duration: 0.10s;
+  -webkit-transition-timing-function: ease-in;
+  -webkit-transition-property: top, left, bottom, right, height, width;
+  transition-duration: 0.10s;
+  transition-timing-function: ease-in;
+  transition-property: top, left, bottom, right, height, width;
+}
+
+.scrollable {
+}

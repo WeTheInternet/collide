@@ -1,0 +1,91 @@
+/* Awesome Box and Container Styles */
+.awesomeContainer {
+  position: relative;
+  background-color: white;
+  z-index: 10;
+  
+  width: 250px;
+  -webkit-box-shadow: dropdownShadow;
+  -moz-box-shadow: dropdownShadow;
+  box-shadow: dropdownShadow;
+}
+
+.awesomeBox {
+  height: awesomeBarHeight;
+  width: 100%;
+  
+  border: none;
+  border-bottom: 1px solid #ebebeb;
+
+  display: block;
+  padding: 2px 25px 2px 5px;
+  
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  background-color: white;
+  outline: none;
+}
+
+/*
+  Adding the FF one causes failure, I think its a GWT bug where it's combining
+  the two styles since it thinks they are the same but that causes the style to
+  fail (since this is a special type and it cannot be combined)
+*/
+input.awesomeBox::-webkit-input-placeholder {
+  position: relative;
+  left: 5px;
+  
+  font-family: Arial, sans-serif; 
+}
+
+@sprite .closeButton {
+  gwt-image: 'cancel';
+  position: absolute;
+  right: 5px;
+  width: 15px;
+  background-repeat: no-repeat;
+  background-position: right;
+  z-index: 2;
+  line-height: awesomeBarHeight;
+  display: none;
+  height: auto;
+}
+
+/* Generic Section Styles */
+.section {
+  display: block;
+  font-size: 13px;
+  line-height: 1.7em;
+  border-bottom: 1px solid #ebebeb;
+  color: #333;
+}
+
+.sectionItem {
+  padding: 2px 3px 2px 21px;
+  line-height: 21px;
+  background-position: 3px center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+}
+
+.selected {
+  background-color: keyboardSelectionBackgroundColor !important;
+  cursor: pointer;
+}
+
+.sectionItem:hover {
+  background-color: hoverBackgroundColor;
+  cursor: pointer;
+}
+
+.dropdownContainer > .section:last-child {
+  border-bottom: none;
+}
+
+.shortcut {
+  display: inline-block;
+  color: #AAA;
+  float: right;
+}

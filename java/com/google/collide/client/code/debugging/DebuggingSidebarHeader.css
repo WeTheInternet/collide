@@ -1,0 +1,22 @@
+/* Annotated CSS for DebuggingSidebarHeader.java */
+
+.root {
+  height: 20px;
+  padding: 10px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.headerLabel {
+  font-weight: bold;
+  float: left;
+  margin-top: 2px;
+}
+
+.slider {
+  position: relative;
+  height: 24px;
+  min-width: 158px;
+  max-width: 158px;
+  margin-left: 82px;
+  margin-top: -2px;
+}

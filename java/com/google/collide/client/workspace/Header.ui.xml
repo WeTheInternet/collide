@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.workspace.Header.Resources" />
+  <div class="{res.baseCss.headerBg}">
+    <div ui:field="headerMenuElem"></div>
+    <div ui:field="leftButtonGroup" class="{res.workspaceHeaderCss.leftButtonGroup}">
+      <div class="{res.workspaceHeaderCss.runButtonContainer}">
+        <a href="javascript:;" ui:field="runButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue} {res.workspaceHeaderCss.runButton}">
+        </a>
+        <a href="javascript:;" ui:field="runDropdownButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue} {res.workspaceHeaderCss.runDropdownButton}">
+        </a>
+      </div>
+      <div ui:field="syncButtonsDiv" class="{res.workspaceHeaderCss.syncButtons}"></div>
+      <div ui:field="readOnlyMessage" class="{res.workspaceHeaderCss.readOnlyMessage}"></div>
+      <a href="javascript:;" ui:field="newWorkspaceButton" 
+         class="{res.baseCss.button} {res.workspaceHeaderCss.newWorkspaceButton}">
+      </a>
+    </div>
+    <div class="{res.workspaceHeaderCss.rightButtonGroup}">
+      <div ui:field="awesomeBoxContainer" class="{res.workspaceHeaderCss.awesomeBoxContainer}"></div>
+      <a href="javascript:;" ui:field="shareButton"
+         class="{res.baseCss.button} {res.workspaceHeaderCss.shareButton}"></a>
+      <a href="javascript:;" ui:field="feedbackButton"
+         class="{res.baseCss.button} {res.workspaceHeaderCss.feedbackButton}">Feedback</a>
+      <div ui:field="profileImage" class="{res.workspaceHeaderCss.profileImage}"></div>
+    </div>
+  </div>
+</ui:UiBinder>

@@ -1,0 +1,107 @@
+<project name="dto" default="build">
+  <property name="dirs.root" location="../../../../.."/>
+  <!-- Import common properties and macros -->
+  <import optional="false" file="${dirs.root}/macros.ant.xml"/>
+
+  <include optional="false" as="tools.dtogen"
+     file="${dirs.src}/${dirs.toppkg}/dtogen/build.xml"/>
+
+  <target name="build" description="Build DTO implementations"
+          depends="client,server"/>
+
+  <target name="interfaces">
+    <outofdate>
+      <sourcefiles>
+        <fileset file="build.xml"/>
+        <fileset dir="${dirs.src}/${dirs.toppkg}/dto"/>
+      </sourcefiles>
+      <targetfiles path="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
+      <sequential>
+        <mkdir dir="${dirs.bin}/${dirs.toppkg}/dto"/>
+        <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+          <include name="${dirs.toppkg}/dto/*.java"/>
+        </do.javac>
+        <jar destfile="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"
+             basedir="${dirs.bin}" includes="${dirs.toppkg}/dto/*.class"
+             filesonly="true">
+        </jar>
+      </sequential>
+    </outofdate>
+  </target>
+
+  <target name="client" depends="interfaces,tools.dtogen.build">
+    <outofdate>
+      <sourcefiles>
+        <fileset file="build.xml"/>
+        <fileset dir="${dirs.bin}/${dirs.toppkg}/dtogen"/>
+        <fileset file="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
+      </sourcefiles>
+      <targetfiles
+          path="${dirs.gen}/${dirs.toppkg}/dto/client/DtoClientImpls.java"/>
+      <sequential>
+        <mkdir dir="${dirs.gen}/${dirs.toppkg}/dto/client"/>
+        <java classname="${pkg.toppkg}.dtogen.DtoGenerator" fork="true"
+              failonerror="true" timeout="5000">
+          <classpath>
+            <pathelement location="${dirs.bin}"/>
+            <path refid="paths.shared"/>
+          </classpath>
+	        <arg value="--dto_jar=${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
+          <arg value="--gen_file_name=${dirs.gen}/${dirs.toppkg}/dto/client/DtoClientImpls.java"/>
+          <arg value="--impl=client"/>
+          <arg value="--package_base=gen/"/>
+        </java>
+        <do.javac srcdir="${dirs.gen}" destdir="${dirs.bin}">
+          <include name="${dirs.toppkg}/dto/client/**/*.java"/>
+          <classpath>
+	          <path refid="paths.client.build"/>
+	        </classpath>
+	      </do.javac>
+	      <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      	  <include name="${dirs.toppkg}/dto/client/**/*.java"/>
+	        <classpath>
+	          <path refid="paths.client.build"/>
+	        </classpath>
+	      </do.javac>
+      </sequential>
+    </outofdate>
+  </target>
+
+  <target name="server" depends="interfaces,tools.dtogen.build">
+    <outofdate>
+      <sourcefiles>
+        <fileset file="build.xml"/>
+        <fileset dir="${dirs.bin}/${dirs.toppkg}/dtogen"/>
+        <fileset file="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
+      </sourcefiles>
+      <targetfiles
+         path="${dirs.gen}/${dirs.toppkg}/dto/server/DtoServerImpls.java"/>
+      <sequential>
+        <mkdir dir="${dirs.gen}/${dirs.toppkg}/dto/server"/>
+        <java classname="${pkg.toppkg}.dtogen.DtoGenerator" fork="true"
+          failonerror="true" timeout="5000">
+          <classpath>
+            <pathelement location="${dirs.bin}"/>
+            <path refid="paths.shared"/>
+          </classpath>
+          <arg value="--dto_jar=${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
+	  <arg value="--gen_file_name=${dirs.gen}/${dirs.toppkg}/dto/server/DtoServerImpls.java"/>
+          <arg value="--impl=server"/>
+          <arg value="--package_base=gen/"/>
+        </java>
+        <do.javac srcdir="${dirs.gen}" destdir="${dirs.bin}">
+          <include name="${dirs.toppkg}/dto/server/**/*.java"/>
+          <classpath>
+            <path refid="paths.server.build"/>
+          </classpath>
+        </do.javac>
+        <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+          <include name="${dirs.toppkg}/dto/server/**/*.java"/>
+          <classpath>
+            <path refid="paths.server.build"/>
+          </classpath>
+        </do.javac>
+      </sequential>
+    </outofdate>
+  </target>
+</project>

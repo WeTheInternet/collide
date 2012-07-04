@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+
+  <ui:with field="css"
+    type="com.google.collide.client.code.WorkspaceNavigation.Css" />
+
+  <div class="{css.root}">
+    <div ui:field="topSections" class="{css.topSections}" />
+    <div ui:field="bottomSections" class="{css.bottomSections}">
+      <!-- splitter is absolutely positioned -->
+      <div ui:field="splitter" class="{css.splitter}" />
+      <div ui:field="bottomSectionsAnimator" class="{css.bottomSectionsAnimator}">
+        <div ui:field="bottomSectionsContent" class="{css.bottomSectionsContent}" />
+      </div>
+    </div>
+    <div ui:field="toolbarHolder" />
+  </div>
+
+</ui:UiBinder>

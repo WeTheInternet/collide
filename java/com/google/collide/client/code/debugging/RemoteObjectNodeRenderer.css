@@ -1,0 +1,63 @@
+/* Annotated CSS for RemoteObjectNodeRenderer.java */
+
+.root {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: black;
+}
+
+.propertyName {
+  display: inline-block;
+  color: #881391;
+  margin-right: -2px;
+}
+
+.separator {
+  display: inline-block;
+  margin-left: 2px;
+  margin-right: 5px;
+}
+
+.propertyValue {
+  display: inline-block;
+}
+
+.wasThrown .propertyValue {
+  color: red;
+}
+
+.noPropertyValue {
+  color: #3c3c3c ! important;
+  font-style: italic;
+}
+
+.notEnumerable {
+  opacity: 0.5;
+}
+
+.tokenArray,
+.tokenDate,
+.tokenFunction,
+.tokenNode,
+.tokenObject
+{
+}
+
+.tokenNull, .tokenUndefined {
+  color: #808080;
+}
+
+.tokenString, .tokenRegexp {
+  color: #c41a16;
+}
+
+.tokenNumber, .tokenBoolean {
+  color: #1c00cf;
+}
+
+.inPropertyValueMutation .propertyName {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

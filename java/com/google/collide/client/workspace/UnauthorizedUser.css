@@ -1,0 +1,13 @@
+.base {
+  padding: 25px;
+}
+
+.title {
+  font-size: largeFontSize;
+  font-weight: bold;
+  padding-bottom: titlePaddingBottom;
+}
+
+.email {
+  font-weight: bold;
+}

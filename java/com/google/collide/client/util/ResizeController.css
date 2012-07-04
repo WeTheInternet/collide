@@ -1,0 +1,24 @@
+.horizontalCursor * {
+  cursor: ew-resize !important;
+}
+
+.verticalCursor * {
+  cursor: ns-resize !important;
+}
+
+.hSplitter {
+  cursor: ew-resize;
+}
+
+.vSplitter {
+  cursor: ns-resize;
+}
+
+.elementResizing {
+  /* Remove transitions from the element while it is being resized,
+   * otherwise our programmatic setting of the CSS properties will
+   * not get their target value right away, which is something we
+   * rely on. */
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+}

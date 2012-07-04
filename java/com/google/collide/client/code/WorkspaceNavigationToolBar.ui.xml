@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res"
+    type="com.google.collide.client.code.WorkspaceNavigationToolBar.Resources" />
+
+  <div ui:field="toolBar" class="{res.workspaceNavigationToolBarCss.toolBar}">
+    <div class="{res.workspaceNavigationToolBarCss.outerBorder}"/>
+    <table align="CENTER" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>
+          <div ui:field="deltaButton" class="{res.baseCss.drawerIconButton}">
+            <div class="{res.workspaceNavigationToolBarCss.deltaIcon}" ui:field="deltaIcon"/>
+          </div>
+        </td>
+        <td>
+          <div ui:field="collaborateButton" class="{res.baseCss.drawerIconButton}">
+            <div class="{res.workspaceNavigationToolBarCss.collaborateIcon}" ui:field="collaborateIcon"/>
+          </div>
+        </td>
+        <td>
+          <div ui:field="navigatorButton" class="{res.baseCss.drawerIconButton}">
+            <div class="{res.workspaceNavigationToolBarCss.navigatorIcon}" ui:field="navigatorIcon"/>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</ui:UiBinder>

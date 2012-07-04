@@ -1,0 +1,12 @@
+@sprite .popupBlockedIcon {
+  gwt-image: "popupBlockedIcon";
+  display: inline-block;
+  background-position: center center;
+}
+
+.root {
+  padding: 35px;
+  text-align: left;
+  width: 400px;
+  color: #333;
+}

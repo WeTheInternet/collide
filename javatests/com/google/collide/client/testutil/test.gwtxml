@@ -1,0 +1,3 @@
+<replace-with class="com.google.collide.client.testutil.TestSchedulerImpl">
+  <when-type-is class="com.google.gwt.core.client.impl.SchedulerImpl" />
+</replace-with>

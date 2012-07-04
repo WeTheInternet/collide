@@ -1,0 +1,43 @@
+/* Annotated CSS for DebuggingSidebarNoApiPane.java */
+@def borderRadius 4px;
+
+.root {
+  padding: 10px 0;
+  text-align: center;
+}
+
+@sprite .headerLogo {
+  gwt-image: "extensionPackage";
+  width: 100%;
+  background-position: center;
+  margin-bottom: 20px;
+}
+
+.headerText {
+  margin-bottom: 40px;
+  height: 40px;
+  padding-top: 40px;
+  color: #666;
+}
+
+.button {
+  color: white;
+  padding: 6px 12px;
+  text-decoration: none;
+  font-weight: bold;
+  -moz-border-radius: borderRadius;
+  border-radius: borderRadius;
+  border: 1px solid #4d8bed;
+  background: literal("-webkit-gradient(linear, center top, center bottom, from(#5d9afe), to(#4a88eb))");
+  background: literal("-moz-linear-gradient(top, #5d9afe, #4a88eb)");
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 2px 5px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 2px 5px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0 2px 5px;
+  white-space: nowrap;
+}
+
+.footerText {
+  padding: 20px 10px 0;
+  color: #999;
+  font-size: 12px;
+}

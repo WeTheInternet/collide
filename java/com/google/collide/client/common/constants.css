@@ -1,0 +1,85 @@
+/* 
+ * The constants defined in this CSS file can be used by any other
+ * CSS file in Collide by including it in the @Source annotation
+ * on the CssResource declaration inside of a ClientBundle.
+ *
+ * These could theoretically go in base.css, but the problem is
+ * the other (non-constant) classes in base.css would then
+ * potentially conflict with classes defined in the CSS files
+ * that want to use the constants.
+ */
+
+/* Colors */
+@def collideRed #DD4B39;
+@def collideBlack #222;
+@def collideGreen #060;
+@def collideGreenBackground #e9f3e3;
+@def collideGreenBorder #afd0aa;
+@def collideBlueBorder #4e90fe;
+@def linkColor #1155cc;
+@def dividerColor #ebebeb;
+@def dividerColorDark #c0c0c0;
+@def hoverBackgroundColor #eee;
+@def lightTextColor #999;
+@def lightestTextColor #BCBCBC;
+@def lightGreyBackground #F1F1F1;
+@def barBackgroundColor #f5f5f5;
+/* Indicates a completed action. Preferred text color is lightTextColor. */
+@def completedBackgroundColor #f9edbe;
+/* Background color for an item selected with the keyboard */
+@def keyboardSelectionBackgroundColor #E0E0E0;
+@def anchorColor #1155CC;
+
+/* Sizes */
+@def dividerThickness 1px;
+@def popupPadding 24px;
+@def titlePaddingBottom 16px;
+@def buttonSpacing 10px;
+@def labelPaddingBottom 6px;
+@def examplePaddingTop 4px;
+@def formButtonPaddingTop 18px;
+@def sideBarHorizontalPadding 12px;
+@def splitterWidth 8px;
+@def splitterOverlap 4px;
+
+/* Font Sizes */
+@def fontSize 13px;
+@def largeFontSize 16px;
+@def productFontSize 20px;
+@def landingTitleFontSize 20px;
+@def titleFontSize 16px;
+@def secondaryTextFontSize 11px;
+@eval scrollbarSize com.google.collide.client.common.Constants.SCROLLBAR_SIZE+"px";
+@def largeLabel 14px;
+@def largeDropdownLabel 12px;
+
+/* Fonts */
+@def alternativeFontFamily "open sans", arial, sans-serif;
+@def fileTreeFontFamily "Lucida Grande", Verdana, Arial;
+
+/* Buttons */
+@def buttonBorderRadius 2px;
+@def buttonFontSize 11px;
+@def buttonFontWeight bold;
+@def buttonHeight 27px;
+
+/* zIndex */
+@def popupZIndex 20000;
+@eval dropdownZIndex com.google.collide.client.ui.dropdown.DropdownController.DROPDOWN_ZINDEX;
+@def statusMessageZIndex 20010;
+@def contextMenuZIndex 20020;
+@def tooltipZIndex 20030;
+@def contactsCompleterZIndex 20040;
+
+/* Opacity */
+@def temporarilyDisabledOpacity 0.5;
+
+/* Other Styles */
+@def dropdownShadow 0 2px 4px rgba(0,0,0,0.2);
+@def awesomeBarHeight 27px;
+
+/* Duration */
+@eval alertTransitionDuration com.google.collide.client.util.AnimationUtils.ALERT_TRANSITION_DURATION+"s";
+@eval longTransitionDuration com.google.collide.client.util.AnimationUtils.LONG_TRANSITION_DURATION+"s"; 
+@eval mediumTransitionDuration com.google.collide.client.util.AnimationUtils.MEDIUM_TRANSITION_DURATION+"s";
+@eval shortTransitionDuration com.google.collide.client.util.AnimationUtils.SHORT_TRANSITION_DURATION+"s";

@@ -1,0 +1,220 @@
+/*
+ * All .xxx-error styles will programmatically get the squiggley style.
+ * However, we leave the stable class names here for unofficial third-party use.
+ */
+
+
+/*
+ * c-like languages (C, CPP, Java) token types.
+ */
+@external clike-keyword, clike-atom, clike-number, clike-def, clike-variable, clike-variable-2;
+@external clike-property, clike-operator, clike-comment, clike-string, clike-meta, clike-error;
+@external clike-builtin, clike-tag, clike-attribute;
+
+.clike-keyword {color: #708;}
+.clike-atom {color: #219;}
+.clike-number {color: #164;}
+.clike-def {color: #00f;}
+.clike-variable {color: black;}
+.clike-variable-2 {color: #05a;}
+.clike-property {color: black;}
+.clike-operator {color: black;}
+.clike-comment {color: #a50;}
+.clike-string {color: #a11;}
+.clike-meta {color: #049;}
+.clike-error {color: #f00;}
+.clike-builtin {color: #30a;}
+.clike-tag {color: #170;}
+.clike-attribute {color: #00c;}
+
+
+/*
+ * CSS token types.
+ */
+@external css-keyword, css-atom, css-number, css-def, css-variable, css-variable-2;
+@external css-property, css-operator, css-comment, css-string, css-meta, css-error;
+@external css-builtin, css-tag, css-attribute;
+
+.css-keyword {color: #708;}
+.css-atom {color: #219;}
+.css-number {color: #164;}
+.css-def {color: #00f;}
+.css-variable {color: black;}
+.css-variable-2 {color: #05a;}
+.css-property {color: black;}
+.css-operator {color: black;}
+.css-comment {color: #a50;}
+.css-string {color: #a11;}
+.css-meta {color: #555;}
+.css-error {}
+.css-builtin {color: #30a;}
+.css-tag {color: #170;}
+.css-attribute {color: #00c;}
+
+
+/*
+ * Dart token types.
+ */
+@external dart-keyword, dart-atom, dart-number, dart-def, dart-variable, dart-variable-2;
+@external dart-property, dart-operator, dart-comment, dart-string, dart-meta, dart-error;
+@external dart-builtin, dart-tag, dart-attribute;
+
+.dart-keyword {color: #708;}
+.dart-atom {color: #219;}
+.dart-number {color: #164;}
+.dart-def {color: #00f;}
+.dart-variable {color: black;}
+.dart-variable-2 {color: #05a;}
+.dart-property {color: black;}
+.dart-operator {color: black;}
+.dart-comment {color: #a50;}
+.dart-string {color: #a11;}
+.dart-meta {color: #049;}
+.dart-error {}
+.dart-builtin {color: #30a;}
+.dart-tag {color: #170;}
+.dart-attribute {color: #00c;}
+
+
+/*
+ * Go token types.
+ */
+@external go-keyword, go-atom, go-number, go-def, go-variable, go-variable-2;
+@external go-property, go-operator, go-comment, go-string, go-meta, go-error;
+@external go-builtin, go-tag, go-attribute;
+
+.go-keyword {color: #708;}
+.go-atom {color: #219;}
+.go-number {color: #164;}
+.go-def {color: #00f;}
+.go-variable {color: black;}
+.go-variable-2 {color: #05a;}
+.go-property {color: black;}
+.go-operator {color: black;}
+.go-comment {color: #a50;}
+.go-string {color: #a11;}
+.go-meta {color: #049;}
+.go-error {color: #f00;}
+.go-builtin {color: #30a;}
+.go-tag {color: #170;}
+.go-attribute {color: #00c;}
+
+
+/*
+ * HTML (= XML) token types.
+ */
+@external html-atom, html-comment, html-string, html-meta, html-error, html-tag, html-attribute;
+
+.html-atom {color: #219;}
+.html-comment {color: #a50;}
+.html-string {color: #a11;}
+.html-meta {color: #555;}
+.html-error {}
+.html-tag {color: #170;}
+.html-attribute {color: #00c;}
+
+
+/*
+ * JS token types.
+ */
+@external javascript-keyword, javascript-atom, javascript-number, javascript-def;
+@external javascript-variable, javascript-variable-2, javascript-property;
+@external javascript-operator, javascript-comment, javascript-string, javascript-string-2;
+@external javascript-meta, javascript-error, javascript-builtin;
+@external javascript-tag, javascript-attribute;
+
+.javascript-keyword {color: #708;}
+.javascript-atom {color: #219;}
+.javascript-number {color: #164;}
+.javascript-def {color: #00f;}
+.javascript-variable {color: black;}
+.javascript-variable-2 {color: #05a;}
+.javascript-property {color: black;}
+.javascript-operator {color: black;}
+.javascript-comment {color: #a50;}
+.javascript-string {color: #a11;}
+.javascript-string-2 {color: #f50;}
+.javascript-meta {color: #555;}
+.javascript-error {}
+.javascript-builtin {color: #30a;}
+.javascript-tag {color: #170;}
+.javascript-attribute {color: #00c;}
+
+
+/*
+ * PHP token types.
+ */
+@external php-keyword, php-atom, php-number, php-def, php-variable, php-variable-2;
+@external php-property, php-operator, php-comment, php-string, php-meta, php-error;
+@external php-builtin, php-tag, php-attribute;
+
+.php-keyword {color: #708;}
+.php-atom {color: #219;}
+.php-number {color: #164;}
+.php-def {color: #00f;}
+.php-variable {color: black;}
+.php-variable-2 {color: #05a;}
+.php-property {color: black;}
+.php-operator {color: black;}
+.php-comment {color: #a50;}
+.php-string {color: #a11;}
+.php-meta {color: #049;}
+.php-error {color: #f00;}
+.php-builtin {color: #30a;}
+.php-tag {color: #170;}
+.php-attribute {color: #00c;}
+
+
+/*
+ * PY token types.
+ */
+@external python-keyword, python-atom, python-number, python-def, python-variable;
+@external python-property, python-operator, python-comment;
+@external python-string, python-meta, python-error;
+@external python-builtin, python-tag, python-attribute;
+
+.python-keyword {color: #708;}
+.python-atom {color: #219;}
+.python-number {color: #164;}
+.python-def {color: #00f;}
+.python-variable {color: black;}
+.python-property {color: black;}
+.python-operator {color: black;}
+.python-comment {color: #a50;}
+.python-string {color: #a11;}
+.python-meta {color: #555;}
+.python-error {}
+.python-builtin {color: #30a;}
+.python-tag {color: #170;}
+.python-attribute {color: #00c;}
+
+
+/*
+ * YAML token types.
+ */
+@external yaml-keyword, yaml-atom, yaml-number, yaml-def, yaml-variable-2, yaml-comment;
+@external yaml-string, yaml-meta, yaml-error;
+
+.yaml-keyword {color: #708;}
+.yaml-atom {color: #219;}
+.yaml-number {color: #164;}
+.yaml-def {color: #00f;}
+.yaml-variable-2 {color: #05a;}
+.yaml-comment {color: #a50;}
+.yaml-string {color: #a11;}
+.yaml-meta {color: #555;}
+.yaml-error {}
+
+
+/*
+ * XML token types.
+ */
+@external xml-atom, xml-comment, xml-meta, xml-error, xml-tag, xml-string, xml-attribute;
+
+.xml-atom {color: #219;}
+.xml-comment {color: #a50;}
+.xml-string {color: #a11;}
+.xml-meta {color: #555;}
+.xml-error {}
+.xml-tag {color: #170;}
+.xml-attribute {color: #00c;}

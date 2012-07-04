@@ -1,0 +1,83 @@
+.breadcrumbBar {
+  font-size: 11px;
+  height: 20px;
+  float: left;
+  display: block;
+  padding: 0 6px;
+}
+
+.breadcrumbWrap {
+  -webkit-transiiton-property: opacity;
+  -webkit-transition-duration: 0.15s;
+  -webkit-transition-timing-function: ease-out;
+  opacity: 1.0;
+  color: #999;
+  padding-right: 5px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+}
+
+.breadcrumbSlash {
+  color: transparent;
+}
+
+.breadcrumbSlash::selection {
+  background: transparent;
+}
+
+.breadcrumbSlash::-moz-selection {
+  background: transparent;
+}
+
+.breadcrumbWrap.hide {
+  opacity: 0.0;
+}
+
+.breadcrumbWrap:last-child {
+  background: none;
+  color: #333;
+}
+
+.breadcrumb {
+  position: relative;
+  display: inline-block;
+  -webkit-transiton-property: margin;
+  margin-left: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 24px;
+}
+
+.breadcrumb.start {
+  margin-left: -100%;
+}
+
+/** Icon styles */
+@url pathSlashImgUrl pathSlashImg;
+@url directoryImgUrl directoryImg;
+.directory {
+  background: directoryImgUrl no-repeat center left, pathSlashImgUrl no-repeat center right;
+  padding-left: 20px;
+}
+
+@url fileImgUrl fileImg;
+.file {
+  background: fileImgUrl no-repeat center left, pathSlashImgUrl no-repeat center right;
+}
+
+.breadcrumbWrap:last-child > .file {
+  background: fileImgUrl no-repeat center left;
+}
+
+.cls {
+  
+}
+
+.function {
+  
+}
+
+.field {
+  
+}

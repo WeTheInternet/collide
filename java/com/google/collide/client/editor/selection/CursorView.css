@@ -1,0 +1,16 @@
+.root {
+  /* TODO: other stuff like name tags */
+  cursor: text;
+  position: absolute;
+}
+
+.caret {
+  height: editorLineHeight;
+  position: absolute;
+  width: 2px;
+}
+
+.caret.block {
+  width: 8px;
+  opacity: 0.4;
+}

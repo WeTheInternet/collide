@@ -1,0 +1,11 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="css"
+    type="com.google.collide.client.ui.popup.CenterPanel.Css" />
+  <div ui:field="popup" class="{css.popup}">
+    <div ui:field="glass" class="{css.glass}"></div>
+    <div class="{css.positioner}">
+      <div ui:field="contentContainer" class="{css.content}"></div>
+    </div>
+  </div>
+</ui:UiBinder>

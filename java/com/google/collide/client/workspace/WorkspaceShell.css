@@ -1,0 +1,34 @@
+/* Annotated CSS for the workspace shell. */
+
+/* Header height + 1 */
+@def headerHeight 57px;
+@def headerHeightPlusOne 58px;
+
+.base {
+  overflow: visible;
+  background-color: #F9F9F9;
+}
+
+.header {
+  display: -moz-box;
+  display: -webkit-box;
+  display: box;
+  
+  position: relative;
+  /* Should be higher than the breadcrumb bar's */
+  z-index: 10;
+  
+  -moz-box-align: center;
+  -webkit-box-align: center;
+  box-align: center;
+  
+  height: headerHeight;
+}
+
+.perspectivePanel {
+  position: absolute;
+  top: headerHeightPlusOne;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

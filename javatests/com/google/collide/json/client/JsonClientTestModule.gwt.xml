@@ -1,0 +1,6 @@
+<module>
+  <inherits name="com.google.collide.json.Json"/>
+  <inherits name="com.google.collide.shared.Shared"/>
+  <inherits name="com.google.common.base.Base"/>
+  <source path=""/>
+</module>

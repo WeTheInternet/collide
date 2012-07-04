@@ -1,0 +1,45 @@
+@sprite .folder {
+  gwt-image: "folder";
+}
+
+@sprite .folderOpen {
+  gwt-image: "folderOpen";
+}
+
+@sprite .folderLoading {
+  gwt-image: "folderLoading";
+}
+
+@sprite .file {
+  gwt-image: "file";
+}
+
+.root {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.icon {
+  margin: 0px 0px -1px 5px;
+  display: inline-block;
+  background-position: center center;
+}
+
+.label, .nodeNameInput {
+  font-family: fileTreeFontFamily;
+  font-size: secondaryTextFontSize;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.label {
+  padding: 0px 5px 0px 6px;
+  cursor: default;
+}
+
+.nodeNameInput {
+  border: 1px solid #D9D9D9;
+  border-top: 1px solid #C0C0C0;
+}

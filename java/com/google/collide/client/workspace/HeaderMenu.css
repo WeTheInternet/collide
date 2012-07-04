@@ -1,0 +1,88 @@
+@def headerBackground #F9F9F9;
+
+.base {
+  width:275px;
+  color: #222;
+  background-color: headerBackground;
+}
+
+.wsName, .wsNameInput, .wsNameReadonly {
+  font-weight: 100;
+  font-family: alternativeFontFamily;
+  font-size: 18px;
+  color: collideBlack;
+  margin-left: 10px;
+  height: 29px;
+  vertical-align: middle;
+}
+
+.wsName, .wsNameReadonly {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  width: 183px;
+  cursor: text;
+  padding-left: 2px;
+  line-height: 29px;
+  /* Invisible border so the text doesn't jiggle */
+  border: 1px solid headerBackground;
+}
+
+.wsName:hover {
+  background-color: white;
+  /* border since the input element has some sort of border on it */
+  border: 1px solid #D9D9D9;
+  border-top: 1px solid #C0C0C0;
+}
+
+/* Suppresses the hover effect after changing the name to avoid confusion. */
+.wsNameHoverSuppressed:hover {
+  background-color: headerBackground;
+  /* Invisible border so the text doesn't jiggle */
+  border: 1px solid headerBackground;
+}
+
+.wsNameInput {
+  width: 183px;
+  display: inline-block;
+  border: none;
+  background-color: white;
+  border: 1px solid #D9D9D9;
+  border-top: 1px solid #C0C0C0;
+  color: #222;
+  padding-left: 2px;
+  
+  height: 27px;
+  outline: none;
+}
+
+.backToLandingLink {
+  padding-top: 15px;
+  padding-bottom: 22px;
+  opacity: .6;
+  cursor: pointer;
+}
+
+.backToLandingLink:hover {
+  opacity: 1;
+}
+
+.backToLandingButton {
+  margin-left: 14px;
+  padding-right: 17px;
+  font-size: 24px;
+  vertical-align:middle;
+}
+
+@sprite .backToLandingButtonImage {
+  gwt-image: 'backIcon';
+  position: absolute;
+  top: 22px;
+}
+
+.divider {
+  border-left: 1px solid #DEDEDE;
+  padding-top: 5px;
+  padding-bottom: 7px;
+}

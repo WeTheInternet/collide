@@ -1,0 +1,22 @@
+<!-- This provides deferred binding for the debugging API implementation. -->
+
+<set-configuration-property name='CssResource.style' value='stable' />
+
+<define-property name="webide.debuggingApi" values="chrome,none"/>
+<property-provider name="webide.debuggingApi"><![CDATA[
+  var ua = navigator.userAgent.toLowerCase();
+  if (ua.indexOf("chrome") != -1) {
+    return "chrome";
+  } else {
+    return "none";
+  }
+]]></property-provider>
+
+<!-- replace-with rules go here -->
+<replace-with class="com.google.collide.client.code.debugging.NoDebuggerApi">
+  <when-type-is class="com.google.collide.client.code.debugging.DebuggerApi" />
+</replace-with>
+<replace-with class="com.google.collide.client.code.debugging.DebuggerChromeApi">
+  <when-type-is class="com.google.collide.client.code.debugging.DebuggerApi" />
+  <when-property-is name="webide.debuggingApi" value="chrome" />
+</replace-with>

@@ -1,0 +1,3 @@
+<!-- Release configuration -->
+<set-property name='webide.release_mode' value='release' />
+<set-property name='compiler.stackMode' value='strip'/>

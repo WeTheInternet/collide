@@ -1,0 +1,80 @@
+/* Annotated CSS for the Editor presenter. */
+
+.root {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  background-color: white;
+  bottom: 0;
+  font-family: 'Inconsolata', monospace;
+  font-size: 13px;
+  left: 0;
+  line-height: editorLineHeight;
+  position: absolute;
+  right: 0;
+  text-wrap: none;
+  top: 0;
+  user-select: none;
+  white-space: pre;
+}
+
+.editorFont, .root {
+  font-family: 'Inconsolata', monospace;
+  font-size: 13px;
+}
+
+/* Same selection colors as the editor's manually drawn selection */
+::selection {
+  background: #d4e2ff;
+}
+
+::selection:window-inactive {
+  background: #d4d4d4;
+}
+
+/* FF doesn't support inactive selection */
+::-moz-selection {
+  background: #d4e2ff;
+}
+
+.scrolled {
+}
+
+.gutter {
+}
+
+.scrolled > .gutter, .scrolled > .scrollable {
+  box-shadow: inset 0px 4px 2px -2px #DDD;
+}
+
+.leftGutter {
+  color: #bbbbbb;
+  cursor: default;
+  font-size: 11px;
+  font-face: Verdana;
+  height: 100%;
+  line-height: editorLineHeight;
+  min-width: 2em;
+  overflow: hidden;
+  padding-left: 5px;
+  padding-right: 6px;
+  /* Allow children to position absolutely against us */
+  position: relative;
+  text-align: right;
+  /* Allow decorations with z-index:-1 such as breakpoints */
+  z-index: 0;
+}
+
+/* Empty rule for enabling CSS3 animations for editor changes. */
+.animationEnabled {
+  
+}
+
+@sprite .lineRendererError {
+  gwt-image: "squiggle";
+  background-position: bottom;
+  background-repeat: repeat-x;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+}

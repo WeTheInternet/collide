@@ -1,0 +1,13 @@
+<!-- Debug Configuration -->
+<set-configuration-property name='CssResource.style' value='stable'/>
+<set-property name='webide.release_mode' value='debug'/>
+<set-property name='webide.logging.enabled' value='true' />
+
+<!-- Comment out as needed -->
+<set-property name='webide.is_internal' value='true'/>
+
+<!-- Uncomment as needed
+<set-property name='compiler.stackMode' value='emulated' />
+<set-configuration-property name='compiler.emulatedStack.recordLineNumbers' value='true' />
+<set-configuration-property name='compiler.emulatedStack.recordFileNames' value='true' />
+-->

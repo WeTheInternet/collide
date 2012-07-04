@@ -1,0 +1,267 @@
+@def containerWidth 135px;
+@def sliderWidth 65px;
+/* Sync Highlighted Widths */
+@def syncSyncWidth 70px;
+@def syncSubmitWidth 65px;
+/* Submit Highlighted Widths */
+@def submitContainerWidth 130px;
+@def submitSliderLeft 65px;
+@def submitSyncWidth 65px;
+@def submitSubmitWidth 75px;
+/* Conflict Widths */
+@def conflictContainerWidth 200px;
+@def conflictSliderWidth 120px;
+@def conflictSyncWidth 130px;
+@def conflictSubmitWidth 70px;
+/* Borders */
+@def borderRadius 4px;
+@def sliderBorder #C6C6C6;
+/* Arrow Positioning */
+@def topArrowRight -13px;
+@def borderArrowRight -14px;
+@def shadowArrowRight -15px;
+@def topArrowBorderSize 13px;
+@def borderShadowArrowSize 14px;
+/* Times */
+@def widthTransitionTime 100ms;
+@def sliderTransitionTime 500ms;
+@def imageTransitionTime 350ms;
+/* Colors */
+@def activeText #222;
+@def inactiveText #999;
+@def inactiveBackground #E7E7E7;
+@def activeButtonColor #F5F5F5;
+@def hoverButtonColor #F8F8F8;
+@def pressedButtonColor #F6F6F6;
+
+/* Icon URLS */
+@url syncIconUrl syncIcon;
+@url submitIconUrl submitIcon;
+@url undoIconUrl undoIcon;
+
+.base {
+  font-size: 11px;
+  font-weight: bold;
+  color: activeText;
+  cursor: default;
+
+  position: relative;
+  width: containerWidth;
+  height: syncButtonHeight;
+  line-height: syncButtonHeight;
+  background-color: inactiveBackground;
+  border-radius: borderRadius;
+
+  /* Disable User Select */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+
+  /* Transition for conflict state */
+  -webkit-transition: width widthTransitionTime;
+  -moz-transition: width widthTransitionTime;
+  transition: width widthTransitionTime;
+}
+
+/*
+  This div fixes a bug in firefox where you can't use the box model with an
+  absolute positioned parent.  This div is absolute, while its child container
+  of the buttons is not.
+*/
+.firefoxWrapper {
+  /*
+    Allows clicking on the slider instead of the buttons,
+    this lets the > part be part of the click target
+  */
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 3;
+}
+
+.buttonContainer {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+
+  -webkit-box-pack:justify;
+  -moz-box-pack: justify;
+  box-pack: justify;
+}
+
+/* Sync and Submit */
+.sync, .submit {
+  text-align: center;
+
+  /* Image Stuff */
+  background-repeat: no-repeat;
+
+  /* Transitions for the image */
+  -webkit-transition: background-position imageTransitionTime, color sliderTransitionTime;
+  -moz-transition: background-position imageTransitionTime, color sliderTransitionTime;
+  transition: background-position imageTransitionTime, color sliderTransitionTime;
+}
+
+.sync {
+  background-image: syncIconUrl;
+  background-position: 10px 50%;
+  width: syncSyncWidth;
+
+  box-sizing: border-box;
+  padding-left: 10px;
+}
+
+.submit {
+  background-image: submitIconUrl;
+  /* 210% is so it starts off-screen */
+  background-position: 7px 210%;
+  width: syncSubmitWidth;
+
+  /* Submit is by default inactive */
+  color: inactiveText;
+  box-sizing: border-box;
+}
+
+/* Slider Stuff */
+.slider {
+  height: syncButtonHeight;
+  width: sliderWidth;
+
+  position: absolute;
+  left: 0px;
+  z-index: 1;
+
+  -webkit-transition: left sliderTransitionTime, width widthTransitionTime;
+  -moz-transition: left liderTransitionTime, width widthTransitionTime;
+  transition: left sliderTransitionTime, width widthTransitionTime;
+
+  border: 1px solid sliderBorder;
+  border-top-left-radius: borderRadius;
+  border-bottom-left-radius: borderRadius;
+
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  background-color: activeButtonColor;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.slider:hover {
+  background-color: hoverButtonColor;
+}
+
+.slider:active {
+  background-color: pressedButtonColor;
+}
+
+/* Arrow Styles */
+/* The arrow doesn't show up exactly right in FireFox, but its closer enough */
+.slider::before, .arrow, .slider::after {
+  position: absolute;
+  width: 0;
+  /* One pixel to account for an odd sized button. */
+  height: 1px;
+}
+
+.slider::before {
+  content: "";
+  z-index: 3;
+  right: topArrowRight;
+
+  /* This emulates the box-shadow under the arrow */
+  border-top: topArrowBorderSize solid transparent;
+  border-bottom: topArrowBorderSize solid transparent;
+  border-left: topArrowBorderSize solid activeButtonColor;
+}
+
+.arrow {
+  z-index: 2;
+  top: -1px;
+  right: borderArrowRight;
+
+  /* This emulates the box-shadow under the arrow */
+  border-top: borderShadowArrowSize solid transparent;
+  border-bottom: borderShadowArrowSize solid transparent;
+  border-left: borderShadowArrowSize solid sliderBorder;
+}
+
+.slider::after {
+  content: "";
+  z-index: 1;
+  right: shadowArrowRight;
+
+  /* This emulates the box-shadow under the arrow */
+  border-top: borderShadowArrowSize solid transparent;
+  border-bottom: borderShadowArrowSize solid transparent;
+  border-left: borderShadowArrowSize solid rgba(0, 0, 0, 0.05);
+}
+
+.slider:hover::before {
+  border-left-color: hoverButtonColor
+}
+
+.slider:active::before {
+  border-left-color: pressedButtonColor;
+}
+
+/* Conflict,InSync,Disabled Styles */
+/*
+  TODO: Look at doing this without descendent selectors (which btw are
+  not really that slow).
+*/
+.base.conflict {
+  width: conflictContainerWidth;
+}
+
+.base.conflict .submit {
+  width: conflictSubmitWidth;
+}
+
+.base.conflict .slider {
+  width: conflictSliderWidth;
+}
+
+.base.conflict .sync {
+  background-image: undoIconUrl;
+  width: conflictSyncWidth;
+}
+
+.base.insync {
+  width: submitContainerWidth;
+}
+
+.base.insync .slider {
+  /* We move the slider over to submit */
+  left: submitSliderLeft;
+}
+
+.base.insync .sync {
+  /* 210% is just so it's off screen */
+  background-position: 10px 210%;
+  /* Sync is inactive */
+  color: inactiveText;
+
+  width: submitSyncWidth;
+  padding-left: 0px;
+}
+
+.base.insync .submit {
+  background-position: 7px 50%;
+  /* We're active now */
+  color: activeText;
+
+  width: submitSubmitWidth;
+  padding-left: 10px;
+}
+
+.base.disabled .submit {
+  opacity: .4;
+}
+
+.base.disabled .slider {
+  background-color: inactiveBackground;
+}
+
+.base.disabled .slider::before {
+  border-left-color: inactiveBackground;
+}
