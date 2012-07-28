@@ -15,6 +15,12 @@
 package com.google.collide.server.fe;
 
 import com.google.collide.dto.shared.JsonFieldConstants;
+import com.google.collide.server.maven.MavenResources;
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.HelpInfo;
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.dev.codeserver.CodeServer;
+import com.google.gwt.dev.codeserver.CodeSvr;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
@@ -48,6 +54,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   private static final String WEBROOT_PATH = "/res/";
   private static final String BUNDLED_STATIC_FILES_PATH = "/static/";
   private static final String AUTH_PATH = "/_auth";
+  private static final String CODESERVER_FRAGMENT = "/code/";
   private static final String AUTH_COOKIE_NAME = "_COLLIDE_SESSIONID";
 
   /**
@@ -61,6 +68,29 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
    * the URL matches {@link #BUNDLED_STATIC_FILES_PATH}
    */
   private String webRootPrefix;
+
+  /**
+   * The directory in which we are compiling temporary files (for gwt builds),
+   * used when invoking the code server /{@link #CODESERVER_FRAGMENT}/your.gwt.module/command
+   * where command = compile | clean | kill
+   * 
+   * Defaults to the value from MavenConfig, which will default to /tmp
+   */
+  private String workDir;
+
+  /**
+   * The master production directory for your webapp, to which we will sync all changes.
+   * If this value == webRootPrefix, then mvn collide:deploy will sync to your collide work directory.
+   * Web invoke: /{@link #CODESERVER_FRAGMENT}/deploy
+   * 
+   * Defaults to the value from MavenConfig, which will default to {@link #WEBROOT_PATH}/war
+   */
+  private String warDir;
+
+  /**
+   * Your project / maven configuration file.
+   */
+  private MavenResources config;
 
   @Override
   public void start() {
@@ -91,10 +121,16 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
     String bundledStaticFiles = getMandatoryStringConfig("staticFiles");
     String webRoot = getMandatoryStringConfig("webRoot");
-
+    String workDirectory = getOptionalStringConfig("workDir", "/tmp");
+    String warDirectory = getOptionalStringConfig("warDir", webRoot + File.separator + "war");
+    
+    
+    
     bundledStaticFilesPrefix = bundledStaticFiles + File.separator;
     webRootPrefix = webRoot + File.separator;
-
+    workDir = workDirectory + File.separator;
+    warDir = warDirectory + File.separator;
+    
     server.listen(getOptionalIntConfig("port", 8080), getOptionalStringConfig("host", "127.0.0.1"));
   }
 
@@ -105,6 +141,8 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       authAndWriteHostPage(req);
     } else if (path.contains("..")) {
       sendStatusCode(req, 404);
+    } else if (path.startsWith(CODESERVER_FRAGMENT)) {
+      sendToCodeServer(req);
     } else if (path.startsWith(WEBROOT_PATH) && (webRootPrefix != null)) {
       req.response.sendFile(webRootPrefix + path.substring(WEBROOT_PATH.length()));
     } else if (path.startsWith(BUNDLED_STATIC_FILES_PATH) && (bundledStaticFilesPrefix != null)) {
@@ -115,6 +153,75 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     } else {
       sendStatusCode(req, HttpStatus.SC_NOT_FOUND);
     }
+  }
+
+  private void sendToCodeServer(HttpServerRequest req) {
+    Cookie cookie = Cookie.getCookie(AUTH_COOKIE_NAME, req);
+    if (cookie == null) {
+      sendRedirect(req, "/static/login.html");
+      return;
+    }
+    QueryStringDecoder qsd = new QueryStringDecoder(req.query, false);
+    Map<String, List<String>> params = qsd.getParameters();
+
+    List<String> loginSessionIdList = params.get(JsonFieldConstants.SESSION_USER_ID);
+    List<String> usernameList = params.get(JsonFieldConstants.SESSION_USERNAME);
+    if (loginSessionIdList == null || loginSessionIdList.size() == 0 || 
+        usernameList == null || usernameList.size() == 0) {
+      sendStatusCode(req, 400);
+      return;
+    }
+
+    final String sessionId = loginSessionIdList.get(0);
+    final String username = usernameList.get(0);
+    List<String> modules = qsd.getParameters().get("module");
+    
+    if (modules != null){
+      MavenResources config = getConfig(req);
+      CodeSvr.startOrRefresh(logToVertx(req),config,modules);
+    }
+  }
+
+  private TreeLogger logToVertx(final HttpServerRequest req) {
+    return new TreeLogger() {
+      @Override
+      public void log(Type type, String msg, Throwable caught, HelpInfo helpInfo) {
+        vertx.eventBus().send("codeserver.log",
+            new JsonObject()
+//              .putString("sessionID", sessionId)
+//              .putString("username", username)
+            ,new Handler<Message<JsonObject>>() {
+                @Override
+              public void handle(Message<JsonObject> event) {
+                if ("ok".equals(event.body.getString("status"))) {
+                  sendStatusCode(req, HttpStatus.SC_OK);
+                } else {
+                  sendStatusCode(req, HttpStatus.SC_FORBIDDEN);
+                }
+              }
+            });
+      }
+      
+      @Override
+      public boolean isLoggable(Type type) {
+        return true;
+      }
+      
+      @Override
+      public TreeLogger branch(Type type, String msg, Throwable caught, HelpInfo helpInfo) {
+        return this;
+      }
+    };
+  }
+
+  private MavenResources getConfig(HttpServerRequest req) {
+//    req.response.
+    MavenResources res = new MavenResources();
+    res.setSrcRoot(webRootPrefix);
+    res.setWorkDir(workDir);
+    res.setWarTargetDir(warDir);
+    res.setWarSrcDir(warDir);
+    return res;
   }
 
   private void authAndWriteHostPage(HttpServerRequest req) {
@@ -147,7 +254,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         @Override
       public void handle(Buffer buff) {
         String contentType = req.headers().get("Content-Type");
-        if ("application/x-www-form-urlencoded".equals(contentType)) {
+        if (String.valueOf(contentType).startsWith("application/x-www-form-urlencoded")) {
           QueryStringDecoder qsd = new QueryStringDecoder(buff.toString(), false);
           Map<String, List<String>> params = qsd.getParameters();
 
@@ -155,17 +262,20 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
           List<String> usernameList = params.get(JsonFieldConstants.SESSION_USERNAME);
           if (loginSessionIdList == null || loginSessionIdList.size() == 0 || 
               usernameList == null || usernameList.size() == 0) {
+            System.out.println("Failed to write session cookie; "+loginSessionIdList+" / "+usernameList);
             sendStatusCode(req, 400);
             return;
           }
 
           final String sessionId = loginSessionIdList.get(0);
           final String username = usernameList.get(0);
+          System.out.println("Writing session cookie; "+username+" / "+sessionId);
           vertx.eventBus().send("participants.authorise",
               new JsonObject().putString("sessionID", sessionId).putString("username", username),
               new Handler<Message<JsonObject>>() {
                   @Override
                 public void handle(Message<JsonObject> event) {
+                    System.out.println("Writing session cookie; "+event.body.toString());
                   if ("ok".equals(event.body.getString("status"))) {
                     req.response.headers().put("Set-Cookie",
                         AUTH_COOKIE_NAME + "=" + sessionId + "__" + username + "; HttpOnly");
@@ -225,8 +335,10 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
    */
   private String getHostPage(String userId, String username, String activeClientId) {
     StringBuilder sb = new StringBuilder();
+    sb.append("<!doctype html>\n");
     sb.append("<html>\n");
     sb.append("  <head>\n");
+    sb.append("<title>CollIDE - Collaborative Development</title>\n");
 
     // Include Javascript dependencies.
     sb.append("<script src=\"/static/sockjs-0.2.1.min.js\"></script>\n");

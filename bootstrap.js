@@ -74,3 +74,8 @@ vertx.deployVerticle("com.google.collide.server.filetree.FileTree", null, 1, fun
 vertx.deployVerticle("com.google.collide.server.workspace.WorkspaceState", workspaceConfig, 1, function() {
   // Server was started.
 });
+
+// Load the maven controller that handles running maven tasks on behalf of a user.
+vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspaceConfig, 1, function() {
+	// Server was started.
+});

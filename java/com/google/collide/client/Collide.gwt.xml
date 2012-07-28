@@ -98,12 +98,28 @@
   <set-property name="locale" value="en_US"/>
   <set-property-fallback name="locale" value="en_US"/>
  
-  <!-- Restrict the build to Chrome, FF and english only for now. -->
-  <set-property name="user.agent" value="safari,gecko1_8" />
-     
-  <!-- This is a wavey thing we don't particularly want... -->
+  
+  <!--
+   The below settings are optimizations for development.  
+   Currently hardcoded to chrome+x11 (linux).
+   
+   Change to your preferred os and browser.  
+   Make sure to disable webide.debuggingMode=none if not using chrome
+   -->
+  
+  <!-- Restrict the build to Chrome for development. -->
+ -->  <set-property name="user.agent" value="safari,gecko1_8" />
+ 
+  <!-- Set development os to x11 (linux).  other choices: macintosh, windows or other -->
+  <set-property name="webide.clientOs" value="x11" />
+
+  <!-- Prefer web debugging mode -->
+  <set-property name="webide.debuggingApi" value="chrome" />
+  
+  <!-- This is a wavey thing we don't particularly want... yet. -->
   <set-property name="mobile.user.agent" value="not_mobile" />
 
+  
   <replace-with
      class="com.google.collide.client.util.BrowserUtils.Chrome">
     <when-type-is

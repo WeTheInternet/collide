@@ -31,14 +31,16 @@
     <pathelement location="${dirs.lib}/gson-${libs.gson}/gson-${libs.gson}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/jsr-305/jsr305.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/waveinabox-import-0.3.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
+    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-super-${libs.xapi}.jar"/>
   </path>
 
   <path id="paths.client.build">
     <path refid="paths.shared"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/client-src.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/client-common-src.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/client-scheduler-src.jar"/>
@@ -59,11 +61,13 @@
     <pathelement location="${dirs.vertx}/lib/jars/vert.x-core.jar"/>
     <pathelement location="${dirs.vertx}/lib/jars/vert.x-platform.jar"/>
     <pathelement location="${dirs.vertx}/lib/jars/netty.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
     <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
   </path>
 
   <path id="paths.server.runtime">
     <path refid="paths.shared"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
     <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
   </path>
 

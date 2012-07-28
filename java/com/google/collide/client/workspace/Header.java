@@ -100,11 +100,14 @@ public class Header extends UiComponent<Header.View> {
         currentPlace,
         fileNameSearch,
         fileTreeModel);
+    
+    GearButtonController gearButtonController = GearButtonController.create();
 
     Header header = new Header(view,
         currentPlace,
         appContext,
         runButtonController,
+        gearButtonController,
         awesomeBoxHost);
     return header;
   }
@@ -118,6 +121,12 @@ public class Header extends UiComponent<Header.View> {
 
     String leftButtonGroup();
 
+    String gearButtonContainer();
+    
+    String gearButton();
+    
+    String gearIcon();
+    
     String runButtonContainer();
 
     String runButton();
@@ -160,6 +169,9 @@ public class Header extends UiComponent<Header.View> {
       RunButtonTargetPopup.Resources,
       SearchContainer.Resources {
 
+    @Source("gear.png")
+    ImageResource gearIcon();
+
     @Source("play.png")
     ImageResource runIcon();
 
@@ -199,6 +211,9 @@ public class Header extends UiComponent<Header.View> {
 
     @UiField
     AnchorElement runButton;
+    
+    @UiField
+    AnchorElement gearButton;
 
     @UiField
     AnchorElement runDropdownButton;
@@ -229,6 +244,7 @@ public class Header extends UiComponent<Header.View> {
 
     private final AwesomeBoxComponentHost.View awesomeBoxComponentHostView;
     private final ImageButton runImageButton;
+    private final ImageButton gearImageButton;
     private final ImageButton runDropdownImageButton;
     private final ImageButton newWorkspaceImageButton;
     private final ImageButton shareImageButton;
@@ -249,6 +265,12 @@ public class Header extends UiComponent<Header.View> {
           .setElement((elemental.html.AnchorElement) runButton).build();
       runImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().runIcon());
 
+      // Create the gear button.
+      gearImageButton = new ImageButton.Builder(res).setImage(res.gearIcon())
+          .setElement((elemental.html.AnchorElement) gearButton).build();
+      gearImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().gearIcon());
+      
+      
       newWorkspaceImageButton = new ImageButton.Builder(res).setImage(res.trunkBranchIcon())
           .setElement((elemental.html.AnchorElement) newWorkspaceButton).setText("Branch & Edit")
           .build();
@@ -267,7 +289,7 @@ public class Header extends UiComponent<Header.View> {
       // settings.
       shareImageButton = new ImageButton.Builder(res).setText("Share")
           .setElement((elemental.html.AnchorElement) shareButton).build();
-      setShareButtonVisible(false);
+      setShareButtonVisible(true);
       new DebugAttributeSetter().setId(DebugId.WORKSPACE_HEADER_SHARE_BUTTON)
           .on(shareImageButton.getView().getElement());
 
@@ -313,6 +335,15 @@ public class Header extends UiComponent<Header.View> {
     }
 
     protected void attachHandlers() {
+      gearImageButton.setListener(new ImageButton.Listener() {
+        @Override
+        public void onClick() {
+          if (getDelegate() != null) {
+            getDelegate().onGearButtonClicked();
+          }
+        }
+      });
+      
       runImageButton.setListener(new ImageButton.Listener() {
         @Override
         public void onClick() {
@@ -386,6 +417,8 @@ public class Header extends UiComponent<Header.View> {
    * Events reported by the Header's View.
    */
   private interface ViewEvents {
+    void onGearButtonClicked();
+    
     void onRunButtonClicked();
 
     void onRunDropdownButtonClicked();
@@ -411,6 +444,11 @@ public class Header extends UiComponent<Header.View> {
     public void onRunDropdownButtonClicked() {
       runButtonController.onRunButtonDropdownClicked();
     }
+    
+    @Override
+    public void onGearButtonClicked() {
+      
+    }
 
     @Override
     public void onFeedbackButtonClicked() {
@@ -430,6 +468,7 @@ public class Header extends UiComponent<Header.View> {
 
   private final AwesomeBoxComponentHost awesomeBoxComponentHost;
   private final RunButtonController runButtonController;
+  private final GearButtonController gearButtonController;
 
   private static final int PORTRAIT_SIZE_HEADER = 28;
 
@@ -437,8 +476,10 @@ public class Header extends UiComponent<Header.View> {
       WorkspacePlace currentPlace,
       AppContext appContext,
       RunButtonController runButtonController,
+      GearButtonController gearButtonController,
       AwesomeBoxComponentHost awesomeBoxComponentHost) {
     super(view);
+    this.gearButtonController = gearButtonController;
     this.runButtonController = runButtonController;
     this.awesomeBoxComponentHost = awesomeBoxComponentHost;
 

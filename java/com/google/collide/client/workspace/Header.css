@@ -51,8 +51,20 @@
   margin-top: 3px;
 }
 
+.gearButtonContainer {
+  /* Account for the shadows on the sync/submit buttons */
+  margin-top: 3px;
+}
+
 .runButton {
   width: 16px;
+  -webkit-transition: none;
+
+  /* Override Button Minimum Width */
+  min-width: 0px !important;
+}
+.gearButton {
+  width: 32px;
   -webkit-transition: none;
 
   /* Override Button Minimum Width */
@@ -80,6 +92,11 @@
 }
 
 .runIcon {
+  /* We don't want the buttonImage fading in and out */
+  opacity: 1.0 !important;
+}
+
+.gearIcon {
   /* We don't want the buttonImage fading in and out */
   opacity: 1.0 !important;
 }

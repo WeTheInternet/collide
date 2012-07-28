@@ -90,6 +90,20 @@
 	       src.server.build, copy.launch">
   </target>
 
+  <target name="gwtdev" description="Run Collide gwt devmode" depends="src.client.dev-gwt">
+	
+  </target>
+
+  <target name="client" description="Build the whole Collide executable"
+      depends="src.client.build">
+  </target>
+
+  <target name="server" description="Build the whole Collide executable"
+      depends="src.shared.build, src.dto.build,
+	       src.server.build, copy.launch">
+  </target>
+
+
   <!-- TODO: enable test.client.test -->
   <target name="test" description="Run all the tests"
       depends="test-compile, test.shared.test, test.json.test, test.dtogen.test,

@@ -147,4 +147,7 @@ public class RoutingTypes {
   public static final int ENDUPLOADSESSIONFINISHED = 120;
   public static final int RETRYALREADYTRANSFERREDUPLOAD = 121;
   public static final int GETWORKSPACEMETADATA = 122;
+  public static final int GETMAVENCONFIG = 123;
+  public static final int SETMAVENCONFIG = 124;
+  public static final int MAVENCONFIG = 125;
 }
