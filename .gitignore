@@ -1,2 +1,4 @@
 /bin/
 *~
+/deps/elemental/elemental.new.jar
+/deployCollide
