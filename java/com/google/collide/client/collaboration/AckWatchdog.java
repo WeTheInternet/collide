@@ -14,6 +14,8 @@
 
 package com.google.collide.client.collaboration;
 
+import java.util.List;
+
 import com.google.collide.client.collaboration.FileConcurrencyController.DocOpListener;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.status.StatusManager;
@@ -27,8 +29,6 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.ot.DocOpUtils;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.user.client.Timer;
-
-import java.util.List;
 
 /**
  * A service that warns the user if a sent document operation does not receive

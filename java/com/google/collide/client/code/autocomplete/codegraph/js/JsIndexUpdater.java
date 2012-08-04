@@ -14,13 +14,13 @@
 
 package com.google.collide.client.code.autocomplete.codegraph.js;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.CodeAnalyzer;
 import com.google.collide.codemirror2.Token;
 import com.google.collide.codemirror2.TokenType;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.TaggableLine;
-
-import javax.annotation.Nonnull;
 
 /**
  * JavaScript specific code analyzer.

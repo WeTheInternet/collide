@@ -14,10 +14,10 @@
 
 package com.google.collide.client.code.lang;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.editor.input.ActionExecutor;
 import com.google.collide.client.editor.input.InputScheme;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /**
  * Implementation that do not do anything language specific.

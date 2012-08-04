@@ -17,6 +17,8 @@ package com.google.collide.client.code.autocomplete.html;
 import static com.google.collide.codemirror2.TokenType.ATTRIBUTE;
 import static com.google.collide.codemirror2.TokenType.TAG;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.CodeAnalyzer;
 import com.google.collide.client.util.collections.StringMultiset;
 import com.google.collide.codemirror2.CodeMirror2;
@@ -25,8 +27,6 @@ import com.google.collide.codemirror2.TokenType;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.TaggableLine;
 import com.google.collide.shared.util.JsonCollections;
-
-import javax.annotation.Nonnull;
 
 /**
  * Analyzes token stream and builds or updates {@link HtmlTagWithAttributes}.

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.workspace;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.client.util.PathUtil;
@@ -30,8 +32,6 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 /**
  * Public API for interacting with the client side workspace file tree model.

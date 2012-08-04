@@ -14,17 +14,17 @@
 
 package com.google.collide.dtogen;
 
-import com.google.collide.dtogen.shared.ClientToServerDto;
-import com.google.collide.dtogen.shared.RoutableDto;
-import com.google.collide.dtogen.shared.RoutingType;
-import com.google.collide.dtogen.shared.ServerToClientDto;
-import com.google.common.base.Preconditions;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.google.collide.dtogen.shared.ClientToServerDto;
+import com.google.collide.dtogen.shared.RoutableDto;
+import com.google.collide.dtogen.shared.RoutingType;
+import com.google.collide.dtogen.shared.ServerToClientDto;
+import com.google.common.base.Preconditions;
 
 /**
  * Base template for the generated output file that contains all the DTOs.

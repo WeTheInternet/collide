@@ -14,6 +14,8 @@
 
 package com.google.collide.client.collaboration;
 
+import java.util.List;
+
 import com.google.collide.client.collaboration.FileConcurrencyController.DocOpListener;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.document.DocumentMetadata;
@@ -24,8 +26,6 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
 import com.google.common.base.Preconditions;
-
-import java.util.List;
 
 /**
  * A utility class to register for callbacks when all of the doc ops in a particular scope are

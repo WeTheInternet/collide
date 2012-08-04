@@ -14,12 +14,12 @@
 
 package com.google.collide.client.document.linedimensions;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.collide.shared.Pair;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.util.SortedList;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * A cache object that is attached to each line which caches its offsets.

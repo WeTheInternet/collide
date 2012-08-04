@@ -14,6 +14,10 @@
 
 package com.google.collide.client.code.autocomplete;
 
+import javax.annotation.Nonnull;
+
+import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
+
 import com.google.collide.client.code.autocomplete.AutocompleteProposals.ProposalWithContext;
 import com.google.collide.client.code.autocomplete.LanguageSpecificAutocompleter.ExplicitAction;
 import com.google.collide.client.code.autocomplete.codegraph.CodeGraphAutocompleter;
@@ -40,10 +44,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
-
-import javax.annotation.Nonnull;
 
 /**
  * Class to implement all the autocompletion support that is not specific to a

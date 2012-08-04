@@ -14,12 +14,14 @@
 
 package com.google.collide.client.editor.input;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.document.linedimensions.LineDimensionsUtils;
 import com.google.collide.client.editor.Editor;
-import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.Editor.KeyListener;
 import com.google.collide.client.editor.Editor.NativeKeyUpListener;
 import com.google.collide.client.editor.Editor.ReadOnlyListener;
+import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.client.util.BrowserUtils;
 import com.google.collide.client.util.Elements;
@@ -31,15 +33,12 @@ import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.Position;
 import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.util.ListenerManager;
+import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.TextUtils;
-import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.events.Event;

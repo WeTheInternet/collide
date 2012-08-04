@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.autocomplete.codegraph;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.AbstractTrie;
 import com.google.collide.client.code.autocomplete.PrefixIndex;
 import com.google.collide.client.code.autocomplete.codegraph.js.JsCodeScope;
@@ -26,8 +28,8 @@ import com.google.collide.client.util.logging.Log;
 import com.google.collide.codemirror2.State;
 import com.google.collide.codemirror2.SyntaxType;
 import com.google.collide.dto.CodeBlock;
-import com.google.collide.dto.CodeGraph;
 import com.google.collide.dto.CodeBlock.Type;
+import com.google.collide.dto.CodeGraph;
 import com.google.collide.json.client.JsoStringSet;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Line;
@@ -35,8 +37,6 @@ import com.google.collide.shared.document.Position;
 import com.google.collide.shared.grok.GrokUtils;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 
 /**
  * Builds a list of completion proposals from a few sources

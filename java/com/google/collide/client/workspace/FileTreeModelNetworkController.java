@@ -28,19 +28,15 @@ import com.google.collide.client.workspace.FileTreeModel.RootNodeRequestCallback
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.Mutation;
-import com.google.collide.dto.NodeMutationDto.MutationType;
 import com.google.collide.dto.RoutingTypes;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.TreeNodeInfo;
-import com.google.collide.dto.WorkspaceTreeUpdate;
 import com.google.collide.dto.WorkspaceTreeUpdateBroadcast;
 import com.google.collide.dto.client.DtoClientImpls.GetDirectoryImpl;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.FrontendConstants;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 
 /**

@@ -14,7 +14,10 @@
 
 package com.google.collide.shared.ot;
 
-import static com.google.collide.dto.DocOpComponent.Type.*;
+import static com.google.collide.dto.DocOpComponent.Type.DELETE;
+import static com.google.collide.dto.DocOpComponent.Type.INSERT;
+import static com.google.collide.dto.DocOpComponent.Type.RETAIN;
+import static com.google.collide.dto.DocOpComponent.Type.RETAIN_LINE;
 
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocOpComponent;

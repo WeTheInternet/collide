@@ -21,8 +21,8 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.common.base.Preconditions;
 import com.google.gwt.resources.client.CssResource;
 

@@ -14,13 +14,12 @@
 
 package com.google.collide.client.util;
 
-import elemental.events.Event;
-
-import elemental.html.Window.BeforeUnloadEventListener;
-import elemental.js.JsBrowser;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import elemental.events.Event;
+import elemental.html.Window.BeforeUnloadEventListener;
+import elemental.js.JsBrowser;
 
 /**
  * A controller used to manage messages displayed when the user attempts to

@@ -14,10 +14,10 @@
 
 package com.google.collide.client.ui.tree;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
-
-import javax.annotation.Nonnull;
 
 /**
  * Simple adapter that allows the Tree to traverse (get the children of) some

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.lang;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.input.ActionExecutor;
 import com.google.collide.client.editor.input.CommonActions;
@@ -21,8 +23,6 @@ import com.google.collide.client.editor.input.DefaultActionExecutor;
 import com.google.collide.client.editor.input.InputScheme;
 import com.google.collide.client.editor.input.Shortcut;
 import com.google.gwt.regexp.shared.RegExp;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /**
  * JS-specific implementation {@link LanguageHelper}.

@@ -7,6 +7,8 @@ import static com.google.collide.dto.DocOpComponent.Type.INSERT;
 import static com.google.collide.dto.DocOpComponent.Type.RETAIN;
 import static com.google.collide.dto.DocOpComponent.Type.RETAIN_LINE;
 
+import java.lang.reflect.Type;
+
 import com.google.collide.dto.DocOpComponent;
 import com.google.collide.dto.DocOpComponent.Delete;
 import com.google.collide.dto.DocOpComponent.Insert;
@@ -22,8 +24,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-
-import java.lang.reflect.Type;
 
 /*
  * TODO(jasonparekh): consider creating custom deserializers for subclasses as a

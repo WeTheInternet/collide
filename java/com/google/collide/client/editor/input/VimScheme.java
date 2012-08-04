@@ -14,6 +14,10 @@
 
 package com.google.collide.client.editor.input;
 
+import org.waveprotocol.wave.client.common.util.JsoIntMap;
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+import org.waveprotocol.wave.client.common.util.SignalEvent.MoveUnit;
+
 import com.google.collide.client.editor.search.SearchModel;
 import com.google.collide.client.editor.selection.LocalCursorController;
 import com.google.collide.client.editor.selection.SelectionModel;
@@ -32,10 +36,6 @@ import com.google.collide.shared.util.ScopeMatcher;
 import com.google.collide.shared.util.StringUtils;
 import com.google.collide.shared.util.TextUtils;
 import com.google.common.base.Preconditions;
-
-import org.waveprotocol.wave.client.common.util.JsoIntMap;
-import org.waveprotocol.wave.client.common.util.SignalEvent;
-import org.waveprotocol.wave.client.common.util.SignalEvent.MoveUnit;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.Element;

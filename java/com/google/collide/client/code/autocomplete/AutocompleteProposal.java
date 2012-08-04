@@ -14,10 +14,10 @@
 
 package com.google.collide.client.code.autocomplete;
 
+import java.util.Comparator;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.Utils;
-
-import java.util.Comparator;
 
 /**
  * Structure holding autocomplete proposal and additional metainformation

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.gotodefinition;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.FileTreeModel;
 import com.google.collide.client.workspace.FileTreeNode;
@@ -24,8 +26,6 @@ import com.google.collide.shared.document.LineInfo;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
-
-import javax.annotation.Nullable;
 
 /**
  * Strictly speaking, this class gives an answer to a question "is there a

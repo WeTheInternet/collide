@@ -14,6 +14,8 @@
 
 package com.google.collide.client.codeunderstanding;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.communication.FrontendApi;
 import com.google.collide.client.util.DeferredCommandExecutor;
 import com.google.collide.client.util.logging.Log;
@@ -26,8 +28,6 @@ import com.google.collide.dto.client.DtoUtils;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 /**
  * A response distributor for {@link CubeState}.

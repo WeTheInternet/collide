@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.code.errorrenderer.EditorErrorListener;
@@ -46,8 +48,6 @@ import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.shared.document.Document;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.Scheduler;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.html.Element;
 

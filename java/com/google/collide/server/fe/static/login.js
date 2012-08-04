@@ -66,7 +66,9 @@ function installAuthCookie(sessionId) {
 
 // ELEM TRANSISTONS.
 function transition(elemOutId, elemInId) {
-  var elemOut = document.getElementById(elemOutId);
+  var elemOut = elemOutId;
+  if (typeof elemOut == 'string')
+	  elemOut = document.getElementById(elemOutId);
   var elemIn = document.getElementById(elemInId);
   removeClassName(elemOut, "showing");
   addClassName(elemOut, "toTheLeft");
@@ -74,6 +76,7 @@ function transition(elemOutId, elemInId) {
   removeClassName(elemIn, "toTheLeft");
   addClassName(elemIn, "showing");
   showing = elemIn;
+  showing.focus();
 }
 Login.transition = transition;
 

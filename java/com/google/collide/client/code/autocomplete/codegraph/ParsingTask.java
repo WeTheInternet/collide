@@ -18,6 +18,8 @@ import static com.google.collide.codemirror2.TokenType.PROPERTY;
 import static com.google.collide.codemirror2.TokenType.VARIABLE;
 import static com.google.collide.codemirror2.TokenType.VARIABLE2;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.CodeAnalyzer;
 import com.google.collide.client.util.collections.SkipListStringBag;
 import com.google.collide.codemirror2.Token;
@@ -25,8 +27,6 @@ import com.google.collide.codemirror2.TokenType;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.TaggableLine;
 import com.google.collide.shared.util.JsonCollections;
-
-import javax.annotation.Nonnull;
 
 /**
  * This task filters out IDs from parse results and updates collection of

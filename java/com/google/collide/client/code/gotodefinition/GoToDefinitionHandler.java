@@ -14,6 +14,10 @@
 
 package com.google.collide.client.code.gotodefinition;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+import org.waveprotocol.wave.client.common.util.SignalEvent.KeyModifier;
+import org.waveprotocol.wave.client.common.util.UserAgent;
+
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.codeunderstanding.CubeClient;
 import com.google.collide.client.documentparser.DocumentParser;
@@ -34,10 +38,6 @@ import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Preconditions;
 import com.google.gwt.event.dom.client.KeyCodes;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
-import org.waveprotocol.wave.client.common.util.SignalEvent.KeyModifier;
-import org.waveprotocol.wave.client.common.util.UserAgent;
 
 import elemental.events.Event;
 

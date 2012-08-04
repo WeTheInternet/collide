@@ -16,6 +16,8 @@ package com.google.collide.client.workspace;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
+import com.google.collide.client.communication.FrontendApi.ApiCallback;
+import com.google.collide.client.communication.MessageFilter.MessageRecipient;
 import com.google.collide.client.communication.ResourceUriUtils;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.menu.AutoHideComponent.AutoHideHandler;
@@ -27,14 +29,24 @@ import com.google.collide.client.ui.tooltip.Tooltip.TooltipRenderer;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.RunButtonTargetPopup.RunTargetType;
+import com.google.collide.clientlibs.vertx.VertxBus.MessageHandler;
+import com.google.collide.clientlibs.vertx.VertxBus.ReplySender;
+import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtStatus;
+import com.google.collide.dto.RoutingTypes;
 import com.google.collide.dto.RunTarget;
 import com.google.collide.dto.RunTarget.RunMode;
+import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.UpdateWorkspaceRunTargets;
+import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.dto.client.DtoClientImpls.RunTargetImpl;
+import com.google.collide.dto.client.DtoClientImpls.SetMavenConfigImpl;
 import com.google.collide.dto.client.DtoClientImpls.UpdateWorkspaceRunTargetsImpl;
+import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Window;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.DivElement;
@@ -58,7 +70,7 @@ public class RunButtonController {
     elemental.html.Element target = Elements.asJsElement(buttonElem);
     Positioner positioner = new Tooltip.TooltipPositionerBuilder().setVerticalAlign(
         VerticalAlign.BOTTOM)
-        .setHorizontalAlign(HorizontalAlign.MIDDLE).buildAnchorPositioner(target);
+        .setHorizontalAlign(HorizontalAlign.RIGHT).buildAnchorPositioner(target);
     Tooltip noFileSelectedTooltip = new Tooltip.Builder(
         context.getResources(), target, positioner).setShouldListenToHover(false)
         .setTooltipRenderer(new TooltipRenderer() {
@@ -295,10 +307,51 @@ public class RunButtonController {
   }
 
   private void launchRunTarget(RunTarget target) {
-    if (target.getRunMode() == RunMode.PREVIEW_CURRENT_FILE) {
-      launchFile(currentFilePath == null ? null : currentFilePath.getPathString(), "");
-    } else {
-      launchFile(target.getAlwaysRunFilename(), target.getAlwaysRunUrlOrQuery());
+    switch(target.getRunMode()){
+      case PREVIEW_CURRENT_FILE:
+        launchFile(currentFilePath == null ? null : currentFilePath.getPathString(), "");
+        break;
+      case GWT_COMPILE:
+        //TODO(james) use a widget to select entry point, sources & deps; hardcoding for now.
+//        SetMavenConfigImpl gwtCompile = SetMavenConfigImpl.make()
+//          .setPomPath("meow.xml");
+//        ;
+        
+        GwtCompile gwtCompile = GwtCompileImpl.make()
+        .setModule("com.google.collide.Collide")
+        .setSrc(JsoArray.<String>from("."
+//            ,"../deps/gwt-user.jar"
+//            ,"../deps/gwt-dev.jar"
+            ))
+        ;
+        //        appContext.getFrontendApi().
+        appContext.getFrontendApi().COMPILE_GWT.send(gwtCompile , new ApiCallback<GwtStatus>() {
+          @Override
+          public void onMessageReceived(GwtStatus message) {
+            Window.alert("won!" + message);
+          }
+          @Override
+          public void onFail(FailureReason reason) {
+            Window.alert("fail! " + reason);
+          }
+        });
+        appContext.getPushChannel().receive("gwt.status", new MessageHandler() {
+          @Override
+          public void onMessage(String message, ReplySender replySender) {
+            Window.alert("gwt! "+message);
+          }
+        });
+        appContext.getMessageFilter().registerMessageRecipient(RoutingTypes.GWTSTATUS, new MessageRecipient<GwtStatus>() {
+          @Override
+          public void onMessageReceived(GwtStatus message) {
+            Window.alert("meow! "+message + " / "+message.getModule());
+          }
+        });
+        break;
+      case ANT_BUILD:
+      case MAVEN_BUILD:
+      default:
+        launchFile(target.getAlwaysRunFilename(), target.getAlwaysRunUrlOrQuery());
     }
   }
 

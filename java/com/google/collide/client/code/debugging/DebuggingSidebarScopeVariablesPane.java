@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -23,8 +25,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * Scope variables pane in the debugging sidebar.

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.ui.popup;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
@@ -29,8 +31,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Timer;
-
-import javax.annotation.Nullable;
 
 import elemental.events.Event;
 import elemental.events.EventListener;

@@ -14,14 +14,14 @@
 
 package com.google.collide.shared.ot;
 
+import java.util.Iterator;
+
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocOpComponent;
 import com.google.collide.dto.shared.DocOpFactory;
 import com.google.collide.json.shared.JsonArray;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import java.util.Iterator;
 
 /*
  * Derived from Wave's Composer class. We forked it because we have new doc op

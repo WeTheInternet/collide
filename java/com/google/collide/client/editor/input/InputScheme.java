@@ -14,9 +14,9 @@
 
 package com.google.collide.client.editor.input;
 
-import elemental.js.util.JsMapFromIntTo;
-
 import org.waveprotocol.wave.client.common.util.SignalEvent;
+
+import elemental.js.util.JsMapFromIntTo;
 
 /**
  * Controller around a group of {@link InputMode}s to direct text/modifier

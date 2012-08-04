@@ -14,6 +14,8 @@
 
 package com.google.collide.client.editor.renderer;
 
+import java.util.EnumSet;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.ViewportModel;
@@ -26,9 +28,9 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.anchor.Anchor;
+import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.document.anchor.AnchorType;
-import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
@@ -36,8 +38,6 @@ import com.google.gwt.user.client.Timer;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.Element;
-
-import java.util.EnumSet;
 
 /*
  * TODO: I need to do another pass at the rendering paths after

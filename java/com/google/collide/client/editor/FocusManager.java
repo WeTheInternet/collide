@@ -16,8 +16,8 @@ package com.google.collide.client.editor;
 
 import com.google.collide.client.util.Elements;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 
 import elemental.events.Event;
 import elemental.events.EventListener;

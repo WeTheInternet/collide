@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.CssUtils;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
@@ -21,9 +23,9 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.shared.util.ListenerManager;
+import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.StringUtils;
-import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.DataResource;
@@ -31,8 +33,6 @@ import com.google.gwt.resources.client.DataResource;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * The presenter for the debugging sidebar. This sidebar shows current debugger

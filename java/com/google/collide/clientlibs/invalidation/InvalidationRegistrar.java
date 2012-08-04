@@ -14,12 +14,12 @@
 
 package com.google.collide.clientlibs.invalidation;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.dto.client.DtoUtils;
 import com.google.collide.dtogen.shared.ServerToClientDto;
 import com.google.collide.shared.invalidations.InvalidationObjectId;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
-
-import javax.annotation.Nullable;
 
 
 /**

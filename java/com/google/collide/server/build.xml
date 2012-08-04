@@ -34,8 +34,11 @@
   <include optional="false" as="src.maven"
            file="${server.src}/maven/build.xml"/>
 
+  <include optional="false" as="src.plugin"
+           file="${server.src}/plugin/build.xml"/>
+  
   <target name="build" description="Builds the collide server vertx modules."
           depends="src.sharedserver.build, src.dto.server, src.documents.build, src.fe.build,
-                   src.participants.build, src.filetree.build, src.workspace.build, src.maven.build">
+                   src.participants.build, src.filetree.build, src.workspace.build, src.maven.build, src.plugin.build">
   </target>
 </project>

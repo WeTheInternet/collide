@@ -14,11 +14,11 @@
 
 package com.google.collide.client.editor.input;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.util.input.KeyCodeMap;
 import com.google.collide.client.util.input.ModifierKeys;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /**
  * An input scheme to support the editor's read-only mode.

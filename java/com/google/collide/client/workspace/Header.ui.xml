@@ -14,14 +14,14 @@
         </a>
       </div>
       <div ui:field="syncButtonsDiv" class="{res.workspaceHeaderCss.syncButtons}"></div>
-      <!-- <div class="{res.workspaceHeaderCss.gearButtonContainer}">
-        <a href="javascript:;" ui:field="configureButton"
-          class="{res.baseCss.button} {res.baseCss.buttonBlue} {res.workspaceHeaderCss.gearButton}">
-        </a>
-      </div> -->
-      <div class="{res.workspaceHeaderCss.gearButtonContainer}">
+      <div class="{res.workspaceHeaderCss.gearButtonContainer} {res.workspaceHeaderCss.paddedButton}">
         <a href="javascript:;" ui:field="gearButton"
-          class="{res.baseCss.button} {res.baseCss.buttonBlue} {res.workspaceHeaderCss.gearButton}">
+          class="{res.workspaceHeaderCss.gearButton}">
+        </a>
+      </div>
+      <div class="{res.workspaceHeaderCss.gearButtonContainer} {res.workspaceHeaderCss.paddedButton}">
+        <a href="javascript:;" ui:field="terminalButton"
+          class="{res.workspaceHeaderCss.terminalButton}">
         </a>
       </div>
       <div ui:field="readOnlyMessage" class="{res.workspaceHeaderCss.readOnlyMessage}"></div>

@@ -14,10 +14,10 @@
 
 package com.google.collide.client.util.input;
 
-import elemental.events.KeyboardEvent;
-
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.UserAgent;
+
+import elemental.events.KeyboardEvent;
 
 /**
  * Modifier key constants, safe to be ORed together.

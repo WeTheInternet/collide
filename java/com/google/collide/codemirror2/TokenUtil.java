@@ -14,15 +14,15 @@
 
 package com.google.collide.codemirror2;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.shared.Pair;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.annotations.VisibleForTesting;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Codemirror2 {@link Token} related utilities.

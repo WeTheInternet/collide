@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.AnimationUtils;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
@@ -30,8 +32,6 @@ import elemental.events.EventListener;
 import elemental.html.AnchorElement;
 import elemental.html.DivElement;
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * Debugging sidebar pane that is shown when no {@link DebuggerApi} is

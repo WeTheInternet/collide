@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnEvaluateExpressionResponse;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnRemoteObjectPropertiesResponse;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnRemoteObjectPropertyChanged;
@@ -42,8 +44,6 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.DragEvent;
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * Renders a {@link RemoteObject} in a tree-like UI.

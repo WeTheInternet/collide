@@ -14,12 +14,16 @@
 
 package com.google.collide.client.communication;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.clientlibs.vertx.VertxBus;
+import com.google.collide.clientlibs.vertx.VertxBus.MessageHandler;
 import com.google.collide.clientlibs.vertx.VertxBus.ReplyHandler;
 import com.google.collide.clientlibs.vertx.VertxBus.ReplySender;
 import com.google.collide.clientlibs.vertx.VertxBusImpl;
@@ -30,8 +34,8 @@ import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.gwt.user.client.Timer;
 
-import java.util.ArrayList;
-import java.util.List;
+import elemental.js.util.JsArrayOfString;
+import elemental.js.util.JsMapFromStringTo;
 
 /**
  * A PushChannel abstraction on top of the {@link VertxBus}.
@@ -112,6 +116,13 @@ public class PushChannel {
         };
         eventBus.register(
             "client." + BootstrapSession.getBootstrapSession().getActiveClientId(), messageHandler);
+        JsArrayOfString keys = queuedReceivers.keys();
+        for (int i = keys.length();i-->0;){
+          String key = keys.get(i);
+          MessageHandler receiver = queuedReceivers.get(key);
+          if (null!=receiver)
+            eventBus.register(key, receiver);
+        }
       }
 
       // Notify listeners who handle reconnections.
@@ -132,6 +143,7 @@ public class PushChannel {
         eventBus.send(msg.address, msg.msg, msg.replyHandler);
       }
       queuedMessages.clear();
+      
     }
 
     @Override
@@ -145,6 +157,7 @@ public class PushChannel {
   private final StatusManager statusManager;
   private final VertxBus eventBus;
   private final List<QueuedMessage> queuedMessages = new ArrayList<QueuedMessage>();
+  private final JsMapFromStringTo<MessageHandler> queuedReceivers = JsMapFromStringTo.<MessageHandler>create();
 
   private PushChannel(VertxBus eventBus, MessageFilter messageFilter, StatusManager statusManager) {
     this.eventBus = eventBus;
@@ -157,6 +170,21 @@ public class PushChannel {
     eventBus.setOnCloseCallback(connectionListener);
   }
 
+  /**
+   * Listens to all messages published to a given address.
+   * This is NOT secure, but can be very useful for keeping all collaborators updated.
+   */
+  public void receive(String address, MessageHandler listener) {
+    if (eventBus.getReadyState() != VertxBus.OPEN) {
+      Log.debug(PushChannel.class,
+          "Tried to add a message receiver on address " +
+          address+ " before vertx was initialized");
+      queuedReceivers.put(address,listener);
+      return;
+    }
+    eventBus.register(address, listener);
+  }
+  
   /**
    * Sends a message to an address, providing an replyHandler.
    */

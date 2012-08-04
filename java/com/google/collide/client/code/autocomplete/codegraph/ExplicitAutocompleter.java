@@ -23,9 +23,11 @@ import static com.google.collide.codemirror2.TokenType.STRING;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_BACKSPACE;
 import static org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType.DELETE;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.DefaultAutocompleteResult;
-import com.google.collide.client.code.autocomplete.SignalEventEssence;
 import com.google.collide.client.code.autocomplete.LanguageSpecificAutocompleter.ExplicitAction;
+import com.google.collide.client.code.autocomplete.SignalEventEssence;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.documentparser.ParseResult;
 import com.google.collide.client.editor.selection.SelectionModel;
@@ -38,8 +40,6 @@ import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 
 /**
  * Object that answers question about explicit actions and autocompletions.

@@ -14,6 +14,9 @@
 
 package com.google.collide.client.filehistory;
 
+import java.util.Date;
+import java.util.List;
+
 import com.google.collide.client.ClientConfig;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Position;
@@ -39,9 +42,6 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
 import elemental.html.DivElement;
-
-import java.util.Date;
-import java.util.List;
 
 /**
  * Representation of a timeline node ("dot") on the timeline widget, and its

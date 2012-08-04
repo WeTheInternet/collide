@@ -29,8 +29,8 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 
 /**
  * Manager for documents and editors.

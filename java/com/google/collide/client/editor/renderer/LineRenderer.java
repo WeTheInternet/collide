@@ -14,9 +14,9 @@
 
 package com.google.collide.client.editor.renderer;
 
-import com.google.collide.shared.document.Line;
-
 import javax.annotation.Nullable;
+
+import com.google.collide.shared.document.Line;
 
 /**
  * An interface for a renderer that renders a line at a time.

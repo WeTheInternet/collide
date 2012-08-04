@@ -22,8 +22,8 @@ import com.google.collide.client.editor.renderer.Renderer;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.shared.document.anchor.Anchor;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 
 import elemental.html.Element;
 

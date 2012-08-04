@@ -14,17 +14,6 @@
 
 package com.google.collide.server.participants;
 
-import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceParticipantsResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.ParticipantImpl;
-import com.google.collide.dto.server.DtoServerImpls.ParticipantUserDetailsImpl;
-import com.google.collide.dto.server.DtoServerImpls.UserDetailsImpl;
-import com.google.collide.server.shared.util.Dto;
-
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +21,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+
+import org.vertx.java.busmods.BusModBase;
+import org.vertx.java.core.Handler;
+import org.vertx.java.core.eventbus.Message;
+import org.vertx.java.core.json.JsonObject;
+
+import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceParticipantsResponseImpl;
+import com.google.collide.dto.server.DtoServerImpls.ParticipantImpl;
+import com.google.collide.dto.server.DtoServerImpls.ParticipantUserDetailsImpl;
+import com.google.collide.dto.server.DtoServerImpls.UserDetailsImpl;
+import com.google.collide.server.shared.util.Dto;
 
 /**
  * Acts as the authentication provider, with a compatible API subset with the bundled default

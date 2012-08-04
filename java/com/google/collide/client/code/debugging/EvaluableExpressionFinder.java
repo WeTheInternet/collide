@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.documentparser.ParseResult;
 import com.google.collide.codemirror2.JsState;
@@ -23,8 +25,6 @@ import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.Position;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.annotations.VisibleForTesting;
-
-import javax.annotation.Nullable;
 
 /**
  * Encapsulates an algorithm to find a shortest evaluable JavaScript expression

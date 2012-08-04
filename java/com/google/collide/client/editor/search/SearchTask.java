@@ -22,9 +22,9 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.anchor.Anchor;
+import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.document.anchor.AnchorType;
-import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.common.base.Preconditions;
 
 /**

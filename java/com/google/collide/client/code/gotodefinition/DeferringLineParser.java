@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.gotodefinition;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.util.DeferredCommandExecutor;
 import com.google.collide.client.util.logging.Log;
@@ -22,8 +24,6 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 /**
  * Lazily parses source lines. That is, defers parsing for some time.

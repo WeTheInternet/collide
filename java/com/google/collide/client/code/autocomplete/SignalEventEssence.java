@@ -13,10 +13,10 @@
 // limitations under the License.
 package com.google.collide.client.code.autocomplete;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
+
+import com.google.common.annotations.VisibleForTesting;
 
 // TODO: Replace with CharCodeWithModifiers.
 /**

@@ -14,6 +14,12 @@
 
 package com.google.collide.dtogen;
 
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+
 import com.google.collide.dtogen.shared.ClientToServerDto;
 import com.google.collide.dtogen.shared.RoutableDto;
 import com.google.collide.dtogen.shared.SerializationIndex;
@@ -21,11 +27,6 @@ import com.google.collide.dtogen.shared.ServerToClientDto;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.common.base.Preconditions;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
 
 /**
  * Generates the source code for a generated Client DTO impl.
@@ -188,11 +189,18 @@ public class DtoImplClientTemplate extends DtoImpl {
       // Just a plain Jso.
       builder.append(JSO_TYPE);
     }
+    boolean isSerializable = isSerializable();
     builder.append(" implements ");
     builder.append(dtoInterface.getCanonicalName());
+    if (isSerializable){
+      builder.append(", java.io.Serializable");
+    }
     builder.append(" {\n    protected ");
     builder.append(getImplClassName());
     builder.append("() {}\n");
+    if (isSerializable){
+      builder.append("  private static final long serialVersionUID = " +dtoInterface.getCanonicalName().hashCode()+"L;\n");
+    }
   }
 
   private void emitReturn(Method method, String fieldSelector, StringBuilder builder) {

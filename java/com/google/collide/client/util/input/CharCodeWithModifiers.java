@@ -14,9 +14,9 @@
 
 package com.google.collide.client.util.input;
 
-import com.google.common.base.Preconditions;
-
 import org.waveprotocol.wave.client.common.util.SignalEvent;
+
+import com.google.common.base.Preconditions;
 
 // TODO: Add method that builds textual representation.
 /**

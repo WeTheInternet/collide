@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnEvaluateExpressionResponse;
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.documentparser.DocumentParser;
@@ -33,8 +35,6 @@ import com.google.gwt.resources.client.CssResource;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * Controller for the debugger evaluation expression popup.

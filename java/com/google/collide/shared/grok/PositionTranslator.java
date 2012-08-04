@@ -14,13 +14,13 @@
 
 package com.google.collide.shared.grok;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.google.collide.shared.document.LineNumberAndColumn;
 import com.google.common.annotations.GwtCompatible;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A class to translate between position representations, such as (line number,

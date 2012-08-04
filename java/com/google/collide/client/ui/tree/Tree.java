@@ -14,6 +14,9 @@
 
 package com.google.collide.client.ui.tree;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+import org.waveprotocol.wave.client.common.util.SignalEventImpl;
+
 import com.google.collide.client.util.AnimationController;
 import com.google.collide.client.util.CssUtils;
 import com.google.collide.client.util.Elements;
@@ -29,9 +32,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
-import org.waveprotocol.wave.client.common.util.SignalEventImpl;
 
 import elemental.events.Event;
 import elemental.events.EventListener;

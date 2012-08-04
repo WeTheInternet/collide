@@ -14,6 +14,8 @@
 
 package com.google.collide.client.editor;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.parenmatch.ParenMatchHighlighter;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator;
@@ -44,13 +46,11 @@ import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.events.Event;
 import elemental.html.Element;

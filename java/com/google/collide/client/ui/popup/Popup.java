@@ -14,6 +14,8 @@
 
 package com.google.collide.client.ui.popup;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.ui.menu.AutoHideComponent;
 import com.google.collide.client.ui.menu.AutoHideView;
 import com.google.collide.client.ui.menu.PositionController;
@@ -24,8 +26,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 
 /**
  * Represents a floating popup, that can be attached to any element.

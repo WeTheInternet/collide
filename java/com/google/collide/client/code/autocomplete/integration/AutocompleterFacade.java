@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.autocomplete.integration;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.Resources;
 import com.google.collide.client.code.autocomplete.Autocompleter;
 import com.google.collide.client.code.autocomplete.SignalEventEssence;
@@ -29,8 +31,6 @@ import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /**
  * This class isolates {@link Autocompleter} from the UI.

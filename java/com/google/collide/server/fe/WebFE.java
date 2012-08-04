@@ -14,13 +14,12 @@
 
 package com.google.collide.server.fe;
 
-import com.google.collide.dto.shared.JsonFieldConstants;
-import com.google.collide.server.maven.MavenResources;
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.TreeLogger.HelpInfo;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.dev.codeserver.CodeServer;
-import com.google.gwt.dev.codeserver.CodeSvr;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.jboss.netty.handler.codec.http.QueryStringDecoder;
@@ -35,10 +34,12 @@ import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.sockjs.SockJSServer;
 
-import java.io.File;
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Map;
+import wetheinter.net.pojo.Closure;
+
+import com.google.collide.dto.shared.JsonFieldConstants;
+import com.google.collide.server.maven.MavenResources;
+import com.google.collide.server.plugin.gwt.GwtCompiledDirectory;
+import com.google.gwt.core.ext.TreeLogger;
 
 /**
  * A simple web server module that can serve static files bundled with the webserver, as well as
@@ -51,12 +52,15 @@ import java.util.Map;
  */
 public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
+  
   private static final String WEBROOT_PATH = "/res/";
   private static final String BUNDLED_STATIC_FILES_PATH = "/static/";
   private static final String AUTH_PATH = "/_auth";
   private static final String CODESERVER_FRAGMENT = "/code/";
-  private static final String AUTH_COOKIE_NAME = "_COLLIDE_SESSIONID";
+  private static final String SOURCEMAP_PATH = "/sourcemaps/";
 
+  private static final String AUTH_COOKIE_NAME = "_COLLIDE_SESSIONID";
+  
   /**
    * The directory that we will be serving our bundled web application client form. We serve content
    * from here when the URL matches {@link #WEBROOT_PATH}
@@ -125,18 +129,73 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     String warDirectory = getOptionalStringConfig("warDir", webRoot + File.separator + "war");
     
     
-    
     bundledStaticFilesPrefix = bundledStaticFiles + File.separator;
     webRootPrefix = webRoot + File.separator;
     workDir = workDirectory + File.separator;
     warDir = warDirectory + File.separator;
     
-    server.listen(getOptionalIntConfig("port", 8080), getOptionalStringConfig("host", "127.0.0.1"));
+    int port = getOptionalIntConfig("port", 8080);
+    String host = getOptionalStringConfig("host", "127.0.0.1");
+    server.listen(port, host);
+    
+    vertx.eventBus().registerHandler("frontend.symlink", new Handler<Message<JsonObject>>() {
+      @Override
+      public void handle(Message<JsonObject> event) {
+        //TODO: require these messages to be signed by code private to the server
+        try{
+          
+        String dto = event.body.getString("dto");
+        GwtCompiledDirectory dir = GwtCompiledDirectory.fromString(dto);
+        vertx.sharedData().getMap("symlinks").put(
+            dir.getUri()
+            , dir);
+        }catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
   }
 
+  
   @Override
   public void handle(HttpServerRequest req) {
     String path = req.path;
+    if (path.equals("/")) {
+      //send login page
+      authAndWriteHostPage(req);
+    } else if (path.contains("..")) {
+      //sanitize hack attempts
+      sendStatusCode(req, 404);
+    } else if (path.startsWith(CODESERVER_FRAGMENT)) {
+      sendToCodeServer(req);//listen on http so we can send compile requests without sockets hooked up.
+    } else{
+        if (path.startsWith(WEBROOT_PATH) && (webRootPrefix != null)) {
+        //TODO: sanitize this path
+        Closure<String> file = new Closure<String>(path.substring(WEBROOT_PATH.length()));
+        //check for symlinks
+        String symlink = dereferenceSymlink(file);
+        //default is directory collide was started in
+        if (symlink==null)symlink = webRootPrefix;
+        //push file
+        System.out.println("pushing "+symlink+file.get());
+        req.response.sendFile(symlink + file.get());
+      } else if (path.startsWith(BUNDLED_STATIC_FILES_PATH) && (bundledStaticFilesPrefix != null)) {
+        Closure<String> file = new Closure<String>(path.substring(BUNDLED_STATIC_FILES_PATH.length()));
+        //check for symlinks
+        String symlink = dereferenceSymlink(file);
+        //default is the static directory where collide is compiled
+        if (symlink==null)symlink = bundledStaticFilesPrefix;
+        //push file
+        System.out.println("pushing "+symlink+file.get());
+        req.response.sendFile(symlink + file.get());
+      } else if (path.startsWith(AUTH_PATH)) {
+        writeSessionCookie(req);
+      } else {
+        sendStatusCode(req, HttpStatus.SC_NOT_FOUND);
+      }
+    }
+  }
+  /**
     if (path.equals("/")) {
       authAndWriteHostPage(req);
     } else if (path.contains("..")) {
@@ -154,6 +213,31 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       sendStatusCode(req, HttpStatus.SC_NOT_FOUND);
     }
   }
+   */
+
+  private String dereferenceSymlink(Closure<String> file) {
+    ConcurrentMap<String, Object> map = vertx.sharedData().getMap("symlinks");
+    Set<String> keys= map.keySet();
+    String uri = file.get();
+    System.out.println("Dereferencing request uri :"+uri+" against "+keys);
+    if (uri.charAt(0)=='/')uri = uri.substring(1);
+    for (Object key : keys){
+      String symlink = String.valueOf(key);
+      System.out.println("Checking against symlink "+symlink);
+      if (uri.startsWith(symlink)){
+        Object link =  map.get(symlink);
+        //TODO: also serve up _gen, _extra, _source, etc.
+        file.set(uri.substring(symlink.length()));
+        try{
+          return link.getClass().getMethod("getWarDir").invoke(link)+"/"+symlink;//war dir is double-encoded
+        }catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return null;
+  }
+
 
   private void sendToCodeServer(HttpServerRequest req) {
     Cookie cookie = Cookie.getCookie(AUTH_COOKIE_NAME, req);
@@ -161,25 +245,26 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       sendRedirect(req, "/static/login.html");
       return;
     }
-    QueryStringDecoder qsd = new QueryStringDecoder(req.query, false);
-    Map<String, List<String>> params = qsd.getParameters();
-
-    List<String> loginSessionIdList = params.get(JsonFieldConstants.SESSION_USER_ID);
-    List<String> usernameList = params.get(JsonFieldConstants.SESSION_USERNAME);
-    if (loginSessionIdList == null || loginSessionIdList.size() == 0 || 
-        usernameList == null || usernameList.size() == 0) {
-      sendStatusCode(req, 400);
-      return;
-    }
-
-    final String sessionId = loginSessionIdList.get(0);
-    final String username = usernameList.get(0);
-    List<String> modules = qsd.getParameters().get("module");
-    
-    if (modules != null){
-      MavenResources config = getConfig(req);
-      CodeSvr.startOrRefresh(logToVertx(req),config,modules);
-    }
+    //TODO: forward commands to message bus, so we can compile w/out being logged in.
+//    QueryStringDecoder qsd = new QueryStringDecoder(req.query, false);
+//    Map<String, List<String>> params = qsd.getParameters();
+//
+//    List<String> loginSessionIdList = params.get(JsonFieldConstants.SESSION_USER_ID);
+//    List<String> usernameList = params.get(JsonFieldConstants.SESSION_USERNAME);
+//    if (loginSessionIdList == null || loginSessionIdList.size() == 0 || 
+//        usernameList == null || usernameList.size() == 0) {
+//      sendStatusCode(req, 400);
+//      return;
+//    }
+//
+//    final String sessionId = loginSessionIdList.get(0);
+//    final String username = usernameList.get(0);
+//    List<String> modules = qsd.getParameters().get("module");
+//    
+//    if (modules != null){
+//      MavenResources config = getConfig(req);
+//      CodeSvr.startOrRefresh(logToVertx(req),config,modules);
+//    }
   }
 
   private TreeLogger logToVertx(final HttpServerRequest req) {
@@ -209,7 +294,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       
       @Override
       public TreeLogger branch(Type type, String msg, Throwable caught, HelpInfo helpInfo) {
-        return this;
+        return this;//TODO branch properly, and use a branch id to group items together in client log viewer
       }
     };
   }

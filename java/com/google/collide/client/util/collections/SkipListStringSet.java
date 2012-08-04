@@ -14,13 +14,13 @@
 
 package com.google.collide.client.util.collections;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.gwt.core.client.JavaScriptObject;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import javax.annotation.Nonnull;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Skip_list">Skip List</a>

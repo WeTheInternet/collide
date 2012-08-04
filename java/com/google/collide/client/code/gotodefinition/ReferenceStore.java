@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.gotodefinition;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.codeunderstanding.CubeClient;
 import com.google.collide.client.codeunderstanding.CubeData;
 import com.google.collide.client.codeunderstanding.CubeDataUpdates;
@@ -30,8 +32,6 @@ import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.LineNumberAndColumn;
 import com.google.collide.shared.ot.PositionMigrator;
 import com.google.common.annotations.VisibleForTesting;
-
-import javax.annotation.Nullable;
 
 /**
  * Storage and lookup system for cubeReferences from source ranges to

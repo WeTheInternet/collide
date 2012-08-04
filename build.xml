@@ -56,9 +56,10 @@
     <chmod dir="${dirs.dist}" perm="ugo+rx"  includes="collide"/>
 
     <!-- Create a server jar from all the classes and drop it in the dist/lib folder. -->
-    <jar destfile="${dirs.dist}/lib/collide-server.jar"
-         basedir="${dirs.bin}"
-         includes="**/*.class **/*.js"/>
+    <jar destfile="${dirs.dist}/lib/collide-server.jar">
+	   <fileset dir="${dirs.bin}" includes="**/*.class **/*.js"/>
+	   <fileset dir="${dirs.src}" includes="**/*.java"/>
+    </jar>
 
     <!-- Copy all deps to the dist/lib folder -->
     <copy todir="${dirs.dist}/lib" flatten="true">

@@ -15,8 +15,8 @@
 package com.google.collide.client.filehistory;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.code.EditableContentArea.Content;
+import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;

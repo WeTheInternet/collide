@@ -23,7 +23,7 @@ package com.google.collide.dto;
 public interface RunTarget {
 
   public enum RunMode {
-    PREVIEW_CURRENT_FILE, ALWAYS_RUN
+    PREVIEW_CURRENT_FILE, ALWAYS_RUN, GWT_COMPILE, ANT_BUILD, MAVEN_BUILD
   }
 
   RunMode getRunMode();
@@ -31,4 +31,10 @@ public interface RunTarget {
   String getAlwaysRunFilename();
 
   String getAlwaysRunUrlOrQuery();
+
+  String getGwtModule();
+
+  String getAntTarget();
+
+  String getMavenGoal();
 }

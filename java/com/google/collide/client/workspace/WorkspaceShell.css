@@ -23,6 +23,8 @@
   box-align: center;
   
   height: headerHeight;
+  
+  width: 100%; /*Needed on ff14, maybe earlier*/
 }
 
 .perspectivePanel {

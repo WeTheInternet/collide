@@ -14,6 +14,9 @@
 
 package com.google.collide.client.workspace;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.Resources;
 import com.google.collide.client.bootstrap.BootstrapSession;
@@ -61,9 +64,6 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.Element;
 import elemental.html.IFrameElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handles File tree context menu actions.

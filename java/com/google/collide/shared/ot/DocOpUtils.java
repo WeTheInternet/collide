@@ -19,6 +19,8 @@ import static com.google.collide.dto.DocOpComponent.Type.INSERT;
 import static com.google.collide.dto.DocOpComponent.Type.RETAIN;
 import static com.google.collide.dto.DocOpComponent.Type.RETAIN_LINE;
 
+import java.util.List;
+
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocOpComponent;
 import com.google.collide.dto.DocOpComponent.Delete;
@@ -32,8 +34,6 @@ import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Preconditions;
-
-import java.util.List;
 
 /**
  * Utility methods for document operation manipulation.

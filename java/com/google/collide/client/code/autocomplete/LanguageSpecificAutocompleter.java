@@ -14,14 +14,14 @@
 
 package com.google.collide.client.code.autocomplete;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.AutocompleteProposals.ProposalWithContext;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.codemirror2.SyntaxType;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 
 /**
  * Base class for language-specific autocompleters.

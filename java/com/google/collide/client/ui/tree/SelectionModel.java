@@ -14,12 +14,12 @@
 
 package com.google.collide.client.ui.tree;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.ui.tree.Tree.Css;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /*
  * TODO : Since we have breadcrumbs and will soon have tabs, we don't

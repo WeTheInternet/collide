@@ -14,13 +14,13 @@
 
 package com.google.collide.json.client;
 
-import com.google.collide.json.shared.JsonArray;
-import com.google.collide.json.shared.JsonArrayIterator;
-import com.google.gwt.core.client.JavaScriptObject;
-
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import com.google.collide.json.shared.JsonArray;
+import com.google.collide.json.shared.JsonArrayIterator;
+import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * Similar to {@link com.google.gwt.core.client.JsArray}, except

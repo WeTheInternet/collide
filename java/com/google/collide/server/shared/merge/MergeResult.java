@@ -14,9 +14,9 @@
 
 package com.google.collide.server.shared.merge;
 
-import com.google.common.collect.ImmutableList;
-
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 /**
  * Captures the result of a 3-way-merge with {@link JGitMerger}.

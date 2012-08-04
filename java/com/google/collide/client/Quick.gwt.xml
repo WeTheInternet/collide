@@ -1,0 +1,8 @@
+<module>
+  <entry-point class="com.google.collide.client.Quick" />
+
+  <source path=""/>
+
+  <inherits name="com.google.gwt.user.User"/>
+
+</module>

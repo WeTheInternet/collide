@@ -14,10 +14,10 @@
 
 package com.google.collide.shared.util;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonIntegerMap;
-
-import javax.annotation.Nonnull;
 
 /**
  * Utility methods for string operations.

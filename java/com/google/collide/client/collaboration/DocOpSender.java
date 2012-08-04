@@ -14,6 +14,8 @@
 
 package com.google.collide.client.collaboration;
 
+import java.util.List;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.collaboration.FileConcurrencyController.DocOpListener;
 import com.google.collide.client.collaboration.cc.GenericOperationChannel.SendOpService;
@@ -31,8 +33,6 @@ import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-
-import java.util.List;
 
 /**
  * Helper to take outgoing doc ops from the local concurrency control library

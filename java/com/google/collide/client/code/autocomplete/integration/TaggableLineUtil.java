@@ -14,10 +14,10 @@
 
 package com.google.collide.client.code.autocomplete.integration;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.shared.TaggableLine;
 import com.google.collide.shared.document.Line;
-
-import javax.annotation.Nonnull;
 
 /**
  * {@link com.google.collide.shared.TaggableLine} utility class.

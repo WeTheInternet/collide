@@ -14,13 +14,13 @@
 
 package com.google.collide.client.testing;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.collide.client.ClientConfig;
 import com.google.collide.client.util.Elements;
 
 import elemental.html.Element;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Setter for setting debug ID and/or attributes.

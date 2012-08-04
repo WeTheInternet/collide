@@ -60,6 +60,9 @@ public final class ClientImplementationsInjector {
       }
     });
 
+    /**
+     * TODO(james) : replace this with server-safe deferred binding
+     */
     if (GWT.isScript()) {
       JsonCollections.setImplementation(new JsonCollections.Implementation() {
         @Override

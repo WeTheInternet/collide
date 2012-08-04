@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project id="collide"><!-- we use id here because we want global id's to be unique -->
+	 <properties>
+	<!-- 
+	Some supplied vars you can use:
+	${BASE} - The deploy directory where collide is launched from
+	. - Shorthand for ${BASE}
+	${WEBROOT} - The workspace directory, where collide is called from
+	_ - Shorthand for ${WEBROOT}
+	${LIB} - Defaults to ${BASE}/lib
+	 -->
+	 	<PASSWD></PASSWD><!-- Put any text inside here to require password on entry -->
+	 	<HOST>0.0.0.0</HOST>
+	 	<PORT>8080</PORT>
+	 	<PLUGINS>gwt</PLUGINS>
+	 	<VERTX>
+{
+  webRoot : "${WEBROOT}",
+  staticFiles: "${BASE}/static"
+}
+	 	</VERTX>
+	 	<BOOTSTRAP>
+load("vertx.js")
+
+var eb = vertx.eventBus;
+var bootstrapConfig = vertx.config;
+
+if (!bootstrapConfig || !bootstrapConfig.webRoot || !bootstrapConfig.staticFiles) {
+  console.error("Collide does not know which directory to serve :(!");
+}
+
+var webFeConfig = {
+  port: $PORT,
+  host: "$HOST",
+  bridge: true,
+  webRoot: bootstrapConfig.webRoot,
+  staticFiles: bootstrapConfig.staticFiles
+};
+
+var participantListConfig = {
+   password:"${PASSWD}"
+}
+var workspaceConfig = {
+  webRoot: bootstrapConfig.webRoot
+  ,plugins: ['gwt']
+}
+	 	</BOOTSTRAP>
+	 </properties>
+	<module id="main" type="vertx">
+		<src>.</src><!-- Default to ., which is launch directory -->
+		<classpath>
+			<src>.</src>
+			<jar>${LIB}/gwt-user.jar</jar>
+			<jar>${LIB}/collide-server.jar</jar>
+			<jar>${LIB}/guava-12.0.jar</jar>
+			<jar>${LIB}/gson-2.2.1.jar</jar>
+			<jar>${LIB}/jsr305.jar</jar>
+			<jar>${LIB}/org.eclipse.jgit-1.3.0.201202151440-r.jar</jar>
+			<jar>${LIB}/waveinabox-import-0.3.jar</jar>
+		</classpath>
+		<bootstrap file="./bootstrap.js"></bootstrap>
+		<config>$VERTX</config>
+		<bootstrap>
+$BOOTSTRAP
+
+// Start the FE server. Starting several instances to handle concurrent HTTP requests.
+vertx.deployVerticle("com.google.collide.server.fe.WebFE", webFeConfig, 10, function() {
+  // Server was started.
+});
+
+// Load the participant list verticle that manages auth and client identity.
+vertx.deployVerticle("com.google.collide.server.participants.Participants", participantListConfig, 1, function() {
+  // Server was started.
+});
+
+// Load the collaborative document sessions that manages OT and file content flushes to disk.
+vertx.deployVerticle("com.google.collide.server.documents.EditSessions", null, 1, function() {
+  // Server was started.
+});
+
+// Load the collaborative document sessions that manages OT and file content flushes to disk.
+vertx.deployVerticle("com.google.collide.server.filetree.FileTree", null, 1, function() {
+  // Server was started.
+});
+
+// Load the collaborative document sessions that manages OT and file content flushes to disk.
+vertx.deployVerticle("com.google.collide.server.workspace.WorkspaceState", workspaceConfig, 1, function() {
+  // Server was started.
+});
+		</bootstrap>
+		<main>${LIB}/vertx/bin/vertx</main><!-- Default vertx launch location -->
+	</module>
+	<module id="gwt" type="plugin" inherits="main">
+		<classpath inherits="super">
+			<jar>${LIB}/xapi-super-0.2.jar</jar>
+			<jar>${LIB}/gwt-dev.jar</jar>
+			<jar>${LIB}/gwt-codeserver.jar</jar>
+		</classpath>
+		<bootstrap>
+$BOOTSTRAP
+
+// Load the maven controller that handles running maven tasks on behalf of a user.
+vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspaceConfig, 1, function() {
+	// Server was started.
+});
+
+// Load the plugin controller which allows adding services to collide, such as gwt super dev mode, ant builds, terminal, maven, etc..
+vertx.deployVerticle("com.google.collide.server.plugin.PluginManager", workspaceConfig, 1, function() {
+});
+
+//TODO: if gwt plugin specified, deploy a worker verticle specifically for compiles...
+		
+		</bootstrap>
+		<main>com.google.collide.server.plugin.gwt.GwtPlugin</main>
+	</module>
+</project>

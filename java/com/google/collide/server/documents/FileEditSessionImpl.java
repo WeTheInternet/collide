@@ -14,6 +14,15 @@
 
 package com.google.collide.server.documents;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.vertx.java.core.logging.Logger;
+
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
 import com.google.collide.server.documents.VersionedDocument.DocumentOperationException;
@@ -32,15 +41,6 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.protobuf.ByteString;
-
-import org.vertx.java.core.logging.Logger;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
-import javax.annotation.Nullable;
 
 /**
  * Default implementation of {@link FileEditSession}.

@@ -17,14 +17,16 @@ package com.google.collide.client.code.autocomplete.html;
 import static com.google.collide.client.code.autocomplete.html.CompletionType.ATTRIBUTE;
 import static com.google.collide.client.code.autocomplete.html.CompletionType.ELEMENT;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.AutocompleteController;
 import com.google.collide.client.code.autocomplete.AutocompleteProposal;
 import com.google.collide.client.code.autocomplete.AutocompleteProposals;
+import com.google.collide.client.code.autocomplete.AutocompleteProposals.ProposalWithContext;
 import com.google.collide.client.code.autocomplete.AutocompleteResult;
 import com.google.collide.client.code.autocomplete.DefaultAutocompleteResult;
 import com.google.collide.client.code.autocomplete.LanguageSpecificAutocompleter;
 import com.google.collide.client.code.autocomplete.SignalEventEssence;
-import com.google.collide.client.code.autocomplete.AutocompleteProposals.ProposalWithContext;
 import com.google.collide.client.code.autocomplete.codegraph.CodeGraphAutocompleter;
 import com.google.collide.client.code.autocomplete.css.CssAutocompleter;
 import com.google.collide.client.code.autocomplete.html.HtmlAutocompleteProposals.HtmlProposalWithContext;
@@ -53,8 +55,6 @@ import com.google.collide.shared.document.anchor.AnchorType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.gwt.event.dom.client.KeyCodes;
-
-import javax.annotation.Nonnull;
 
 /**
  * Autocompleter for HTML.

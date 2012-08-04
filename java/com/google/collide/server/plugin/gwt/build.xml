@@ -1,0 +1,18 @@
+<project name="gwt" default="build">
+  <property name="dirs.root" location="../../../../../../.." />
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml" />
+
+
+  
+  <target name="build" description="Builds the gwt plugin." depends="">
+    <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      <include name="${dirs.toppkg}/server/plugin/gwt/**/*.java" />
+      <classpath>
+        <path refid="paths.shared" />
+        <path refid="paths.server.build" />
+        <pathelement location="${dirs.bin}" />
+      </classpath>
+    </do.javac>
+  </target>
+</project>

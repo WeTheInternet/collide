@@ -14,13 +14,13 @@
 
 package com.google.collide.client.util.dom.eventcapture;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.JsIntegerMap;
 import com.google.collide.client.util.SignalEventUtils;
 import com.google.collide.client.util.input.CharCodeWithModifiers;
 import com.google.common.base.Preconditions;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.events.Event;
 import elemental.events.EventListener;

@@ -5,6 +5,12 @@
 
 
   <target name="build" description="compile tests for 'codemirror2'">
+          <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      <include name="${dirs.toppkg}/codemirror2/**"/>
+      <classpath>
+	<path refid="paths.test"/>
+      </classpath>
+    </do.javac>
     <do.javac srcdir="${dirs.test}" destdir="${dirs.testbin}">
       <include name="${dirs.toppkg}/codemirror2/**/*.java"/>
       <classpath>

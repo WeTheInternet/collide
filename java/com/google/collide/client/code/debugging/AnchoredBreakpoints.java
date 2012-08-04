@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import java.util.Comparator;
+
 import com.google.collide.client.util.ScheduledCommandExecutor;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
@@ -25,8 +27,6 @@ import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.document.anchor.AnchorType;
 import com.google.collide.shared.document.anchor.AnchorUtils;
 import com.google.collide.shared.util.JsonCollections;
-
-import java.util.Comparator;
 
 /**
  * Handles an array of breakpoints anchored into a {@link Document}.

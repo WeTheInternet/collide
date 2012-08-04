@@ -14,6 +14,8 @@
 
 package com.google.collide.client.workspace;
 
+import java.util.Comparator;
+
 import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.DirInfo;
@@ -26,8 +28,6 @@ import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.annotations.VisibleForTesting;
-
-import java.util.Comparator;
 
 /**
  * The Model for the FileTree. This data structure is constructed (without

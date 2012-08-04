@@ -14,14 +14,14 @@
 
 package com.google.collide.client.collaboration.cc;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Preconditions;
-
-import org.waveprotocol.wave.model.operation.OperationPair;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.waveprotocol.wave.model.operation.OperationPair;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 
 /*
  * Forked from Wave. Currently, the only changes are exposing some otherwise

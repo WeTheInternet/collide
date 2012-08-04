@@ -14,6 +14,8 @@
 
 package com.google.collide.client.collaboration;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.code.Participant;
@@ -29,13 +31,11 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.anchor.Anchor;
-import com.google.collide.shared.document.anchor.AnchorType;
 import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
+import com.google.collide.shared.document.anchor.AnchorType;
 import com.google.collide.shared.util.JsonCollections;
 
 import elemental.util.Timer;
-
-import javax.annotation.Nullable;
 
 
 /**

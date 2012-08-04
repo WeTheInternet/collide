@@ -15,7 +15,6 @@
 package com.google.collide.shared.util;
 
 import com.google.collide.json.shared.JsonArray;
-import com.google.collide.shared.util.ListenerManager.Dispatcher;
 
 /**
  * Lightweight manager for listeners that's designed to reduce boilerplate in

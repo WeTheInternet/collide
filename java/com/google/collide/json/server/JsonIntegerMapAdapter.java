@@ -14,10 +14,10 @@
 
 package com.google.collide.json.server;
 
-import com.google.collide.json.shared.JsonIntegerMap;
-
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.collide.json.shared.JsonIntegerMap;
 
 /**
  * Server wrapper for a {@link java.util.Map} that implements

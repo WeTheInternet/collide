@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObject;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectId;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectSubType;
@@ -21,8 +23,6 @@ import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectTyp
 import com.google.collide.json.client.Jso;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Objects;
-
-import javax.annotation.Nullable;
 
 /**
  * Utility helper class that contains browser independent methods on the

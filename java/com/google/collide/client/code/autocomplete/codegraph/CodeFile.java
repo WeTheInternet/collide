@@ -16,6 +16,9 @@ package com.google.collide.client.code.autocomplete.codegraph;
 
 import static com.google.collide.shared.document.util.LineUtils.comparePositions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.CodeBlock;
 import com.google.collide.json.shared.JsonArray;
@@ -23,9 +26,6 @@ import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Encapsulates code structure data of the file opened in the editor.

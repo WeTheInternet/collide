@@ -14,11 +14,11 @@
 
 package com.google.collide.client.code.autocomplete;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.codemirror2.Token;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.TaggableLine;
-
-import javax.annotation.Nonnull;
 
 /**
  * Interface that presents code analyzing facilities.

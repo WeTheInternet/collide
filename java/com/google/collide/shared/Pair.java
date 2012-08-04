@@ -16,14 +16,14 @@
 
 package com.google.collide.shared;
 
-import com.google.common.annotations.GwtCompatible;
-import com.google.common.base.Function;
-import com.google.common.base.Objects;
-
 import java.io.Serializable;
 import java.util.Comparator;
 
 import javax.annotation.Nullable;
+
+import com.google.common.annotations.GwtCompatible;
+import com.google.common.base.Function;
+import com.google.common.base.Objects;
 
 /**
  * An immutable, semantic-free ordered pair of nullable values. These can be

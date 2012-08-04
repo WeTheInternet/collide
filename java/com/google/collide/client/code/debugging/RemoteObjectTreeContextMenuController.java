@@ -15,8 +15,8 @@
 package com.google.collide.client.code.debugging;
 
 import com.google.collide.client.ui.dropdown.DropdownController;
-import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.dropdown.DropdownController.DropdownPositionerBuilder;
+import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;

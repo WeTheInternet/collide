@@ -14,6 +14,14 @@
 
 package com.google.collide.client.editor;
 
+import java.util.List;
+
+import org.waveprotocol.wave.model.operation.OperationPair;
+import org.waveprotocol.wave.model.operation.TransformException;
+import org.waveprotocol.wave.model.undo.UndoManagerImpl;
+import org.waveprotocol.wave.model.undo.UndoManagerImpl.Algorithms;
+import org.waveprotocol.wave.model.undo.UndoManagerPlus;
+
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.client.ClientDocOpFactory;
@@ -24,21 +32,13 @@ import com.google.collide.shared.document.Position;
 import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.util.PositionUtils;
 import com.google.collide.shared.ot.Composer;
+import com.google.collide.shared.ot.Composer.ComposeException;
 import com.google.collide.shared.ot.DocOpApplier;
 import com.google.collide.shared.ot.DocOpUtils;
 import com.google.collide.shared.ot.Inverter;
 import com.google.collide.shared.ot.Transformer;
-import com.google.collide.shared.ot.Composer.ComposeException;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar;
-
-import org.waveprotocol.wave.model.operation.OperationPair;
-import org.waveprotocol.wave.model.operation.TransformException;
-import org.waveprotocol.wave.model.undo.UndoManagerImpl;
-import org.waveprotocol.wave.model.undo.UndoManagerImpl.Algorithms;
-import org.waveprotocol.wave.model.undo.UndoManagerPlus;
-
-import java.util.List;
 
 // TODO: restore selection/cursor
 /**

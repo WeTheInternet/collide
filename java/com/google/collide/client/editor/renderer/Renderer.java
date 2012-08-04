@@ -14,6 +14,8 @@
 
 package com.google.collide.client.editor.renderer;
 
+import java.util.EnumSet;
+
 import com.google.collide.client.Resources;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
@@ -27,8 +29,6 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerRegistrar;
-
-import java.util.EnumSet;
 
 /**
  * A class that is the entry point for the rendering of the editor.

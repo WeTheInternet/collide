@@ -21,13 +21,15 @@ if (!bootstrapConfig || !bootstrapConfig.webRoot || !bootstrapConfig.staticFiles
   console.error("Collide does not know which directory to serve :(!");
 }
 
+for (var i in vertx.config)
+	console.log(i);
+
 var webFeConfig = {
   port: 8080,
   host: "0.0.0.0",
   bridge: true,
   webRoot: bootstrapConfig.webRoot,
   staticFiles: bootstrapConfig.staticFiles,
-
   // This defines which messages from the client we will let through, as well as what
   // messages we want to let through to the client from the server.
 
@@ -43,11 +45,21 @@ var webFeConfig = {
 
 var participantListConfig = {
   // TODO: Pick this up off the command line when launching collide.
-  // password="s3cret"
+  // password:"s3cret"
+  usernames:"James"
 }
 
 var workspaceConfig = {
   webRoot: bootstrapConfig.webRoot
+  ,plugins: ['gwt']
+}
+
+var pluginConfig = {
+	plugins: ['gwt']
+	,'preserve-cwd': true
+	,includes: ['gwt']
+	,webRoot: bootstrapConfig.webRoot
+	,staticFiles: bootstrapConfig.staticFiles
 }
 
 // Start the FE server. Starting several instances to handle concurrent HTTP requests.
@@ -78,4 +90,10 @@ vertx.deployVerticle("com.google.collide.server.workspace.WorkspaceState", works
 // Load the maven controller that handles running maven tasks on behalf of a user.
 vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspaceConfig, 1, function() {
 	// Server was started.
+});
+
+
+//pluginConfig.webRoot['preserve-cwd'] = true;
+// Load the plugin controller which allows adding services to collide, such as gwt super dev mode, ant builds, terminal, maven, etc..
+vertx.deployWorkerVerticle("com.google.collide.server.plugin.gwt.GwtPlugin", pluginConfig, 1, function() {
 });

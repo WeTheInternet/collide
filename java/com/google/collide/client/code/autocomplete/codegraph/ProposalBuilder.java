@@ -22,13 +22,15 @@ import static com.google.collide.codemirror2.TokenType.VARIABLE;
 import static com.google.collide.codemirror2.TokenType.VARIABLE2;
 import static com.google.collide.codemirror2.TokenType.WHITESPACE;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.AutocompleteProposal;
 import com.google.collide.client.code.autocomplete.AutocompleteProposals;
+import com.google.collide.client.code.autocomplete.AutocompleteProposals.Context;
 import com.google.collide.client.code.autocomplete.AutocompleteResult;
 import com.google.collide.client.code.autocomplete.Autocompleter;
 import com.google.collide.client.code.autocomplete.DefaultAutocompleteResult;
 import com.google.collide.client.code.autocomplete.PrefixIndex;
-import com.google.collide.client.code.autocomplete.AutocompleteProposals.Context;
 import com.google.collide.client.code.autocomplete.codegraph.ParseUtils.ExtendedParseResult;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.documentparser.ParseResult;
@@ -46,8 +48,6 @@ import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 
 // TODO: Implement autocompletion-session end notification.
 /**

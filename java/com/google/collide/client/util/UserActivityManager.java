@@ -15,8 +15,8 @@
 package com.google.collide.client.util;
 
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.gwt.user.client.Timer;
 
 /**

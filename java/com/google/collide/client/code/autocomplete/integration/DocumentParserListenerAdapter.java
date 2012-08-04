@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.autocomplete.integration;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.code.autocomplete.Autocompleter;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.Editor;
@@ -21,8 +23,6 @@ import com.google.collide.codemirror2.Token;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.TaggableLine;
 import com.google.collide.shared.document.Line;
-
-import javax.annotation.Nonnull;
 
 /**
  * Listener implementation that adapts messages for {@link Autocompleter}.

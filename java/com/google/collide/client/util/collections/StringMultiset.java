@@ -14,9 +14,9 @@
 
 package com.google.collide.client.util.collections;
 
-import com.google.collide.json.shared.JsonArray;
-
 import javax.annotation.Nonnull;
+
+import com.google.collide.json.shared.JsonArray;
 
 // TODO: Combine with JsonStringSet?
 /**

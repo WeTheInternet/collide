@@ -14,19 +14,19 @@
 
 package com.google.collide.client.code.autocomplete.codegraph.js;
 
+import javax.annotation.Nonnull;
+
+import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
+
 import com.google.collide.client.code.autocomplete.DefaultAutocompleteResult;
-import com.google.collide.client.code.autocomplete.SignalEventEssence;
 import com.google.collide.client.code.autocomplete.LanguageSpecificAutocompleter.ExplicitAction;
+import com.google.collide.client.code.autocomplete.SignalEventEssence;
 import com.google.collide.client.code.autocomplete.codegraph.ExplicitAutocompleter;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.shared.document.anchor.ReadOnlyAnchor;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.event.dom.client.KeyCodes;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
-
-import javax.annotation.Nonnull;
 
 /**
  * Implementation that adds JS-specific cases.

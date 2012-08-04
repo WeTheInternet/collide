@@ -14,14 +14,14 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.BreakpointInfo;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.Location;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnScriptParsedResponse;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.shared.util.RegExpUtils;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 /**
  * Identity source mapping to be used for static files.

@@ -14,11 +14,11 @@
 
 package com.google.collide.client.editor.input;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.util.SignalEventUtils;
 import com.google.collide.client.util.input.CharCodeWithModifiers;
 import com.google.collide.client.util.input.KeyCodeMap;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.events.Event;
 import elemental.js.util.JsArrayOfInt;

@@ -14,6 +14,9 @@
 
 package com.google.collide.client.documentparser;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.codemirror2.Parser;
 import com.google.collide.codemirror2.State;
@@ -28,9 +31,6 @@ import com.google.collide.shared.document.anchor.Anchor;
 import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Worker that performs the actual parsing of the document by delegating to

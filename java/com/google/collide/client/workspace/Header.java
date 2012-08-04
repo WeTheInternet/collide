@@ -101,7 +101,7 @@ public class Header extends UiComponent<Header.View> {
         fileNameSearch,
         fileTreeModel);
     
-    GearButtonController gearButtonController = GearButtonController.create();
+    GearButtonController gearButtonController = GearButtonController.create(appContext);
 
     Header header = new Header(view,
         currentPlace,
@@ -126,6 +126,12 @@ public class Header extends UiComponent<Header.View> {
     String gearButton();
     
     String gearIcon();
+    
+    String terminalIcon();
+    
+    String terminalButton();
+
+    String paddedButton();
     
     String runButtonContainer();
 
@@ -172,6 +178,9 @@ public class Header extends UiComponent<Header.View> {
     @Source("gear.png")
     ImageResource gearIcon();
 
+    @Source("terminal.png")
+    ImageResource terminalIcon();
+
     @Source("play.png")
     ImageResource runIcon();
 
@@ -214,6 +223,9 @@ public class Header extends UiComponent<Header.View> {
     
     @UiField
     AnchorElement gearButton;
+    
+    @UiField
+    AnchorElement terminalButton;
 
     @UiField
     AnchorElement runDropdownButton;
@@ -245,6 +257,7 @@ public class Header extends UiComponent<Header.View> {
     private final AwesomeBoxComponentHost.View awesomeBoxComponentHostView;
     private final ImageButton runImageButton;
     private final ImageButton gearImageButton;
+    private final ImageButton terminalImageButton;
     private final ImageButton runDropdownImageButton;
     private final ImageButton newWorkspaceImageButton;
     private final ImageButton shareImageButton;
@@ -269,6 +282,11 @@ public class Header extends UiComponent<Header.View> {
       gearImageButton = new ImageButton.Builder(res).setImage(res.gearIcon())
           .setElement((elemental.html.AnchorElement) gearButton).build();
       gearImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().gearIcon());
+      
+      // Create the terminal button
+      terminalImageButton = new ImageButton.Builder(res).setImage(res.terminalIcon())
+          .setElement((elemental.html.AnchorElement) terminalButton).build();
+      terminalImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().terminalIcon());
       
       
       newWorkspaceImageButton = new ImageButton.Builder(res).setImage(res.trunkBranchIcon())
@@ -447,7 +465,7 @@ public class Header extends UiComponent<Header.View> {
     
     @Override
     public void onGearButtonClicked() {
-      
+      gearButtonController.onGearButtonClicked();
     }
 
     @Override

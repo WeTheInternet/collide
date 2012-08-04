@@ -1,0 +1,24 @@
+<project name="plugin" default="build">
+  <property name="dirs.root" location="../../../../../.." />
+  <!-- Import common properties and macros -->
+  <import file="${dirs.root}/macros.ant.xml" />
+
+  
+  <property name="server.src" location="${dirs.src}/${dirs.toppkg}/server/"/>
+
+  <include optional="false" as="src.dto" file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
+  
+  
+  <include optional="false" as="src.gwt"
+           file="${server.src}/plugin/gwt/build.xml"/>
+  
+  <target name="build" description="Builds the plugin verticle, including optional modules." depends="">
+    <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      <include name="${dirs.toppkg}/server/plugin/**/*.java" />
+      <classpath>
+        <path refid="paths.server.build" />
+        <pathelement location="${dirs.bin}" />
+      </classpath>
+    </do.javac>
+  </target>
+</project>

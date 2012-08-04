@@ -14,10 +14,10 @@
 
 package com.google.collide.server.shared.util;
 
-import com.google.collide.dtogen.server.JsonSerializable;
-
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
+
+import com.google.collide.dtogen.server.JsonSerializable;
 
 /**
  * Utility for wrapping and unwrapping serialized Dtos.

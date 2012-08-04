@@ -14,17 +14,19 @@
 
 package com.google.collide.client.search.awesomebox.components;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.editor.Editor;
-import com.google.collide.client.editor.FocusManager;
 import com.google.collide.client.editor.Editor.KeyListener;
+import com.google.collide.client.editor.FocusManager;
 import com.google.collide.client.editor.search.SearchModel;
 import com.google.collide.client.editor.search.SearchModel.MatchCountListener;
 import com.google.collide.client.search.awesomebox.host.AbstractAwesomeBoxComponent;
 import com.google.collide.client.search.awesomebox.host.ComponentHost;
 import com.google.collide.client.search.awesomebox.shared.AwesomeBoxResources;
+import com.google.collide.client.search.awesomebox.shared.AwesomeBoxResources.ComponentCss;
 import com.google.collide.client.search.awesomebox.shared.MappedShortcutManager;
 import com.google.collide.client.search.awesomebox.shared.ShortcutManager;
-import com.google.collide.client.search.awesomebox.shared.AwesomeBoxResources.ComponentCss;
 import com.google.collide.client.search.awesomebox.shared.ShortcutManager.ShortcutPressedCallback;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
@@ -35,8 +37,8 @@ import com.google.collide.client.util.input.ModifierKeys;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.HasView;
 import com.google.collide.shared.util.ListenerRegistrar;
-import com.google.collide.shared.util.StringUtils;
 import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
+import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
@@ -48,8 +50,6 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.events.Event;
 import elemental.events.EventListener;

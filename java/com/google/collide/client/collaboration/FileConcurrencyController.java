@@ -14,8 +14,10 @@
 
 package com.google.collide.client.collaboration;
 
-import com.google.collide.dto.client.DtoClientImpls.DocumentSelectionImpl;
-import com.google.collide.dto.client.DtoClientImpls.FilePositionImpl;
+import java.util.List;
+
+import org.waveprotocol.wave.client.scheduler.SchedulerInstance;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.collaboration.cc.GenericOperationChannel;
@@ -28,18 +30,16 @@ import com.google.collide.dto.ClientToServerDocOp;
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
 import com.google.collide.dto.client.ClientDocOpFactory;
+import com.google.collide.dto.client.DtoClientImpls.DocumentSelectionImpl;
+import com.google.collide.dto.client.DtoClientImpls.FilePositionImpl;
 import com.google.collide.shared.ot.OperationPair;
 import com.google.collide.shared.ot.PositionTransformer;
 import com.google.collide.shared.ot.Transformer;
 import com.google.collide.shared.util.ErrorCallback;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.Reorderer.TimeoutCallback;
-
-import org.waveprotocol.wave.client.scheduler.SchedulerInstance;
-
-import java.util.List;
 
 /**
  * Controller that handles the real-time collaboration and concurrency control

@@ -14,12 +14,12 @@
 
 package com.google.collide.client.util.collections;
 
+import java.util.Iterator;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import java.util.Iterator;
 
 /*
  * This class uses iterators since they inherently save traversal state and

@@ -1,13 +1,6 @@
 package com.google.collide.dtogen;
 
-import com.google.collide.dtogen.DtoTemplate.MalformedDtoInterfaceException;
-import com.google.collide.dtogen.shared.CompactJsonDto;
-import com.google.collide.dtogen.shared.SerializationIndex;
-import com.google.collide.json.shared.JsonArray;
-import com.google.collide.json.shared.JsonStringMap;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
-
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,6 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.collide.dtogen.DtoTemplate.MalformedDtoInterfaceException;
+import com.google.collide.dtogen.shared.CompactJsonDto;
+import com.google.collide.dtogen.shared.SerializationIndex;
+import com.google.collide.json.shared.JsonArray;
+import com.google.collide.json.shared.JsonStringMap;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Abstract base class for the source generating template for a single DTO.
@@ -98,7 +99,15 @@ abstract class DtoImpl {
    */
   protected Class<?> getSuperInterface() {
     Class<?>[] superInterfaces = dtoInterface.getInterfaces();
-    return superInterfaces.length == 0 ? null : superInterfaces[0];
+    if (superInterfaces.length==0)
+      return null;
+    if (superInterfaces.length>1){
+      for (Class<?> cls : superInterfaces){
+        if (!cls.equals(Serializable.class))
+          return cls;
+      }
+    }
+    return superInterfaces[0];
   }
 
   /**
@@ -268,9 +277,17 @@ abstract class DtoImpl {
     return method == dtoMethods.get(dtoMethods.size() - 1);
   }
 
+  public boolean isSerializable() {
+    for (Class<?> cls : dtoInterface.getInterfaces())
+      if (cls.equals(Serializable.class))
+        return true;
+    return false;
+  }
+
   /**
    * @return String representing the source definition for the DTO impl as an
    *         inner class.
    */
   abstract String serialize();
+
 }

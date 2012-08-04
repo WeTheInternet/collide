@@ -14,6 +14,8 @@
 
 package com.google.collide.client.editor.renderer;
 
+import java.util.EnumSet;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.FocusManager;
 import com.google.collide.client.editor.Spacer;
@@ -29,12 +31,10 @@ import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.Position;
 import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.util.LineUtils;
-import com.google.collide.shared.document.util.PositionUtils;
 import com.google.collide.shared.document.util.LineUtils.LineVisitor;
+import com.google.collide.shared.document.util.PositionUtils;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
-
-import java.util.EnumSet;
 
 /*-
  * TODO:

@@ -14,6 +14,13 @@
 
 package com.google.collide.server.documents;
 
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
+import org.vertx.java.core.logging.Logger;
+
 import com.google.collide.dto.ClientToServerDocOp;
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
@@ -35,13 +42,6 @@ import com.google.collide.shared.ot.Transformer;
 import com.google.collide.shared.ot.Transformer.TransformException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import org.vertx.java.core.logging.Logger;
-
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 
 /**

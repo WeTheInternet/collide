@@ -21,15 +21,15 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.shared.Pair;
 import com.google.collide.shared.document.Document;
-import com.google.collide.shared.document.Line;
-import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.Document.PreTextListener;
 import com.google.collide.shared.document.Document.TextListener;
+import com.google.collide.shared.document.Line;
+import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.TextChange.Type;
 import com.google.collide.shared.util.JsonCollections;
+import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
 import com.google.collide.shared.util.StringUtils;
 import com.google.collide.shared.util.UnicodeUtils;
-import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 

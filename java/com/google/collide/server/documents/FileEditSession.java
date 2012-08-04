@@ -14,15 +14,15 @@
 
 package com.google.collide.server.documents;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.google.collide.dto.ClientToServerDocOp;
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
 import com.google.collide.server.documents.VersionedDocument.DocumentOperationException;
 import com.google.collide.server.documents.VersionedDocument.VersionedText;
 import com.google.collide.server.shared.merge.ConflictChunk;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * A single workspace file, backed by a {@link VersionedDocument}. Its contents

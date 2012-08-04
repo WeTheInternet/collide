@@ -14,9 +14,9 @@
 
 package com.google.collide.clientlibs.network.shared;
 
-import com.google.collide.dto.client.DtoClientImpls.WorkspaceInfoImpl;
 import com.google.collide.dto.RunTarget;
 import com.google.collide.dto.WorkspaceInfo;
+import com.google.collide.dto.client.DtoClientImpls.WorkspaceInfoImpl;
 
 /**
  * A helper class which does some casting which may not be valid for unit tests. Nothing really

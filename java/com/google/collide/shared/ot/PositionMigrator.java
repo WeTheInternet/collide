@@ -18,9 +18,9 @@ import com.google.collide.dto.DocOp;
 import com.google.collide.dto.shared.DocOpFactory;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
+import com.google.collide.shared.document.Document.TextListener;
 import com.google.collide.shared.document.LineNumberAndColumn;
 import com.google.collide.shared.document.TextChange;
-import com.google.collide.shared.document.Document.TextListener;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar;
 

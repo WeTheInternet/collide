@@ -40,6 +40,36 @@
         </div>
       </div>
     </div>
+    <div>
+      <input ui:field="runGwtRadio" type="radio" name="runType"
+        class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
+      <div class="{res.runButtonTargetPopupCss.stackedContainer}">
+        <div ui:field="runGwtRow">
+          <label ui:field="runGwtLabel">Compile GWT Module</label>
+        </div>
+        <!-- GWT Module Selector Goes Here -->
+      </div>
+    </div>
+    <div>
+      <input ui:field="runAntRadio" type="radio" name="runType"
+        class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
+      <div class="{res.runButtonTargetPopupCss.stackedContainer}">
+        <div ui:field="runAntRow">
+          <label ui:field="runAntLabel">Run Ant Build</label>
+        </div>
+        <!-- Ant Build Selector Goes Here -->
+      </div>
+    </div>
+    <div>
+      <input ui:field="runMavenRadio" type="radio" name="runType"
+        class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
+      <div class="{res.runButtonTargetPopupCss.stackedContainer}">
+        <div ui:field="runMavenRow">
+          <label ui:field="runMavenLabel">Run Maven Goal</label>
+        </div>
+        <!-- Maven Goal Selector Goes Here -->
+      </div>
+    </div>
   </div>
 
 </ui:UiBinder>

@@ -16,6 +16,7 @@ import wetheinter.net.pojo.LazySingletonProvider;
  */
 public class MavenResources implements Serializable{
 
+  private static final long serialVersionUID = -8124340238103827275L;
   private String srcRoot="";
   private String warSrcDir="";
   private String warTargetDir="";

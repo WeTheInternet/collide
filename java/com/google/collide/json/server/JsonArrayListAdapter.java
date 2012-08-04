@@ -14,15 +14,15 @@
 
 package com.google.collide.json.server;
 
-import com.google.collide.json.shared.JsonArray;
-import com.google.collide.json.shared.JsonArrayIterator;
-import com.google.common.base.Joiner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
+import com.google.collide.json.shared.JsonArray;
+import com.google.collide.json.shared.JsonArrayIterator;
+import com.google.common.base.Joiner;
 
 /**
  * Wraps a {@link java.util.List} for use on the server.

@@ -75,6 +75,7 @@
   vertical-align:middle;
 }
 
+
 @sprite .backToLandingButtonImage {
   gwt-image: 'backIcon';
   position: absolute;

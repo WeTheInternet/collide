@@ -14,10 +14,8 @@
 
 package com.google.collide.server.workspace;
 
-import com.google.collide.dto.RunTarget.RunMode;
-import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceMetaDataResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.RunTargetImpl;
-import com.google.collide.server.shared.util.Dto;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
@@ -25,8 +23,10 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.collide.dto.RunTarget.RunMode;
+import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceMetaDataResponseImpl;
+import com.google.collide.dto.server.DtoServerImpls.RunTargetImpl;
+import com.google.collide.server.shared.util.Dto;
 
 /**
  * Persistent workspace state.

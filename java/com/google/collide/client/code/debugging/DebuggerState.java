@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApi.DebuggerResponseListener;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.BreakpointInfo;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.CallFrame;
@@ -35,14 +37,12 @@ import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.json.shared.JsonStringSet;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerManager;
+import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.StringUtils;
-import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
-
-import javax.annotation.Nullable;
 
 /**
  * Represents debugger state on a given debugger session: whether debugger is

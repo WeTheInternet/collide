@@ -14,18 +14,18 @@
 
 package com.google.collide.clientlibs.invalidation;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.util.ClientTimer;
 import com.google.collide.dto.RecoverFromDroppedTangoInvalidationResponse.RecoveredPayload;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.shared.invalidations.InvalidationObjectId;
-import com.google.collide.shared.invalidations.InvalidationUtils;
 import com.google.collide.shared.invalidations.InvalidationObjectId.VersioningRequirement;
+import com.google.collide.shared.invalidations.InvalidationUtils;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nullable;
 
 
 /**

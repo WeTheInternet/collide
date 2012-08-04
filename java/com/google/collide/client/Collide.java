@@ -16,8 +16,8 @@ package com.google.collide.client;
 
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.history.HistoryUtils;
-import com.google.collide.client.history.RootPlace;
 import com.google.collide.client.history.HistoryUtils.ValueChangeListener;
+import com.google.collide.client.history.RootPlace;
 import com.google.collide.client.status.StatusPresenter;
 import com.google.collide.client.util.ClientImplementationsInjector;
 import com.google.collide.client.util.Elements;

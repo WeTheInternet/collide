@@ -33,6 +33,8 @@ import com.google.collide.dto.GetWorkspaceMetaData;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.GetWorkspaceParticipants;
 import com.google.collide.dto.GetWorkspaceParticipantsResponse;
+import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtStatus;
 import com.google.collide.dto.KeepAlive;
 import com.google.collide.dto.LogFatalRecord;
 import com.google.collide.dto.LogFatalRecordResponse;
@@ -43,6 +45,7 @@ import com.google.collide.dto.Search;
 import com.google.collide.dto.SearchResponse;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.ServerToClientDocOps;
+import com.google.collide.dto.SetMavenConfig;
 import com.google.collide.dto.UpdateWorkspaceRunTargets;
 import com.google.collide.dto.WorkspaceTreeUpdate;
 import com.google.collide.dto.client.DtoClientImpls.ServerErrorImpl;
@@ -213,6 +216,20 @@ public class FrontendApi {
   public final RequestResponseApi<CodeErrorsRequest, CodeErrors> GET_CODE_ERRORS =
       makeApi("todo.implementMe");
 
+  /**
+   * Updates a maven config
+   */
+  public final SendApi<SetMavenConfig> SET_MAVEN_CONFIG =
+      makeApi("maven.save");
+//  public final RequestResponseApi<SetMavenConfig,MavenConfig> SET_MAVEN_CONFIG =
+//      makeApi("maven.save");
+
+  public final RequestResponseApi<GwtCompile,GwtStatus> COMPILE_GWT =
+      makeApi("gwt.compile");
+
+  public final RequestResponseApi<GwtCompile, GwtStatus> KILL_GWT =
+      makeApi("gwt.status");
+  
   /**
    * Retrieves code parsing results.
    */

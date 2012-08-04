@@ -14,6 +14,9 @@
 
 package com.google.collide.client.editor;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+import org.waveprotocol.wave.client.common.util.UserAgent;
+
 import com.google.collide.client.common.Constants;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
@@ -24,9 +27,6 @@ import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.Timer;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
-import org.waveprotocol.wave.client.common.util.UserAgent;
 
 import elemental.events.Event;
 

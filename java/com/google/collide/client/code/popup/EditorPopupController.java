@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.popup;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.renderer.SingleChunkLineRenderer;
@@ -33,8 +35,6 @@ import com.google.collide.shared.document.anchor.AnchorType;
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.Element;
 import elemental.util.Timer;
-
-import javax.annotation.Nullable;
 
 /**
  * Controller for the editor-wide popup.

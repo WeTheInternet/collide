@@ -16,8 +16,8 @@ package com.google.collide.client.code;
 
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.dto.TreeNodeInfo;
 import com.google.collide.dto.NodeConflictDto.ConflictedPath;
+import com.google.collide.dto.TreeNodeInfo;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;

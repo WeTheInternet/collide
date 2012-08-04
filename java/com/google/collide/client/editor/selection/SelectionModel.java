@@ -17,6 +17,8 @@ package com.google.collide.client.editor.selection;
 import static com.google.collide.shared.document.util.LineUtils.getLastCursorColumn;
 import static com.google.collide.shared.document.util.LineUtils.rubberbandColumn;
 
+import org.waveprotocol.wave.client.common.util.UserAgent;
+
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator.RoundingStrategy;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.ViewportModel;
@@ -33,17 +35,15 @@ import com.google.collide.shared.document.anchor.ReadOnlyAnchor;
 import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.document.util.PositionUtils;
 import com.google.collide.shared.util.ListenerManager;
+import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.StringUtils;
 import com.google.collide.shared.util.TextUtils;
 import com.google.collide.shared.util.UnicodeUtils;
-import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.regexp.shared.RegExp;
-
-import org.waveprotocol.wave.client.common.util.UserAgent;
 
 // TODO: this class is getting huge, time to split responsibilities
 /**

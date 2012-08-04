@@ -14,6 +14,7 @@
 
 package com.google.collide.dto.client;
 
+import com.google.collide.dto.RoutingTypes;
 import com.google.collide.dtogen.shared.ServerToClientDto;
 import com.google.collide.json.client.Jso;
 

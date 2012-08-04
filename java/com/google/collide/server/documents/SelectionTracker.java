@@ -14,6 +14,9 @@
 
 package com.google.collide.server.documents;
 
+import java.util.List;
+import java.util.Map;
+
 import com.google.collide.dto.DocumentSelection;
 import com.google.collide.dto.server.DtoServerImpls.DocumentSelectionImpl;
 import com.google.collide.dto.server.DtoServerImpls.FilePositionImpl;
@@ -23,9 +26,6 @@ import com.google.collide.shared.document.anchor.AnchorType;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Helper that tracks the selection (cursor and base positions) for each user.

@@ -18,17 +18,17 @@ import com.google.collide.client.AppContext;
 import com.google.collide.client.common.BaseResources;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.dropdown.AutocompleteController;
-import com.google.collide.client.ui.dropdown.DropdownController;
-import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.dropdown.AutocompleteController.AutocompleteHandler;
+import com.google.collide.client.ui.dropdown.DropdownController;
 import com.google.collide.client.ui.dropdown.DropdownController.BaseListener;
 import com.google.collide.client.ui.dropdown.DropdownController.DropdownPositionerBuilder;
+import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.dropdown.DropdownWidgets.DropdownInput;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.menu.AutoHideComponent;
+import com.google.collide.client.ui.menu.AutoHideComponent.AutoHideModel;
 import com.google.collide.client.ui.menu.AutoHideView;
 import com.google.collide.client.ui.menu.PositionController;
-import com.google.collide.client.ui.menu.AutoHideComponent.AutoHideModel;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
@@ -169,6 +169,12 @@ public class RunButtonTargetPopup
     void onAlwaysRunInputChanged();
 
     void onPathInputChanged();
+    
+    void onGwtCompileChanged();
+    
+    void onAntBuildChanged();
+    
+    void onMavenGoalChanged();
   }
 
   public class ViewEventsImpl implements ViewEvents {
@@ -183,6 +189,25 @@ public class RunButtonTargetPopup
       selectRadio(RunMode.ALWAYS_RUN);
       getView().setDisplayForRunningApp();
     }
+    
+    @Override
+    public void onGwtCompileChanged() {
+      selectRadio(RunMode.GWT_COMPILE);
+      getView().setDisplayForRunningApp();
+    }
+    
+    @Override
+    public void onAntBuildChanged() {
+      selectRadio(RunMode.ANT_BUILD);
+      getView().setDisplayForRunningApp();
+    }
+    
+    @Override
+    public void onMavenGoalChanged() {
+      selectRadio(RunMode.MAVEN_BUILD);
+      getView().setDisplayForRunningApp();
+    }
+    
   }
 
   private static final int MAX_AUTOCOMPLETE_RESULTS = 4;
@@ -242,6 +267,8 @@ public class RunButtonTargetPopup
       public void onItemClicked(PathUtil item) {
         getView().runAlwaysDropdown.getInput().setValue(item.getPathString());
         getView().setDisplayForRunningApp();
+        //TODO(james) switch to gwt/ant/maven if the current file is of the correct format
+        //.gwt.xml, build.xml or pom.xml
       }
     };
 
@@ -284,9 +311,15 @@ public class RunButtonTargetPopup
 
   private void selectRadio(RunMode mode) {
     elemental.html.Element preview = Elements.asJsElement(getView().runPreviewRadio);
+    elemental.html.Element gwt = Elements.asJsElement(getView().runGwtRadio);
+    elemental.html.Element ant = Elements.asJsElement(getView().runAntRadio);
+    elemental.html.Element maven = Elements.asJsElement(getView().runMavenRadio);
     elemental.html.Element always = Elements.asJsElement(getView().runAlwaysRadio);
 
     preview.setChecked(mode == RunMode.PREVIEW_CURRENT_FILE);
+    gwt.setChecked(mode == RunMode.GWT_COMPILE);
+    ant.setChecked(mode == RunMode.ANT_BUILD);
+    maven.setChecked(mode == RunMode.MAVEN_BUILD);
     always.setChecked(mode == RunMode.ALWAYS_RUN);
   }
 
@@ -295,13 +328,20 @@ public class RunButtonTargetPopup
     getView().runAlwaysDropdown.getInput().setValue(StringUtils.nullToEmpty(
         runTarget.getAlwaysRunFilename()));
     getView().userExtraInput.setValue(StringUtils.nullToEmpty(runTarget.getAlwaysRunUrlOrQuery()));
+    
+    //XXX this is where we set previous gwt/ant/maven run Strings
+    
   }
 
   public RunTarget getRunTarget() {
     RunTargetImpl runTarget = RunTargetImpl.make();
-
-    boolean isPreviewMode = Elements.asJsElement(getView().runPreviewRadio).isChecked();
-    runTarget.setRunMode(isPreviewMode ? RunMode.PREVIEW_CURRENT_FILE : RunMode.ALWAYS_RUN);
+    
+    runTarget.setRunMode(
+        isChecked(getView().runPreviewRadio)? RunMode.PREVIEW_CURRENT_FILE 
+        : isChecked(getView().runGwtRadio) ? RunMode.GWT_COMPILE
+        : isChecked(getView().runAntRadio) ? RunMode.ANT_BUILD
+        : isChecked(getView().runMavenRadio) ? RunMode.MAVEN_BUILD
+        : RunMode.ALWAYS_RUN);
 
     runTarget.setAlwaysRunFilename(getView().runAlwaysDropdown.getInput().getValue());
     runTarget.setAlwaysRunUrlOrQuery(getView().userExtraInput.getValue());
@@ -309,6 +349,10 @@ public class RunButtonTargetPopup
     return runTarget;
   }
 
+  private boolean isChecked(InputElement input){
+    return Elements.asJsElement(input).isChecked();
+  }
+  
   @Override
   public void show() {
     // Position Ourselves
@@ -333,13 +377,43 @@ public class RunButtonTargetPopup
     // Preview Current File Stuff
     @UiField
     InputElement runPreviewRadio;
-
+    
     @UiField
     LabelElement runPreviewLabel;
 
     @UiField
     SpanElement runPreviewCurrentFile;
 
+    //Run gwt stuff
+    @UiField
+    InputElement runGwtRadio;
+    
+    @UiField
+    LabelElement runGwtLabel;
+    
+    @UiField
+    DivElement runGwtRow;
+    
+    //Run ant stuff
+    @UiField
+    InputElement runAntRadio;
+    
+    @UiField
+    LabelElement runAntLabel;
+    
+    @UiField
+    DivElement runAntRow;
+    
+    //Run maven stuff
+    @UiField
+    InputElement runMavenRadio;
+    
+    @UiField
+    LabelElement runMavenLabel;
+
+    @UiField
+    DivElement runMavenRow;
+    
     // Run always stuff
     @UiField
     DivElement runAlwaysRow;
@@ -377,6 +451,15 @@ public class RunButtonTargetPopup
 
       runPreviewRadio.setId(HTMLPanel.createUniqueId());
       runPreviewLabel.setHtmlFor(runPreviewRadio.getId());
+      
+      runGwtRadio.setId(HTMLPanel.createUniqueId());
+      runGwtLabel.setHtmlFor(runGwtRadio.getId());
+      
+      runAntRadio.setId(HTMLPanel.createUniqueId());
+      runAntLabel.setHtmlFor(runAntRadio.getId());
+      
+      runMavenRadio.setId(HTMLPanel.createUniqueId());
+      runMavenLabel.setHtmlFor(runMavenRadio.getId());
 
       // Create the dropdown
       runAlwaysDropdown = new DropdownInput(resources);
@@ -384,7 +467,9 @@ public class RunButtonTargetPopup
           .addClassName(resources.runButtonTargetPopupCss().alwaysRunInput());
       runAlwaysDropdown.getInput().setAttribute("placeholder", "Enter filename");
       Elements.asJsElement(runAlwaysRow).appendChild(runAlwaysDropdown.getContainer());
-
+      
+      //Create gwt handler XXX
+      
       setDisplayForRunningApp(RunTargetType.FILE);
       attachHandlers();
     }
@@ -418,6 +503,7 @@ public class RunButtonTargetPopup
               evt.stopPropagation();
               hide();
             }
+            //TODO(james) listen for down key, and load more results when at bottom of list
           }
         }
       };

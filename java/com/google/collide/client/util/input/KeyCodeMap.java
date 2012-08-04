@@ -14,12 +14,12 @@
 
 package com.google.collide.client.util.input;
 
-import elemental.events.KeyboardEvent.KeyCode;
-import elemental.js.util.JsArrayOfInt;
-
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEvent.KeySignalType;
 import org.waveprotocol.wave.client.common.util.UserAgent;
+
+import elemental.events.KeyboardEvent.KeyCode;
+import elemental.js.util.JsArrayOfInt;
 
 /**
  * Provides a consistent map from developer-defined strings and web browser

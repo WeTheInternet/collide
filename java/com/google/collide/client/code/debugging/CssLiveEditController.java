@@ -14,6 +14,9 @@
 
 package com.google.collide.client.code.debugging;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.CssStyleSheetHeader;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnAllCssStyleSheetsResponse;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnEvaluateExpressionResponse;
@@ -27,9 +30,6 @@ import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Controller for live edits of CSS files during debugging.

@@ -14,6 +14,9 @@
 
 package com.google.collide.client.documentparser;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.google.collide.client.util.BasicIncrementalScheduler;
 import com.google.collide.client.util.IncrementalScheduler;
 import com.google.collide.client.util.UserActivityManager;
@@ -28,18 +31,15 @@ import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.Position;
 import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.anchor.Anchor;
+import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.document.anchor.AnchorType;
-import com.google.collide.shared.document.anchor.Anchor.RemovalStrategy;
 import com.google.collide.shared.util.ListenerManager;
-import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
+import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * Parser for a document that delegates to CodeMirror.

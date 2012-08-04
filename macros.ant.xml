@@ -36,6 +36,17 @@
     <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-super-${libs.xapi}.jar"/>
   </path>
 
+  <!-- Classpaths for plugins -->
+  <path id="plugins.shared">
+    <pathelement location="${dirs.root}/plugin"/>
+  </path>
+
+  <path id="plugins.server">
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
+    <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+  </path>
+
   <path id="paths.client.build">
     <path refid="paths.shared"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
@@ -58,20 +69,20 @@
 
   <path id="paths.server.build">
     <path refid="paths.shared"/>
+    <path refid="plugins.server"/>
     <pathelement location="${dirs.vertx}/lib/jars/vert.x-core.jar"/>
     <pathelement location="${dirs.vertx}/lib/jars/vert.x-platform.jar"/>
     <pathelement location="${dirs.vertx}/lib/jars/netty.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
-    <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
   </path>
 
   <path id="paths.server.runtime">
     <path refid="paths.shared"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
-    <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
+    <path refid="plugins.server"/>
+    <path refid="paths.client.build"/>
   </path>
 
   <path id="paths.test">
+    <path refid="paths.shared"/>
     <pathelement location="${dirs.bin}"/>
     <pathelement
       location="${dirs.lib}/junit-${libs.junit}/junit-${libs.junit}.jar"/>

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.history;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.clientlibs.navigation.NavigationToken;
@@ -26,8 +28,6 @@ import com.google.common.base.Preconditions;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.SimpleEventBus;
-
-import javax.annotation.Nonnull;
 
 /**
  * A tier in Hierarchical History.

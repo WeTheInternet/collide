@@ -14,15 +14,6 @@
 
 package com.google.collide.dtogen;
 
-import com.google.collide.dtogen.shared.ClientToServerDto;
-import com.google.collide.dtogen.shared.RoutableDto;
-import com.google.collide.dtogen.shared.SerializationIndex;
-import com.google.collide.dtogen.shared.ServerToClientDto;
-import com.google.collide.json.shared.JsonArray;
-import com.google.collide.json.shared.JsonStringMap;
-import com.google.common.base.Preconditions;
-import com.google.common.primitives.Primitives;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -31,6 +22,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import com.google.collide.dtogen.shared.ClientToServerDto;
+import com.google.collide.dtogen.shared.RoutableDto;
+import com.google.collide.dtogen.shared.SerializationIndex;
+import com.google.collide.dtogen.shared.ServerToClientDto;
+import com.google.collide.json.shared.JsonArray;
+import com.google.collide.json.shared.JsonStringMap;
+import com.google.common.base.Preconditions;
+import com.google.common.primitives.Primitives;
 
 
 /**
@@ -591,6 +591,7 @@ public class DtoImplServerTemplate extends DtoImpl {
     builder.append(getImplClassName());
 
     Class<?> superType = getSuperInterface();
+    boolean isSerializable = isSerializable();
     if (superType != null) {
       // We need to extend something.
       builder.append(" extends ");
@@ -601,10 +602,20 @@ public class DtoImplServerTemplate extends DtoImpl {
         builder.append(superType.getSimpleName() + "Impl");
       }
     }
+
     builder.append(" implements ");
     builder.append(dtoInterface.getCanonicalName());
     builder.append(", JsonSerializable");
+    if (isSerializable){
+      builder.append(", java.io.Serializable");
+      //also allow these objects to be stored in SharedData
+      builder.append(", org.vertx.java.core.shareddata.Shareable");
+    }
     builder.append(" {\n\n");
+    
+    if (isSerializable){
+      builder.append("  private static final long serialVersionUID = " +dtoInterface.getCanonicalName().hashCode()+"L;\n");
+    }
 
     // If this guy is Routable, we make two constructors. One is a private
     // default constructor that hard codes the routing type, the other is a

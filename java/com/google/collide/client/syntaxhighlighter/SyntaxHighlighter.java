@@ -14,6 +14,8 @@
 
 package com.google.collide.client.syntaxhighlighter;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.ViewportModel;
@@ -26,8 +28,6 @@ import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerRegistrar;
-
-import javax.annotation.Nonnull;
 
 /**
  * Syntax highlighter for the Collide editor.

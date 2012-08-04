@@ -14,13 +14,13 @@
 
 package com.google.collide.clientlibs.invalidation;
 
+import java.util.logging.Level;
+
 import com.google.collide.shared.util.SharedLogUtils;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.Window;
-
-import java.util.logging.Level;
 
 /**
  * An implementation of the {@link Logger} used by the SimpleListener.

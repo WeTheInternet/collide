@@ -14,6 +14,13 @@
 
 package com.google.collide.shared.util;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+
+import javax.annotation.Nullable;
+
 import com.google.collide.json.server.JsonArrayListAdapter;
 import com.google.collide.json.server.JsonIntegerMapAdapter;
 import com.google.collide.json.server.JsonStringMapAdapter;
@@ -25,13 +32,6 @@ import com.google.collide.json.shared.JsonStringSet;
 import com.google.common.base.Equivalence;
 import com.google.common.base.Objects;
 import com.google.gwt.core.shared.GWT;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-
-import javax.annotation.Nullable;
 
 /**
  * A set of static factory methods for lightweight collections.

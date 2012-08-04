@@ -14,6 +14,8 @@
 
 package com.google.collide.client.editor;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.editor.input.CommonActions;
 import com.google.collide.client.editor.input.DefaultActionExecutor;
 import com.google.collide.client.editor.input.InputScheme;
@@ -23,8 +25,6 @@ import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.Position;
 import com.google.collide.shared.document.util.LineUtils;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 /**
  * Implementation of some common textual actions.

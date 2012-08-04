@@ -14,11 +14,11 @@
 
 package com.google.collide.shared.util;
 
+import java.util.Comparator;
+
 import com.google.collide.dto.WorkspaceInfo;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
-
-import java.util.Comparator;
 
 /**
  * Utilities for managing workspaces.

@@ -150,4 +150,8 @@ public class RoutingTypes {
   public static final int GETMAVENCONFIG = 123;
   public static final int SETMAVENCONFIG = 124;
   public static final int MAVENCONFIG = 125;
+  public static final int GWTSTATUS = 126;
+  public static final int GWTKILL = 127;
+  public static final int GWTCOMPILE = 128;
+  public static final int GWTDIRECTORY = 129;
 }

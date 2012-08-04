@@ -14,10 +14,10 @@
 
 package com.google.collide.client.util.collections;
 
+import javax.annotation.Nonnull;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.common.base.Preconditions;
-
-import javax.annotation.Nonnull;
 
 /**
  * Simple string multiset implementation on the base of {@link ClientStringMap}.

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.gotodefinition;
 
+import javax.annotation.Nullable;
+
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.renderer.LineRenderer;
@@ -30,8 +32,6 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.html.Element;
-
-import javax.annotation.Nullable;
 /**
  * A line renderer that highlights code references "on demand".
  * It always highlights only one reference at a time.

@@ -14,6 +14,8 @@
 
 package com.google.collide.client.code.autocomplete.integration;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
 import com.google.collide.client.code.autocomplete.AutocompleteBox;
 import com.google.collide.client.code.autocomplete.AutocompleteProposal;
 import com.google.collide.client.code.autocomplete.AutocompleteProposals;
@@ -32,8 +34,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.resources.client.CssResource;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.ClientRect;
