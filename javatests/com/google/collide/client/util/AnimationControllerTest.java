@@ -17,7 +17,7 @@ package com.google.collide.client.util;
 import com.google.collide.client.util.AnimationController.State;
 import com.google.gwt.junit.client.GWTTestCase;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Tests for {@link AnimationController}.

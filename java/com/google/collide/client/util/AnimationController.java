@@ -19,9 +19,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /*
  * TODO: Here's the list of short-term TODOs:

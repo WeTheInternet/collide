@@ -17,7 +17,7 @@ package com.google.collide.client.util.dom;
 import com.google.collide.client.util.Elements;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * A class that computes and caches the width of a vertical scrollbar and height

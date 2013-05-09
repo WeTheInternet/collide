@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="css" type="com.google.collide.client.ui.panel.Panel.Css"/>
+  <div ui:field="root" class="{css.root}">
+<!--     <div class="{css.handleContainer}"> -->
+      <div ui:field="north" class="{css.north}"></div>
+      <div ui:field="west" class="{css.west}"></div>
+      <div ui:field="east" class="{css.east}"></div>
+      <div ui:field="south" class="{css.south}"></div>
+      <div ui:field="northeast" class="{css.northeast}"></div>
+      <div ui:field="northwest" class="{css.northwest}"></div>
+      <div ui:field="southeast" class="{css.southeast}"></div>
+      <div ui:field="southwest" class="{css.southwest}"></div>
+<!--     </div> -->
+    <div ui:field="header" class="{css.header}"></div>
+    <div class="{css.positioner}">
+      <div ui:field="contentContainer" class="{css.content}"></div>
+    </div>
+  </div>
+</ui:UiBinder>

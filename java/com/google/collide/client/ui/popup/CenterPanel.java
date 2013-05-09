@@ -35,8 +35,8 @@ import com.google.gwt.user.client.Timer;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent.KeyCode;
+import elemental.js.dom.JsElement;
 import elemental.js.events.JsKeyboardEvent;
-import elemental.js.html.JsElement;
 
 /**
  * A popup that automatically centers its content, even if the dimensions of the content change. The
@@ -57,7 +57,7 @@ public class CenterPanel extends UiComponent<CenterPanel.View> {
    * @param content the content to display in the center of the popup
    * @return a new {@link CenterPanel} instance
    */
-  public static CenterPanel create(Resources resources, elemental.html.Element content) {
+  public static CenterPanel create(Resources resources, elemental.dom.Element content) {
     View view = new View(resources, content);
     return new CenterPanel(view);
   }
@@ -126,7 +126,7 @@ public class CenterPanel extends UiComponent<CenterPanel.View> {
     @UiField
     DivElement popup;
 
-    View(Resources res, elemental.html.Element content) {
+    View(Resources res, elemental.dom.Element content) {
       this.res = res;
       this.css = res.centerPanelCss();
       setElement(Elements.asJsElement(uiBinder.createAndBindUi(this)));

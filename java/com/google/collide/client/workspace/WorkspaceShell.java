@@ -20,8 +20,8 @@ import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Presenter for the top-level shell of the workspace. Nothing more than a
@@ -64,11 +64,11 @@ public class WorkspaceShell extends UiComponent<WorkspaceShell.View> {
     private final Header.View headerView;
     private final DivElement perspectivePanel;
 
-    View(WorkspaceShell.Resources res) {
+    public View(WorkspaceShell.Resources res, boolean detached) {
       super(Elements.createDivElement(res.workspaceShellCss().base()));
 
       // Create DOM and instantiate sub-views.
-      this.headerView = new Header.View(res);
+      this.headerView = new Header.View(res, detached);
       this.headerView.getElement().addClassName(res.workspaceShellCss().header());
       this.perspectivePanel = Elements.createDivElement(res.workspaceShellCss().perspectivePanel());
 

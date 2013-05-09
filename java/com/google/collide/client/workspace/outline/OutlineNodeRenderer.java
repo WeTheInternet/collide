@@ -22,8 +22,8 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 import elemental.html.SpanElement;
 
 /**

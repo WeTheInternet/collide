@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="res"
+		type="com.google.collide.plugin.client.terminal.TerminalLogView.Resources" />
+	<div ui:field="root" class="{res.terminalLogCss.logContainer}">
+			<div ui:field="logHeader" class="{res.terminalLogCss.logHeader}">
+				<!-- Put in clear buttons, log level filter, etc. -->
+			</div>
+		<div ui:field="background" class="{res.terminalLogCss.logPad}">
+			<div ui:field="logBody" class="{res.terminalLogCss.logBody}">
+			</div>
+			<div class="{res.terminalLogCss.cliContainer}">
+		<!-- <div 
+        ui:field="cliInput"
+        contenteditable=""
+      > </div>
+      <a href="javascript:;" ui:field="runButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue}"> Run! </a>
+      -->
+      </div>
+			<div class="{res.terminalLogCss.bottomPlaceHolder}"/>
+		</div>
+  
+	</div>
+</ui:UiBinder>

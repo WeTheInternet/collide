@@ -21,9 +21,9 @@ import com.google.collide.shared.document.anchor.Anchor;
 import com.google.collide.shared.util.SortedList;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /*
  * TODO: Knowledge about what lines the spacer is logically linked
@@ -143,9 +143,9 @@ public class Spacer {
       }
     };
 
-    element.setOnMouseDown(bubblePreventionListener);
-    element.setOnMouseMove(bubblePreventionListener);
-    element.setOnMouseUp(bubblePreventionListener);
+    element.setOnmousedown(bubblePreventionListener);
+    element.setOnmousemove(bubblePreventionListener);
+    element.setOnmouseup(bubblePreventionListener);
 
     buffer.addAnchoredElement(anchor, element);
 

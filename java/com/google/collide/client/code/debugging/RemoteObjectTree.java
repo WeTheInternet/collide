@@ -40,10 +40,10 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.client.Timer;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.DragEvent;
-import elemental.html.Element;
+import elemental.js.html.JsDragEvent;
 
 /**
  * Renders a {@link RemoteObject} in a tree-like UI.
@@ -165,11 +165,11 @@ public class RemoteObjectTree extends UiComponent<RemoteObjectTree.View> {
         }
 
         @Override
-        public void onNodeDragDrop(TreeNodeElement<RemoteObjectNode> node, DragEvent event) {
+        public void onNodeDragDrop(TreeNodeElement<RemoteObjectNode> node, JsDragEvent event) {
         }
 
         @Override
-        public void onRootDragDrop(DragEvent event) {
+        public void onRootDragDrop(JsDragEvent event) {
         }
 
         @Override
@@ -186,7 +186,7 @@ public class RemoteObjectTree extends UiComponent<RemoteObjectTree.View> {
         }
 
         @Override
-        public void onNodeDragStart(TreeNodeElement<RemoteObjectNode> node, DragEvent event) {
+        public void onNodeDragStart(TreeNodeElement<RemoteObjectNode> node, JsDragEvent event) {
         }
       };
 

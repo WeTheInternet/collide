@@ -33,7 +33,7 @@ import com.google.collide.shared.document.LineFinder;
 import com.google.collide.shared.document.anchor.Anchor;
 import com.google.common.base.Preconditions;
 
-import elemental.html.DragEvent;
+import elemental.js.html.JsDragEvent;
 
 /**
  * Controller object that is directly or indirectly notified about events
@@ -176,12 +176,12 @@ public class OutlineController implements CubeUpdateListener, Tree.Listener<Outl
   }
 
   @Override
-  public void onNodeDragDrop(TreeNodeElement<OutlineNode> node, DragEvent event) {
+  public void onNodeDragDrop(TreeNodeElement<OutlineNode> node, JsDragEvent event) {
     // do nothing
   }
 
   @Override
-  public void onRootDragDrop(DragEvent event) {
+  public void onRootDragDrop(JsDragEvent event) {
     // do nothing
   }
 
@@ -205,7 +205,7 @@ public class OutlineController implements CubeUpdateListener, Tree.Listener<Outl
   }
 
   @Override
-  public void onNodeDragStart(TreeNodeElement<OutlineNode> node, DragEvent event) {
+  public void onNodeDragStart(TreeNodeElement<OutlineNode> node, JsDragEvent event) {
     // do nothing
   }
 }

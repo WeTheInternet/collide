@@ -24,8 +24,8 @@ import com.google.collide.client.util.dom.ScrollbarSizeCalculator;
 import com.google.collide.mvp.CompositeView;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
 
 /**
  * The view component of the MVP stack for a gutter.

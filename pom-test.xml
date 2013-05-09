@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<project
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+ xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <modelVersion>4.0.0</modelVersion>
+ <parent>
+  <groupId>com.google.collide</groupId>
+  <artifactId>collide-parent</artifactId>
+  <version>0.3-SNAPSHOT</version>
+  <relativePath>parent/pom.xml</relativePath>
+ </parent>
+ <artifactId>collide-test</artifactId>
+ <packaging>jar</packaging>
+ <name>CollIDE test package</name>
+ <url>http://collide.googlecode.com</url>
+ <properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <collide.home>/opt/collide</collide.home>
+ </properties>
+
+ <build>
+  <!-- TODO split up client and server into modules w/ maven managed dependencies -->
+  <sourceDirectory>${collide.home}/javatests</sourceDirectory>
+  <testSourceDirectory>${collide.home}/javatests</testSourceDirectory>
+  <outputDirectory>${collide.home}/bin/test/classes</outputDirectory>
+  <testOutputDirectory>${collide.home}/bin/test/classes</testOutputDirectory>
+  <plugins>
+   <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <version>1.7</version>
+    <executions>
+     <execution>
+      <id>add-test-source</id>
+      <phase>generate-sources</phase>
+      <goals>
+       <goal>add-source</goal>
+      </goals>
+      <configuration>
+       <sources>
+        <source>${collide.home}/java</source>
+        <source>${collide.home}/bin/gen</source>
+        <source>${collide.home}/plugin</source>
+        <source>${collide.home}/bin/test/gen</source>
+       </sources>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+   <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.7</version>
+    <executions>
+     <execution>
+      <phase>process-sources</phase>
+      <configuration>
+       <target>
+        <property name="compile_classpath" refid="maven.compile.classpath" />
+        <property name="runtime_classpath" refid="maven.runtime.classpath" />
+        <property name="test_classpath" refid="maven.test.classpath" />
+        <property name="plugin_classpath" refid="maven.plugin.classpath" />
+        <ant antfile="${collide.home}/build.xml">
+         <target name="test" />
+        </ant>
+       </target>
+
+      </configuration>
+      <goals>
+       <goal>run</goal>
+      </goals>
+     </execution>
+     <execution>
+      <id>generate-sources</id>
+      <phase>initialize</phase>
+      <configuration>
+       <target>
+        <ant antfile="${collide.home}/build.xml">
+         <target name="test-compile" />
+        </ant>
+       </target>
+      </configuration>
+      <goals>
+       <goal>run</goal>
+      </goals>
+     </execution>
+    </executions>
+    <dependencies>
+     <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.9.0</version>
+     </dependency>
+     <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant-junit</artifactId>
+      <version>1.9.0</version>
+     </dependency>
+    </dependencies>
+   </plugin>
+  </plugins>
+  <defaultGoal>antrun:run</defaultGoal>
+ </build>
+
+ <dependencies>
+  <dependency>
+   <groupId>junit</groupId>
+   <artifactId>junit</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>ant</groupId>
+   <artifactId>ant-junit</artifactId>
+   <version>1.6.5</version>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.collide</groupId>
+   <artifactId>collide-core</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.collide</groupId>
+   <artifactId>collide-plugin</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.code.gson</groupId>
+   <artifactId>gson</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-user</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-elemental</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-codeserver</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-dev</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-core</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.vert-x</groupId>
+   <artifactId>vertx-lang-java</artifactId>
+   <scope>provided</scope>
+  </dependency>
+
+  <dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava-gwt</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava</artifactId>
+   <scope>provided</scope>
+  </dependency>
+
+  <dependency>
+   <groupId>org.eclipse.jgit</groupId>
+   <artifactId>org.eclipse.jgit</artifactId>
+   <scope>provided</scope>
+  </dependency>
+
+  <dependency>
+   <groupId>org.easymock</groupId>
+   <artifactId>easymock</artifactId>
+   <scope>provided</scope>
+  </dependency>
+
+
+
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox</artifactId>
+   <version>0.3</version>
+   <scope>system</scope>
+   <systemPath>${collide.wave}/waveinabox-import-0.3.jar</systemPath>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-model</artifactId>
+   <version>0.3</version>
+   <scope>system</scope>
+   <systemPath>${collide.wave}/model-src.jar</systemPath>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-client-common</artifactId>
+   <version>0.3</version>
+   <scope>system</scope>
+   <systemPath>${collide.wave}/client-common-src.jar</systemPath>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-client-scheduler</artifactId>
+   <version>0.3</version>
+   <scope>system</scope>
+   <systemPath>${collide.wave}/client-scheduler-src.jar</systemPath>
+  </dependency>
+
+ </dependencies>
+
+</project>

@@ -29,6 +29,12 @@ public class PlaceConstants {
   public static final String FILEHISTORY_PLACE_NAME = "history";
   public static final String DEBUG_PLACE_NAME = "debug";
   public static final String HOME_PLACE_NAME = "home";
+  public static final String GWT_PLACE_NAME = "gwt";
+  public static final String INSPECTOR_PLACE_NAME = "open";
+  public static final String TERMINAL_PLACE_NAME = "sh";
+  public static final String ANT_PLACE_NAME = "ant";
+  public static final String MAVEN_PLACE_NAME = "mvn";
+//  public static final String STANDALONE_PLACE_NAME = "util";
 
   private PlaceConstants() {
   }

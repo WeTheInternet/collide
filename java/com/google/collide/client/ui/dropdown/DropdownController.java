@@ -29,9 +29,9 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * A controller that can add a dropdown to any element.

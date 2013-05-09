@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="res"
+		type="com.google.collide.plugin.client.gwt.GwtClasspathView.Resources" />
+	<div ui:field="body" class="{res.gwtClasspathCss.classpathContainer}">
+		<label ui:field="classpathLabel">Classpath: </label><ul 
+			ui:field="classpath"
+			class="{res.gwtClasspathCss.classpathInput}"
+		/>
+	</div>
+</ui:UiBinder>

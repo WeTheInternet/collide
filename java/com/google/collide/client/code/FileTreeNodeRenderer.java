@@ -24,12 +24,12 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.client.workspace.WorkspaceUtils;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
 import elemental.html.AnchorElement;
 import elemental.html.DivElement;
-import elemental.html.Element;
 import elemental.html.SpanElement;
 
 /**

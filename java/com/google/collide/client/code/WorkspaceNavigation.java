@@ -149,7 +149,7 @@ public class WorkspaceNavigation extends UiComponent<WorkspaceNavigation.View> {
                   ResizeProperty.HEIGHT, css.bottomSectionsHeight()),
               new ResizeController.ElementInfo(Elements.asJsElement(bottomSectionsContent),
                   ResizeProperty.HEIGHT, css.bottomSectionsHeight()));
-      splitterController.setNegativeDelta(true);
+      splitterController.setNegativeDeltaH(true);
       splitterController.start();
     }
 

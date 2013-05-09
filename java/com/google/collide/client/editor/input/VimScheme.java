@@ -38,7 +38,7 @@ import com.google.collide.shared.util.TextUtils;
 import com.google.common.base.Preconditions;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Basic Vi(m) keybinding support. This is limited to single file operations.

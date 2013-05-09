@@ -15,7 +15,7 @@
 package com.google.collide.client.diff;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.code.EditableContentArea.Content;
+import com.google.collide.client.code.FileContent;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Buffer.ScrollListener;
 import com.google.collide.client.editor.Editor;
@@ -31,8 +31,8 @@ import com.google.collide.shared.document.Document;
 import com.google.common.base.Preconditions;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Container for the diff editor which contains an editor for the before
@@ -44,7 +44,7 @@ import elemental.html.Element;
  *
  */
 public class EditorDiffContainer extends UiComponent<EditorDiffContainer.View>
-    implements Content {
+    implements FileContent {
 
   /**
    * Static factory method for obtaining an instance of the EditorDiffContainer.
@@ -110,13 +110,13 @@ public class EditorDiffContainer extends UiComponent<EditorDiffContainer.View>
   private final EditorDiffBundle editorAfter;
   private final AppContext appContext;
   private PathUtil path;
-  
+
   public static final Revision UNKNOWN_REVISION = RevisionImpl.make().setRootId("").setNodeId("");
   private Revision revisionBefore = UNKNOWN_REVISION;
   private Revision revisionAfter = UNKNOWN_REVISION;
   private Revision expectedRevisionBefore = UNKNOWN_REVISION;
   private Revision expectedRevisionAfter = UNKNOWN_REVISION;
-  
+
   private EditorDiffContainer(View view, AppContext appContext, final EditorDiffBundle editorBefore,
       final EditorDiffBundle editorAfter) {
     super(view);
@@ -150,6 +150,11 @@ public class EditorDiffContainer extends UiComponent<EditorDiffContainer.View>
         && isSameRevision(revisionAfter, expectedRevisionAfter);
   }
 
+  @Override
+  public PathUtil filePath() {
+    return path;
+  }
+  
   public void setExpectedRevisions(Revision revisionBefore, Revision revisionAfter) {
     expectedRevisionBefore = Preconditions.checkNotNull(revisionBefore);
     expectedRevisionAfter = Preconditions.checkNotNull(revisionAfter);
@@ -224,7 +229,7 @@ public class EditorDiffContainer extends UiComponent<EditorDiffContainer.View>
     // TODO: update when setDocument(null) works
     editorBefore.getEditor().setDocument(Document.createEmpty());
     editorAfter.getEditor().setDocument(Document.createEmpty());
-    
+
     revisionAfter = UNKNOWN_REVISION;
     revisionBefore = UNKNOWN_REVISION;
   }
@@ -240,5 +245,10 @@ public class EditorDiffContainer extends UiComponent<EditorDiffContainer.View>
 
   @Override
   public void onContentDisplayed() {
+  }
+
+  @Override
+  public void onContentDestroyed() {
+
   }
 }

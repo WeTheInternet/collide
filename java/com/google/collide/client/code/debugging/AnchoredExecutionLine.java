@@ -23,7 +23,7 @@ import com.google.collide.shared.document.anchor.Anchor;
 import com.google.collide.shared.document.anchor.AnchorManager;
 import com.google.collide.shared.document.anchor.AnchorType;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Handles an <i>execution line</i> anchored into a document.

@@ -14,7 +14,7 @@
 
 package com.google.collide.client.search;
 
-import com.google.collide.client.code.EditableContentArea.Content;
+import com.google.collide.client.code.FileContent;
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.util.Elements;
@@ -29,11 +29,11 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.AnchorElement;
 import elemental.html.DivElement;
-import elemental.html.Element;
 import elemental.html.SpanElement;
 
 /**
@@ -41,7 +41,7 @@ import elemental.html.SpanElement;
  * page. (Local search and search-and-replace do not...)
  *
  */
-public class SearchContainer extends UiComponent<SearchContainer.View> implements Content {
+public class SearchContainer extends UiComponent<SearchContainer.View> implements FileContent {
 
   public interface Css extends CssResource {
     String container();
@@ -119,6 +119,11 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
     showResultsImpl(
         message.getPage(), message.getPageCount(), (JsoArray<SearchResult>) message.getResults());
   }
+  
+  @Override
+  public PathUtil filePath() {
+    return null;
+  }
 
   @Override
   public Element getContentElement() {
@@ -159,7 +164,7 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
       } else {
         // this is the common case; the title will be a path in this workspace
         // and clicking on the link should take us to its editor.
-        title.setOnClick(new EventListener() {
+        title.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             currentPlace.fireChildPlaceNavigation(
@@ -173,7 +178,7 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
         DivElement snippetDiv = Elements.createDivElement(css.snippet());
         final int lineNo = snippets.get(j).getLineNumber();
         snippetDiv.setTextContent(lineNo + ": " + snippets.get(j).getSnippetText());
-        snippetDiv.setOnClick(new EventListener() {
+        snippetDiv.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             // lineNo is 1-based, whereas the editor expects 0-based
@@ -193,7 +198,7 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
       if (page > 1) {
         DivElement previous = Elements.createDivElement(css.previous());
         getView().pager.appendChild(previous);
-        previous.setOnClick(new EventListener() {
+        previous.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             currentPlace.fireChildPlaceNavigation(
@@ -213,7 +218,7 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
         counter.setTextContent(Integer.toString(i));
         getView().pager.appendChild(counter);
         final int pageNumber = i;
-        counter.setOnClick(new EventListener() {
+        counter.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             currentPlace.fireChildPlaceNavigation(
@@ -229,7 +234,7 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
       if (page < pageCount) {
         DivElement next = Elements.createDivElement(css.next());
         getView().pager.appendChild(next);
-        next.setOnClick(new EventListener() {
+        next.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             currentPlace.fireChildPlaceNavigation(
@@ -238,5 +243,10 @@ public class SearchContainer extends UiComponent<SearchContainer.View> implement
         });
       }
     }
+  }
+
+  @Override
+  public void onContentDestroyed() {
+
   }
 }

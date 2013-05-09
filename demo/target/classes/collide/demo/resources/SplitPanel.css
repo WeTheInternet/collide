@@ -1,0 +1,74 @@
+@def splitColor rgba(128, 128, 192, 0.3);
+
+.splitPanel {
+ position: relative;
+ overflow: auto;
+}
+
+.splitPanel, .splitPanelChild {
+ width: 100%;
+ height: 100%;
+}
+
+.panelContent {
+ position: absolute;
+ left: 15px;
+ top: 15px;
+ right: 15px;
+ bottom: 15px;
+ overflow: auto;
+}
+.verticalSplit > .splitPanelChild > .panelContent {
+ left: 0px;
+ right: 0px;
+}
+.horizontalSplit > .splitPanelChild > .panelContent {
+ top: 0px;
+ bottom: 0px;
+}
+.leftSplit, .rightSplit {
+ cursor: ew-resize;
+ width: 5px;
+ top: 10%;
+ height: 80%;
+}
+
+.topSplit, .bottomSplit {
+ cursor: ns-resize;
+ height: 5px;
+ left: 10%;
+ width: 80%;
+}
+
+.splitPanel > .splitPanelChild > .splitPanel  {
+ left: 0px;
+ top: 0px;
+ right: 0px;
+ bottom: 0px;
+}
+
+.splitPanelChild, .leftSplit, .rightSplit, .topSplit, .bottomSplit {
+ position: absolute;
+}
+.leftSplit, .rightSplit, .topSplit, .bottomSplit {
+ -moz-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0 0 3px 3px splitColor;
+  box-shadow: 0 0 3px 3px splitColor;
+}
+
+.leftSplit {
+ left: 0px;
+}
+
+.rightSplit {
+ right: 0px;
+}
+
+.topSplit {
+ top: 0px;
+}
+
+.bottomSplit {
+ bottom: 0px;
+}

@@ -22,11 +22,11 @@ import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.ImageResource;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.AnchorElement;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * A button containing and image and text.

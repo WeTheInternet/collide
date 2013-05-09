@@ -19,12 +19,12 @@ import com.google.collide.client.util.CssUtils;
 import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
 import elemental.html.HTMLCollection;
-import elemental.js.html.JsElement;
+import elemental.js.dom.JsElement;
 
 /**
  * An object which manages a list of elements and treats them as tabs.

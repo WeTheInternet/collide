@@ -93,6 +93,6 @@ public class FileTreeNodeDataAdapter implements NodeDataAdapter<FileTreeNode> {
 
   @Override
   public FileTreeNode getNodeByPath(FileTreeNode root, JsonArray<String> relativeNodePath) {
-    return root.findChildNode(PathUtil.createFromPathComponents(relativeNodePath));        
+    return root.findChildNode(PathUtil.createFromPathComponents(relativeNodePath));
   }
 }

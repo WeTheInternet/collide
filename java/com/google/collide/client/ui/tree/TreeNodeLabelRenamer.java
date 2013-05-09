@@ -16,7 +16,7 @@ package com.google.collide.client.ui.tree;
 
 import com.google.collide.client.ui.tree.TreeNodeMutator.Css;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Utility for mutating the String name for the model object backing a

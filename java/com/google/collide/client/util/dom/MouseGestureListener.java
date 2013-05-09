@@ -18,11 +18,11 @@ import com.google.collide.client.util.dom.eventcapture.MouseCaptureListener;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
 import com.google.gwt.user.client.Timer;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
 
 /**
  * An {@link EventListener} implementation that parses the low-level events and

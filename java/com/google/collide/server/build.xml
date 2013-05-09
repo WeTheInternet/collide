@@ -4,7 +4,11 @@
   <!-- Import common properties and macros -->
   <import file="${dirs.root}/macros.ant.xml"/>
 
+	<copy todir="${dirs.bin}/META-INF" file="${dirs.plugin}/META-INF/collide.settings">
+	</copy>
+	
   <property name="server.src" location="${dirs.src}/${dirs.toppkg}/server/"/>
+  <property name="server.plugin" location="${dirs.plugin}/${dirs.toppkg}/plugin/"/>
 
   <include optional="false" as="src.dto" file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
 
@@ -35,7 +39,7 @@
            file="${server.src}/maven/build.xml"/>
 
   <include optional="false" as="src.plugin"
-           file="${server.src}/plugin/build.xml"/>
+           file="${server.plugin}/server/build.xml"/>
   
   <target name="build" description="Builds the collide server vertx modules."
           depends="src.sharedserver.build, src.dto.server, src.documents.build, src.fe.build,

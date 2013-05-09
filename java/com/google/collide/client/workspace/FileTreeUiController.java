@@ -27,8 +27,8 @@ import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.FileTreeContextMenuController.ContextMenuMode;
 import com.google.collide.json.shared.JsonArray;
 
-import elemental.html.DragEvent;
 import elemental.html.Location;
+import elemental.js.html.JsDragEvent;
 
 /**
  * Listens for changes to the model via callbacks from {@link FileTreeModel} and updates the Tree.
@@ -67,9 +67,9 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
 
   /** Listener for drag-and-drop events on nodes in the file tree. */
   public interface DragDropListener {
-    void onDragStart(FileTreeNode node, DragEvent event);
+    void onDragStart(FileTreeNode node, JsDragEvent event);
 
-    void onDragDrop(FileTreeNode node, DragEvent event);
+    void onDragDrop(FileTreeNode node, JsDragEvent event);
   }
 
   private final FileTreeContextMenuController contextMenuController;
@@ -264,7 +264,7 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
       }
 
       @Override
-      public void onNodeDragDrop(TreeNodeElement<FileTreeNode> node, DragEvent event) {
+      public void onNodeDragDrop(TreeNodeElement<FileTreeNode> node, JsDragEvent event) {
         if (treeNodeMoveListener != null) {
           treeNodeMoveListener.onDragDrop(node.getData(), event);
         }
@@ -275,7 +275,7 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
       }
 
       @Override
-      public void onRootDragDrop(DragEvent event) {
+      public void onRootDragDrop(JsDragEvent event) {
         if (treeNodeMoveListener != null) {
           treeNodeMoveListener.onDragDrop(fileTreeModel.getWorkspaceRoot(), event);
         }
@@ -286,7 +286,7 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
       }
 
       @Override
-      public void onNodeDragStart(TreeNodeElement<FileTreeNode> node, DragEvent event) {
+      public void onNodeDragStart(TreeNodeElement<FileTreeNode> node, JsDragEvent event) {
         // When drag starts in tree, we do not know if users want to drop it
         // outside tree or in tree. So, we prepare for both cases.
         prepareForDraggingToOutside(node, event);
@@ -317,7 +317,7 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
       }
 
       private void prepareForDraggingToOutside(
-          TreeNodeElement<FileTreeNode> node, DragEvent event) {
+          TreeNodeElement<FileTreeNode> node, JsDragEvent event) {
         FileTreeNode fileTreeNode = node.getData();
         PathUtil nodePath = fileTreeNode.getNodePath();
 

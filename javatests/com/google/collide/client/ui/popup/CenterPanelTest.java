@@ -23,7 +23,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Timer;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Tests for {@link CenterPanel}.

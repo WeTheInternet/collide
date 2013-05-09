@@ -18,7 +18,7 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.HasView;
 import com.google.collide.shared.util.JsonCollections;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Encapsulates a list of dom elements that are to be reused during rendering. This controller will

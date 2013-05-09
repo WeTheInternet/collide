@@ -1,0 +1,188 @@
+.root {
+  position: absolute;
+  z-index: popupZIndex;
+  background-color: white;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 2px 2px 10px #333;
+  box-shadow: 2px 2px 10px #333;
+  font-size: secondaryTextFontSize;
+  margin: 5px 8px;
+}
+.header{
+  z-index: 1;
+}
+
+.headerText {
+  font-family: "open sans", arial, sans-serif;
+  font-size: 1.45em;
+  color: #222;
+  padding-left: 0.5em;
+  padding-top: 0.25em;
+}
+
+/* Colors for debugging drag handles 
+.east, .west, .north, .south{
+  background-color: #666
+}
+.northeast, .southwest, .northwest, .southeast{
+  background-color: #111
+}
+*/
+
+.header{
+  display:block;
+  width: 100%;
+}
+
+.east, .west, .north, .south, .northeast, .southwest, .northwest, .southeast, .handleContainer, .header {
+  position: absolute;
+  z-index: 1;
+}
+.caliper {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+}
+.handleContainer {
+  left: -0.1em;
+  top: -0.1em;
+  z-index: -1;
+}
+.north, .south{
+  height: 0.5em;
+}
+.east, .west{
+  width: 0.5em;
+}
+.northeast, .northwest, .southeast, .southwest{
+  height: 1em;
+  width: 1em;
+}
+.north, .south {
+  left: 0px;
+  width: 100%;
+}
+.east, .west {
+  top: 0px;
+  height: 100%;
+}
+.north {
+  top: -0.5em;
+}
+.northeast, .northwest {
+  top: -0.75em;
+}
+.south {
+  bottom: -0.5em;
+}
+.southeast, .southwest {
+  bottom: -0.75em;
+}
+.east {
+  right: -0.5em;
+}
+.northeast, .southeast {
+  right: -0.75em;
+}
+.west {
+  left: -0.5em;
+}
+.northwest, .southwest {
+  left: -0.75em;
+}
+
+.northeast{
+  cursor: ne-resize;
+}
+.northwest{
+  cursor: nw-resize;
+}
+.southeast{
+  cursor: se-resize;
+}
+.southwest {
+  cursor: sw-resize;
+}
+.header, .draggable {
+  cursor: move;
+}
+
+.handleContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.positioner {
+  position: absolute;
+  top: 2em;
+  bottom: 1em;
+  right: 7px;
+  left: 7px;
+  overflow: auto;
+  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+
+  display: box;
+  box-orient: vertical;
+  box-pack: center;
+  box-align: center;
+  
+}
+
+.content {
+  display: inline-block;
+  background: #fff;
+  overflow: hidden;
+/*  border: 1px solid #ccc;
+  -moz-box-shadow: 0 2px 4px 2px #ebebeb;
+  -webkit-box-shadow: 0 2px 4px 2px #ebebeb;
+  box-shadow: 0 2px 4px 2px #ebebeb;*/
+/* Re-enable once http://code.google.com/p/chromium/issues/detail?id=100614 is resolved
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  -moz-transition: all animationDuration;
+  -webkit-transition: all animationDuration;
+  transition: all animationDuration;
+  opacity: 0;
+*/
+}
+
+.buttonBar {
+  /* position: absolute;
+  right: 1em;
+  top: 0px; */
+  float: right;
+  padding-right: 12px;
+}
+
+.closeIcon, .maximizeIcon, .refreshIcon {
+  border: 1px solid #abc;
+  -moz-box-shadow: 0 1px 2px 1px #cbcbeb;
+  -webkit-box-shadow: 0 1px 2px 1px #cbcbeb;
+  height: 18px;
+  width: 18px;
+  vertical-align: middle;
+  text-align: center;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute;
+  left: -2000px;
+  top: -2000px;
+}

@@ -1,0 +1,1291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+  Class: Vertx::HttpServerResponse
+  
+    &mdash; Ruby API Doc
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '../';
+  framesUrl = "../frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (H)</a> &raquo;
+    <span class='title'><span class='object_link'><a href="../Vertx.html" title="Vertx (module)">Vertx</a></span></span>
+     &raquo; 
+    <span class="title">HttpServerResponse</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="../class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="../method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="../file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><h1>Class: Vertx::HttpServerResponse
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName">Object</span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next">Vertx::HttpServerResponse</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+      <dt class="r2">Includes:</dt>
+      <dd class="r2"><span class='object_link'><a href="WriteStream.html" title="Vertx::WriteStream (module)">WriteStream</a></span></dd>
+      
+    
+  
+  
+  
+    <dt class="r1 last">Defined in:</dt>
+    <dd class="r1 last">src/main/ruby_scripts/core/http.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    Encapsulates a server-side HTTP response.
+
+An instance of this class is created and associated to every instance of <span class='object_link'><a href="HttpServerRequest.html" title="Vertx::HttpServerRequest (class)">HttpServerRequest</a></span> that is created.
+
+It allows the developer to control the HTTP response that is sent back to the client for the corresponding HTTP
+request. It contains methods that allow HTTP headers and trailers to be set, and for a body to be written out
+to the response.
+
+It also allows a file to be streamed by the kernel directly from disk to the outgoing HTTP connection,
+bypassing user space altogether (where supported by the underlying operating system). This is a very efficient way of
+serving files from the server since buffers do not have to be read one by one from the file and written to the outgoing
+socket.
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Author:</p>
+<ul class="author">
+  
+    <li>
+      
+      
+      
+      
+        
+        <div class='inline'><a href="http://tfox.org" target="_parent" title="Tim Fox">Tim Fox</a></div>
+      
+    </li>
+  
+</ul>
+
+</div>
+
+
+
+
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#chunked%3D-instance_method" title="#chunked= (instance method)">- (HttpServerResponse) <strong>chunked=</strong>(val) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Sets whether this response uses HTTP chunked encoding or not.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#close-instance_method" title="#close (instance method)">- (Object) <strong>close</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Close the underlying TCP connection.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#end-instance_method" title="#end (instance method)">- (Object) <strong>end</strong>(data = nil) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Ends the response.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#headers-instance_method" title="#headers (instance method)">- (Hash) <strong>headers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>The response headers.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#put_header-instance_method" title="#put_header (instance method)">- (HttpClientRequest) <strong>put_header</strong>(key, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Inserts a header into the response.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#put_trailer-instance_method" title="#put_trailer (instance method)">- (HttpClientRequest) <strong>put_trailer</strong>(key, value) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Inserts a trailer into the response.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#send_file-instance_method" title="#send_file (instance method)">- (HttpServerResponse) <strong>send_file</strong>(path) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Tell the kernel to stream a file directly from disk to the outgoing connection, bypassing userspace altogether
+(where supported by the underlying operating system. This is a very efficient way to serve files..</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#status_code%3D-instance_method" title="#status_code= (instance method)">- (Object) <strong>status_code=</strong>(val) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Set the status code of the response.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#status_message%3D-instance_method" title="#status_message= (instance method)">- (Object) <strong>status_message=</strong>(val) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#trailers-instance_method" title="#trailers (instance method)">- (Object) <strong>trailers</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>The response trailers.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#write_buffer-instance_method" title="#write_buffer (instance method)">- (HttpServerResponse) <strong>write_buffer</strong>(chunk, &amp;hndlr) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Write a buffer to the response.</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#write_str-instance_method" title="#write_str (instance method)">- (HttpServerResponse) <strong>write_str</strong>(str, enc = &quot;UTF-8&quot;, &amp;hndlr) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>Write a String to the response.</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  <h3 class="inherited">Methods included from <span class='object_link'><a href="WriteStream.html" title="Vertx::WriteStream (module)">WriteStream</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="WriteStream.html#drain_handler-instance_method" title="Vertx::WriteStream#drain_handler (method)">#drain_handler</a></span>, <span class='object_link'><a href="WriteStream.html#exception_handler-instance_method" title="Vertx::WriteStream#exception_handler (method)">#exception_handler</a></span>, <span class='object_link'><a href="WriteStream.html#write_queue_full%3F-instance_method" title="Vertx::WriteStream#write_queue_full? (method)">#write_queue_full?</a></span>, <span class='object_link'><a href="WriteStream.html#write_queue_max_size%3D-instance_method" title="Vertx::WriteStream#write_queue_max_size= (method)">#write_queue_max_size=</a></span></p>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="chunked=-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>) <strong>chunked=</strong>(val) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Sets whether this response uses HTTP chunked encoding or not.
+will correspond to a new HTTP chunk sent on the wire. If chunked encoding is used the HTTP header
+'Transfer-Encoding' with a value of 'Chunked' will be automatically inserted in the response.
+If chunked is false, this response will not use HTTP chunked encoding, and therefore if any data is written the
+body of the response, the total size of that data must be set in the 'Content-Length' header before any
+data is written to the response body.
+An HTTP chunked response is typically used when you do not know the total size of the request body up front.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>val.</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>If val is true, this response will use HTTP chunked encoding, and each call to write to the body</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+647
+648
+649
+650</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 647</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_chunked= identifier id'>chunked=</span><span class='lparen token'>(</span><span class='rubyid_val identifier id'>val</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_setChunked identifier id'>setChunked</span><span class='lparen token'>(</span><span class='rubyid_val identifier id'>val</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="close-instance_method">
+  
+    - (<tt>Object</tt>) <strong>close</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Close the underlying TCP connection
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+665
+666
+667</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 665</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_close identifier id'>close</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_close identifier id'>close</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="end-instance_method">
+  
+    - (<tt>Object</tt>) <strong>end</strong>(data = nil) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Ends the response. If no data has been written to the response body, the actual response won't get written until this method gets called.
+Once the response has ended, it cannot be used any more, and if keep alive is true the underlying connection will
+be closed.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>data.</span>
+      
+      
+        <span class='type'>(<tt>String</tt>, <tt><span class='object_link'><a href="Buffer.html" title="Vertx::Buffer (class)">Buffer</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Optional String or Buffer to write before ending the response</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+656
+657
+658
+659
+660
+661
+662</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 656</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_end end kw'>end</span><span class='lparen token'>(</span><span class='rubyid_data identifier id'>data</span> <span class='assign token'>=</span> <span class='rubyid_nil nil kw'>nil</span><span class='rparen token'>)</span>
+  <span class='rubyid_if if kw'>if</span> <span class='lparen token'>(</span><span class='rubyid_data identifier id'>data</span><span class='dot token'>.</span><span class='rubyid_is_a? fid id'>is_a?</span> <span class='rubyid_String constant id'>String</span><span class='rparen token'>)</span> <span class='orop op'>||</span> <span class='lparen token'>(</span><span class='rubyid_data identifier id'>data</span><span class='dot token'>.</span><span class='rubyid_is_a? fid id'>is_a?</span> <span class='rubyid_Buffer constant id'>Buffer</span><span class='rparen token'>)</span>
+    <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_end identifier id'>end</span><span class='lparen token'>(</span><span class='rubyid_data identifier id'>data</span><span class='rparen token'>)</span>
+  <span class='rubyid_else else kw'>else</span>
+    <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_end identifier id'>end</span>
+  <span class='rubyid_end end kw'>end</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="headers-instance_method">
+  
+    - (<tt>Hash</tt>) <strong>headers</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    The response headers
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The response headers</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+576
+577
+578
+579
+580
+581</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 576</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_headers identifier id'>headers</span>
+  <span class='rubyid_if if kw'>if</span> <span class='notop op'>!</span><span class='rubyid_@headers ivar id'>@headers</span>
+    <span class='rubyid_@headers ivar id'>@headers</span> <span class='assign token'>=</span> <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_headers identifier id'>headers</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_@headers ivar id'>@headers</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="put_header-instance_method">
+  
+    - (<tt><span class='object_link'><a href="HttpClientRequest.html" title="Vertx::HttpClientRequest (class)">HttpClientRequest</a></span></tt>) <strong>put_header</strong>(key, value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Inserts a header into the response.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The header key</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The header value. to_s will be called on the value to determine the actual String value to insert.</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="HttpClientRequest.html" title="Vertx::HttpClientRequest (class)">HttpClientRequest</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+587
+588
+589
+590</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 587</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_put_header identifier id'>put_header</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_putHeader identifier id'>putHeader</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_s identifier id'>to_s</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="put_trailer-instance_method">
+  
+    - (<tt><span class='object_link'><a href="HttpClientRequest.html" title="Vertx::HttpClientRequest (class)">HttpClientRequest</a></span></tt>) <strong>put_trailer</strong>(key, value) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Inserts a trailer into the response.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>key</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The header key</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>value</span>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The header value. to_s will be called on the value to determine the actual String value to insert.</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="HttpClientRequest.html" title="Vertx::HttpClientRequest (class)">HttpClientRequest</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+596
+597
+598
+599</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 596</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_put_trailer identifier id'>put_trailer</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_putTrailer identifier id'>putTrailer</span><span class='lparen token'>(</span><span class='rubyid_key identifier id'>key</span><span class='comma token'>,</span> <span class='rubyid_value identifier id'>value</span><span class='dot token'>.</span><span class='rubyid_to_s identifier id'>to_s</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="send_file-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>) <strong>send_file</strong>(path) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Tell the kernel to stream a file directly from disk to the outgoing connection, bypassing userspace altogether
+(where supported by the underlying operating system. This is a very efficient way to serve files.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>path.</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Path to file to send.</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+633
+634
+635
+636</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 633</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_send_file identifier id'>send_file</span><span class='lparen token'>(</span><span class='rubyid_path identifier id'>path</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_sendFile identifier id'>sendFile</span><span class='lparen token'>(</span><span class='rubyid_path identifier id'>path</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="status_code=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>status_code=</strong>(val) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Set the status code of the response. Default is 200
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>val.</span>
+      
+      
+        <span class='type'>(<tt>FixNum</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The HTTP status code.</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+567
+568
+569</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 567</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_status_code= identifier id'>status_code=</span><span class='lparen token'>(</span><span class='rubyid_val identifier id'>val</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_statusCode identifier id'>statusCode</span> <span class='assign token'>=</span> <span class='rubyid_val identifier id'>val</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="status_message=-instance_method">
+  
+    - (<tt>Object</tt>) <strong>status_message=</strong>(val) 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+571
+572
+573</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 571</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_status_message= identifier id'>status_message=</span><span class='lparen token'>(</span><span class='rubyid_val identifier id'>val</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_statusMessage identifier id'>statusMessage</span> <span class='assign token'>=</span> <span class='rubyid_val identifier id'>val</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="trailers-instance_method">
+  
+    - (<tt>Object</tt>) <strong>trailers</strong> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    The response trailers
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+602
+603
+604
+605
+606
+607</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 602</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_trailers identifier id'>trailers</span>
+  <span class='rubyid_if if kw'>if</span> <span class='notop op'>!</span><span class='rubyid_@trailers ivar id'>@trailers</span>
+    <span class='rubyid_@trailers ivar id'>@trailers</span> <span class='assign token'>=</span> <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_trailers identifier id'>trailers</span>
+  <span class='rubyid_end end kw'>end</span>
+  <span class='rubyid_@trailers ivar id'>@trailers</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="write_buffer-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>) <strong>write_buffer</strong>(chunk, &amp;hndlr) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Write a buffer to the response. The handler will be called when the buffer has actually been written to the wire.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>chunk.</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Buffer.html" title="Vertx::Buffer (class)">Buffer</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The buffer to write</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hndlr.</span>
+      
+      
+        <span class='type'>(<tt>Block</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The handler</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+613
+614
+615
+616</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 613</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_write_buffer identifier id'>write_buffer</span><span class='lparen token'>(</span><span class='rubyid_chunk identifier id'>chunk</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='rubyid_hndlr identifier id'>hndlr</span><span class='rparen token'>)</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_writeBuffer identifier id'>writeBuffer</span><span class='lparen token'>(</span><span class='rubyid_chunk identifier id'>chunk</span><span class='dot token'>.</span><span class='rubyid__to_java_buffer identifier id'>_to_java_buffer</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="write_str-instance_method">
+  
+    - (<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>) <strong>write_str</strong>(str, enc = &quot;UTF-8&quot;, &amp;hndlr) 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    Write a String to the response. The handler will be called when the String has actually been written to the wire.
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>str.</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The string to write</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enc.</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>Encoding to use.</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hndlr.</span>
+      
+      
+        <span class='type'>(<tt>Block</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>The handler</div>
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="" title="Vertx::HttpServerResponse (class)">HttpServerResponse</a></span></tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>self So multiple operations can be chained.</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+623
+624
+625
+626
+627</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'src/main/ruby_scripts/core/http.rb', line 623</span>
+
+<span class='rubyid_def def kw'>def</span> <span class='rubyid_write_str identifier id'>write_str</span><span class='lparen token'>(</span><span class='rubyid_str identifier id'>str</span><span class='comma token'>,</span> <span class='rubyid_enc identifier id'>enc</span> <span class='assign token'>=</span> <span class='string val'>&quot;UTF-8&quot;</span><span class='comma token'>,</span> <span class='bitand op'>&amp;</span><span class='rubyid_hndlr identifier id'>hndlr</span><span class='rparen token'>)</span>
+  <span class='rubyid_puts identifier id'>puts</span> <span class='dstring node'>&quot;writing str: #{str}&quot;</span>
+  <span class='rubyid_@j_del ivar id'>@j_del</span><span class='dot token'>.</span><span class='rubyid_write identifier id'>write</span><span class='lparen token'>(</span><span class='rubyid_str identifier id'>str</span><span class='comma token'>,</span> <span class='rubyid_enc identifier id'>enc</span><span class='rparen token'>)</span>
+  <span class='rubyid_self self kw'>self</span>
+<span class='rubyid_end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+    <div id="footer">
+  Generated on Sun Jan 13 17:19:14 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.3 (ruby-1.9.3).
+</div>
+
+  </body>
+</html>

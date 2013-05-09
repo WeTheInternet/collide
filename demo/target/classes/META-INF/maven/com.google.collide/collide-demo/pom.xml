@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+<!--   <parent>
+    <groupId>com.google.collide</groupId>
+    <artifactId>collide-parent</artifactId>
+    <version>0.4-SNAPSHOT</version>
+    <relativePath>../parent/pom.xml</relativePath>
+  </parent> -->
+ <groupId>com.google.collide</groupId>
+  <artifactId>collide-demo</artifactId>
+    <version>0.4-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>CollIDE demo</name>
+  <url>http://collide.googlecode.com</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gwt.version>2.5.1</gwt.version>
+    <xapi.version>0.4-SNAPSHOT</xapi.version>
+    <collide.home>${project.basedir}/..</collide.home>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+  <dependency>
+    <groupId>net.wetheinter</groupId>
+    <artifactId>xapi-gwt-inject</artifactId>
+    <version>${xapi.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>net.wetheinter</groupId>
+    <artifactId>xapi-dev-scanner</artifactId>
+    <version>${xapi.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>com.google.collide</groupId>
+    <artifactId>collide-core</artifactId>
+    <version>${project.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-elemental</artifactId>
+    <version>${gwt.version}</version>
+  </dependency>
+  </dependencies>
+
+</project>

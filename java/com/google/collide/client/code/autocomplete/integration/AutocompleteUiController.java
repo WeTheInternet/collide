@@ -36,8 +36,8 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.html.ClientRect;
-import elemental.html.Element;
 import elemental.html.TableCellElement;
 import elemental.html.TableElement;
 
@@ -54,7 +54,7 @@ public class AutocompleteUiController implements AutocompleteBox {
 
   public interface Css extends CssResource {
     String cappedProposalLabel();
-    
+
     String proposalLabel();
 
     String proposalGroup();
@@ -67,7 +67,7 @@ public class AutocompleteUiController implements AutocompleteBox {
 
     int maxHeight();
   }
-  
+
   private static final int MAX_COMPLETIONS_TO_SHOW = 100;
   private static final AutocompleteProposal CAPPED_INDICATOR = new AutocompleteProposal("");
 
@@ -77,7 +77,7 @@ public class AutocompleteUiController implements AutocompleteBox {
         public void render(Element itemElement, AutocompleteProposal itemData) {
           TableCellElement label = Elements.createTDElement(css.proposalLabel());
           TableCellElement group = Elements.createTDElement(css.proposalGroup());
-          
+
           if (itemData != CAPPED_INDICATOR) {
             label.setTextContent(itemData.getLabel());
             group.setTextContent(itemData.getPath().getPathString());
@@ -104,7 +104,7 @@ public class AutocompleteUiController implements AutocompleteBox {
           if (itemData == CAPPED_INDICATOR) {
             return;
           }
-          
+
           delegate.onSelect(autocompleteProposals.select(itemData));
         }
       };
@@ -247,7 +247,7 @@ public class AutocompleteUiController implements AutocompleteBox {
     if (showingFromHidden) {
       list.getSelectionModel().clearSelection();
     }
-    
+
     final JsonArray<AutocompleteProposal> itemsToDisplay;
     if (items.size() <= MAX_COMPLETIONS_TO_SHOW) {
       itemsToDisplay = items.getItems();

@@ -22,6 +22,8 @@
   right: 0;
   background-color: #ffffff;
   z-index: 9;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .contentContainer {

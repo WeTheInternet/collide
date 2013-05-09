@@ -27,7 +27,7 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Handles {@link RemoteObjectTree} tree context menu actions.

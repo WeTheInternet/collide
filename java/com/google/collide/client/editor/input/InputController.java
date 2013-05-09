@@ -30,7 +30,10 @@ import com.google.collide.client.util.logging.Log;
 import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.DocumentMutator;
 import com.google.collide.shared.document.Line;
+import com.google.collide.shared.document.LineFinder;
+import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.Position;
+import com.google.collide.shared.document.TextChange;
 import com.google.collide.shared.document.util.LineUtils;
 import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
@@ -41,10 +44,10 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.TextEvent;
-import elemental.html.Element;
 import elemental.html.TextAreaElement;
 
 /**
@@ -343,6 +346,140 @@ public class InputController {
     });
   }
 
+  /**
+   * Moves all selected lines down by deleting then inserting Lines
+   */
+  public void moveLinesDown() {
+    //expand selection to fill all affected lines
+    Document doc = editor.getDocument();
+    LineFinder finder = doc.getLineFinder();
+    Line cursorLine = selection.getCursorLine();
+    
+    //on no selection, select the line the cursor is on
+    if (!selection.hasSelection()){
+      int selectionEnd = LineUtils.getLastCursorColumn(cursorLine);
+      LineInfo selectStart = finder.findLine(cursorLine);
+      if (selectionEnd==0){
+        //special case, the cursor is on a line without text.
+        //insert a new line below cursor line,
+        editor.getEditorDocumentMutator().insertText(selectStart.line().getNextLine().getNextLine(), 0, "\n");
+        //delete cursor line
+        TextChange change = editor.getEditorDocumentMutator().deleteText(
+            cursorLine, 0, 1);
+        //readjust cursor
+        selectStart = finder.findLine(change.getLastLineNumber()+1);
+        selection.setCursorPosition(selectStart, 0);
+        return;
+      }
+      //make sure selection fills cursor line
+      selection.setSelection(selectStart, 0, selectStart, selectionEnd);
+    }
+    assert selection.hasSelection() : "No text selected, cannot complete move operation";
+    
+    //grab the lines we need
+    Position[] selectionRange = selection.getSelectionRange(true);
+    LineInfo start = selectionRange[0].getLineInfo();
+    LineInfo end = selectionRange[1].getLineInfo();
+    
+    //if the cursor ends on the first column, we need to advance our range one line
+    if (selection.isCursorAtEndOfSelection()&&selection.getCursorColumn()==0){
+      end.moveToNext();
+    }
+    int lastCol = LineUtils.getLastCursorColumn(end.line());
+    
+    //copy the text we want to move
+    String move = LineUtils.getText(start.line(), 0,
+        end.line(), lastCol);
+    
+    //determine size of delete required
+    int deleteCount =
+        LineUtils.getTextCount(start.line(), 0,
+            end.line(), LineUtils.getLastCursorColumn(end.line()));
+
+    //delete previous
+    editor.getEditorDocumentMutator().deleteText(
+        start.line(), start.number(),0, deleteCount);
+    
+    //insert new copy
+    TextChange change = editor.getEditorDocumentMutator().insertText(
+        start.line().getNextLine(), start.number()+1,0, move,true
+    );
+    
+    //reselect the moved text
+    end = finder.findLine(change.getLastLineNumber()+(end.number()-start.number()));
+    selection.setSelection(
+        new LineInfo(change.getLine(),change.getLineNumber())
+        , 0
+        ,end,lastCol
+        );
+  }
+
+  /**
+   * Moves all selected lines up by deleting then inserting Lines
+   */
+  public void moveLinesUp() {
+    //expand selection to fill all affected lines
+    Document doc = editor.getDocument();
+    LineFinder finder = doc.getLineFinder();
+    Line cursorLine = selection.getCursorLine();
+    
+    //on no selection, select the line the cursor is on
+    if (!selection.hasSelection()){
+      int selectionEnd = LineUtils.getLastCursorColumn(cursorLine);
+      LineInfo selectStart = finder.findLine(cursorLine);
+      if (selectionEnd==0){
+        //special case, the cursor is on a line without text.
+        //insert a new line above cursor line,
+        editor.getEditorDocumentMutator().insertText(selectStart.line().getPreviousLine(), 0, "\n");
+        //delete cursor line
+        TextChange change = editor.getEditorDocumentMutator().deleteText(
+            cursorLine, 0, 1);
+        //readjust cursor
+        selectStart = finder.findLine(change.getLineNumber()-2);
+        selection.setCursorPosition(selectStart, 0);
+        return;
+      }
+      //make sure selection fills cursor line
+      selection.setSelection(selectStart, 0, selectStart, selectionEnd);
+    }
+    assert selection.hasSelection() : "No text selected, cannot complete move operation";
+    
+    //grab the lines we need
+    Position[] selectionRange = selection.getSelectionRange(true);
+    LineInfo start = selectionRange[0].getLineInfo();
+    LineInfo end = selectionRange[1].getLineInfo();
+    //if the cursor ends on the first column, we need to advance our range one line
+    if (selection.isCursorAtEndOfSelection()&&selection.getCursorColumn()==0){
+      end.moveToNext();
+    }
+    
+    //copy the text we want to move
+    int lastCol = LineUtils.getLastCursorColumn(end.line());
+    String move = LineUtils.getText(start.line(), 0,
+        end.line(), lastCol);
+    
+    //determine size of delete required
+    int deleteCount =
+        LineUtils.getTextCount(start.line(), 0,
+            end.line(), LineUtils.getLastCursorColumn(end.line()));
+
+    //delete previous
+    editor.getEditorDocumentMutator().deleteText(
+        start.line(), start.number(),0, deleteCount);
+    
+    //insert new copy
+    TextChange change = editor.getEditorDocumentMutator().insertText(
+        start.line().getPreviousLine(), start.number()-1,0, move,true
+    );
+    
+    //reselect the moved text
+    end = finder.findLine(change.getLastLineNumber()+(end.number()-start.number()));
+    selection.setSelection(
+        new LineInfo(change.getLine(),change.getLineNumber())
+        , 0
+        ,end,lastCol
+        );
+  }
   /**
    * Add a tab character to the beginning of each line in the current selection,
    * or at the current cursor position if no text is selected.

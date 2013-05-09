@@ -14,11 +14,11 @@
 
 package com.google.collide.json.server;
 
+import java.util.Set;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringSet;
 import com.google.common.collect.Lists;
-
-import java.util.Set;
 
 /**
  * Server wrapper for a {@link java.util.Set} that implements

@@ -16,6 +16,9 @@ package com.google.collide.client.workspace;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
+import com.google.collide.client.history.Place;
+import com.google.collide.client.plugin.ClientPlugin;
+import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.search.SearchContainer;
 import com.google.collide.client.search.awesomebox.AwesomeBox;
@@ -60,7 +63,7 @@ public class Header extends UiComponent<Header.View> {
    */
   public static Header create(View view,
       WorkspaceShell.View workspaceShellView,
-      WorkspacePlace currentPlace,
+      Place currentPlace,
       final AppContext appContext,
       FileNameSearch fileNameSearch,
       FileTreeModel fileTreeModel) {
@@ -78,7 +81,7 @@ public class Header extends UiComponent<Header.View> {
         view.awesomeBoxComponentHostView.getElement(), tooltipPositioner).setTooltipRenderer(
         new Tooltip.TooltipRenderer() {
           @Override
-          public elemental.html.Element renderDom() {
+          public elemental.dom.Element renderDom() {
             elemental.html.DivElement element = Elements.createDivElement();
             AwesomeBoxComponent component =
                 appContext.getAwesomeBoxComponentHostModel().getActiveComponent();
@@ -100,14 +103,13 @@ public class Header extends UiComponent<Header.View> {
         currentPlace,
         fileNameSearch,
         fileTreeModel);
-    
-    GearButtonController gearButtonController = GearButtonController.create(appContext);
+
+
 
     Header header = new Header(view,
         currentPlace,
         appContext,
         runButtonController,
-        gearButtonController,
         awesomeBoxHost);
     return header;
   }
@@ -121,18 +123,16 @@ public class Header extends UiComponent<Header.View> {
 
     String leftButtonGroup();
 
-    String gearButtonContainer();
-    
-    String gearButton();
-    
-    String gearIcon();
-    
-    String terminalIcon();
-    
-    String terminalButton();
+    String pluginButtonContainer();
 
     String paddedButton();
-    
+
+    String pluginButtons();
+
+    String pluginIcon();
+
+    String pluginButton();
+
     String runButtonContainer();
 
     String runButton();
@@ -173,7 +173,7 @@ public class Header extends UiComponent<Header.View> {
       AwesomeBoxResources,
       PopupBlockedInstructionalPopup.Resources,
       RunButtonTargetPopup.Resources,
-      SearchContainer.Resources {
+      SearchContainer.Resources{
 
     @Source("gear.png")
     ImageResource gearIcon();
@@ -219,13 +219,13 @@ public class Header extends UiComponent<Header.View> {
     DivElement headerMenuElem;
 
     @UiField
+    DivElement pluginContainer;
+
+    @UiField
+    DivElement rightButtons;
+
+    @UiField
     AnchorElement runButton;
-    
-    @UiField
-    AnchorElement gearButton;
-    
-    @UiField
-    AnchorElement terminalButton;
 
     @UiField
     AnchorElement runDropdownButton;
@@ -256,15 +256,13 @@ public class Header extends UiComponent<Header.View> {
 
     private final AwesomeBoxComponentHost.View awesomeBoxComponentHostView;
     private final ImageButton runImageButton;
-    private final ImageButton gearImageButton;
-    private final ImageButton terminalImageButton;
     private final ImageButton runDropdownImageButton;
     private final ImageButton newWorkspaceImageButton;
     private final ImageButton shareImageButton;
 
     private final Tooltip newWorkspaceTooltip;
 
-    public View(Resources res) {
+    public View(Resources res, boolean detached) {
       this.res = res;
       this.css = res.workspaceHeaderCss();
       setElement(Elements.asJsElement(binder.createAndBindUi(this)));
@@ -278,17 +276,46 @@ public class Header extends UiComponent<Header.View> {
           .setElement((elemental.html.AnchorElement) runButton).build();
       runImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().runIcon());
 
+      if (detached) {
+        CssUtils.setDisplayVisibility2(Elements.asJsElement(rightButtons), false);
+      }
+
+      //install our plugins
+      ClientPlugin<?>[] plugins = ClientPluginService.getPlugins();
+      ImageButton[] buttons = new ImageButton[plugins.length];
+      for (int i = 0; i < plugins.length; i++) {
+        final ClientPlugin<?> plugin = plugins[i];
+        elemental.dom.Element holder = Elements.createDivElement(
+          res.workspaceHeaderCss().pluginButtonContainer()
+          ,res.workspaceHeaderCss().paddedButton()
+          );
+        (Elements.asJsElement(pluginContainer)).appendChild(holder);
+        elemental.dom.Element link = Elements.createElement("a",res.workspaceHeaderCss().pluginButton());
+        holder.getStyle().setWidth(60,"px");
+        link.getStyle().setLeft(i*40,"px");
+        holder.appendChild(link);
+
+        final ImageButton button = new ImageButton.Builder(res).setImage(plugins[i].getIcon(res))
+        .setElement((elemental.html.AnchorElement) link).build();
+        buttons[i] = button;
+        button.getView().getImageElement().addClassName(res.workspaceHeaderCss().pluginIcon());
+        button.setListener(new ImageButton.Listener() {
+          @Override
+          public void onClick() {
+            if (getDelegate() != null) {
+              getDelegate().onPluginButtonClicked(plugin, button);
+            }
+          }
+        });
+      }
       // Create the gear button.
-      gearImageButton = new ImageButton.Builder(res).setImage(res.gearIcon())
-          .setElement((elemental.html.AnchorElement) gearButton).build();
-      gearImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().gearIcon());
-      
+
       // Create the terminal button
-      terminalImageButton = new ImageButton.Builder(res).setImage(res.terminalIcon())
-          .setElement((elemental.html.AnchorElement) terminalButton).build();
-      terminalImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().terminalIcon());
-      
-      
+//      terminalImageButton = new ImageButton.Builder(res).setImage(res.terminalIcon())
+//          .setElement((elemental.html.AnchorElement) terminalButton).build();
+//      terminalImageButton.getView().getImageElement().addClassName(res.workspaceHeaderCss().terminalIcon());
+
+
       newWorkspaceImageButton = new ImageButton.Builder(res).setImage(res.trunkBranchIcon())
           .setElement((elemental.html.AnchorElement) newWorkspaceButton).setText("Branch & Edit")
           .build();
@@ -353,15 +380,7 @@ public class Header extends UiComponent<Header.View> {
     }
 
     protected void attachHandlers() {
-      gearImageButton.setListener(new ImageButton.Listener() {
-        @Override
-        public void onClick() {
-          if (getDelegate() != null) {
-            getDelegate().onGearButtonClicked();
-          }
-        }
-      });
-      
+
       runImageButton.setListener(new ImageButton.Listener() {
         @Override
         public void onClick() {
@@ -389,7 +408,7 @@ public class Header extends UiComponent<Header.View> {
         }
       });
 
-      getElement().setOnClick(new EventListener() {
+      getElement().setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();
@@ -435,8 +454,8 @@ public class Header extends UiComponent<Header.View> {
    * Events reported by the Header's View.
    */
   private interface ViewEvents {
-    void onGearButtonClicked();
-    
+    void onPluginButtonClicked(ClientPlugin<?> plugin, ImageButton button);
+
     void onRunButtonClicked();
 
     void onRunDropdownButtonClicked();
@@ -462,10 +481,10 @@ public class Header extends UiComponent<Header.View> {
     public void onRunDropdownButtonClicked() {
       runButtonController.onRunButtonDropdownClicked();
     }
-    
+
     @Override
-    public void onGearButtonClicked() {
-      gearButtonController.onGearButtonClicked();
+    public void onPluginButtonClicked(ClientPlugin<?> plugin, ImageButton button) {
+      plugin.onClicked(button);
     }
 
     @Override
@@ -486,18 +505,15 @@ public class Header extends UiComponent<Header.View> {
 
   private final AwesomeBoxComponentHost awesomeBoxComponentHost;
   private final RunButtonController runButtonController;
-  private final GearButtonController gearButtonController;
 
   private static final int PORTRAIT_SIZE_HEADER = 28;
 
   private Header(View view,
-      WorkspacePlace currentPlace,
+      Place currentPlace,
       AppContext appContext,
       RunButtonController runButtonController,
-      GearButtonController gearButtonController,
       AwesomeBoxComponentHost awesomeBoxComponentHost) {
     super(view);
-    this.gearButtonController = gearButtonController;
     this.runButtonController = runButtonController;
     this.awesomeBoxComponentHost = awesomeBoxComponentHost;
 
@@ -511,9 +527,12 @@ public class Header extends UiComponent<Header.View> {
   }
 
   private void setProfileImage() {
+    String url = BootstrapSession.getBootstrapSession().getProfileImageUrl();
+    if (url == null)
+      return;
     ImageElement pic = Elements.createImageElement(getView().css.profileImage());
     pic.setSrc(UserDetails.Utils.getSizeSpecificPortraitUrl(
-        BootstrapSession.getBootstrapSession().getProfileImageUrl(), PORTRAIT_SIZE_HEADER));
+        url , PORTRAIT_SIZE_HEADER));
     Elements.asJsElement(getView().getProfileImage()).appendChild(pic);
   }
 }

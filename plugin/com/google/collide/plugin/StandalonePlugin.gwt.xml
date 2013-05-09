@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+<source path="client" />
+<super-source path="emul" />
+<inherits name="javax.Inject" />
+<inherits name="com.google.collide.client.Imports" />
+<entry-point class="com.google.collide.plugin.client.standalone.StandalonePlugin" />
+</module>

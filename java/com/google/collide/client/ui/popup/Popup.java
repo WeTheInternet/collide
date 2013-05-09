@@ -25,7 +25,7 @@ import com.google.common.base.Preconditions;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Represents a floating popup, that can be attached to any element.

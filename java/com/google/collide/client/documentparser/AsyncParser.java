@@ -150,7 +150,7 @@ public abstract class AsyncParser<T extends AsyncParser.LineAware>
    * Find index for tail truncation in nodes array.
    *
    * <p>We support nodes array sorted by line number.
-   * Now we use that property in modified binary search.
+   * Now we use that property in modified binarySuffix search.
    */
   @VisibleForTesting
   public static <T extends LineAware> int findCutTailIndex(JsonArray<T> nodes,

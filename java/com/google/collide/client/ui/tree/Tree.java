@@ -33,12 +33,12 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
-import elemental.html.DragEvent;
-import elemental.html.Element;
-import elemental.js.html.JsElement;
+import elemental.js.dom.JsElement;
+import elemental.js.html.JsDragEvent;
 
 /**
  * A tree widget that is capable of rendering any tree data structure whose node
@@ -121,15 +121,15 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
 
     void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-    void onNodeDragStart(TreeNodeElement<D> node, DragEvent event);
+    void onNodeDragStart(TreeNodeElement<D> node, JsDragEvent event);
 
-    void onNodeDragDrop(TreeNodeElement<D> node, DragEvent event);
+    void onNodeDragDrop(TreeNodeElement<D> node, JsDragEvent event);
 
     void onNodeExpanded(TreeNodeElement<D> node);
 
     void onRootContextMenu(int mouseX, int mouseY);
 
-    void onRootDragDrop(DragEvent event);
+    void onRootDragDrop(JsDragEvent event);
   }
 
   /**
@@ -370,7 +370,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
         @Override
         public void handleEvent(Event event) {
           if (getDelegate() != null) {
-            getDelegate().onDragDropEvent((DragEvent) event);
+            getDelegate().onDragDropEvent((JsDragEvent) event);
           }
         }
       };
@@ -450,7 +450,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
 
     public void onNodeContextMenu(int mouseX, int mouseY, TreeNodeElement<D> node);
 
-    public void onDragDropEvent(DragEvent event);
+    public void onDragDropEvent(JsDragEvent event);
 
     public void onNodeExpanded(TreeNodeElement<D> node);
 
@@ -458,7 +458,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
 
     public void onRootContextMenu(int mouseX, int mouseY);
 
-    public void onRootDragDrop(DragEvent event);
+    public void onRootDragDrop(JsDragEvent event);
   }
 
   private class DragDropController {
@@ -479,7 +479,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
       }
     };
 
-    void handleDragDropEvent(DragEvent evt) {
+    void handleDragDropEvent(JsDragEvent evt) {
       final D rootData = getModel().root;
       final NodeDataAdapter<D> dataAdapter = getModel().getDataAdapter();
       final Css css = getModel().resources.treeCss();
@@ -591,7 +591,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
     }
 
     @Override
-    public void onDragDropEvent(DragEvent event) {
+    public void onDragDropEvent(JsDragEvent event) {
       dragDropController.handleDragDropEvent(event);
     }
 
@@ -613,7 +613,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
     }
 
     @Override
-    public void onRootDragDrop(DragEvent event) {
+    public void onRootDragDrop(JsDragEvent event) {
       if (getModel().externalEventDelegate != null) {
         getModel().externalEventDelegate.onRootDragDrop(event);
       }

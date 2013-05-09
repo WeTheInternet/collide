@@ -16,6 +16,7 @@ package com.google.collide.client;
 
 import com.google.collide.client.common.BaseResources;
 import com.google.collide.client.status.StatusPresenter;
+import com.google.collide.client.ui.panel.Panel;
 import com.google.collide.client.ui.popup.Popup;
 import com.google.collide.client.ui.tooltip.Tooltip;
 import com.google.collide.client.workspace.WorkspaceShell;
@@ -35,7 +36,8 @@ public interface Resources
     // TODO: Once we have actual consumers of the Tooltip class, we
     // can just have them extend it instead of doing it on the base interface.
     Tooltip.Resources,
-    Popup.Resources {
+    Popup.Resources,
+    Panel.Resources{
 
   /**
    * Interface for css resources.

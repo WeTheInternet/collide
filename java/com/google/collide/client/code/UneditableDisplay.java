@@ -14,8 +14,8 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.code.EditableContentArea.Content;
 import com.google.collide.client.util.Elements;
+import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.FileContents;
 import com.google.collide.dto.FileContents.ContentType;
 import com.google.collide.mvp.CompositeView;
@@ -23,14 +23,14 @@ import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.ImageElement;
 
 /**
  * A display widget for uneditable things.
  */
 public class UneditableDisplay extends UiComponent<UneditableDisplay.View>
-    implements Content {
+    implements FileContent {
 
   public static UneditableDisplay create(View view) {
     return new UneditableDisplay(view);
@@ -59,6 +59,11 @@ public class UneditableDisplay extends UiComponent<UneditableDisplay.View>
   private UneditableDisplay(View view) {
     super(view);
   }
+  
+  @Override
+  public PathUtil filePath() {
+    return null;
+  }
 
   public void displayUneditableFileContents(FileContents uneditableFile) {
     getView().getElement().setInnerHTML("");
@@ -80,5 +85,10 @@ public class UneditableDisplay extends UiComponent<UneditableDisplay.View>
 
   @Override
   public void onContentDisplayed() {
+  }
+
+  @Override
+  public void onContentDestroyed() {
+
   }
 }

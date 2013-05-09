@@ -14,11 +14,11 @@
 
 package com.google.collide.client.ui.list;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
 import elemental.events.KeyboardEvent.KeyCode;
-import elemental.html.Element;
 
 /**
  * A controller which attaches to an input element and proxies keyboard

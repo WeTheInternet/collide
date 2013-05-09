@@ -20,7 +20,7 @@ import com.google.collide.client.util.dom.FontDimensionsCalculator.FontDimension
 import com.google.collide.shared.util.StringUtils;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * A {@link MeasurementProvider} which utilizes the DOM to measure a string.

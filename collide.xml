@@ -47,7 +47,7 @@ var workspaceConfig = {
 	 	</BOOTSTRAP>
 	 </properties>
 	<module id="main" type="vertx">
-		<src>.</src><!-- Default to ., which is launch directory -->
+		<src>java</src><!-- Default to ., which is launch directory -->
 		<classpath>
 			<src>.</src>
 			<jar>${LIB}/gwt-user.jar</jar>
@@ -92,7 +92,8 @@ vertx.deployVerticle("com.google.collide.server.workspace.WorkspaceState", works
 	</module>
 	<module id="gwt" type="plugin" inherits="main">
 		<classpath inherits="super">
-			<jar>${LIB}/xapi-super-0.2.jar</jar>
+			<jar>${LIB}/xapi-gwt-0.3.jar</jar>
+			<jar>${LIB}/xapi-dev-0.3.jar</jar>
 			<jar>${LIB}/gwt-dev.jar</jar>
 			<jar>${LIB}/gwt-codeserver.jar</jar>
 		</classpath>
@@ -105,12 +106,11 @@ vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspac
 });
 
 // Load the plugin controller which allows adding services to collide, such as gwt super dev mode, ant builds, terminal, maven, etc..
-vertx.deployVerticle("com.google.collide.server.plugin.PluginManager", workspaceConfig, 1, function() {
+vertx.deployVerticle("com.google.collide.plugin.server.PluginManager", workspaceConfig, 1, function() {
 });
 
-//TODO: if gwt plugin specified, deploy a worker verticle specifically for compiles...
 		
 		</bootstrap>
-		<main>com.google.collide.server.plugin.gwt.GwtPlugin</main>
+		<main>com.google.collide.plugin.server.gwt.GwtServerPlugin</main>
 	</module>
 </project>

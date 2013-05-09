@@ -31,7 +31,7 @@ import com.google.common.base.Objects;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 /**
  * A line renderer that highlights code references "on demand".
  * It always highlights only one reference at a time.

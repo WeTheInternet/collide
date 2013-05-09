@@ -15,7 +15,7 @@ function AsyncTest(testName, testFunction, runner) {
 
   var me = this;
   this.run = function(deployId) {
-    stdout.println("Running " + testName + " ... ");
+    stdout.println("Running " + testName + " ... "+deployId);
     me.deployId = deployId;
     try {
       me.runningFunction = true;
@@ -96,8 +96,10 @@ function AsyncTestRunner(verticleName, config) {
     me.tests = me.tests.slice(1);
 
     var asyncTest = new AsyncTest(test.name, test.test, me);
-    var deployId = vertx.deployVerticle(verticleName, config, 1, function() {
-      asyncTest.run(deployId);
+    vertx.deployVerticle(verticleName, config, 1, function(deployId) {
+    	vertx.setTimer(1,function(){
+    		asyncTest.run(deployId);
+    	});
     });
   }
 }

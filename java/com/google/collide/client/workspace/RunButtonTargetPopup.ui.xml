@@ -3,7 +3,7 @@
   <ui:with field="res"
     type="com.google.collide.client.workspace.RunButtonTargetPopup.Resources" />
 
-  <div class="{res.runButtonTargetPopupCss.container}">
+  <div class="{res.runButtonTargetPopupCss.container}" ui:field="container">
     <div>
       <input ui:field="runPreviewRadio" type="radio" name="runType" checked="checked"
         class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
@@ -40,24 +40,24 @@
         </div>
       </div>
     </div>
-    <div>
+<!--     <div>
       <input ui:field="runGwtRadio" type="radio" name="runType"
         class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
       <div class="{res.runButtonTargetPopupCss.stackedContainer}">
         <div ui:field="runGwtRow">
           <label ui:field="runGwtLabel">Compile GWT Module</label>
         </div>
-        <!-- GWT Module Selector Goes Here -->
+        GWT Module Selector Goes Here
       </div>
-    </div>
-    <div>
+    </div> -->
+<!--     <div>
       <input ui:field="runAntRadio" type="radio" name="runType"
         class="{res.baseCss.radio} {res.runButtonTargetPopupCss.radio}" />
       <div class="{res.runButtonTargetPopupCss.stackedContainer}">
         <div ui:field="runAntRow">
           <label ui:field="runAntLabel">Run Ant Build</label>
         </div>
-        <!-- Ant Build Selector Goes Here -->
+        Ant Build Selector Goes Here
       </div>
     </div>
     <div>
@@ -67,9 +67,10 @@
         <div ui:field="runMavenRow">
           <label ui:field="runMavenLabel">Run Maven Goal</label>
         </div>
-        <!-- Maven Goal Selector Goes Here -->
+        Maven Goal Selector Goes Here
       </div>
     </div>
+       -->
   </div>
 
 </ui:UiBinder>

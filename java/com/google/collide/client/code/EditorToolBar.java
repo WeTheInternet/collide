@@ -27,7 +27,7 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.mvp.CompositeView;
-import com.google.collide.mvp.UiComponent;
+import com.google.collide.mvp.ShowableUiComponent;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
@@ -39,9 +39,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Editor toolbar for the workspace (contains buttons for file history,
@@ -49,7 +49,7 @@ import elemental.html.Element;
  *
  *
  */
-public class EditorToolBar extends UiComponent<EditorToolBar.View> {
+public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
 
   /**
    * Creates the default version of the toolbar to be used in the editor shell.
@@ -66,6 +66,8 @@ public class EditorToolBar extends UiComponent<EditorToolBar.View> {
     String toolButtons();
 
     String button();
+
+    String detached();
 
     String historyButton();
 
@@ -115,7 +117,7 @@ public class EditorToolBar extends UiComponent<EditorToolBar.View> {
 
     @UiField
     DivElement historyIcon;
-    
+
     @UiField
     DivElement debugButton;
 
@@ -125,11 +127,10 @@ public class EditorToolBar extends UiComponent<EditorToolBar.View> {
     @UiField(provided = true)
     final Resources res;
 
-    public View(EditorToolBar.Resources res) {
+    public View(EditorToolBar.Resources res, boolean detached) {
       this.res = res;
       setElement(Elements.asJsElement(binder.createAndBindUi(this)));
       attachHandlers();
-
       // Make these tooltips right aligned since they're so close to the edge of the screen.
       PositionerBuilder positioner = new Tooltip.TooltipPositionerBuilder().setHorizontalAlign(
           HorizontalAlign.RIGHT).setPosition(Position.OVERLAP);
@@ -145,10 +146,12 @@ public class EditorToolBar extends UiComponent<EditorToolBar.View> {
           res, Elements.asJsElement(debugIcon), debugTooltipPositioner).setTooltipText(
           "Opens the debug panel where you can set breakpoints and watch expressions.")
           .build().setTitle("Debugging Controls");
+      if (detached)
+        toolButtons.addClassName(res.editorToolBarCss().detached());
     }
 
     protected void attachHandlers() {
-      getElement().setOnClick(new EventListener() {
+      getElement().setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();
@@ -230,11 +233,13 @@ public class EditorToolBar extends UiComponent<EditorToolBar.View> {
 
   /* Methods for toggling toolbar visibility */
 
+  @Override
   public void show() {
     Element toolBar = Elements.asJsElement(getView().toolButtons);
     CssUtils.setDisplayVisibility(toolBar, true);
   }
 
+  @Override
   public void hide() {
     Element toolBar = Elements.asJsElement(getView().toolButtons);
     CssUtils.setDisplayVisibility(toolBar, false);

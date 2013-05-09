@@ -16,9 +16,11 @@ package com.google.collide.client.workspace;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
-import com.google.collide.client.communication.FrontendApi.ApiCallback;
-import com.google.collide.client.communication.MessageFilter.MessageRecipient;
 import com.google.collide.client.communication.ResourceUriUtils;
+import com.google.collide.client.history.Place;
+import com.google.collide.client.plugin.ClientPlugin;
+import com.google.collide.client.plugin.ClientPluginService;
+import com.google.collide.client.plugin.RunConfiguration;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.menu.AutoHideComponent.AutoHideHandler;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
@@ -29,28 +31,19 @@ import com.google.collide.client.ui.tooltip.Tooltip.TooltipRenderer;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.RunButtonTargetPopup.RunTargetType;
-import com.google.collide.clientlibs.vertx.VertxBus.MessageHandler;
-import com.google.collide.clientlibs.vertx.VertxBus.ReplySender;
-import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.GwtStatus;
-import com.google.collide.dto.RoutingTypes;
 import com.google.collide.dto.RunTarget;
-import com.google.collide.dto.RunTarget.RunMode;
-import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.UpdateWorkspaceRunTargets;
-import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.dto.client.DtoClientImpls.RunTargetImpl;
-import com.google.collide.dto.client.DtoClientImpls.SetMavenConfigImpl;
 import com.google.collide.dto.client.DtoClientImpls.UpdateWorkspaceRunTargetsImpl;
-import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Window;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.html.DivElement;
 import elemental.html.SpanElement;
+import elemental.util.Collections;
+import elemental.util.MapFromStringTo;
 
 /**
  * Controller for the behavior of the run button on the workspace header.
@@ -60,14 +53,24 @@ public class RunButtonController {
   public static RunButtonController create(AppContext context,
       Element buttonElem,
       Element dropdownElem,
-      WorkspacePlace currentPlace,
+      Place currentPlace,
       FileNameSearch fileNameSearch,
       FileTreeModel fileTreeModel) {
 
-    RunButtonTargetPopup targetPopup =
-        RunButtonTargetPopup.create(context, buttonElem, dropdownElem, fileNameSearch);
+    //initialize our run configs with any items added by plugins
+    MapFromStringTo<RunConfiguration> runConfigs = Collections.mapFromStringTo();
+    for (ClientPlugin<?> p : ClientPluginService.getPlugins()) {
+      RunConfiguration runConfig = p.getRunConfig();
+      if (runConfig != null) {
+        runConfigs.put(runConfig.getId(), runConfig);
+      }
+    }
 
-    elemental.html.Element target = Elements.asJsElement(buttonElem);
+
+    RunButtonTargetPopup targetPopup =
+        RunButtonTargetPopup.create(context, buttonElem, dropdownElem, fileNameSearch, runConfigs);
+
+    elemental.dom.Element target = Elements.asJsElement(buttonElem);
     Positioner positioner = new Tooltip.TooltipPositionerBuilder().setVerticalAlign(
         VerticalAlign.BOTTOM)
         .setHorizontalAlign(HorizontalAlign.RIGHT).buildAnchorPositioner(target);
@@ -75,7 +78,7 @@ public class RunButtonController {
         context.getResources(), target, positioner).setShouldListenToHover(false)
         .setTooltipRenderer(new TooltipRenderer() {
           @Override
-          public elemental.html.Element renderDom() {
+          public elemental.dom.Element renderDom() {
             DivElement container = Elements.createDivElement();
 
             DivElement header = Elements.createDivElement();
@@ -97,7 +100,7 @@ public class RunButtonController {
         context.getResources(), target, positioner).setShouldListenToHover(false)
         .setTooltipRenderer(new TooltipRenderer() {
           @Override
-          public elemental.html.Element renderDom() {
+          public elemental.dom.Element renderDom() {
             DivElement container = Elements.createDivElement();
 
             SpanElement text = Elements.createSpanElement();
@@ -117,7 +120,7 @@ public class RunButtonController {
         context.getResources(), target, positioner).setShouldListenToHover(false)
         .setTooltipRenderer(new TooltipRenderer() {
           @Override
-          public elemental.html.Element renderDom() {
+          public elemental.dom.Element renderDom() {
             DivElement container = Elements.createDivElement();
 
             SpanElement text = Elements.createSpanElement();
@@ -132,12 +135,12 @@ public class RunButtonController {
             return container;
           }
         }).build();
-
     return new RunButtonController(context,
         dropdownElem,
         currentPlace,
         fileNameSearch,
         targetPopup,
+        runConfigs,
         fileTreeModel,
         noFileSelectedTooltip,
         yamlAddedTooltip,
@@ -151,7 +154,7 @@ public class RunButtonController {
     @Override
     public void onNodeAdded(PathUtil parentDirPath, FileTreeNode newNode) {
       RunTarget currentTarget = targetPopup.getRunTarget();
-      if (currentTarget.getRunMode() == RunMode.ALWAYS_RUN
+      if ("ALWAYS_RUN".equals(currentTarget.getRunMode())
           && currentTarget.getAlwaysRunFilename().contains("app.yaml")) {
         return;
       }
@@ -159,9 +162,9 @@ public class RunButtonController {
       // did the user add an app.yaml?
       if (newNode.isFile() && newNode.getName().equals("app.yaml")) {
         // lets set the run target to run the app.yaml
-        RunTarget target = RunTargetImpl.make().setRunMode(RunMode.ALWAYS_RUN)
+        RunTarget target = RunTargetImpl.make().setRunMode("ALWAYS_RUN")
             .setAlwaysRunFilename(newNode.getNodePath().getPathString()).setAlwaysRunUrlOrQuery("");
-        
+
         updateRunTarget(target);
 
         targetPopup.setRunTarget(target);
@@ -197,7 +200,7 @@ public class RunButtonController {
       // "always run target".
 
       // If this gets more complicated, make it a visitor type thing
-      boolean isAlwaysRun = target.getRunMode() == RunMode.ALWAYS_RUN;
+      boolean isAlwaysRun = "ALWAYS_RUN".equals(target.getRunMode());
       boolean hasClearedCurrentFile = currentFilePath == null;
       boolean hasClearedAlwaysRun = !isAlwaysRun;
       PathUtil alwaysRunPath = isAlwaysRun ? new PathUtil(target.getAlwaysRunFilename()) : null;
@@ -213,7 +216,7 @@ public class RunButtonController {
         }
         if (!hasClearedAlwaysRun) {
           if (node.getNodePath().containsPath(alwaysRunPath)) {
-            RunTarget newTarget = RunTargetImpl.make().setRunMode(RunMode.PREVIEW_CURRENT_FILE);
+            RunTarget newTarget = RunTargetImpl.make().setRunMode("PREVIEW_CURRENT_FILE");
             updateRunTarget(newTarget);
             targetResetTooltip.show(TOOLTIP_DISPLAY_TIMEOUT_MS);
 
@@ -229,21 +232,23 @@ public class RunButtonController {
    */
   private static final int TOOLTIP_DISPLAY_TIMEOUT_MS = 5000;
 
-  private final WorkspacePlace currentPlace;
+  private final Place currentPlace;
   private final AppContext appContext;
   private final RunButtonTargetPopup targetPopup;
   private final Element dropdownElem;
   private final Tooltip noFileSelectedTooltip;
   private final Tooltip yamlSelectedFileTooltip;
   private final Tooltip targetResetTooltip;
+  private final MapFromStringTo<RunConfiguration> runConfigs;
 
   private PathUtil currentFilePath;
 
   private RunButtonController(final AppContext appContext,
       Element dropdownElem,
-      WorkspacePlace currentPlace,
+      Place currentPlace,
       FileNameSearch fileNameSearch,
       final RunButtonTargetPopup targetPopup,
+      final MapFromStringTo<RunConfiguration> runConfigs,
       FileTreeModel fileTreeModel,
       Tooltip noFileSelectedTooltip,
       Tooltip autoSelectedFileTooltip,
@@ -256,6 +261,29 @@ public class RunButtonController {
     this.noFileSelectedTooltip = noFileSelectedTooltip;
     this.yamlSelectedFileTooltip = autoSelectedFileTooltip;
     this.targetResetTooltip = targetResetTooltip;
+    this.runConfigs = runConfigs;
+
+    //put in our hardcoded default configs
+    if (!runConfigs.hasKey("PREVIEW_CURRENT_FILE"))
+    runConfigs.put("PREVIEW_CURRENT_FILE", new RunConfiguration() {
+      @Override
+      public String getId() {
+        return "PREVIEW_CURRENT_FILE";
+      }
+      @Override
+      public String getLabel() {
+        return "View On Server";
+      }
+      @Override
+      public void run(AppContext appContext, PathUtil file) {
+        launchFile(currentFilePath == null ? null : currentFilePath.getPathString(), "");
+      }
+      @Override
+      public elemental.dom.Element getForm() {
+        return null;
+      }
+    });
+
 
     // Setup handler to keep track of current file
     currentPlace.registerSimpleEventHandler(FileOpenedEvent.TYPE, new FileOpenedEvent.Handler() {
@@ -307,51 +335,11 @@ public class RunButtonController {
   }
 
   private void launchRunTarget(RunTarget target) {
-    switch(target.getRunMode()){
-      case PREVIEW_CURRENT_FILE:
-        launchFile(currentFilePath == null ? null : currentFilePath.getPathString(), "");
-        break;
-      case GWT_COMPILE:
-        //TODO(james) use a widget to select entry point, sources & deps; hardcoding for now.
-//        SetMavenConfigImpl gwtCompile = SetMavenConfigImpl.make()
-//          .setPomPath("meow.xml");
-//        ;
-        
-        GwtCompile gwtCompile = GwtCompileImpl.make()
-        .setModule("com.google.collide.Collide")
-        .setSrc(JsoArray.<String>from("."
-//            ,"../deps/gwt-user.jar"
-//            ,"../deps/gwt-dev.jar"
-            ))
-        ;
-        //        appContext.getFrontendApi().
-        appContext.getFrontendApi().COMPILE_GWT.send(gwtCompile , new ApiCallback<GwtStatus>() {
-          @Override
-          public void onMessageReceived(GwtStatus message) {
-            Window.alert("won!" + message);
-          }
-          @Override
-          public void onFail(FailureReason reason) {
-            Window.alert("fail! " + reason);
-          }
-        });
-        appContext.getPushChannel().receive("gwt.status", new MessageHandler() {
-          @Override
-          public void onMessage(String message, ReplySender replySender) {
-            Window.alert("gwt! "+message);
-          }
-        });
-        appContext.getMessageFilter().registerMessageRecipient(RoutingTypes.GWTSTATUS, new MessageRecipient<GwtStatus>() {
-          @Override
-          public void onMessageReceived(GwtStatus message) {
-            Window.alert("meow! "+message + " / "+message.getModule());
-          }
-        });
-        break;
-      case ANT_BUILD:
-      case MAVEN_BUILD:
-      default:
-        launchFile(target.getAlwaysRunFilename(), target.getAlwaysRunUrlOrQuery());
+    RunConfiguration runner = runConfigs.get(target.getRunMode());
+    if (runner == null) {
+      launchFile(target.getAlwaysRunFilename(), target.getAlwaysRunUrlOrQuery());
+    }else {
+      runner.run(appContext, currentFilePath);
     }
   }
 
@@ -384,7 +372,7 @@ public class RunButtonController {
     appContext.getFrontendApi().UPDATE_WORKSPACE_RUN_TARGETS.send(update);
     targetPopup.setRunTarget(newTarget);
   }
-  
+
   /**
    * Launches a file given the base file and a query string.
    */

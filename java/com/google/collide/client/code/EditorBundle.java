@@ -16,7 +16,6 @@ package com.google.collide.client.code;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.autoindenter.Autoindenter;
-import com.google.collide.client.code.EditableContentArea.Content;
 import com.google.collide.client.code.autocomplete.integration.AutocompleterFacade;
 import com.google.collide.client.code.debugging.DebuggingModel;
 import com.google.collide.client.code.debugging.DebuggingModelController;
@@ -49,13 +48,13 @@ import com.google.collide.codemirror2.CodeMirror2;
 import com.google.collide.codemirror2.Parser;
 import com.google.collide.shared.document.Document;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * A class that bundles together all of the editor-related components, such as the editor widget,
  * the collaboration controller, the document parser and syntax highlighter.
  */
-public class EditorBundle implements Content {
+public class EditorBundle implements FileContent {
 
   /**
    * Static factory method for obtaining an instance of the EditorBundle.
@@ -258,6 +257,11 @@ public class EditorBundle implements Content {
       textActionsRemover = null;
     }
   }
+  
+  @Override
+  public PathUtil filePath() {
+    return path;
+  }
 
   /**
    * Replaces the document for the editor and related components.
@@ -335,7 +339,13 @@ public class EditorBundle implements Content {
     getEditor().getBuffer().synchronizeScrollTop();
   }
 
+  @Override
+  public void onContentDestroyed() {
+
+  }
+
   public OutlineController getOutlineController() {
     return outlineController;
   }
+
 }

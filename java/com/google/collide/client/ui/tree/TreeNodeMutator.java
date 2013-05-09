@@ -17,10 +17,10 @@ package com.google.collide.client.ui.tree;
 import com.google.collide.client.util.Elements;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
-import elemental.html.Element;
 import elemental.html.InputElement;
 
 /**

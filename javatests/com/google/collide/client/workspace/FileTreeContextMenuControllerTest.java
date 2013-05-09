@@ -40,7 +40,7 @@ import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.IFrameElement;
 
 /**

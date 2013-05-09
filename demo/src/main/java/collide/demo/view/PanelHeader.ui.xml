@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="res"
+		type="collide.demo.view.PanelHeader.Resources" />
+	<div ui:field="headerContainer" class="{res.panelHeaderCss.headerContainer}">
+  	<div ui:field="icons" class="{res.panelHeaderCss.icons}"></div>
+  	<h2 ui:field="header" class="{res.panelHeaderCss.header}"></h2>
+  	<div ui:field="controls" class="{res.panelHeaderCss.controls}"></div>
+	</div>
+</ui:UiBinder>

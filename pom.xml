@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <parent>
+  <groupId>com.google.collide</groupId>
+  <artifactId>collide-parent</artifactId>
+  <version>0.4-SNAPSHOT</version>
+  <relativePath>parent/pom.xml</relativePath>
+ </parent>
+ <artifactId>collide-core</artifactId>
+ <packaging>jar</packaging>
+ <name>CollIDE main package</name>
+ <url>http://collide.googlecode.com</url>
+ <properties>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <gwt.version>2.5.1-rc1</gwt.version>
+  <collide.home>${project.basedir}</collide.home>
+ </properties>
+
+ <build>
+  <sourceDirectory>${collide.home}/java</sourceDirectory>
+  <plugins>
+   <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>build-helper-maven-plugin</artifactId>
+    <executions>
+     <execution>
+      <id>add-sources</id>
+      <phase>generate-sources</phase>
+      <goals>
+       <goal>add-source</goal>
+      </goals>
+      <configuration>
+       <sources>
+        <source>${collide.home}/java</source>
+        <source>${collide.home}/bin/gen</source>
+        <source>${collide.home}/plugin</source>
+       </sources>
+      </configuration>
+     </execution>
+    </executions>
+   </plugin>
+
+   <plugin>
+    <artifactId>maven-antrun-plugin</artifactId>
+    <version>1.7</version>
+    <executions>
+     <execution>
+      <phase>generate-sources</phase>
+      <configuration>
+       <target>
+        <ant antfile="${collide.home}/build.xml">
+         <target name="src.dto.build" />
+        </ant>
+       </target>
+      </configuration>
+      <!-- if="The name of the property that must be set in order for this 
+       task" unless="The name of the property that must NOT be set in order for 
+       this task" -->
+      <goals>
+       <goal>run</goal>
+      </goals>
+     </execution>
+    </executions>
+   </plugin>
+
+  </plugins>
+  <defaultGoal>antrun:run</defaultGoal>
+  <pluginManagement>
+   <plugins>
+    <!--This plugin's configuration is used to store Eclipse m2e settings 
+     only. It has no influence on the Maven build itself. -->
+    <plugin>
+     <groupId>org.eclipse.m2e</groupId>
+     <artifactId>lifecycle-mapping</artifactId>
+     <version>1.0.0</version>
+     <configuration>
+      <lifecycleMappingMetadata>
+       <pluginExecutions>
+        <pluginExecution>
+         <pluginExecutionFilter>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <versionRange>[1.7,)</versionRange>
+          <goals>
+           <goal>run</goal>
+          </goals>
+         </pluginExecutionFilter>
+         <action>
+          <ignore></ignore>
+         </action>
+        </pluginExecution>
+       </pluginExecutions>
+      </lifecycleMappingMetadata>
+     </configuration>
+    </plugin>
+   </plugins>
+  </pluginManagement>
+ </build>
+
+ <dependencies>
+  <dependency>
+   <groupId>net.wetheinter</groupId>
+   <artifactId>xapi-gwt</artifactId>
+   <scope>system</scope>
+   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-gwt-${xapi.version}.jar</systemPath>
+  </dependency>
+  <dependency>
+   <groupId>com.google.code.gson</groupId>
+   <artifactId>gson</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-user</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-elemental</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-codeserver</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.gwt</groupId>
+   <artifactId>gwt-dev</artifactId>
+   <scope>provided</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.fasterxml.jackson.core</groupId>
+   <artifactId>jackson-core</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>org.vert-x</groupId>
+   <artifactId>vertx-lang-java</artifactId>
+  </dependency>
+
+  <dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava-gwt</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.guava</groupId>
+   <artifactId>guava</artifactId>
+  </dependency>
+
+  <dependency>
+   <groupId>org.eclipse.jgit</groupId>
+   <artifactId>org.eclipse.jgit</artifactId>
+  </dependency>
+
+  <dependency>
+   <groupId>org.easymock</groupId>
+   <artifactId>easymock</artifactId>
+  </dependency>
+
+
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-model</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-client-common</artifactId>
+  </dependency>
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox-client-scheduler</artifactId>
+  </dependency>
+
+
+ </dependencies>
+
+</project>

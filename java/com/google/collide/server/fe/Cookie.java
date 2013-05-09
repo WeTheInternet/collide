@@ -19,7 +19,7 @@ import org.vertx.java.core.http.HttpServerRequest;
 /**
  * Super simple class for extracting and handling Cookies. Should probably replace with an existing
  * implementation.
- * 
+ *
  */
 public class Cookie {
 

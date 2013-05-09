@@ -24,7 +24,8 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.css.CSSStyleDeclaration.Unit;
+import elemental.dom.Element;
 
 /**
  * A class that computes the height and width of a character.
@@ -168,11 +169,13 @@ public class FontDimensionsCalculator {
       htmlContent.append("<br/>");
       htmlContent.append(SAMPLE_TEXT);
     }
-    
+
     dummyElement = Elements.createSpanElement(fontClassName);
     dummyElement.setInnerHTML(htmlContent.toString());
     dummyElement.getStyle().setVisibility(CSSStyleDeclaration.Visibility.HIDDEN);
     dummyElement.getStyle().setPosition(CSSStyleDeclaration.Position.ABSOLUTE);
+    dummyElement.getStyle().setLeft(0, Unit.PX);
+    dummyElement.getStyle().setTop(0, Unit.PX);
     Elements.getBody().appendChild(dummyElement);
 
     fontDimensions = new FontDimensionsImpl();
@@ -205,7 +208,7 @@ public class FontDimensionsCalculator {
   public String getFontClassName() {
     return fontClassName;
   }
-  
+
   public String getFont() {
     return CssUtils.getComputedStyle(dummyElement).getPropertyValue("font");
   }

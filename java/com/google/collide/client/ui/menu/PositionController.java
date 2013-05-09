@@ -23,8 +23,8 @@ import com.google.gwt.user.client.Window;
 
 import elemental.css.CSSStyleDeclaration;
 import elemental.css.CSSStyleDeclaration.Unit;
+import elemental.dom.Element;
 import elemental.html.ClientRect;
-import elemental.html.Element;
 
 /**
  * A controller which handles positioning an element relative to another element. This controller is

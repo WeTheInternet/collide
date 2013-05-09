@@ -27,7 +27,7 @@ import com.google.collide.dto.client.DtoClientImpls.DirInfoImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.common.annotations.VisibleForTesting;
 
-import elemental.html.DragEvent;
+import elemental.js.html.JsDragEvent;
 
 /**
  * A controller to manage the in-tree drag and drop.
@@ -61,7 +61,7 @@ public class FileTreeNodeMoveController implements WorkspaceReadOnlyChangedEvent
     fileTreeUiController.setFileTreeNodeMoveListener(new DragDropListener() {
 
       @Override
-      public void onDragDrop(FileTreeNode node, DragEvent event) {
+      public void onDragDrop(FileTreeNode node, JsDragEvent event) {
         event.getDataTransfer().clearData(MOVE_START_INDICATOR_FORMAT);
         if (isReadOnly || !wasDragInTree(event)) {
           return;
@@ -71,7 +71,7 @@ public class FileTreeNodeMoveController implements WorkspaceReadOnlyChangedEvent
       }
 
       @Override
-      public void onDragStart(FileTreeNode node, DragEvent event) {
+      public void onDragStart(FileTreeNode node, JsDragEvent event) {
         // Save the selected nodes. Users may drop them in tree.
         saveSelectedNodesOrParam(node);
         // TODO: once Chrome supports dataTransfer.addElement, add
@@ -86,7 +86,7 @@ public class FileTreeNodeMoveController implements WorkspaceReadOnlyChangedEvent
     isReadOnly = event.isReadOnly();
   }
 
-  public static boolean wasDragInTree(DragEvent event) {
+  public static boolean wasDragInTree(JsDragEvent event) {
     return MOVE_START_INDICATOR.equals(
         event.getDataTransfer().getData(MOVE_START_INDICATOR_FORMAT));
   }

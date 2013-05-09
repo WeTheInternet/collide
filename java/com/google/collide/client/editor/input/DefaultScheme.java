@@ -379,6 +379,62 @@ public class DefaultScheme extends InputScheme {
     });
 
     /**
+     * Move line up (ALT+Up)
+     */
+    defaultMode.addShortcut(new EventShortcut(ModifierKeys.ALT, KeyCodeMap.ARROW_UP) {
+      @Override
+      public boolean event(InputScheme scheme, SignalEvent event) {
+        scheme
+        .getInputController()
+        .moveLinesUp()
+        ;
+        return true;
+      }
+    });
+
+    /**
+     * Move line down (ALT+Down)
+     */
+    defaultMode.addShortcut(new EventShortcut(ModifierKeys.ALT, KeyCodeMap.ARROW_DOWN) {
+      @Override
+      public boolean event(InputScheme scheme, SignalEvent event) {
+        scheme
+        .getInputController()
+        .moveLinesDown()
+        ;
+        return true;
+      }
+    });
+    
+    /**
+     * Clone line up (ACTION+ALT+Up)
+     */
+    defaultMode.addShortcut(new EventShortcut(ModifierKeys.ALT|ModifierKeys.ACTION, KeyCodeMap.ARROW_UP) {
+      @Override
+      public boolean event(InputScheme scheme, SignalEvent event) {
+        scheme
+        .getInputController()
+        .moveLinesUp()
+        ;
+        return true;
+      }
+    });
+    
+    /**
+     * Clone line down (ACTION+ALT+Down)
+     */
+    defaultMode.addShortcut(new EventShortcut(ModifierKeys.ALT|ModifierKeys.ACTION, KeyCodeMap.ARROW_DOWN) {
+      @Override
+      public boolean event(InputScheme scheme, SignalEvent event) {
+        scheme
+        .getInputController()
+        .moveLinesDown()
+        ;
+        return true;
+      }
+    });
+
+    /**
      * ACTION+ALT+V - Switch from Default to Vim Scheme
      *
      * TODO: Removed VIM keybinding access until we're ready to launch

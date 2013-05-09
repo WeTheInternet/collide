@@ -17,9 +17,9 @@ import com.google.collide.client.Resources;
 import com.google.collide.codemirror2.CodeMirror2;
 import com.google.gwt.core.client.GWT;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.js.JsBrowser;
-import elemental.js.html.JsDocument;
+import elemental.js.dom.JsDocument;
 
 /**
  * GWT test case that cleans up DOM body before and after test.

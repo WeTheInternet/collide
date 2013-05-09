@@ -8,7 +8,7 @@
 
   <inherits name="elemental.Elemental" />
 
-  <inherits name="wetheinter.net.XUtil" />
+  <inherits name="xapi.X_Inherit" />
 
   <inherits name="com.google.common.base.Base" />
   <inherits name="com.google.common.collect.Collect" />
@@ -174,7 +174,7 @@
   <add-linker name="xsiframe"/>
   <set-configuration-property name="devModeRedirectEnabled" value="true"/>
   <set-configuration-property name="installScriptJs" value="com/google/gwt/core/ext/linker/impl/installScriptDirect.js"/>
-  <set-configuration-property name="installCode" value="false"/>
+  <set-configuration-property name="installCode" value="true"/>
   <set-configuration-property name="computeScriptBaseJs" value="com/google/gwt/dev/codeserver/computeScriptBase.js"/>
 
 </module>

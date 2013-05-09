@@ -27,7 +27,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Debugging sidebar header.

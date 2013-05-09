@@ -1,0 +1,21 @@
+.headerContainer {
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 100%;
+}
+.header, .icons, .controls{
+ vertical-align: middle;
+ height: 100%;
+ display: inline-block;
+}
+.header{
+ margin: 0px;
+ white-space: nowrap;
+}
+.icons{
+ 
+}
+.controls{
+  position: absolute;
+	right: 0px;
+}

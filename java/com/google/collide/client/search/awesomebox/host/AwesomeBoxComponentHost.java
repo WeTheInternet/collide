@@ -26,6 +26,7 @@ import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.common.base.Preconditions;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.dom.Node;
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -33,7 +34,6 @@ import elemental.events.EventRemover;
 import elemental.events.KeyboardEvent;
 import elemental.events.KeyboardEvent.KeyCode;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * The host control of the {@link AwesomeBoxComponent}s and related components.

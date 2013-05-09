@@ -24,17 +24,20 @@ import com.google.collide.dto.CodeErrors;
 import com.google.collide.dto.CodeErrorsRequest;
 import com.google.collide.dto.CodeGraphRequest;
 import com.google.collide.dto.CodeGraphResponse;
+import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.GetDirectory;
 import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.GetFileContents;
 import com.google.collide.dto.GetFileContentsResponse;
+import com.google.collide.dto.GetRunConfig;
+import com.google.collide.dto.GetRunConfigResponse;
 import com.google.collide.dto.GetWorkspaceMetaData;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.GetWorkspaceParticipants;
 import com.google.collide.dto.GetWorkspaceParticipantsResponse;
 import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.GwtStatus;
+import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.KeepAlive;
 import com.google.collide.dto.LogFatalRecord;
 import com.google.collide.dto.LogFatalRecordResponse;
@@ -64,14 +67,14 @@ import com.google.common.annotations.VisibleForTesting;
  * The EventBus APIs for the Collide server.
  *
  * See {@package com.google.collide.dto} for data objects.
- * 
+ *
  */
 public class FrontendApi {
 
   /**
    * EventBus API that documents the message types sent to the frontend. This API is fire and
    * forget, since it does not expect a response.
-   * 
+   *
    * @param <REQ> The outgoing message type.
    */
   public static interface SendApi<REQ extends ClientToServerDto> {
@@ -79,9 +82,19 @@ public class FrontendApi {
   }
 
   /**
+   * EventBus API that documents the message types sent to the frontend. This API is fire and
+   * forget, since it does not expect a response.
+   *
+   * @param <REQ> The outgoing message type.
+   */
+  public static interface ReceiveApi<RESP extends ServerToClientDto> {
+    public void request(final ApiCallback<RESP> msg);
+  }
+
+  /**
    * EventBus API that documents the message types sent to the frontend, and the message type
    * expected to be returned as a response.
-   * 
+   *
    * @param <REQ> The outgoing message type.
    * @param <RESP> The incoming message type.
    */
@@ -101,7 +114,8 @@ public class FrontendApi {
   protected class ApiImpl<REQ extends ClientToServerDto, RESP extends ServerToClientDto>
       implements
         RequestResponseApi<REQ, RESP>,
-        SendApi<REQ> {
+        SendApi<REQ>,
+        ReceiveApi<RESP>{
     private final String address;
 
     protected ApiImpl(String address) {
@@ -124,8 +138,33 @@ public class FrontendApi {
         public void onReply(String message) {
           Jso jso = Jso.deserialize(message);
 
-          Log.info(getClass(), message);
-          
+          Log.debug(getClass(), "sent message: "+ message);
+
+          if (RoutingTypes.SERVERERROR == jso.getIntField(RoutableDto.TYPE_FIELD)) {
+            ServerErrorImpl serverError = (ServerErrorImpl) jso;
+            callback.onFail(serverError.getFailureReason());
+            return;
+          }
+
+          ServerToClientDto messageDto = (ServerToClientDto) jso;
+
+          @SuppressWarnings("unchecked")
+          RESP resp = (RESP) messageDto;
+          callback.onMessageReceived(resp);
+        }
+      });
+    }
+
+    @Override
+    public void request(final ApiCallback<RESP> callback) {
+      Log.debug(getClass(), "Performing request on address "+address);
+      pushChannel.request(address, new ReplyHandler() {
+        @Override
+        public void onReply(String message) {
+          Log.debug(getClass(), "received message: "+message);
+          Jso jso = Jso.deserialize(message);
+
+
           if (RoutingTypes.SERVERERROR == jso.getIntField(RoutableDto.TYPE_FIELD)) {
             ServerErrorImpl serverError = (ServerErrorImpl) jso;
             callback.onFail(serverError.getFailureReason());
@@ -157,11 +196,11 @@ public class FrontendApi {
 
   /*
    * IMPORTANT!
-   * 
+   *
    * By convention (and ignore the entries that ignore this convention :) ) we try to have
    * GetDto/ResponseDto pairs for each unique servlet path. This helps us guard against
    * client/frontend API version skew via a simple hash of all of the DTO messages.
-   * 
+   *
    * So if you add a new Servlet Path, please also add a new Get/Response Dto pair.
    */
 
@@ -205,9 +244,9 @@ public class FrontendApi {
   /** Requests that we get updated information about a workspace's run targets. */
   public final SendApi<UpdateWorkspaceRunTargets> UPDATE_WORKSPACE_RUN_TARGETS =
       makeApi("workspace.updateRunTarget");
-  
+
   /** Requests workspace state like the last opened files and run targets. */
-  public final RequestResponseApi<GetWorkspaceMetaData, GetWorkspaceMetaDataResponse> 
+  public final RequestResponseApi<GetWorkspaceMetaData, GetWorkspaceMetaDataResponse>
       GET_WORKSPACE_META_DATA = makeApi("workspace.getMetaData");
 
   /**
@@ -224,12 +263,21 @@ public class FrontendApi {
 //  public final RequestResponseApi<SetMavenConfig,MavenConfig> SET_MAVEN_CONFIG =
 //      makeApi("maven.save");
 
-  public final RequestResponseApi<GwtCompile,GwtStatus> COMPILE_GWT =
+  public final RequestResponseApi<GetRunConfig, GetRunConfigResponse> GET_RUN_CONFIG =
+    makeApi("run.get");
+
+//  public final RequestResponseApi<GetRunConfig,GwtStatus> COMPILE_GWT =
+//    makeApi("gwt.compile");
+
+  public final RequestResponseApi<GwtCompile,CompileResponse> COMPILE_GWT =
       makeApi("gwt.compile");
 
-  public final RequestResponseApi<GwtCompile, GwtStatus> KILL_GWT =
+  public final RequestResponseApi<GwtCompile, CompileResponse> KILL_GWT =
       makeApi("gwt.status");
-  
+
+  public final ReceiveApi<GwtSettings> GWT_SETTINGS =
+      makeApi("gwt.settings");
+
   /**
    * Retrieves code parsing results.
    */
@@ -275,7 +323,7 @@ public class FrontendApi {
 
   /**
    * Makes an API given the URL.
-   * 
+   *
    * @param <REQ> the request object
    * @param <RESP> the response object
    */

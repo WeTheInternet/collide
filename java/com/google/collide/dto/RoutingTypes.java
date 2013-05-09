@@ -16,13 +16,13 @@ package com.google.collide.dto;
 
 /**
  * Stable routing types for all DTOs.
- * 
+ *
  * NOTE: If you add a new DTO, ONLY add to the bottom of the list.
- * 
+ *
  *
  */
 public class RoutingTypes {
-  private RoutingTypes() {    
+  private RoutingTypes() {
   }
 
   public static final int ADDMEMBERSRESPONSE = 1;
@@ -147,11 +147,18 @@ public class RoutingTypes {
   public static final int ENDUPLOADSESSIONFINISHED = 120;
   public static final int RETRYALREADYTRANSFERREDUPLOAD = 121;
   public static final int GETWORKSPACEMETADATA = 122;
-  public static final int GETMAVENCONFIG = 123;
-  public static final int SETMAVENCONFIG = 124;
-  public static final int MAVENCONFIG = 125;
-  public static final int GWTSTATUS = 126;
-  public static final int GWTKILL = 127;
-  public static final int GWTCOMPILE = 128;
-  public static final int GWTDIRECTORY = 129;
+  public static final int REQUESTRUNCONFIG = 123;
+  public static final int RECEIVERUNCONFIG = 124;
+  public static final int SETRUNCONFIG = 125;
+  public static final int COMPILERESPONSE = 126;
+  public static final int GWTCOMPILE = 127;
+  public static final int CODEMODULE = 128;
+  public static final int GWTKILL = 129;
+  public static final int GWTDIRECTORY = 130;
+  public static final int GWTSETTINGS = 131;
+  public static final int GWTPERMUTATION = 132;
+  public static final int LOGMESSAGE = 133;
+  public static final int GETMAVENCONFIG = 134;
+  public static final int SETMAVENCONFIG = 135;
+  public static final int MAVENCONFIG = 136;
 }

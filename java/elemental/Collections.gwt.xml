@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.0/distro-source/core/src/gwt-module.dtd">
+<module>
+  <!-- Clobber the collections import which normally excludes some files to avoid dependency conflicts when 
+  using only elemental collections. -->
+  
+  <source path="js/json" />
+  <source path="json" />
+  <source path="util" />
+ 
+  <source path="js/util" />
+  
+  <super-source path="super"/>
+  
+</module>

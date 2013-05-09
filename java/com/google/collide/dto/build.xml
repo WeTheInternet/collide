@@ -18,8 +18,12 @@
       <targetfiles path="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
       <sequential>
         <mkdir dir="${dirs.bin}/${dirs.toppkg}/dto"/>
-        <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+        <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}">
           <include name="${dirs.toppkg}/dto/*.java"/>
+      	  <include name="${dirs.toppkg}/emul/**/*.java"/>
+          <classpath>
+            <path refid="paths.shared"/>
+          </classpath>
         </do.javac>
         <jar destfile="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"
              basedir="${dirs.bin}" includes="${dirs.toppkg}/dto/*.class"

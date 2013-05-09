@@ -20,7 +20,8 @@ import com.google.collide.json.shared.JsonStringMap.IterationCallback;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.core.client.JavaScriptObject;
 
-import elemental.dom.XMLHttpRequest;
+import elemental.xml.XMLHttpRequest;
+
 
 /**
  * The warden watches XMLHttpRequests so we can monitor how many are going out
@@ -59,7 +60,7 @@ public class XhrWarden {
     }
     return wardenManager;
   }
-  
+
   /**
    * Listener for warden events
    */
@@ -175,7 +176,7 @@ public class XhrWarden {
       }
       return oldest;
     }
-    
+
     @Override
     public void dumpRequestsToConsole() {
       final StringBuilder builder = new StringBuilder();
@@ -215,7 +216,7 @@ public class XhrWarden {
         eventListener.onWarning(this);
         alreadyLoggedError = true;
       }
-      
+
       final XMLHttpRequest xhr = request.getRequest();
       customHeaders.iterate(new IterationCallback<String>() {
         @Override
@@ -237,7 +238,7 @@ public class XhrWarden {
         openXhrRequests.remove(oldest.getId());
 
         eventListener.onEmergency(this, oldest);
-      } 
+      }
     }
 
     @Override
@@ -352,7 +353,7 @@ public class XhrWarden {
     wardenManager = null;
     removeWarden();
   }
-  
+
   /**
    * Dumps a list of open requests to the console.
    */

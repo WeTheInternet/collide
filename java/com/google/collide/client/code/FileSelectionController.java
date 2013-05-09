@@ -18,6 +18,7 @@ import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.document.DocumentManager.GetDocumentCallback;
 import com.google.collide.client.document.DocumentMetadata;
 import com.google.collide.client.history.RootPlace;
+import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
@@ -84,7 +85,7 @@ public class FileSelectionController implements GetDocumentCallback {
   private boolean isSelectedFileEditable = false;
   private final FileTreeUiController treeUiController;
   private final FileTreeModel fileTreeModel;
-  private final EditableContentArea contentArea;
+  private final MultiPanel<?,?> contentArea;
   private final EditorBundle editorBundle;
   private final UneditableDisplay uneditableDisplay;
   private final DocumentManager documentManager;
@@ -94,13 +95,13 @@ public class FileSelectionController implements GetDocumentCallback {
       UneditableDisplay uneditableDisplay,
       FileTreeModel fileTreeModel,
       FileTreeUiController treeUiController,
-      EditableContentArea contentArea) {
+      MultiPanel<?,?> masterPanel) {
     this.documentManager = documentManager;
     this.editorBundle = editorBundle;
     this.uneditableDisplay = uneditableDisplay;
     this.fileTreeModel = fileTreeModel;
     this.treeUiController = treeUiController;
-    this.contentArea = contentArea;
+    this.contentArea = masterPanel;
   }
 
   /**

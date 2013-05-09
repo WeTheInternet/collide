@@ -14,7 +14,7 @@
 
 package com.google.collide.client.search.awesomebox.host;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Defines the minimum interface exposed by an {@link AwesomeBoxComponentHost}

@@ -164,7 +164,7 @@ public class FileTreeNode extends TreeNodeInfoImpl {
   public final FileTreeNode findClosestChildNode(PathUtil path) {
     FileTreeNode parentNode = this;
     int dirnameComponents = path.getPathComponentsCount() - 1;
-    
+
     if (dirnameComponents < 0) {
       return parentNode;
     }
@@ -262,7 +262,7 @@ public class FileTreeNode extends TreeNodeInfoImpl {
 
   /**
    * Checks whether or not the children of this directory have been requested.
-   * 
+   *
    * @return true if loading, false if not
    */
   public final native boolean isLoading() /*-{

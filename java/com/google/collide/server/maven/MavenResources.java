@@ -4,48 +4,51 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import wetheinter.net.pojo.LazySingletonProvider;
+import xapi.inject.impl.LazyPojo;
 
 /**
- * 
+ *
  * Project configuration settings to use during maven builds.
- * 
+ *
  * These settings can be used for any multi-module project configuration.
- * 
+ *
  * @author James X. Nelson (james@wetheinter.net, @james)
  */
 public class MavenResources implements Serializable{
-
   private static final long serialVersionUID = -8124340238103827275L;
   private String srcRoot="";
   private String warSrcDir="";
   private String warTargetDir="";
   private String workDir="";
-  
-  
-  private final LazySingletonProvider<File> srcRootFolder
-  = new LazySingletonProvider<File>(){
+
+
+  private final LazyPojo<File> srcRootFolder
+  = new LazyPojo<File>(){
+    @Override
     protected File initialValue() {
       return initSourceRoot();
     };
   };
-  
-  private final LazySingletonProvider<File> warSrcFolder
-    = new LazySingletonProvider<File>(){
+
+  private final LazyPojo<File> warSrcFolder
+    = new LazyPojo<File>(){
+    @Override
     protected File initialValue() {
       return initWarSource();
     };
   };
 
-  private final LazySingletonProvider<File> warTargetFolder
-  = new LazySingletonProvider<File>(){
+  private final LazyPojo<File> warTargetFolder
+  = new LazyPojo<File>(){
+    @Override
     protected File initialValue() {
       return initWarTarget();
     };
   };
 
-  private final LazySingletonProvider<File> workFolder
-  = new LazySingletonProvider<File>(){
+  private final LazyPojo<File> workFolder
+  = new LazyPojo<File>(){
+    @Override
     protected File initialValue() {
       return initWorkFolder();
     };
@@ -68,7 +71,7 @@ public class MavenResources implements Serializable{
 
   /**
    * @return the war Source Directory
-   * 
+   *
    * This is the folder containing your "clean" Web App Resource files (no generated source)
    */
   public File getWarSrcDir() {
@@ -85,7 +88,7 @@ public class MavenResources implements Serializable{
 
   /**
    * @return the war Target Directory
-   * 
+   *
    * This is the folder to which your clean Web App Resources will be merged with generated war.
    */
   public File getWarTargetDir() {
@@ -112,13 +115,13 @@ public class MavenResources implements Serializable{
   public void setWorkDir(String workDir) {
     this.workDir = workDir;
   }
-  
-  
+
+
   //One-time initialization methods; only called the first time a property is accessed,
   //and the next access after a property is set.
-  
-  
-  
+
+
+
   protected File initSourceRoot() {
     if (srcRoot.length()==0){
       throw new RuntimeException("You MUST specifiy a source root directory to use MavenConfig.  ");
@@ -177,5 +180,5 @@ public class MavenResources implements Serializable{
     return file;
   }
 
-  
+
 }

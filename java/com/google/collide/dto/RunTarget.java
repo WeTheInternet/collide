@@ -15,18 +15,18 @@
 package com.google.collide.dto;
 
 /**
- * 
+ *
  * A RunTarget describes a run target in Collide, eg
  * running the currently open file, or always run a URL.
- * 
+ *
  */
 public interface RunTarget {
 
   public enum RunMode {
-    PREVIEW_CURRENT_FILE, ALWAYS_RUN, GWT_COMPILE, ANT_BUILD, MAVEN_BUILD
+    PREVIEW_CURRENT_FILE, ALWAYS_RUN, GWT_COMPILE, MAVEN_BUILD, ANT_BUILD
   }
 
-  RunMode getRunMode();
+  String getRunMode();
 
   String getAlwaysRunFilename();
 

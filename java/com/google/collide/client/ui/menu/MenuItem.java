@@ -16,8 +16,8 @@ package com.google.collide.client.ui.menu;
 
 import com.google.collide.client.util.Elements;
 
+import elemental.dom.Element;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Simple tuple of a label and an action.
@@ -70,7 +70,7 @@ public class MenuItem<T> {
   public String getLabel() {
     return label;
   }
-  
+
   public void setMenuItemRenderer(MenuItemRenderer<T> renderer) {
     this.renderer = renderer;
   }
@@ -87,7 +87,7 @@ public class MenuItem<T> {
       action.doAction(context);
     }
   }
-  
+
   public void dispatchShowing(T context) {
     if (isEnabled() && renderer != null) {
       renderer.onShowing(this, context);
@@ -126,10 +126,10 @@ public class MenuItem<T> {
         element.setTextContent(getLabel());
       }
       if (clickListener != null) {
-        element.setOnClick(clickListener);
+        element.setOnclick(clickListener);
       }
       if (mouseDownListener != null) {
-        element.setOnMouseDown(mouseDownListener);
+        element.setOnmousedown(mouseDownListener);
       }
       setEnabledStyle();
     }

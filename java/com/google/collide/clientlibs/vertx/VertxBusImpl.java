@@ -22,8 +22,22 @@ import com.google.gwt.core.client.JavaScriptObject;
 public class VertxBusImpl extends JavaScriptObject implements VertxBus {
 
   public static final native VertxBus create() /*-{
-    var url = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
-    url += "/eventbus";
+     if (!$wnd.collide) $wnd.collide = {};
+    var protocol = $wnd.collide.protocol || window.location.protocol;
+    var hostname = $wnd.collide.host || window.location.hostname;
+    var port = $wnd.collide.port || window.location.port;
+    var path;
+    if ($wnd.collide.path) {
+      path = $wnd.collide.path;
+    } else {
+      path = window.location.pathname;
+      path = path.indexOf('/collide')==-1 ?
+        '/' : '/collide/';
+    }
+    var url = protocol + '//' + hostname;
+    if (port) url += ':' + port;
+    url += path + "eventbus";
+
     return new $wnd.vertx.EventBus(url);
   }-*/;
 
@@ -31,27 +45,26 @@ public class VertxBusImpl extends JavaScriptObject implements VertxBus {
 
   @Override
   public final native void setOnOpenCallback(ConnectionListener callback) /*-{
-    this.onopen = function() { 
+    this.onopen = function() {
       callback.@com.google.collide.clientlibs.vertx.VertxBus.ConnectionListener::onOpen()();
     }
   }-*/;
 
   @Override
   public final native void setOnCloseCallback(ConnectionListener callback) /*-{
-    this.onclose = function() { 
+    this.onclose = function() {
       callback.@com.google.collide.clientlibs.vertx.VertxBus.ConnectionListener::onClose()();
     }
   }-*/;
 
   @Override
-  public final void send(String address, String message) {   
+  public final void send(String address, String message) {
     send(address, message, null);
   }
-  
-  @Override
-  public final native void send(String address, String message, ReplyHandler replyHandler) /*-{    
-    var replyHandlerWrapper;
 
+  @Override
+  public final native void send(String address, String message, ReplyHandler replyHandler) /*-{
+    var replyHandlerWrapper;
     if(replyHandler) {
       replyHandlerWrapper = function(reply) {
         replyHandler.@com.google.collide.clientlibs.vertx.VertxBus.ReplyHandler::onReply(Ljava/lang/String;)(reply.dto)

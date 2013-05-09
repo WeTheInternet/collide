@@ -14,8 +14,11 @@
 
 package com.google.collide.client.workspace;
 
+import xapi.log.X_Log;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.common.BaseResources;
+import com.google.collide.client.plugin.RunConfiguration;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.dropdown.AutocompleteController;
 import com.google.collide.client.ui.dropdown.AutocompleteController.AutocompleteHandler;
@@ -36,7 +39,6 @@ import com.google.collide.client.util.ClientStringUtils;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.RunTarget;
-import com.google.collide.dto.RunTarget.RunMode;
 import com.google.collide.dto.client.DtoClientImpls.RunTargetImpl;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.RegExpUtils;
@@ -53,12 +55,16 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.DOM;
 
 import elemental.dom.Node;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.KeyboardEvent;
+import elemental.util.ArrayOfString;
+import elemental.util.Collections;
+import elemental.util.MapFromStringTo;
+//import com.google.gwt.user.client.ui.HTMLPanel;
 
 /**
  * A popup for user selection of the run target.
@@ -67,10 +73,13 @@ public class RunButtonTargetPopup
     extends AutoHideComponent<RunButtonTargetPopup.View, AutoHideModel> {
 
   public static RunButtonTargetPopup create(AppContext context, Element anchorElement,
-      Element triggerElement, FileNameSearch searchIndex) {
-    View view = new View(context.getResources());
-    return new RunButtonTargetPopup(view, anchorElement, triggerElement, searchIndex);
+      Element triggerElement, FileNameSearch searchIndex, MapFromStringTo<RunConfiguration> runConfigs) {
+    MapFromStringTo<elemental.html.InputElement> inputs = Collections.mapFromStringTo();
+    View view = new View(context.getResources(), runConfigs, inputs);
+    return new RunButtonTargetPopup(view, anchorElement, triggerElement, searchIndex,runConfigs,inputs);
   }
+
+
 
   /**
    * An enum which handles the different types of files that can be parsed out of a user's file
@@ -126,6 +135,7 @@ public class RunButtonTargetPopup
      * Parses the user's input and determines the type of run target.
      */
     public static RunTargetType parseTargetType(String fileInput) {
+      //check for registered plugin handlers
       return RunTargetType.FILE;
     }
   }
@@ -169,45 +179,29 @@ public class RunButtonTargetPopup
     void onAlwaysRunInputChanged();
 
     void onPathInputChanged();
-    
-    void onGwtCompileChanged();
-    
-    void onAntBuildChanged();
-    
-    void onMavenGoalChanged();
+
+    void onItemChanged(RunConfiguration runConfig);
   }
 
   public class ViewEventsImpl implements ViewEvents {
     @Override
     public void onAlwaysRunInputChanged() {
-      selectRadio(RunMode.ALWAYS_RUN);
+      selectRadio("ALWAYS_RUN");
       getView().setDisplayForRunningApp();
     }
 
     @Override
     public void onPathInputChanged() {
-      selectRadio(RunMode.ALWAYS_RUN);
+      selectRadio("ALWAYS_RUN");
       getView().setDisplayForRunningApp();
     }
-    
+
     @Override
-    public void onGwtCompileChanged() {
-      selectRadio(RunMode.GWT_COMPILE);
+    public void onItemChanged(RunConfiguration config) {
+      selectRadio(config.getId());
       getView().setDisplayForRunningApp();
     }
-    
-    @Override
-    public void onAntBuildChanged() {
-      selectRadio(RunMode.ANT_BUILD);
-      getView().setDisplayForRunningApp();
-    }
-    
-    @Override
-    public void onMavenGoalChanged() {
-      selectRadio(RunMode.MAVEN_BUILD);
-      getView().setDisplayForRunningApp();
-    }
-    
+
   }
 
   private static final int MAX_AUTOCOMPLETE_RESULTS = 4;
@@ -216,12 +210,18 @@ public class RunButtonTargetPopup
   private final PositionController positionController;
   private AutocompleteController<PathUtil> autocompleteController;
 
+  private final MapFromStringTo<RunConfiguration> plugins;
+  private final MapFromStringTo<elemental.html.InputElement> inputs;
+
   private RunButtonTargetPopup(
-      View view, Element anchorElement, Element triggerElement, FileNameSearch searchIndex) {
+      View view, Element anchorElement, Element triggerElement, FileNameSearch searchIndex,
+      MapFromStringTo<RunConfiguration> runConfigs, MapFromStringTo<elemental.html.InputElement> inputs) {
     super(view, new AutoHideModel());
     view.setDelegate(new ViewEventsImpl());
 
     this.searchIndex = searchIndex;
+    this.plugins = runConfigs;
+    this.inputs = inputs;
     setupAutocomplete();
 
     // Don't eat outside clicks and only hide when the user clicks away
@@ -274,7 +274,7 @@ public class RunButtonTargetPopup
 
     ListItemRenderer<PathUtil> itemRenderer = new ListItemRenderer<PathUtil>() {
       @Override
-      public void render(elemental.html.Element listItemBase, PathUtil itemData) {
+      public void render(elemental.dom.Element listItemBase, PathUtil itemData) {
         elemental.html.SpanElement fileNameElement = Elements.createSpanElement();
         elemental.html.SpanElement folderNameElement = Elements.createSpanElement(
             getView().res.runButtonTargetPopupCss().autocompleteFolder());
@@ -309,39 +309,39 @@ public class RunButtonTargetPopup
         StringUtils.ensureNotEmpty(filePath, "Select a file"));
   }
 
-  private void selectRadio(RunMode mode) {
-    elemental.html.Element preview = Elements.asJsElement(getView().runPreviewRadio);
-    elemental.html.Element gwt = Elements.asJsElement(getView().runGwtRadio);
-    elemental.html.Element ant = Elements.asJsElement(getView().runAntRadio);
-    elemental.html.Element maven = Elements.asJsElement(getView().runMavenRadio);
-    elemental.html.Element always = Elements.asJsElement(getView().runAlwaysRadio);
-
-    preview.setChecked(mode == RunMode.PREVIEW_CURRENT_FILE);
-    gwt.setChecked(mode == RunMode.GWT_COMPILE);
-    ant.setChecked(mode == RunMode.ANT_BUILD);
-    maven.setChecked(mode == RunMode.MAVEN_BUILD);
-    always.setChecked(mode == RunMode.ALWAYS_RUN);
+  private void selectRadio(String mode) {
+    elemental.html.InputElement preview = Elements.asJsElement(getView().runPreviewRadio);
+    elemental.html.InputElement always = Elements.asJsElement(getView().runAlwaysRadio);
+    X_Log.info("Selected",mode);
+    preview.setChecked("PREVIEW_CURRENT_FILE".equals(mode));
+    always.setChecked("ALWAYS_RUN".equals(mode));
+    ArrayOfString keys = plugins.keys();
+    for (int i = 0; i < keys.length(); i++) {
+      String key = keys.get(i);
+      elemental.html.InputElement input = inputs.get(key);
+      if (input != null)
+        input.setChecked(plugins.get(key).getId().equals(mode));
+    }
   }
 
   public void setRunTarget(RunTarget runTarget) {
+
     selectRadio(runTarget.getRunMode());
     getView().runAlwaysDropdown.getInput().setValue(StringUtils.nullToEmpty(
         runTarget.getAlwaysRunFilename()));
     getView().userExtraInput.setValue(StringUtils.nullToEmpty(runTarget.getAlwaysRunUrlOrQuery()));
-    
+
     //XXX this is where we set previous gwt/ant/maven run Strings
-    
+
   }
 
   public RunTarget getRunTarget() {
     RunTargetImpl runTarget = RunTargetImpl.make();
-    
+
     runTarget.setRunMode(
-        isChecked(getView().runPreviewRadio)? RunMode.PREVIEW_CURRENT_FILE 
-        : isChecked(getView().runGwtRadio) ? RunMode.GWT_COMPILE
-        : isChecked(getView().runAntRadio) ? RunMode.ANT_BUILD
-        : isChecked(getView().runMavenRadio) ? RunMode.MAVEN_BUILD
-        : RunMode.ALWAYS_RUN);
+        isChecked(getView().runPreviewRadio)? "PREVIEW_CURRENT_FILE"
+        : isChecked(getView().runAlwaysRadio) ? "ALWAYS_RUN"
+        : getChecked());
 
     runTarget.setAlwaysRunFilename(getView().runAlwaysDropdown.getInput().getValue());
     runTarget.setAlwaysRunUrlOrQuery(getView().userExtraInput.getValue());
@@ -349,10 +349,21 @@ public class RunButtonTargetPopup
     return runTarget;
   }
 
-  private boolean isChecked(InputElement input){
-    return Elements.asJsElement(input).isChecked();
+  private String getChecked() {
+    ArrayOfString keys = inputs.keys();
+    for (int i = 0; i < keys.length(); i++) {
+      String key = keys.get(i);
+      if (inputs.get(key).isChecked()) {
+        return key;
+      }
+    }
+    return "ALWAYS_RUN";
   }
-  
+
+  private boolean isChecked(InputElement input){
+    return Elements.<InputElement, elemental.html.InputElement>asJsElement(input).isChecked();
+  }
+
   @Override
   public void show() {
     // Position Ourselves
@@ -377,7 +388,7 @@ public class RunButtonTargetPopup
     // Preview Current File Stuff
     @UiField
     InputElement runPreviewRadio;
-    
+
     @UiField
     LabelElement runPreviewLabel;
 
@@ -385,35 +396,19 @@ public class RunButtonTargetPopup
     SpanElement runPreviewCurrentFile;
 
     //Run gwt stuff
-    @UiField
-    InputElement runGwtRadio;
-    
-    @UiField
-    LabelElement runGwtLabel;
-    
-    @UiField
-    DivElement runGwtRow;
-    
-    //Run ant stuff
-    @UiField
-    InputElement runAntRadio;
-    
-    @UiField
-    LabelElement runAntLabel;
-    
-    @UiField
-    DivElement runAntRow;
-    
-    //Run maven stuff
-    @UiField
-    InputElement runMavenRadio;
-    
-    @UiField
-    LabelElement runMavenLabel;
+//    @UiField
+//    InputElement runGwtRadio;
+//
+//    @UiField
+//    LabelElement runGwtLabel;
+//
+//    @UiField
+//    DivElement runGwtRow;
 
+    // Full Query URL
     @UiField
-    DivElement runMavenRow;
-    
+    DivElement container;
+
     // Run always stuff
     @UiField
     DivElement runAlwaysRow;
@@ -437,7 +432,9 @@ public class RunButtonTargetPopup
     @UiField
     DivElement runHintText;
 
-    public View(Resources resources) {
+
+    public View(Resources resources, MapFromStringTo<RunConfiguration> runConfigs,
+      MapFromStringTo<elemental.html.InputElement> inputs) {
       this.res = resources;
 
       Element element = uiBinder.createAndBindUi(this);
@@ -445,21 +442,12 @@ public class RunButtonTargetPopup
       Elements.getBody().appendChild((Node) element);
 
       // Workaround for inability to set both id and ui:field in a UiBinder XML
-      runAlwaysRadio.setId(HTMLPanel.createUniqueId());
+      runAlwaysRadio.setId(DOM.createUniqueId());
       runAlwaysLabel.setHtmlFor(runAlwaysRadio.getId());
       userExtraLabel.setHtmlFor(runAlwaysRadio.getId());
 
-      runPreviewRadio.setId(HTMLPanel.createUniqueId());
+      runPreviewRadio.setId(DOM.createUniqueId());
       runPreviewLabel.setHtmlFor(runPreviewRadio.getId());
-      
-      runGwtRadio.setId(HTMLPanel.createUniqueId());
-      runGwtLabel.setHtmlFor(runGwtRadio.getId());
-      
-      runAntRadio.setId(HTMLPanel.createUniqueId());
-      runAntLabel.setHtmlFor(runAntRadio.getId());
-      
-      runMavenRadio.setId(HTMLPanel.createUniqueId());
-      runMavenLabel.setHtmlFor(runMavenRadio.getId());
 
       // Create the dropdown
       runAlwaysDropdown = new DropdownInput(resources);
@@ -467,9 +455,48 @@ public class RunButtonTargetPopup
           .addClassName(resources.runButtonTargetPopupCss().alwaysRunInput());
       runAlwaysDropdown.getInput().setAttribute("placeholder", "Enter filename");
       Elements.asJsElement(runAlwaysRow).appendChild(runAlwaysDropdown.getContainer());
-      
-      //Create gwt handler XXX
-      
+
+      //create dynamic run configs
+      ArrayOfString keys = runConfigs.keys();
+      for (int i = 0; i < keys.length(); i++) {
+        String key = keys.get(i);
+        final RunConfiguration runConfig = runConfigs.get(key);
+        String label = runConfig.getLabel();
+        if (label == null) {
+          //no label; this run config modifies hardcoded configs
+        }else {
+          //create an input radio, and possibly inject extra controls
+          elemental.html.DivElement el = Elements.createDivElement();
+          elemental.html.InputElement input = Elements.createInputElement(
+            resources.baseCss().radio()
+            +" "+resources.runButtonTargetPopupCss().radio()
+            );
+          input.setId(DOM.createUniqueId());
+          input.setType("radio");
+          input.setName("runType");
+          inputs.put(key, input);
+          elemental.html.DivElement body = Elements.createDivElement(resources.runButtonTargetPopupCss().stackedContainer());
+          body.setInnerHTML("<div><label>"+label+"</label></div>");
+          ((elemental.html.LabelElement)body.getFirstChildElement().getFirstChildElement()).setHtmlFor(input.getId());
+          //now, add pluggable forms, if any, for the runtarget
+          elemental.dom.Element extra = runConfig.getForm();
+          if (extra!=null) {
+            body.appendChild(extra);
+          }
+          input.addEventListener(Event.CHANGE, new EventListener() {
+            @Override
+            public void handleEvent(Event evt) {
+              if (getDelegate() != null) {
+                getDelegate().onItemChanged(runConfig);
+              }
+            }
+          },true);
+          el.appendChild(input);
+          el.appendChild(body);
+          Elements.asJsElement(container).appendChild(el);
+        }
+      }
+
       setDisplayForRunningApp(RunTargetType.FILE);
       attachHandlers();
     }
@@ -535,5 +562,9 @@ public class RunButtonTargetPopup
         runHintText.setInnerText(appType.inputFormatter.formatUserInput(fileName, queryText));
       }
     }
+  }
+
+  public void renderPlugins() {
+
   }
 }

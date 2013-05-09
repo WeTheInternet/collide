@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="res"
+		type="com.google.collide.plugin.client.gwt.GwtCompilerShell.Resources" />
+	<div ui:field="body" class="{res.gwtLogCss.logContainer}">
+ 	 <label ui:field="inputLabel">Module: </label>
+   <input ui:field="input" class="{res.gwtModuleCss.moduleInput}">
+  		<datalist ui:field="data">
+  		</datalist>
+    </input>
+	</div>
+</ui:UiBinder>

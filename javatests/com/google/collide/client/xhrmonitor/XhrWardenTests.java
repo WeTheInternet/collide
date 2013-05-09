@@ -25,7 +25,7 @@ import junit.framework.TestCase;
 
 import org.easymock.EasyMock;
 
-import elemental.dom.XMLHttpRequest;
+import elemental.xml.XMLHttpRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ import java.util.List;
  * Tests the warden.
  */
 public class XhrWardenTests extends TestCase {
-  
+
   private static final int TEST_WARNING_LIMIT = 7;
   private static final int TEST_ERROR_LIMIT = 8;
 
@@ -65,7 +65,7 @@ public class XhrWardenTests extends TestCase {
     }
     return requests;
   }
-  
+
   /**
    * Creates multiple WardenHttpRequests starting at id 1 and timestamp 1.
    *
@@ -74,7 +74,7 @@ public class XhrWardenTests extends TestCase {
   private static List<WardenXhrRequest> createMultipleRequests(int number) {
     return createMultipleRequests(number, 1, 1);
   }
-  
+
   private XhrWarden.WardenListener listener;
   private XhrWarden.WardenImpl warden;
 
@@ -83,7 +83,7 @@ public class XhrWardenTests extends TestCase {
     listener = EasyMock.createMock(XhrWarden.WardenListener.class);
     warden = new XhrWarden.WardenImpl(TEST_WARNING_LIMIT, TEST_ERROR_LIMIT, listener);
   }
-  
+
 
   public void testDontKillRequestsWhenUnderLimit() {
     List<WardenXhrRequest> requests =
@@ -140,7 +140,7 @@ public class XhrWardenTests extends TestCase {
     listener.onWarning(warden);
     expectLastCall().times(2);
     replay(listener);
-    
+
     // Add 7 Requests which will trigger the limit
     for (WardenXhrRequest request : requests) {
       warden.onRequestOpening(request);
@@ -171,7 +171,7 @@ public class XhrWardenTests extends TestCase {
     listener.onWarning(warden);
     listener.onEmergency(warden, killedRequest);
     replay(listener);
-    
+
     // Add 9 Requests which will trigger the over-limit
     warden.onRequestOpening(killedRequest);
     warden.onRequestOpen(killedRequest);
@@ -184,7 +184,7 @@ public class XhrWardenTests extends TestCase {
     assertEquals(8, warden.getRequestCount());
     verify(listener, killedRequest);
   }
-  
+
   public void testCustomHeadersInserted() {
     XhrWarden.WardenListener listener = EasyMock.createMock(XhrWarden.WardenListener.class);
     replay(listener);
@@ -192,14 +192,14 @@ public class XhrWardenTests extends TestCase {
     XMLHttpRequest mockXHR = EasyMock.createMock(XMLHttpRequest.class);
     mockXHR.setRequestHeader("X-Test", "test");
     replay(mockXHR);
-    
+
     WardenXhrRequest request = createRequest(1, 1);
     expect(request.getRequest()).andReturn(mockXHR).anyTimes();
     replay(request);
-    
+
     warden.addCustomHeader("X-Test", "test");
     warden.onRequestOpen(request);
-    
+
     verify(mockXHR);
   }
 }

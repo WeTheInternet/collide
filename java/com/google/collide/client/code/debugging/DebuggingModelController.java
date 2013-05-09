@@ -35,7 +35,7 @@ import com.google.collide.shared.util.ListenerRegistrar;
 import com.google.common.base.Preconditions;
 
 import elemental.client.Browser;
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.Window;
 
 /**

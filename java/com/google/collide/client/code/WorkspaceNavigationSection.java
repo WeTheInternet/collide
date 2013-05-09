@@ -28,9 +28,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Presenter for a section in the navigation bar. A section consists of a header
@@ -56,20 +56,20 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     String blue();
 
     String underlineHeader();
-    
+
     String headerLink();
-    
+
     String menuButton();
   }
-  
+
   public interface ViewEvents {
     void onTitleClicked();
 
     void onCloseClicked();
-    
+
     void onMenuButtonClicked();
   }
-  
+
   public static abstract class AbstractViewEventsImpl implements ViewEvents {
     @Override
     public void onTitleClicked() {
@@ -98,7 +98,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
 
     @UiField(provided = true)
     final Css css;
-    
+
     @UiField(provided = true)
     final Resources res;
 
@@ -110,7 +110,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
 
     @UiField
     DivElement contentArea;
-    
+
     @UiField
     AnchorElement menuButton;
 
@@ -132,7 +132,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     }
 
     private void attachEventHandlers() {
-      Elements.asJsElement(closeX).setOnClick(new EventListener() {
+      Elements.asJsElement(closeX).setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event arg0) {
           if (getDelegate() != null) {
@@ -140,7 +140,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
           }
         }
       });
-      Elements.asJsElement(title).setOnClick(new EventListener() {
+      Elements.asJsElement(title).setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event arg0) {
           if (getDelegate() != null) {
@@ -148,7 +148,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
           }
         }
       });
-      Elements.asJsElement(menuButton).setOnClick(new EventListener() {
+      Elements.asJsElement(menuButton).setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event arg0) {
           if (getDelegate() != null) {
@@ -167,7 +167,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
       if (contentElement == newContentElement) {
         return;
       }
-      
+
       if (contentElement != null) {
         Elements.asJsElement(contentArea).replaceChild(newContentElement, contentElement);
       } else {
@@ -197,7 +197,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     public void setCloseable(boolean closeable) {
       CssUtils.setDisplayVisibility(Elements.asJsElement(closeX), closeable);
     }
-    
+
     public void setShowMenuButton(boolean visible) {
       CssUtils.setDisplayVisibility(Elements.asJsElement(menuButton), visible);
     }
@@ -216,7 +216,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
   public void setVisible(boolean visible) {
     CssUtils.setDisplayVisibility(getView().getElement(), visible);
   }
-  
+
   public void makeTitleLink() {
   }
 

@@ -27,7 +27,7 @@ import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.ProjectInfo;
 import com.google.gwt.resources.client.CssResource;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * {@link WorkspaceNavigationSection} that is the presenter for the File Tree.
@@ -149,7 +149,7 @@ public class FileTreeSection extends WorkspaceNavigationSection<FileTreeSection.
 
     fileTreeModel.addModelChangeListener(fileTreeModelChangeListener);
 
-    getView().setTitle("Dimly Project");
+    getView().setTitle("Collide Source");
     updateProjectTemplatePickerVisibility();
   }
 

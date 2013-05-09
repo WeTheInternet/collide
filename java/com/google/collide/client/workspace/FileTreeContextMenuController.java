@@ -60,9 +60,9 @@ import com.google.collide.shared.FrontendConstants;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.user.client.Window;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 import elemental.html.IFrameElement;
 
 /**
@@ -156,7 +156,7 @@ public class FileTreeContextMenuController {
   private final JsonArray<FileTreeMenuItem> readonlyRootMenuItems = JsonCollections.createArray();
   private final JsonArray<FileTreeMenuItem> readonlyDirMenuItems = JsonCollections.createArray();
   private final JsonArray<FileTreeMenuItem> readonlyFileMenuItems = JsonCollections.createArray();
-  
+
   private final boolean isReadOnly = false;
   private final FileTreeItemRenderer renderer;
   private final List<FileTreeMenuItem> allMenuItems = new ArrayList<FileTreeMenuItem>();
@@ -349,7 +349,7 @@ public class FileTreeContextMenuController {
     final IFrameElement iframe = Elements.createIFrameElement();
     iframe.setId(DOWNLOAD_FRAME_ID);
     iframe.getStyle().setDisplay("none");
-    iframe.setOnLoad(new EventListener() {
+    iframe.setOnload(new EventListener() {
       @Override
       public void handleEvent(Event event) {
         iframe.removeFromParent();
@@ -612,7 +612,7 @@ public class FileTreeContextMenuController {
                 // parent directory so that we can get sort order.
                 fileTreeUiController.reRenderSubTree(node.getData().getParent());
 
-                fileTreeUiController.autoExpandAndSelectNode(node.getData(), true);     
+                fileTreeUiController.autoExpandAndSelectNode(node.getData(), true);
               }
             });
       }

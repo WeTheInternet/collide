@@ -25,8 +25,9 @@ for (var i in vertx.config)
 	console.log(i);
 
 var webFeConfig = {
-  port: 8080,
+  port: 13337,
   host: "0.0.0.0",
+//  suffix: "/collide",
   bridge: true,
   webRoot: bootstrapConfig.webRoot,
   staticFiles: bootstrapConfig.staticFiles,
@@ -51,13 +52,13 @@ var participantListConfig = {
 
 var workspaceConfig = {
   webRoot: bootstrapConfig.webRoot
-  ,plugins: ['gwt']
+  ,plugins: ['gwt', 'ant']
 }
 
 var pluginConfig = {
-	plugins: ['gwt']
+	plugins: ['gwt', 'ant']
 	,'preserve-cwd': true
-	,includes: ['gwt']
+	,includes: ['gwt', 'ant']
 	,webRoot: bootstrapConfig.webRoot
 	,staticFiles: bootstrapConfig.staticFiles
 }
@@ -95,5 +96,7 @@ vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspac
 
 //pluginConfig.webRoot['preserve-cwd'] = true;
 // Load the plugin controller which allows adding services to collide, such as gwt super dev mode, ant builds, terminal, maven, etc..
-vertx.deployWorkerVerticle("com.google.collide.server.plugin.gwt.GwtPlugin", pluginConfig, 1, function() {
+vertx.deployWorkerVerticle("com.google.collide.plugin.server.gwt.GwtServerPlugin", pluginConfig, 1, function() {
+});
+vertx.deployWorkerVerticle("com.google.collide.plugin.server.ant.AntServerPlugin", pluginConfig, 1, function() {
 });

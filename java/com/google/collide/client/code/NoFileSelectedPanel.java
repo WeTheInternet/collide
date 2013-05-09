@@ -14,9 +14,10 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.code.EditableContentArea.Content;
 import com.google.collide.client.history.Place;
+import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.util.Elements;
+import com.google.collide.client.util.PathUtil;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;
@@ -28,17 +29,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
-import elemental.html.Element;
 
 /**
  * The screen you first see when opening a workspace that has no file selected.
  *
  */
 public class NoFileSelectedPanel extends UiComponent<NoFileSelectedPanel.View>
- implements Content {
+ implements FileContent, PanelContent.HiddenContent {
 
   private static final String REGULAR_MESSAGE = "Choose a file to begin editing.";
 
@@ -139,6 +140,11 @@ public class NoFileSelectedPanel extends UiComponent<NoFileSelectedPanel.View>
 
   }
 
+  @Override
+  public PathUtil filePath() {
+    return null;
+  }
+  
   public NoFileSelectedPanel(View view) {
     super(view);
 
@@ -156,4 +162,9 @@ public class NoFileSelectedPanel extends UiComponent<NoFileSelectedPanel.View>
 
   @Override
   public void onContentDisplayed() {}
+
+  @Override
+  public void onContentDestroyed() {
+
+  }
 }

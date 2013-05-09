@@ -19,10 +19,10 @@ import com.google.collide.client.search.awesomebox.AwesomeBox.Resources;
 import com.google.collide.client.search.awesomebox.ManagedSelectionList.SelectableElement;
 import com.google.collide.client.util.CssUtils;
 
+import elemental.dom.Element;
 import elemental.dom.Node;
 import elemental.events.MouseEvent;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Represents a generic AwesomeBoxSection which contains a selectable item list.

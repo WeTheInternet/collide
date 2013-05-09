@@ -20,12 +20,12 @@ import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Timer;
 
 import elemental.events.MouseEvent;
-import elemental.html.Document;
-import elemental.html.Element;
+import elemental.dom.Document;
+import elemental.dom.Element;
 
 /**
  * Tests for {@link HoverController}.
- * 
+ *
  */
 public class HoverControllerTest extends GWTTestCase {
 
@@ -119,7 +119,7 @@ public class HoverControllerTest extends GWTTestCase {
 
     // Mouseover an element. onHover() is called synchronously.
     mouseover(elems[1]);
-    listener.assertHoverCount(1); 
+    listener.assertHoverCount(1);
     listener.assertUnhoverCount(0);
 
     // Mouseover another element.
@@ -291,7 +291,7 @@ public class HoverControllerTest extends GWTTestCase {
   }
 
   private void mouseevent(Element target, String type) {
-    MouseEvent evt = (MouseEvent) Elements.getDocument().createEvent(Document.Event.MOUSE);
+    MouseEvent evt = (MouseEvent) Elements.getDocument().createEvent(Document.Events.MOUSE);
     evt.initMouseEvent(type, true, true, null, 0, 0, 0, 0, 0, false, false, false, false,
         MouseEvent.Button.PRIMARY, null);
     target.dispatchEvent(evt);

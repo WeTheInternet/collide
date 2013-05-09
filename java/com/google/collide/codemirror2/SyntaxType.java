@@ -23,6 +23,7 @@ import com.google.common.base.Preconditions;
 /**
  * Syntax types (languages / file formats) enumeration.
  */
+@SuppressWarnings("rawtypes")
 public enum SyntaxType {
 
   CPP("clike", "text/x-c++src", State.class, new BasicTokenFactory(), false),

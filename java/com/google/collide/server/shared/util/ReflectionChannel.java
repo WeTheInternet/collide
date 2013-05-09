@@ -3,16 +3,16 @@ package com.google.collide.server.shared.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import wetheinter.net.pojo.LazySingletonProvider;
+import xapi.inject.impl.LazyPojo;
 
 import com.google.collide.shared.util.Channel;
-import com.google.collide.shared.util.DebugUtil;
 
 public class ReflectionChannel implements Channel<String>{
 
   private ClassLoader cl;
   private Object that;
-  private final LazySingletonProvider<Method> in = new LazySingletonProvider<Method>(){
+  private final LazyPojo<Method> in = new LazyPojo<Method>(){
+    @Override
     protected Method initialValue() {
       try {
         return getInputMethod(getClassLoader(), that);
@@ -22,7 +22,8 @@ public class ReflectionChannel implements Channel<String>{
       }
     };
   };
-  private final LazySingletonProvider<Method> out = new LazySingletonProvider<Method>(){
+  private final LazyPojo<Method> out = new LazyPojo<Method>(){
+    @Override
     protected Method initialValue() {
       try {
         return getOutputMethod(getClassLoader(), that);
@@ -33,12 +34,12 @@ public class ReflectionChannel implements Channel<String>{
     };
   };
   private Object destroy;
-  
+
   public ReflectionChannel(ClassLoader cl, Object otherChannel) {
     this.cl = cl;
     this.that = otherChannel;
   }
-  
+
   public void setChannel(Object otherChannel){
     this.that = otherChannel;
     //clears our singletons, so the next invocation will rip the methods again
@@ -48,7 +49,10 @@ public class ReflectionChannel implements Channel<String>{
   public ClassLoader getClassLoader(){
     return cl;
   }
-  
+
+  /**
+   * @throws ClassNotFoundException
+   */
   protected Method getInputMethod(ClassLoader cl, Object from) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
     return from.getClass().getMethod("receive");
   }
@@ -92,12 +96,13 @@ public class ReflectionChannel implements Channel<String>{
   public void setOnDestroy(Object runOnDestroy) {
     this.destroy = runOnDestroy;
   }
-  
-  public void destroy() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+
+  public void destroy() throws Exception{
+    System.out.println("DESTROYING GWT COMPILER IMPLEMENTATION");
     if (destroy != null){
       destroy.getClass().getMethod("run").invoke(destroy);
       destroy = null;
     }
   }
-  
+
 }

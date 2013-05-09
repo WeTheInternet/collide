@@ -20,10 +20,10 @@ package com.google.collide.dto;
 public interface TreeNodeInfo {
   public static final int DIR_TYPE = 0;
   public static final int FILE_TYPE = 1;
-  
+
   String getName();
-  
+
   int getNodeType();
-  
+
   String getFileEditSessionKey();
 }

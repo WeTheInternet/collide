@@ -20,8 +20,8 @@ import com.google.collide.client.util.CssUtils;
 import com.google.collide.client.util.Elements;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 import elemental.html.SpanElement;
 import elemental.js.html.JsLIElement;
 import elemental.js.html.JsUListElement;
@@ -253,7 +253,7 @@ public class TreeNodeElement<D> extends JsLIElement {
     setOpen(css, true);
 
     Element childrenContainer = getChildrenContainer();
-    if (shouldAnimate) {      
+    if (shouldAnimate) {
       opener.show(childrenContainer);
     } else {
       opener.showWithoutAnimating(childrenContainer);
@@ -279,7 +279,7 @@ public class TreeNodeElement<D> extends JsLIElement {
   }
 
   private Element getExpandControl() {
-    return getNodeBody().getChildren().item(0);
+    return (Element)getNodeBody().getChildren().item(0);
   }
 
   /**
@@ -287,7 +287,7 @@ public class TreeNodeElement<D> extends JsLIElement {
    *         node contents.
    */
   private Element getNodeBody() {
-    return getChildren().item(0);
+    return (Element)getChildren().item(0);
   }
 
   final Element getSelectionElement() {

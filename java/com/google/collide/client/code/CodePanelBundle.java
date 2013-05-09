@@ -17,6 +17,9 @@ package com.google.collide.client.code;
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.CollideSettings;
+import com.google.collide.client.code.CodePerspective.Resources;
+import com.google.collide.client.code.CodePerspective.View;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.code.errorrenderer.EditorErrorListener;
 import com.google.collide.client.collaboration.IncomingDocOpDemultiplexer;
@@ -24,6 +27,7 @@ import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.editor.Editor.DocumentListener;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
+import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.search.SearchPlace;
 import com.google.collide.client.search.SearchPlaceNavigationHandler;
@@ -36,20 +40,23 @@ import com.google.collide.client.search.awesomebox.PrimaryWorkspaceActionSection
 import com.google.collide.client.search.awesomebox.components.FindReplaceComponent;
 import com.google.collide.client.search.awesomebox.components.FindReplaceComponent.FindMode;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHost.AwesomeBoxComponentHiddenListener;
+import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.dom.eventcapture.GlobalHotKey;
+import com.google.collide.client.util.logging.Log;
 import com.google.collide.client.workspace.FileTreeModel;
 import com.google.collide.client.workspace.FileTreeNodeMoveController;
-import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.client.workspace.WorkspaceShell;
 import com.google.collide.client.workspace.outline.OutlineModel;
 import com.google.collide.client.workspace.outline.OutlineSection;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
+import com.google.collide.json.client.JsoArray;
+import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.Scheduler;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Dependencies and Presenter setup code for everything under the workspace header involved with
@@ -73,11 +80,13 @@ public class CodePanelBundle {
   // AwesomeBox Related
   public final FileNameSearch searchIndex;
   public final AwesomeBoxContext awesomeBoxCodeContext;
+  public EditableContentArea contentArea;
+  private CodePerspective codePerspective;
   private final FileNameNavigationSection fileNavSection;
   private final PrimaryWorkspaceActionSection primaryWorkspaceActionsSection;
   private final GotoActionSection gotoActionSection;
   private final OutlineViewAwesomeBoxSection outlineViewAwesomeBoxSection;
-  private final WorkspacePlace workspacePlace;
+  private final Place currentPlace;
 
 
   // AwesomeBox Components
@@ -90,7 +99,8 @@ public class CodePanelBundle {
   private FileSelectionController fileSelectionController;
   private FileTreeNodeMoveController treeNodeMoveController;
   private FileTreeSection fileTreeSection;
-  private EditableContentArea contentArea;
+  private ClientPluginService plugins;
+  private MultiPanel<?,?> masterPanel;
 
   public CodePanelBundle(AppContext appContext,
       WorkspaceShell shell,
@@ -99,7 +109,7 @@ public class CodePanelBundle {
       DocumentManager documentManager,
       ParticipantModel participantModel,
       IncomingDocOpDemultiplexer docOpReceiver,
-      WorkspacePlace workspacePlace) {
+      Place place) {
     this.appContext = appContext;
     this.shell = shell;
     this.fileTreeModel = fileTreeModel;
@@ -107,7 +117,7 @@ public class CodePanelBundle {
     this.documentManager = documentManager;
     this.participantModel = participantModel;
     this.docOpReceiver = docOpReceiver;
-    this.workspacePlace = workspacePlace;
+    this.currentPlace = place;
 
     awesomeBoxCodeContext = new AwesomeBoxContext(new AwesomeBoxContext.Builder().setWaterMarkText(
         "Type to find files and use actions").setPlaceholderText("Actions"));
@@ -148,29 +158,30 @@ public class CodePanelBundle {
     }
     treeNodeMoveController.cleanup();
     fileTreeSection.cleanup();
-
+    plugins.cleanup();
+    if (masterPanel != null)
+      masterPanel.destroy();
     GlobalHotKey.unregister(appContext.getKeyBindings().localFind());
     GlobalHotKey.unregister(appContext.getKeyBindings().localReplace());
     GlobalHotKey.unregister(appContext.getKeyBindings().gotoLine());
     GlobalHotKey.unregister(appContext.getKeyBindings().snapshot());
   }
 
-  public void attach() {
+  public void attach(boolean detached) {
     // Construct the Root View for the CodePerspective.
     CodePerspective.Resources res = appContext.getResources();
-    CodePerspective.View codePerspectiveView = new CodePerspective.View(res);
+    CodePerspective.View codePerspectiveView = initCodePerspective(res, detached);
 
     // Then create all the Presenters.
     OutlineModel outlineModel = new OutlineModel();
     editorBundle = EditorBundle.create(appContext,
-        workspacePlace,
+        currentPlace,
         documentManager,
         participantModel,
         outlineModel,
         fileTreeModel,
         EditorErrorListener.NOOP_ERROR_RECEIVER);
 
-    UneditableDisplay uneditableDisplay = UneditableDisplay.create(new UneditableDisplay.View(res));
 
     // AwesomeBox Section Setup
     appContext.getAwesomeBoxModel().changeContext(awesomeBoxCodeContext);
@@ -178,10 +189,10 @@ public class CodePanelBundle {
     registerAwesomeBoxEvents();
 
     editorReloadingFileTreeListener =
-        EditorReloadingFileTreeListener.create(workspacePlace, editorBundle, fileTreeModel);
+        EditorReloadingFileTreeListener.create(currentPlace, editorBundle, fileTreeModel);
 
     fileTreeSection = FileTreeSection.create(
-        workspacePlace, appContext, fileTreeModel, editorBundle.getDebuggingModelController());
+        currentPlace, appContext, fileTreeModel, editorBundle.getDebuggingModelController());
     fileTreeSection.getTree().renderTree(0);
 
     // TODO: The term "Section" is overloaded here. It
@@ -192,8 +203,10 @@ public class CodePanelBundle {
     CollaborationSection collabSection = CollaborationSection.create(
         new CollaborationSection.View(res), participantModel, appContext);
 
+
     treeNodeMoveController = new FileTreeNodeMoveController(
         appContext, fileTreeSection.getFileTreeUiController(), fileTreeModel);
+
 
     OutlineSection outlineSection = OutlineSection.create(
         new OutlineSection.View(res), appContext, outlineModel,
@@ -209,53 +222,53 @@ public class CodePanelBundle {
         new WorkspaceNavigationSection[] {collabSection, outlineSection}, navigationToolBar);
     navigationToolBar.setWorkspaceNavigation(workspaceNavigation);
 
-    contentArea =
-        EditableContentArea.create(codePerspectiveView.getContentView(), appContext, editorBundle);
+    contentArea = initContentArea(codePerspectiveView, appContext, editorBundle,fileTreeSection);
 
-    CodePerspective codePerspective = CodePerspective.create(
-        codePerspectiveView, workspacePlace, workspaceNavigation, contentArea, appContext);
+    codePerspective = CodePerspective.create(
+        codePerspectiveView, currentPlace, workspaceNavigation, contentArea, appContext, detached);
 
     // Connect views to the DOM.
     Element rightSidebarContentContainer = codePerspectiveView.getSidebarElement();
     rightSidebarContentContainer.appendChild(
         editorBundle.getDebuggingModelController().getDebuggingSidebarElement());
-    shell.setPerspective(codePerspectiveView.getElement());
 
-    fileSelectionController = new FileSelectionController(documentManager,
-        editorBundle,
-        uneditableDisplay,
-        fileTreeModel,
-        fileTreeSection.getFileTreeUiController(),
-        contentArea);
+    attachShellToDom(shell, codePerspectiveView);
 
-    // Creates the welcome panel
-    welcomePanel = NoFileSelectedPanel.create(workspacePlace, appContext.getResources());
-
-    // Register navigation handler for FileSelection.
-    FileSelectedPlaceNavigationHandler fileSelectionHandler =
-        new FileSelectedPlaceNavigationHandler(appContext,
-            codePerspective,
-            fileSelectionController,
-            contentArea);
-    workspacePlace.registerChildHandler(FileSelectedPlace.PLACE, fileSelectionHandler);
-
-    // Register navigation handler for searching within files.
-    SearchPlaceNavigationHandler searchHandler = new SearchPlaceNavigationHandler(appContext,
-        contentArea, fileTreeSection.getFileTreeUiController(), workspacePlace);
-    workspacePlace.registerChildHandler(SearchPlace.PLACE, searchHandler);
   }
 
-  public void enterWorkspace(final PlaceNavigationEvent<? extends Place> navigationEvent,
+
+  protected View initCodePerspective(Resources res, boolean detached) {
+    return new CodePerspective.View(res, detached);
+  }
+
+  protected EditableContentArea initContentArea(View codePerspectiveView,
+      AppContext appContext, EditorBundle editorBundle,
+      FileTreeSection fileTreeSection) {
+    return EditableContentArea.create(codePerspectiveView.getContentView(), appContext, editorBundle,
+        fileTreeSection.getFileTreeUiController());
+  }
+
+  protected void attachShellToDom(WorkspaceShell shell, View codePerspectiveView) {
+    shell.setPerspective(codePerspectiveView.getElement());
+  }
+
+  public void enterWorkspace(boolean isActiveLeaf, final Place place,
       final GetWorkspaceMetaDataResponse metadata) {
-    if (!navigationEvent.isActiveLeaf()) {
+    if (!isActiveLeaf) {
       return;
     }
 
-    // If there are no previously open files, show the welcome
-    // panel.
-    if (metadata.getLastOpenFiles().size() == 0) {
-      showNoFileSelectedPanel();
-      return;
+    // If there are no previously open files, show the welcome panel.
+    JsonArray<String> open = metadata.getLastOpenFiles();
+    String openFile = CollideSettings.get().getOpenFile();
+    Log.info(getClass(), "Opening ",open);
+    if (openFile != null){
+      open = JsoArray.create();
+      open.add(openFile);
+    }
+    if (open.size() == 0) {
+        showNoFileSelectedPanel();
+        return;
     }
 
     Scheduler.get().scheduleFinally(new Scheduler.ScheduledCommand() {
@@ -267,14 +280,14 @@ public class CodePanelBundle {
 
         PlaceNavigationEvent<FileSelectedPlace> event =
             FileSelectedPlace.PLACE.createNavigationEvent(new PathUtil(file));
-        navigationEvent.getPlace().fireChildPlaceNavigation(event);
+        place.fireChildPlaceNavigation(event);
       }
     });
   }
 
   public void showNoFileSelectedPanel() {
     editorBundle.getBreadcrumbs().clearPath();
-    contentArea.setContent(welcomePanel, false);
+    contentArea.setContent(welcomePanel, contentArea.newBuilder().setHistoryIcon(false).build());
   }
 
   /**
@@ -298,12 +311,12 @@ public class CodePanelBundle {
         });
 
     // Attach the editor to the editorActionSection
-    gotoActionSection.attachEditorAndPlace(workspacePlace, editorBundle.getEditor());
+    gotoActionSection.attachEditorAndPlace(currentPlace, editorBundle.getEditor());
 
     // We register the file opened events.
-    fileNavSection.registerOnFileOpenedHandler(workspacePlace);
-    primaryWorkspaceActionsSection.registerOnFileOpenedHandler(workspacePlace);
-    workspacePlace.registerSimpleEventHandler(FileOpenedEvent.TYPE, new FileOpenedEvent.Handler() {
+    fileNavSection.registerOnFileOpenedHandler(currentPlace);
+    primaryWorkspaceActionsSection.registerOnFileOpenedHandler(currentPlace);
+    currentPlace.registerSimpleEventHandler(FileOpenedEvent.TYPE, new FileOpenedEvent.Handler() {
       @Override
       public void onFileOpened(boolean isEditable, PathUtil filePath) {
         shell.getHeader().getAwesomeBoxComponentHost().hide();
@@ -352,5 +365,41 @@ public class CodePanelBundle {
         shell.getHeader().getAwesomeBoxComponentHost().show();
       }
     }, "goto line");
+  }
+
+  public void setMasterPanel(MultiPanel<?,?> masterPanel) {
+    this.masterPanel = masterPanel;
+
+
+    UneditableDisplay uneditableDisplay = UneditableDisplay.create(new UneditableDisplay.View(appContext.getResources()));
+
+    fileSelectionController = new FileSelectionController(documentManager,
+        editorBundle,
+        uneditableDisplay,
+        fileTreeModel,
+        fileTreeSection.getFileTreeUiController(),
+        masterPanel);
+
+    // Creates the welcome panel
+    welcomePanel = NoFileSelectedPanel.create(currentPlace, appContext.getResources());
+
+    // Register navigation handler for FileSelection.
+    FileSelectedPlaceNavigationHandler fileSelectionHandler =
+        new FileSelectedPlaceNavigationHandler(appContext,
+            codePerspective,
+            fileSelectionController,
+            contentArea);
+    currentPlace.registerChildHandler(FileSelectedPlace.PLACE, fileSelectionHandler);
+
+    // Register navigation handler for searching within files.
+    SearchPlaceNavigationHandler searchHandler = new SearchPlaceNavigationHandler(appContext,
+        masterPanel, fileTreeSection.getFileTreeUiController(), currentPlace);
+    currentPlace.registerChildHandler(SearchPlace.PLACE, searchHandler);
+
+    plugins = initPlugins(masterPanel);
+  }
+
+  protected ClientPluginService initPlugins(MultiPanel<?, ?> masterPanel) {
+    return ClientPluginService.initialize(appContext, masterPanel, currentPlace);
   }
 }

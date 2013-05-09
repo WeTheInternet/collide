@@ -83,6 +83,7 @@ public class Log {
   }-*/;
 
   private static native void invokeBrowserLogger(String logFuncName, Object o) /*-{
+    logFuncName = logFuncName || 'log';//fix for FF>17
     if ($wnd.console && $wnd.console[logFuncName]) {
       $wnd.console[logFuncName](o);
     }

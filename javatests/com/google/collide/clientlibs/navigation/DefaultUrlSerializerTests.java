@@ -89,16 +89,17 @@ public class DefaultUrlSerializerTests extends TestCase {
 
 
   private static final UrlComponentEncoder urlEncoder = new StubUrlEncoder();
+
   private static final Equivalence<NavigationToken> NAVIGATION_EQUIVALENCE =
       new Equivalence<NavigationToken>() {
         @Override
-        protected boolean doEquivalent(NavigationToken a, NavigationToken b) {
+        public boolean doEquivalent(NavigationToken a, NavigationToken b) {
           return a.getPlaceName().equals(b.getPlaceName()) && JsonCollections.equals(
               a.getBookmarkableState(), b.getBookmarkableState());
         }
 
         @Override
-        protected int doHash(NavigationToken t) {
+        public int doHash(NavigationToken t) {
           return t.getPlaceName().hashCode() ^ t.getBookmarkableState().hashCode();
         }
       };

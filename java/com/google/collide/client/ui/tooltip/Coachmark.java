@@ -25,8 +25,8 @@ import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * An object which represents a coach mark (a tooltip like notification which is often dismissable).

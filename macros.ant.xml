@@ -28,12 +28,19 @@
 
   <!-- Classpaths for various contexts -->
   <path id="paths.shared">
+    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-gwt-${libs.xapi}.jar"/>
+    <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
+    <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/gson-${libs.gson}/gson-${libs.gson}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/jsr-305/jsr305.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/waveinabox-import-0.3.jar"/>
+    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-dev-${libs.xapi}.jar"/>
     <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
-    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-super-${libs.xapi}.jar"/>
+    <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/validation-api-1.0.0.GA-sources.jar"/>
+    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/validation-api-1.0.0.GA.jar"/>
   </path>
 
   <!-- Classpaths for plugins -->
@@ -41,16 +48,26 @@
     <pathelement location="${dirs.root}/plugin"/>
   </path>
 
+  <!-- Classpaths for clientlibs -->
+  <path id="paths.clientlibs">
+    <path refid="paths.shared"/>
+    <pathelement location="${dirs.root}/java/${dirs.toppkg}/clientlibs/**/*.java"/>
+    <pathelement location="${dirs.root}/javatest/${dirs.toppkg}/clientlibs/**/*.java"/>
+    <pathelement location="${dirs.root}/java/${dirs.toppkg}/client/util/**/*.java"/>
+    <pathelement location="${dirs.root}/javatest/${dirs.toppkg}/client/util/**/*.java"/>
+  </path>
+
   <path id="plugins.server">
+    <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-${libs.guava}.jar"/>
+    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-dev-${libs.xapi}.jar"/>
     <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
     <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
     <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+    <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
   </path>
 
   <path id="paths.client.build">
     <path refid="paths.shared"/>
-    <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
-    <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
     <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/client-src.jar"/>
     <pathelement location="${dirs.lib}/wave-${libs.wave}/client-common-src.jar"/>
@@ -70,9 +87,10 @@
   <path id="paths.server.build">
     <path refid="paths.shared"/>
     <path refid="plugins.server"/>
-    <pathelement location="${dirs.vertx}/lib/jars/vert.x-core.jar"/>
-    <pathelement location="${dirs.vertx}/lib/jars/vert.x-platform.jar"/>
-    <pathelement location="${dirs.vertx}/lib/jars/netty.jar"/>
+    <pathelement location="${dirs.vertx}/lib/vertx-core-${libs.vertx}.jar"/>
+    <pathelement location="${dirs.vertx}/lib/vertx-platform-${libs.vertx}.jar"/>
+    <pathelement location="${dirs.vertx}/lib/vertx-lang-java-${libs.vertx}.jar"/>
+    <pathelement location="${dirs.vertx}/lib/netty-${libs.netty}.jar"/>
   </path>
 
   <path id="paths.server.runtime">
@@ -94,11 +112,12 @@
   <!-- Macros for common operations -->
   <macrodef name="do.javac" description="Run javac task with common options">
     <attribute name="srcdir" default="${dirs.src}" description="Source root"/>
+    <attribute name="plugindir" default="@{srcdir}" description="Plugin root"/>
     <attribute name="destdir" default="${dirs.bin}" description="Output root"/>
     <element name="nested" implicit="true"/>
     <sequential>
       <mkdir dir="@{destdir}"/>
-      <javac srcdir="@{srcdir}" destdir="@{destdir}"
+      <javac srcdir="@{srcdir}; @{plugindir}" destdir="@{destdir}"
              compiler="${javac.compiler}" debug="${javac.debug}"
              deprecation="${javac.deprecation}"
              includeAntRuntime="false" fork="yes">
@@ -111,11 +130,13 @@
     <attribute name="reportdir" description="subdirectory for reports"/>
     <attribute name="debugport" default="${junit.debugport}"/>
     <attribute name="debugwait" default="${junit.debugwait}"/>
+    <attribute name="extracp" default="${dirs.toppkg}/client/**"/>
     <element name="testpackages"/>
     <element name="libraries"/>
     <element name="jvmargs" optional="true"/>
     <sequential>
       <mkdir dir="${dirs.testrpt}/@{reportdir}"/>
+     <!--  <echo value="@{extracp}"/> -->
       <junit printsummary="${junit.summaries}" forkmode="${junit.forkmode}"
 	     fork="yes" haltonerror="false" errorproperty="junit.test.error"
              haltonfailure="false" failureproperty="junit.test.failed"
@@ -133,6 +154,8 @@
           <path refid="paths.test"/>
           <pathelement path="${dirs.src}"/>
           <pathelement path="${dirs.test}"/>
+          <pathelement path="@{extracp}"/>
+          
         </classpath>
         <formatter type="plain"/>
         <formatter type="xml"/>
@@ -158,6 +181,8 @@
         description="GWT compilation mode"/>
     <attribute name="workers" default="1"
         description="Permutation compiler threads"/>
+    <attribute name="loglevel" default="INFO"
+        description="The gwt compile log level."/>
     <attribute name="maxmem" default="512M" description="Max JVM memory size"/>
     <attribute name="maxstack" default="512K"
         description="Max JVM thread stack size"/>
@@ -203,6 +228,7 @@
               <libs/>
               <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
             </classpath>
+            <sysproperty key="gwt.usearchives" value="false"/>
             <jvmarg value="-Xmx@{maxmem}"/>
             <jvmarg value="-Xss@{maxstack}"/>
             <jvmarg line="${gwtc.jvmdebug}"/>
@@ -212,6 +238,8 @@
             <arg file="@{extradir}"/>
             <arg value="-style"/>
             <arg value="@{style}"/>
+            <arg value="-logLevel"/>
+            <arg value="@{loglevel}"/>
             <arg value="-localWorkers"/>
             <arg value="@{workers}"/>
             <arg line="@{gwtflags}"/>

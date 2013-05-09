@@ -37,7 +37,7 @@ import com.google.collide.shared.util.ListenerManager.Dispatcher;
 import com.google.gwt.user.client.Timer;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /*
  * TODO: I need to do another pass at the rendering paths after

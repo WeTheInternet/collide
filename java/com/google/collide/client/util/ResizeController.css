@@ -1,5 +1,29 @@
+.moveCursor, .moveCursor * {
+  cursor: move;
+}
+
 .horizontalCursor * {
   cursor: ew-resize !important;
+}
+
+.verticalCursor * {
+  cursor: ns-resize !important;
+}
+
+.northwestCursor * {
+  cursor: nw-resize !important;
+}
+
+.northeastCursor * {
+  cursor: ne-resize !important;
+}
+
+.southwestCursor * {
+  cursor: sw-resize !important;
+}
+
+.southeastCursor * {
+  cursor: se-resize !important;
 }
 
 .verticalCursor * {
@@ -12,6 +36,22 @@
 
 .vSplitter {
   cursor: ns-resize;
+}
+
+.neSplitter {
+  cursor: ne-resize;
+}
+
+.nwSplitter {
+  cursor: nw-resize;
+}
+
+.seSplitter {
+  cursor: se-resize;
+}
+
+.swSplitter {
+  cursor: sw-resize;
 }
 
 .elementResizing {

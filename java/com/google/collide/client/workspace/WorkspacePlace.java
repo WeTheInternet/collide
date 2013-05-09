@@ -30,12 +30,12 @@ public class WorkspacePlace extends Place {
    * @See {@link WorkspacePlaceNavigationHandler}.
    */
   public class NavigationEvent extends PlaceNavigationEvent<WorkspacePlace> {
-    private static final String NAV_EXPAND = "navEx";
+    public static final String NAV_EXPAND = "navEx";
 
     private final boolean forceReload;
     private final boolean shouldNavExpand;
 
-    private NavigationEvent(boolean shouldNavExpand, boolean forceReload) {
+    public NavigationEvent(boolean shouldNavExpand, boolean forceReload) {
       super(WorkspacePlace.this);
       this.forceReload = forceReload;
       this.shouldNavExpand = shouldNavExpand;
@@ -61,7 +61,7 @@ public class WorkspacePlace extends Place {
 
   public static final WorkspacePlace PLACE = new WorkspacePlace();
 
-  private WorkspacePlace() {
+  protected WorkspacePlace() {
     super(PlaceConstants.WORKSPACE_PLACE_NAME);
   }
 
@@ -84,8 +84,10 @@ public class WorkspacePlace extends Place {
     return new NavigationEvent(true, false);
   }
 
+
   public PlaceNavigationEvent<WorkspacePlace> createNavigationEvent(
       boolean shouldNavExpand, boolean forceReload) {
     return new NavigationEvent(shouldNavExpand, forceReload);
   }
+
 }

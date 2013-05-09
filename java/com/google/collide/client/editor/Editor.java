@@ -52,8 +52,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
+import elemental.dom.Element;
 import elemental.events.Event;
-import elemental.html.Element;
 
 /**
  * The presenter for the Collide editor.

@@ -1,4 +1,5 @@
 <project name="collide" default="build">
+
   <property name="dirs.root" location="."/>
   <!-- Import common properties and macros -->
   <import optional="false" file="${dirs.root}/macros.ant.xml"/>
@@ -7,7 +8,6 @@
        targets in that file are available here as foo.targetname. -->
   <include optional="false" as="tools.dtogen"
      file="${dirs.src}/${dirs.toppkg}/dtogen/build.xml"/>
-
   <include optional="false" as="src.json"
      file="${dirs.src}/${dirs.toppkg}/json/build.xml"/>
   <include optional="false" as="src.shared"
@@ -58,7 +58,14 @@
     <!-- Create a server jar from all the classes and drop it in the dist/lib folder. -->
     <jar destfile="${dirs.dist}/lib/collide-server.jar">
 	   <fileset dir="${dirs.bin}" includes="**/*.class **/*.js"/>
-	   <fileset dir="${dirs.src}" includes="**/*.java"/>
+	   <fileset dir="${dirs.plugin}" includes="META-INF/*.*"/>
+    </jar>
+    <!-- Create a source jar to perform gwt compiles, and drop it in the dist/lib folder. -->
+    <jar destfile="${dirs.dist}/lib/collide-source.jar">
+	   <fileset dir="${dirs.bin}" includes="**/*.js"/>
+	   <fileset dir="${dirs.src}" includes="**/*.*"/>
+	   <fileset dir="${dirs.plugin}" includes="**/*.*"/>
+	   <fileset dir="${dirs.gen}" includes="**/*.*"/>
     </jar>
 
     <!-- Copy all deps to the dist/lib folder -->
@@ -87,8 +94,30 @@
   </target>
 
   <target name="build" description="Build the whole Collide executable"
-      depends="src.shared.build, src.dto.build, src.client.build,
-	       src.server.build, copy.launch">
+      depends="src.shared.build, src.dto.build, src.client.build-java">
+    <!-- Parallelize build; we don't need to be waiting on gwt to compile. -->
+   <sequential> 
+   <if>
+                  <not><equals arg1="${nogwt}" arg2="true" /></not>
+                  <then>
+   <parallel>
+      <!-- Builds full screen client -->
+   <!--   <sequential>
+        <antcall target="src.client.build"/>
+      </sequential> -->
+
+      <!-- Builds standalone plugin client -->
+      <sequential>
+        <antcall target="src.client.plugin"/>
+      </sequential>
+
+    </parallel>
+    </then>
+   </if>
+        <antcall target="src.server.build"/>
+        <antcall target="copy.launch"/>
+    </sequential>
+
   </target>
 
   <target name="gwtdev" description="Run Collide gwt devmode" depends="src.client.dev-gwt">
@@ -112,8 +141,8 @@
 
   <target name="test-compile" description="Build all the test code"
       depends="test.shared.build, test.api.build, test.json.build,
-               test.dtogen.build, test.codemirror2.build, test.client.build,
-	       test.clientlibs.build">
+               test.dtogen.build, test.codemirror2.build, test.clientlibs.build,test.client.build
+	       ">
     <!-- Copy all deps to the ${dirs.testbin}/lib folder -->
     <copy todir="${dirs.testbin}/lib" flatten="true">
       <path refid="paths.server.build" />

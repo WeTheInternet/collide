@@ -1,0 +1,12 @@
+.moduleInput{
+	width: 70%;
+	margin-left: 2em;
+	padding-left: 0.5em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.centered {
+ text-align: center;
+ margin: auto;
+}

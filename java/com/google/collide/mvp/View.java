@@ -14,7 +14,7 @@
 
 package com.google.collide.mvp;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Implementors are Objects that represent some DOM structure.

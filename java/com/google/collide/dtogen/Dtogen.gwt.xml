@@ -1,5 +1,6 @@
 <!-- GWT Module for the data transport object generator's "library" code -->
 <module>
+  <inherits name="xapi.X_Inject" />
   <source path="" includes="client/**"/>
   <source path="" includes="shared/**"/>
 </module>

@@ -17,8 +17,8 @@ package com.google.collide.client.ui;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.mvp.View;
 
-import elemental.html.Element;
-import elemental.js.html.JsElement;
+import elemental.dom.Element;
+import elemental.js.dom.JsElement;
 
 /**
  * A single DOM Element.

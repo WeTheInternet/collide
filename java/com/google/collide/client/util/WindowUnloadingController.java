@@ -24,20 +24,20 @@ import elemental.js.JsBrowser;
 /**
  * A controller used to manage messages displayed when the user attempts to
  * close the browser or navigate to another page.
- * 
+ *
  */
 public class WindowUnloadingController {
 
   /**
    * A message displayed to the user when the user tries to navigate away from
    * the page.
-   * 
+   *
    */
   public static interface Message {
     /**
      * Returns the message to display to the user in an attempt to prevent the
      * user from navigating away from the application.
-     * 
+     *
      * @return the message, or null if it is safe to close the app
      */
     String getMessage();
@@ -46,7 +46,7 @@ public class WindowUnloadingController {
   private final List<Message> messages = new ArrayList<Message>();
 
   public WindowUnloadingController() {
-    JsBrowser.getWindow().setOnBeforeUnload(new BeforeUnloadEventListener() {
+    JsBrowser.getWindow().setOnbeforeunload(new BeforeUnloadEventListener() {
       @Override
       public String handleEvent(Event event) {
         return handleBeforeUnloadEvent();

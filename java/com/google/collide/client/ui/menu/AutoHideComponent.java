@@ -22,11 +22,11 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.shared.util.JsonCollections;
 
+import elemental.dom.Element;
 import elemental.dom.Node;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
-import elemental.html.Element;
 import elemental.util.Timer;
 
 /**

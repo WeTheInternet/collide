@@ -100,7 +100,7 @@ public class PopupBlockedInstructionalPopup
     }
 
     private void attachEventListeners() {
-      Elements.asJsElement(doneButton).setOnClick(new EventListener() {
+      Elements.asJsElement(doneButton).setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           if (getDelegate() == null) {

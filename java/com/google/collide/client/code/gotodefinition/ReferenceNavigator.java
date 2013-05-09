@@ -55,7 +55,7 @@ class ReferenceNavigator {
 
   public void goToUrl(String url) {
     Log.debug(getClass(), "Navigating to URL \"" + url + "\"");
-    Browser.getWindow().open(url);
+    Browser.getWindow().open(url,url);
   }
 
   public void setCurrentFilePath(String path) {

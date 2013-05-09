@@ -23,10 +23,10 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.events.CustomEvent;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 import elemental.html.IFrameElement;
 import elemental.html.LinkElement;
 import elemental.html.ScriptElement;
@@ -71,7 +71,7 @@ public class DomInspector extends UiComponent<DomInspector.View> {
       css = resources.workspaceEditorDomInspectorCss();
 
       domInspectorIframe = Elements.createIFrameElement(css.domIframe());
-      domInspectorIframe.setOnLoad(new EventListener() {
+      domInspectorIframe.setOnload(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           onDomInspectorIframeLoaded();

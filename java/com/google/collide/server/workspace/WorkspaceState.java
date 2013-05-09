@@ -23,7 +23,8 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
-import com.google.collide.dto.RunTarget.RunMode;
+import xapi.log.X_Log;
+
 import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceMetaDataResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.RunTargetImpl;
 import com.google.collide.server.shared.util.Dto;
@@ -32,7 +33,7 @@ import com.google.collide.server.shared.util.Dto;
  * Persistent workspace state.
  */
 public class WorkspaceState extends BusModBase {
-  private RunTargetImpl runTarget = RunTargetImpl.make().setRunMode(RunMode.PREVIEW_CURRENT_FILE);
+  private RunTargetImpl runTarget = RunTargetImpl.make().setRunMode("PREVIEW_CURRENT_FILE");
   private String addressBase;
   private String lastOpenedFileId;
   private String webRoot;
@@ -50,7 +51,7 @@ public class WorkspaceState extends BusModBase {
             final GetWorkspaceMetaDataResponseImpl metaData =
                 GetWorkspaceMetaDataResponseImpl.make()
                     .setRunTarget(runTarget).setWorkspaceName(webRoot);
-
+            X_Log.error(lastOpenedFileId);
             if (lastOpenedFileId != null) {
               // Resolve file to a path.
               vertx.eventBus().send("tree.getCurrentPaths", new JsonObject().putArray(

@@ -29,7 +29,7 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 
 /**
  * Application context object that exposes getters for our PushChannel and our Event Bus.
- * 
+ *
  */
 public class AppContext {
 

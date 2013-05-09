@@ -15,7 +15,7 @@
 package com.google.collide.client.filehistory;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.code.EditableContentArea.Content;
+import com.google.collide.client.code.FileContent;
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.util.Elements;
@@ -32,9 +32,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 
 /**
@@ -43,7 +43,7 @@ import elemental.html.Element;
  * revisions.
  *
  */
-public class FileHistory extends UiComponent<FileHistory.View> implements Content {
+public class FileHistory extends UiComponent<FileHistory.View> implements FileContent {
 
   /**
    * Static factory method for obtaining an instance of FileHistory.
@@ -146,7 +146,7 @@ public class FileHistory extends UiComponent<FileHistory.View> implements Conten
     }
 
     protected void attachEventHandlers() {
-      closeButton.setOnClick(new EventListener() {
+      closeButton.setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();
@@ -222,6 +222,11 @@ public class FileHistory extends UiComponent<FileHistory.View> implements Conten
     view.setDelegate(new ViewEventsImpl());
   }
 
+  @Override
+  public PathUtil filePath() {
+    return path;
+  }
+  
   public void setPath(PathUtil path) {
     this.path = path;
   }
@@ -237,6 +242,11 @@ public class FileHistory extends UiComponent<FileHistory.View> implements Conten
 
   @Override
   public void onContentDisplayed() {
+  }
+
+  @Override
+  public void onContentDestroyed() {
+
   }
 
   /* Setup/teardown for the FileHistory place */

@@ -19,7 +19,7 @@ import com.google.collide.shared.util.JsonCollections;
 
 import junit.framework.TestCase;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Tests the managed selection list used by AwesomeBox sections.

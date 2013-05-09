@@ -22,9 +22,9 @@ import com.google.collide.client.util.SignalEventUtils;
 import com.google.collide.client.util.input.CharCodeWithModifiers;
 import com.google.common.base.Preconditions;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Provides a mean for registering global hot key bindings, particularly

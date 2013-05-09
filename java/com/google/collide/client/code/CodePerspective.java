@@ -28,6 +28,7 @@ import com.google.collide.client.filehistory.FileHistory;
 import com.google.collide.client.filehistory.TimelineNode;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.syntaxhighlighter.SyntaxHighlighterRenderer;
+import com.google.collide.client.util.CssUtils;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeController;
 import com.google.collide.client.workspace.Header;
@@ -37,8 +38,8 @@ import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 // TODO: Rename the editor package to the code package since it should
 // encapsulate the CodePerspective. Then move code editor code to editor.core etc...
@@ -53,7 +54,7 @@ import elemental.html.Element;
  *
  *  3. Right sidebar (where will attach debugging state panel).
  *
- *  4. Content area header (where will be shown path to the file, and other
+ *  4. PanelContent area header (where will be shown path to the file, and other
  * controls).
  *
  */
@@ -66,10 +67,11 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
       Place currentPlace,
       WorkspaceNavigation nav,
       EditableContentArea contentArea,
-      AppContext context) {
+      AppContext context,
+      boolean detached) {
     CodePerspective codePerspective =
         new CodePerspective(view, currentPlace, nav, contentArea, context);
-    codePerspective.initResizeControllers();
+    codePerspective.initResizeControllers(detached);
     return codePerspective;
   }
 
@@ -150,16 +152,22 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
     /** Container for the right sidebar. */
     private DivElement rightSidebarContentContainer;
 
-    public View(Resources res) {
+    public View(Resources res, boolean detached) {
       this.res = res;
       this.css = res.codePerspectiveCss();
 
       this.navView = new WorkspaceNavigation.View(res);
-      this.contentView = new EditableContentArea.View(res);
+      this.contentView = initView(res, detached);
 
       // Create the DOM and connect the elements together.
       setElement(Elements.createDivElement(css.base()));
       createDom();
+    }
+    
+
+    public EditableContentArea.View initView(
+        Resources res, boolean detached) {
+      return new EditableContentArea.View(res, detached);
     }
 
     public Element getSidebarElement() {
@@ -215,6 +223,20 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
 
       rightSidebarContentContainer.getStyle().setVisibility(CSSStyleDeclaration.Visibility.HIDDEN);
     }
+
+    public Element detach() {
+      contentView.getElement().removeChild(rightSplitter);
+      contentView.getElement().removeChild(rightSidebarContentContainer);
+      getElement().removeChild(contentView.getElement());
+      getElement().removeChild(splitter);
+      navArea.getStyle().setWidth(100, "%");
+      contentView.getElement().getStyle().setLeft(0, "px");
+      contentView.getElement().getStyle().setRight(5, "px");
+      contentView.getElement().getStyle().setTop(0, "px");
+      getElement().getStyle().setTop(0, "em");
+//      contentView.getContentElement().addClassName("");
+      return contentView.getElement();
+    }
   }
 
 
@@ -235,11 +257,12 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
     this.contentArea = contentArea;
   }
 
+
   public EditableContentArea getContentArea() {
     return contentArea;
   }
 
-  private void initResizeControllers() {
+  private void initResizeControllers(boolean detached) {
     View view = getView();
     leftResizeController = new NavigatorAreaResizeController(currentPlace,
         view.res,
@@ -250,6 +273,10 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
         view.css.splitterOverlap());
     leftResizeController.start();
 
+    if (detached) {
+      CssUtils.setDisplayVisibility2(view.rightSplitter, false);
+      CssUtils.setDisplayVisibility2(view.rightSidebarContentContainer, false);
+    }
     rightResizeController = new RightSidebarResizeController(currentPlace,
         view.res,
         view.rightSplitter,
@@ -258,7 +285,7 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
         view.css.splitterWidth(),
         view.css.collapsedRightSplitterRight(),
         contentArea.getView().getDefaultEditableContentAreaRight());
-    rightResizeController.setNegativeDelta(true);
+    rightResizeController.setNegativeDeltaW(true);
     rightResizeController.start();
   }
 }

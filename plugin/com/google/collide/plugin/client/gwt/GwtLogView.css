@@ -1,0 +1,42 @@
+.logAll{
+	color: #abc;
+}
+.logSpam{
+	color: #9ab;
+}
+.logDebug{
+	color: #89a;
+}
+.logTrace{
+	color: green;
+}
+.logInfo{
+	color: blue;
+}
+.logWarning{
+	color: orange;
+}
+.logError{
+	color: red;
+}
+.logContainer{
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+}
+.logPad{
+	padding-left: 15px;
+	padding-right: 15px;
+	height: auto;
+}
+
+.bottomPlaceHolder{
+	bottom: 0px;
+}
+
+.logHeader{
+}
+.logBody{
+	padding-top: 15px;
+	padding-bottom: 15px;
+}

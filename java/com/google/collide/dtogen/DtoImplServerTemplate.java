@@ -612,7 +612,7 @@ public class DtoImplServerTemplate extends DtoImpl {
       builder.append(", org.vertx.java.core.shareddata.Shareable");
     }
     builder.append(" {\n\n");
-    
+
     if (isSerializable){
       builder.append("  private static final long serialVersionUID = " +dtoInterface.getCanonicalName().hashCode()+"L;\n");
     }
@@ -738,7 +738,7 @@ public class DtoImplServerTemplate extends DtoImpl {
    * Emit a method that ensures a collection is initialized.
    */
   private void emitEnsureCollection(Method method, String fieldName, StringBuilder builder) {
-    builder.append("\n    private void ");
+    builder.append("\n    void ");
     builder.append(getEnsureName(fieldName));
     builder.append("() {\n");
     builder.append("      if (!");

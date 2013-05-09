@@ -20,7 +20,7 @@ import com.google.collide.client.util.Utils;
 import com.google.gwt.resources.client.ImageResource;
 
 import elemental.css.CSSStyleDeclaration;
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * A simple list item renderer that renders the {@link Object#toString()} of the

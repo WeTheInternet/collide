@@ -18,8 +18,11 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.user.client.DOM;
 
 import elemental.client.Browser;
+import elemental.dom.Document;
+import elemental.dom.Element;
 import elemental.dom.Text;
 import elemental.html.AnchorElement;
 import elemental.html.BRElement;
@@ -27,8 +30,6 @@ import elemental.html.BodyElement;
 import elemental.html.ButtonElement;
 import elemental.html.CanvasElement;
 import elemental.html.DivElement;
-import elemental.html.Document;
-import elemental.html.Element;
 import elemental.html.FormElement;
 import elemental.html.HeadElement;
 import elemental.html.IFrameElement;
@@ -44,7 +45,7 @@ import elemental.html.TableRowElement;
 import elemental.html.TextAreaElement;
 import elemental.html.UListElement;
 import elemental.html.Window;
-import elemental.js.html.JsElement;
+import elemental.js.dom.JsElement;
 import elemental.ranges.Range;
 
 /**
@@ -52,7 +53,7 @@ import elemental.ranges.Range;
  *
  */
 public class Elements {
-  
+
   /**
    * A regular expression used by the {@link #markup(Element, String, String)} function to search
    * for http links and new lines.
@@ -115,13 +116,13 @@ public class Elements {
   }
 
   public static TableRowElement createTRElement(String... classNames) {
-    TableRowElement elem = getDocument().createTRElement();
+    TableRowElement elem = getDocument().createTableRowElement();
     addClassesToElement(elem, classNames);
     return elem;
   }
 
   public static TableCellElement createTDElement(String... classNames) {
-    TableCellElement elem = getDocument().createTDElement();
+    TableCellElement elem = getDocument().createTableCellElement();
     addClassesToElement(elem, classNames);
     return elem;
   }
@@ -182,7 +183,7 @@ public class Elements {
   }
 
   public static UListElement createUListElement(String... classNames) {
-    UListElement elem = getDocument().createULElement();
+    UListElement elem = getDocument().createUListElement();
     addClassesToElement(elem, classNames);
     return elem;
   }
@@ -208,7 +209,7 @@ public class Elements {
   }
 
   public static BodyElement getBody(Document document) {
-    return document.getBody();
+    return (BodyElement)document.getBody();
   }
 
   public static HeadElement getHead() {
@@ -263,7 +264,7 @@ public class Elements {
       getDocument().setTitle(subtitle + " - Collide");
     }
   }
-  
+
   /**
    * Scans a string converting any recognizable html links into an anchor tag and replacing newlines
    * with a &lt;br/&gt;. Once built the result is appended to the provided element.
@@ -337,4 +338,13 @@ public class Elements {
 
   private Elements() {
   } // COV_NF_LINE
+
+  public static String getOrSetId(Element e) {
+    String id = e.getId();
+    if (id.length() == 0) {
+      id = DOM.createUniqueId();
+      e.setId(id);
+    }
+    return id;
+  }
 }

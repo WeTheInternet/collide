@@ -14,7 +14,7 @@
 
 package com.google.collide.client.ui.dropdown;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * A controller to set the text on an element, optionally supporting a hint.

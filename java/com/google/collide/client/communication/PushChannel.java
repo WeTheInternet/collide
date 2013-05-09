@@ -78,6 +78,7 @@ public class PushChannel {
     }
 
     void schedule() {
+      //TODO(james) fire an event to display that we are not connected.
       schedule(DELAY_MS);
     }
   }
@@ -186,7 +187,7 @@ public class PushChannel {
   }
   
   /**
-   * Sends a message to an address, providing an replyHandler.
+   * Sends a message to an address, providing a replyHandler.
    */
   public void send(String address, String message, ReplyHandler replyHandler) {
     if (eventBus.getReadyState() != VertxBus.OPEN) {
@@ -196,6 +197,19 @@ public class PushChannel {
       return;
     }
     eventBus.send(address, message, replyHandler);
+  }
+
+  /**
+   * Sends a message to an address, providing a replyHandler.
+   */
+  public void request(String address, ReplyHandler replyHandler) {
+    if (eventBus.getReadyState() != VertxBus.OPEN) {
+      Log.debug(PushChannel.class,
+          "Data requested from '" + address + "' while channel was disconnected.");
+      queuedMessages.add(new QueuedMessage(address, null, replyHandler));
+      return;
+    }
+    eventBus.send(address, null, replyHandler);
   }
 
   /**

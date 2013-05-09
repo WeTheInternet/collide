@@ -15,6 +15,7 @@
 package com.google.collide.client.workspace;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.Resources;
 import com.google.collide.client.code.CodePanelBundle;
 import com.google.collide.client.code.NavigationAreaExpansionEvent;
 import com.google.collide.client.code.ParticipantModel;
@@ -26,6 +27,7 @@ import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.search.TreeWalkFileNameSearchImpl;
+import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.util.Elements;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.ServerError.FailureReason;
@@ -44,8 +46,7 @@ import elemental.events.KeyboardEvent.KeyCode;
  * Handler for the selection of a Workspace.
  */
 // TODO: At some point we should try to make reEnter work on this thing.
-public class WorkspacePlaceNavigationHandler
-    extends PlaceNavigationHandler<WorkspacePlace.NavigationEvent> {
+public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<WorkspacePlace.NavigationEvent> {
 
   private final AppContext appContext;
   private final FileNameSearch searchIndex;
@@ -66,7 +67,7 @@ public class WorkspacePlaceNavigationHandler
   public WorkspacePlaceNavigationHandler(AppContext appContext) {
     this.appContext = appContext;
     this.keyListenerRemoverManager = new RemoverManager();
-    this.searchIndex = TreeWalkFileNameSearchImpl.create();   
+    this.searchIndex = TreeWalkFileNameSearchImpl.create();
   }
 
   @Override
@@ -94,69 +95,51 @@ public class WorkspacePlaceNavigationHandler
 
   @Override
   protected void enterPlace(final WorkspacePlace.NavigationEvent navigationEvent) {
-
     // Instantiate the Root View for the Workspace.
-    final WorkspaceShell.Resources res = appContext.getResources();
-    WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res);
+    final Resources res = appContext.getResources();
+    WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res, isDetached());
     workspacePlace = navigationEvent.getPlace();
 
-    FileTreeModelNetworkController.OutgoingController fileTreeModelOutgoingNetworkController =
-        new FileTreeModelNetworkController.OutgoingController(appContext);
-    FileTreeModel fileTreeModel =
-        new FileTreeModel(fileTreeModelOutgoingNetworkController);
+    FileTreeModelNetworkController.OutgoingController fileTreeModelOutgoingNetworkController = new FileTreeModelNetworkController.OutgoingController(
+      appContext);
+    FileTreeModel fileTreeModel = new FileTreeModel(fileTreeModelOutgoingNetworkController);
 
     documentManager = DocumentManager.create(fileTreeModel, appContext);
 
     searchIndex.setFileTreeModel(fileTreeModel);
 
-    participantModel = ParticipantModel.create(
-        appContext.getFrontendApi(), appContext.getMessageFilter());
+    participantModel = ParticipantModel.create(appContext.getFrontendApi(), appContext.getMessageFilter());
 
-    IncomingDocOpDemultiplexer docOpRecipient = IncomingDocOpDemultiplexer.create(
-        appContext.getMessageFilter());
-    collaborationManager = CollaborationManager.create(
-        appContext, documentManager, participantModel, docOpRecipient);
+    IncomingDocOpDemultiplexer docOpRecipient = IncomingDocOpDemultiplexer.create(appContext.getMessageFilter());
+    collaborationManager = CollaborationManager.create(appContext, documentManager, participantModel,
+      docOpRecipient);
 
-    DocOpsSavedNotifier docOpSavedNotifier =
-        new DocOpsSavedNotifier(documentManager, collaborationManager);
+    DocOpsSavedNotifier docOpSavedNotifier = new DocOpsSavedNotifier(documentManager, collaborationManager);
 
-    fileNetworkController = FileTreeModelNetworkController.create(
-        fileTreeModel, appContext, navigationEvent.getPlace());
+    fileNetworkController = FileTreeModelNetworkController.create(fileTreeModel, appContext,
+      navigationEvent.getPlace());
 
-    header = Header.create(workspaceShellView.getHeaderView(),
-        workspaceShellView,
-        workspacePlace,
-        appContext,
-        searchIndex,
-        fileTreeModel);
+    header = Header.create(workspaceShellView.getHeaderView(), workspaceShellView, workspacePlace,
+      appContext, searchIndex, fileTreeModel);
 
     shell = WorkspaceShell.create(workspaceShellView, header);
 
-    // Attach to the DOM.
-    Elements.replaceContents(AppContext.GWT_ROOT, shell.getView().getElement());
-
-    // Reset the tab title
-    Elements.setCollideTitle("");
 
     // Add a HotKey listener for to auto-focus the AwesomeBox.
-    /*
-     * The GlobalHotKey stuff utilizes the wave signal event stuff which filters alt+enter as an
-     * unimportant event. This prevents us from using the GlobalHotKey manager here.
-     *
-     * Note: This is capturing since the editor likes to nom-nom keys, in the dart re-write lets
-     * think about this sort of stuff ahead of time.
-     */
-    final EventRemover eventRemover =
-        Elements.getBody().addEventListener(Event.KEYDOWN, new EventListener() {
-          @Override
-          public void handleEvent(Event evt) {
-            KeyboardEvent event = (KeyboardEvent) evt;
-            if (event.isAltKey() && event.getKeyCode() == KeyCode.ENTER) {
-              appContext.getAwesomeBoxComponentHostModel().revertToDefaultComponent();
-              header.getAwesomeBoxComponentHost().show();
-            }
-          }
-        }, true);
+    /* The GlobalHotKey stuff utilizes the wave signal event stuff which filters alt+enter as an unimportant
+     * event. This prevents us from using the GlobalHotKey manager here. Note: This is capturing since the
+     * editor likes to nom-nom keys, in the dart re-write lets think about this sort of stuff ahead of time. */
+    final EventRemover eventRemover = Elements.getBody().addEventListener(Event.KEYDOWN, new EventListener() {
+      @Override
+      public void handleEvent(Event evt) {
+        KeyboardEvent event = (KeyboardEvent)evt;
+        if (event.isAltKey() && event.getKeyCode() == KeyCode.ENTER) {
+          appContext.getAwesomeBoxComponentHostModel().revertToDefaultComponent();
+          header.getAwesomeBoxComponentHost().show();
+        }
+      }
+    }, true);
+
     // Track this for removal in cleanup
     keyListenerRemoverManager.track(new Remover() {
       @Override
@@ -165,59 +148,70 @@ public class WorkspacePlaceNavigationHandler
       }
     });
 
-    codePanelBundle = new CodePanelBundle(appContext,
-        shell,
-        fileTreeModel,
-        searchIndex,
-        documentManager,
-        participantModel,
-        docOpRecipient,
-        navigationEvent.getPlace());
-    codePanelBundle.attach();
+    codePanelBundle = createCodePanelBundle(appContext, shell, fileTreeModel, searchIndex, documentManager,
+      participantModel, docOpRecipient, navigationEvent.getPlace());
+    codePanelBundle.attach(isDetached());
+    codePanelBundle.setMasterPanel(createMasterPanel(res));
+
+    // Attach to the DOM.
+    attachComponents(shell, header);
+
+    // Reset the tab title
+    Elements.setCollideTitle("");
 
     if (!navigationEvent.shouldNavExpand()) {
       workspacePlace.fireEvent(new NavigationAreaExpansionEvent(false));
     }
 
     // Send a message to enter the workspace and initialize the workspace.
-    appContext.getFrontendApi().GET_WORKSPACE_META_DATA.send(
-        GetWorkspaceMetaDataImpl.make(), new ApiCallback<GetWorkspaceMetaDataResponse>() {
+    appContext.getFrontendApi().GET_WORKSPACE_META_DATA.send(GetWorkspaceMetaDataImpl.make(),
+      new ApiCallback<GetWorkspaceMetaDataResponse>() {
 
-          @Override
-          public void onMessageReceived(GetWorkspaceMetaDataResponse message) {
-            if (!navigationEvent.getPlace().isActive()) {
-              return;
-            }
-
-            // Start the keep-alive timer at 10 second intervals.
-            keepAliveTimer = new KeepAliveTimer(appContext, 5000);
-            keepAliveTimer.start();
-
-            codePanelBundle.enterWorkspace(navigationEvent, message);
+        @Override
+        public void onMessageReceived(GetWorkspaceMetaDataResponse message) {
+          if (!navigationEvent.getPlace().isActive()) {
+            return;
           }
 
-          @Override
-          public void onFail(FailureReason reason) {
-            if (FailureReason.UNAUTHORIZED == reason) {
-              /*
-               * User is not authorized to access this workspace.
-               * 
-               * At this point, the components of the WorkspacePlace already sent multiple requests
-               * to the frontend that are bound to fail with the same reason. However, we don't want
-               * to gate loading the workspace to handle the rare case that a user accesses a branch
-               * that they do not have permission to access. Better to make the workspace load fast
-               * and log errors if the user is not authorized.
-               */
-              UnauthorizedUser unauthorizedUser = UnauthorizedUser.create(res);
-              shell.setPerspective(unauthorizedUser.getView().getElement());
-            }
+          // Start the keep-alive timer at 10 second intervals.
+          keepAliveTimer = new KeepAliveTimer(appContext, 5000);
+          keepAliveTimer.start();
+
+          codePanelBundle.enterWorkspace(navigationEvent.isActiveLeaf(), navigationEvent.getPlace(), message);
+        }
+
+        @Override
+        public void onFail(FailureReason reason) {
+          if (FailureReason.UNAUTHORIZED == reason) {
+            /* User is not authorized to access this workspace. At this point, the components of the
+             * WorkspacePlace already sent multiple requests to the frontend that are bound to fail with the
+             * same reason. However, we don't want to gate loading the workspace to handle the rare case that
+             * a user accesses a branch that they do not have permission to access. Better to make the
+             * workspace load fast and log errors if the user is not authorized. */
+            UnauthorizedUser unauthorizedUser = UnauthorizedUser.create(res);
+            shell.setPerspective(unauthorizedUser.getView().getElement());
           }
-        });
+        }
+      });
+  }
+
+  protected boolean isDetached() {
+    return false;
+  }
+
+  protected CodePanelBundle createCodePanelBundle(AppContext appContext, WorkspaceShell shell,
+    FileTreeModel fileTreeModel, FileNameSearch searchIndex, DocumentManager documentManager,
+    ParticipantModel participantModel, IncomingDocOpDemultiplexer docOpRecipient, WorkspacePlace place) {
+    return new CodePanelBundle(appContext, shell, fileTreeModel, searchIndex, documentManager,
+      participantModel, docOpRecipient, place);
+  }
+
+  protected void attachComponents(WorkspaceShell shell, Header header) {
+    Elements.replaceContents(AppContext.GWT_ROOT, shell.getView().getElement());
   }
 
   @Override
-  protected void reEnterPlace(
-      final WorkspacePlace.NavigationEvent navigationEvent, boolean hasNewState) {
+  protected void reEnterPlace(final WorkspacePlace.NavigationEvent navigationEvent, boolean hasNewState) {
     if (hasNewState || navigationEvent.shouldForceReload()) {
       // Simply do the default action which is to run cleanup/enter.
       super.reEnterPlace(navigationEvent, hasNewState);
@@ -228,10 +222,18 @@ public class WorkspacePlaceNavigationHandler
         @Override
         public void execute() {
           if (navigationEvent.isActiveLeaf()) {
-            codePanelBundle.showNoFileSelectedPanel();
+            onNoFileSelected();
           }
         }
       });
     }
+  }
+
+  protected void onNoFileSelected() {
+    codePanelBundle.showNoFileSelectedPanel();
+  }
+
+  protected MultiPanel<?,?> createMasterPanel(Resources resources) {
+    return codePanelBundle.contentArea;
   }
 }

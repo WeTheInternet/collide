@@ -20,17 +20,16 @@ import com.google.collide.client.editor.Buffer.ScrollListener;
 import com.google.collide.client.util.BrowserUtils;
 import com.google.collide.json.client.Jso;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.events.MouseWheelEvent;
-import elemental.html.Element;
 
 /*
  * We want to behave as close to native scrolling as possible, but still prevent
  * flickering (without expanding the viewport/prerendering lines). The simplest
  * approach is to capture the amount of scroll per mousewheel, and manually
  * scroll the buffer.
- * 
+ *
  * There is a known issue with ChromeOS where it sends a deltaWheel of +/-120
  * regardless of how much it will actually scroll. See
  * http://code.google.com/p/chromium-os/issues/detail?id=23607 . Because of
@@ -41,7 +40,7 @@ import elemental.html.Element;
 /**
  * An object that intercepts mousewheel events that would have otherwise gone to
  * the scrollable layer in the buffer. Instead, we manually scroll the buffer
- * 
+ *
  * <p>The purpose is to prevent flickering of the newly scrolled region. If the
  * scrollable element takes the scroll, that element will be scrolled before we
  * can fill it with contents. Therefore, there will be white displayed for a
@@ -54,7 +53,7 @@ class MouseWheelRedirector {
     if (BrowserUtils.isChromeOs()) {
       return;
     }
-    
+
     new MouseWheelRedirector(buffer).attachEventHandlers(scrollableElement);
   }
 
@@ -63,9 +62,9 @@ class MouseWheelRedirector {
    * been defined yet.
    */
   private static final int UNDEFINED = 0;
-  
+
   private final Buffer buffer;
-  
+
   /**
    * The magnitude to scroll per wheelDelta unit. Even though mousewheel events
    * have wheelDelta in multiples of 120, this is the magnitude of a scroll
@@ -93,16 +92,16 @@ class MouseWheelRedirector {
      */
     scrollableElement.addEventListener(Event.MOUSEWHEEL, new EventListener() {
       @Override
-      public void handleEvent(Event evt) {
-        MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) evt;
-        
+      public void handleEvent(Event mouseWheelEvent) {
+//        MouseWheelEvent mouseWheelEvent = (MouseWheelEvent) evt;
+
         /*
          * The negative is so the deltaX,Y are positive when the scroll delta
          * is. That is, a positive "deltaY" will scroll down.
          */
         int deltaY = -((Jso) mouseWheelEvent).getIntField("wheelDeltaY");
         int deltaX = -((Jso) mouseWheelEvent).getIntField("wheelDeltaX");
-        
+
         /*
          * If the deltaY is 0, this is probably a horizontal-only scroll, in
          * which case we let it proceed as normal (no preventDefault, no manual
@@ -121,7 +120,7 @@ class MouseWheelRedirector {
              */
             buffer.setScrollTop(buffer.getScrollTop() + (int) (mouseWheelToScrollDelta * deltaY));
             buffer.setScrollLeft(buffer.getScrollLeft() + (int) (mouseWheelToScrollDelta * deltaX));
-            evt.preventDefault();
+            mouseWheelEvent.preventDefault();
           }
         }
       }
@@ -142,7 +141,7 @@ class MouseWheelRedirector {
        * casing. (17 is stable at the time of this writing.)
        */
       mouseWheelToScrollDelta = 1;
-      
+
     } else {
       final int initialScrollTop = buffer.getScrollTop();
 

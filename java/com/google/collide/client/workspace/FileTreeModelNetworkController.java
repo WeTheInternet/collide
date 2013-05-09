@@ -19,6 +19,7 @@ import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.communication.MessageFilter;
 import com.google.collide.client.communication.MessageFilter.MessageRecipient;
+import com.google.collide.client.history.Place;
 import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.util.PathUtil;
@@ -44,18 +45,18 @@ import com.google.common.base.Preconditions;
  * from the frontend, and updating the {@link FileTreeModel}.
  *
  */
-class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.Handler {
+public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.Handler {
 
   /**
    * Static factory method to obtain an instance of FileTreeModelNetworkController.
    */
   public static FileTreeModelNetworkController create(FileTreeModel fileTreeModel,
-      AppContext appContext, WorkspacePlace currentPlace) {
+      AppContext appContext, Place currentPlace) {
     FileTreeModelNetworkController networkController =
         new FileTreeModelNetworkController(fileTreeModel, appContext);
     currentPlace.registerSimpleEventHandler(FileTreeInvalidatedEvent.TYPE, networkController);
     networkController.registerForInvalidations(appContext.getMessageFilter());
-    
+
     // Load the tree.
     networkController.reloadDirectory(PathUtil.WORKSPACE_ROOT);
     return networkController;
@@ -64,16 +65,16 @@ class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.Handler
   /**
    * A controller for the outgoing network requests for fetching nodes. This logic is used mainly
    * for lazy tree loading.
-   * 
+   *
    * <p>
    * This class is a static class to prevent circular instance dependencies between the
    * {@link FileTreeModel} and the {@link FileTreeModelNetworkController}.
    */
-  static class OutgoingController {
+  public static class OutgoingController {
 
     private final AppContext appContext;
 
-    OutgoingController(AppContext appContext) {
+    public OutgoingController(AppContext appContext) {
       this.appContext = appContext;
     }
 
@@ -397,7 +398,7 @@ class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.Handler
           }
         });
   }
-  
+
   public void registerForInvalidations(MessageFilter messageFilter) {
     messageFilter.registerMessageRecipient(RoutingTypes.WORKSPACETREEUPDATEBROADCAST,
         new MessageRecipient<WorkspaceTreeUpdateBroadcast>() {
@@ -411,7 +412,7 @@ class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.Handler
           // didn't get the payload. Reload the entire tree.
           onFileTreeInvalidated(PathUtil.WORKSPACE_ROOT);
         }
-      }      
+      }
     });
   }
 }

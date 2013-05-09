@@ -58,11 +58,11 @@ public class CollaborationSection extends WorkspaceNavigationSection<Collaborati
   /**
    * The View for the CollaborationSection.
    */
-  static class View extends WorkspaceNavigationSection.View<WorkspaceNavigationSection.ViewEvents> {
+  public static class View extends WorkspaceNavigationSection.View<WorkspaceNavigationSection.ViewEvents> {
     ShareWorkspacePane.View shareWorkspacePaneView;
     ParticipantList.View participantListView;
 
-    View(Resources res) {
+    public View(Resources res) {
       super(res);
 
       // Create subviews.

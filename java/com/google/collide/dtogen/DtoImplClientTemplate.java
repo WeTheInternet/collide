@@ -14,7 +14,6 @@
 
 package com.google.collide.dtogen;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -261,11 +260,13 @@ public class DtoImplClientTemplate extends DtoImpl {
   }
 
   private void emitEnumValueOf(Class<?> rawClass, String var, StringBuilder builder) {
-    builder.append("@");
+    builder.append(var);
+    builder.append("? @");
     builder.append(rawClass.getCanonicalName());
     builder.append("::valueOf(Ljava/lang/String;)(");
     builder.append(var);
     builder.append(")");
+    builder.append(": null");
   }
 
   private void emitSetter(String methodName, String fieldName, String fieldSelector, Type type,

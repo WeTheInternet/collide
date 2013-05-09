@@ -33,6 +33,8 @@ import com.google.collide.shared.util.UnicodeUtils;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
+import elemental.client.Browser;
+
 /**
  * An object which can accurately measure a {@link Line} and map X coordinates
  * to columns and vice versa.
@@ -289,6 +291,7 @@ public class LineDimensionsCalculator {
    */
   public int convertXToColumn(Line line, double x, RoundingStrategy roundingStrategy) {
     // Easy out (< can happen when selection dragging).
+    x = x + Browser.getWindow().getScrollX();
     if (x <= 0) {
       return 0;
     }

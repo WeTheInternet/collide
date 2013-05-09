@@ -17,7 +17,7 @@ package com.google.collide.client.search.awesomebox;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 
 /**
  * Manages a list of elements which can have selection. Note no guarantees are

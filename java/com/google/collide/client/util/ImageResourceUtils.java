@@ -17,8 +17,8 @@ package com.google.collide.client.util;
 import com.google.gwt.resources.client.ImageResource;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Utilities for applying {@link ImageResource}s to elements.

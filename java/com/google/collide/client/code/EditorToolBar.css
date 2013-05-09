@@ -4,6 +4,11 @@
   margin-top: 5px;
 }
 
+.detached {
+  float: none;
+  
+}
+
 .button {
   display: inline-block;
   position: relative;

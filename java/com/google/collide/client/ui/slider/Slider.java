@@ -26,9 +26,9 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Slider UI component.
@@ -101,7 +101,7 @@ public class Slider extends UiComponent<Slider.View> {
         super(resources, sliderSplitter, new ElementInfo(sliderLeft, ResizeProperty.RIGHT),
             new ElementInfo(sliderSplitter, ResizeProperty.RIGHT),
             new ElementInfo(sliderRight, ResizeProperty.RIGHT));
-        setNegativeDelta(true);
+        setNegativeDeltaW(true);
         showResizingCursor(false);
       }
 
@@ -134,11 +134,11 @@ public class Slider extends UiComponent<Slider.View> {
       }
 
       @Override
-      protected void applyDelta(int delta) {
-        if (delta != 0) {
-          lastDelta = delta;
+      protected void applyDelta(int deltaW, int deltaH) {
+        if (deltaW != 0) {
+          lastDelta = deltaW;
         }
-        super.applyDelta(delta);
+        super.applyDelta(deltaW, deltaH);
       }
 
       private void setRestrictions() {
@@ -176,7 +176,7 @@ public class Slider extends UiComponent<Slider.View> {
     private void setActive(boolean active) {
       CssUtils.setDisplayVisibility(sliderLeft, active);
       CssUtils.setDisplayVisibility(sliderRight, !active);
-      
+
       sliderLeft.getStyle().removeProperty("width");
       sliderRight.getStyle().removeProperty("width");
 
@@ -186,7 +186,7 @@ public class Slider extends UiComponent<Slider.View> {
 
       CssUtils.setClassNameEnabled(sliderLeft, css.sliderFlex(), active);
       CssUtils.setClassNameEnabled(sliderRight, css.sliderFlex(), !active);
- 
+
       new DebugAttributeSetter().add(SLIDER_MODE, String.valueOf(active)).on(getElement());
     }
 

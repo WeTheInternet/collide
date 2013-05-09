@@ -10,8 +10,8 @@ public class DebugUtil {
       b.append(separator);
     }
     Throwable cause = t.getCause();
-    if (cause != null)
-      b.append(getFullStacktrace(t, separator+"  "));
+    if (cause != null&&t.getCause()!=t)
+      b.append(getFullStacktrace(t.getCause(), separator+"  "));
     return b.toString();
   }
   public static String toString(StackTraceElement el) {

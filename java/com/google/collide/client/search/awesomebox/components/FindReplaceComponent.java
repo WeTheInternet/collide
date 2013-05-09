@@ -136,7 +136,7 @@ public class FindReplaceComponent extends AbstractAwesomeBoxComponent implements
   }
 
   @Override
-  public elemental.html.Element getElement() {
+  public elemental.dom.Element getElement() {
     return getView().getElement();
   }
 

@@ -23,9 +23,9 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Debugging sidebar call stack pane.

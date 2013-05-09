@@ -5,9 +5,9 @@ import com.google.collide.client.util.AnimationUtils;
 import com.google.collide.client.util.ResizeController;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Class responsible for managing resizing of the Navigation Section.
@@ -108,7 +108,7 @@ class NavigatorAreaResizeController extends ResizeController
 
     // Double clicking animates the splitter to hide and show the nav area.
     // Equivalent to an automated resize.
-    splitter.setOnDblClick(new EventListener() {
+    splitter.setOndblclick(new EventListener() {
 
       @Override
       public void handleEvent(Event evt) {

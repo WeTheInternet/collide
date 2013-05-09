@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.google.collide</groupId>
+    <artifactId>collide</artifactId>
+    <version>0.1</version>
+  </parent>
+  <artifactId>collide-maven-plugin</artifactId>
+  <packaging>jar</packaging>
+<!--   <packaging>maven-plugin</packaging> -->
+  <name>CollIDE plugin layer</name>
+  <url>http://collide.net.wetheinter</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <gwt.version>2.5.0</gwt.version>
+    <collide.home>${project.basedir}/..</collide.home>
+  </properties>
+
+  <build>
+    <!-- TODO split up client and server into modules w/ maven managed dependencies -->
+    <sourceDirectory>${collide.home}/plugin</sourceDirectory>
+    <outputDirectory>${collide.home}/target/plugin-classes</outputDirectory>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.collide</groupId>
+      <artifactId>collide-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-dev</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.gwt</groupId>
+      <artifactId>gwt-codeserver</artifactId>
+    </dependency>
+  </dependencies>
+</project>

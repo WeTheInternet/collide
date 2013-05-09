@@ -24,8 +24,8 @@ import com.google.collide.mvp.UiComponent;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Presenter for the graphical delta statistics of a change. This presenter

@@ -32,13 +32,13 @@ import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 
+import elemental.dom.Element;
 import elemental.dom.Node;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.EventTarget;
 import elemental.events.MouseEvent;
-import elemental.html.Element;
 import elemental.util.Timer;
 
 /**

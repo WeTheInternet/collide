@@ -89,6 +89,7 @@ public abstract class Place {
   private boolean createHistoryToken = true;
   private Place currentParentPlace;
   private boolean isActive = false;
+  private boolean isStrict = true;
   private final String name;
   private Scope scope = new Scope();
 
@@ -186,7 +187,8 @@ public abstract class Place {
           "Parent: ",
           getName(),
           " Potential Child: ",
-          childHistoryPiece.getPlaceName());
+          childHistoryPiece.getPlaceName(),
+          " State: ",childHistoryPiece.getBookmarkableState());
       return null;
     }
 
@@ -315,17 +317,18 @@ public abstract class Place {
     @SuppressWarnings("unchecked")
     PlaceNavigationEvent<Place> navigationEvent = (PlaceNavigationEvent<Place>) event;
 
+    Log.info(getClass(), "Firing nav event "+event);
     // Make sure that we contain such a child registered to our scope.
     if (navigationEvent == null
         || getRegisteredChild(navigationEvent.getPlace().getName()) == null) {
       Log.warn(getClass(), "Attempted to navigate to a child place that was not registered to us.",
-          navigationEvent);
+          navigationEvent, navigationEvent.getBookmarkableState());
       return;
     }
 
     // If we are not currently active, then we are not allowed to fire child
     // place navigations.
-    if (!isActive) {
+    if (!isActive && isStrict()) {
       Log.warn(getClass(), "Attempted to navigate to a child place when we were not active",
           navigationEvent, RootPlace.PLACE.collectHistorySnapshot().join(PathUtil.SEP));
       return;
@@ -482,7 +485,7 @@ public abstract class Place {
    *  We say a place matches if all the state in the Place we are navigating to
    * is already contained in the current Place.
    */
-  private boolean placesMatch(PlaceNavigationEvent<?> current, PlaceNavigationEvent<?> next) {
+  protected boolean placesMatch(PlaceNavigationEvent<?> current, PlaceNavigationEvent<?> next) {
     if (current == null) {
       return false;
     }
@@ -510,6 +513,10 @@ public abstract class Place {
    */
   public boolean isActiveLeaf() {
     return isLeaf() && isActive();
+  }
+
+  protected boolean isStrict() {
+    return isStrict;
   }
 
   /**
@@ -566,6 +573,15 @@ public abstract class Place {
   protected void setIsActive(boolean isActive, Place currentParentPlace) {
     this.isActive = isActive;
     this.currentParentPlace = currentParentPlace;
+  }
+
+  /**
+   * Determines whether or not the place should throw exceptions if it is not active.
+   * @param isStrict
+   * @return
+   */
+  public void setIsStrict(boolean isStrict) {
+    this.isStrict = isStrict;
   }
 
   /**

@@ -58,6 +58,7 @@
             <pathelement location="${dirs.testbin}"/>
             <pathelement location="${dirs.bin}"/>
             <path refid="paths.shared"/>
+	        <path refid="paths.client.runtime"/>
           </classpath>
         </do.javac>
       </sequential>
@@ -65,6 +66,18 @@
   </target>
   
   <target name="build" depends="gen" description="compile tests for 'client'">
+    <do.javac srcdir="${dirs.src}" destdir="${dirs.testbin}">
+      <include name="${dirs.toppkg}/clientlibs/**/*.java"/>
+      <classpath>
+        <pathelement
+	   location="${dirs.testbin}/${dirs.toppkg}/client/testing/dto/client-testdtos.jar"/>
+        <pathelement location="${dirs.testbin}"/>
+        <pathelement location="${dirs.bin}"/>
+        <path refid="paths.client.build"/>
+        <path refid="paths.test"/>
+        <path refid="paths.clientlibs"/>
+      </classpath>
+    </do.javac>
     <do.javac srcdir="${dirs.test}" destdir="${dirs.testbin}">
       <include name="${dirs.toppkg}/client/**/*.java"/>
       <classpath>
@@ -74,13 +87,14 @@
         <pathelement location="${dirs.bin}"/>
         <path refid="paths.client.build"/>
         <path refid="paths.test"/>
+        <path refid="paths.clientlibs"/>
       </classpath>
     </do.javac>
   </target>
 
   <target name="test" description="Run tests for 'client' subproject only"
 	  depends="build">
-    <do.junit reportdir="client">
+    <do.junit reportdir="client" extracp="${dirs.toppkg}/client/**/*.java">
       <testpackages>
         <fileset dir="${dirs.test}">
           <patternset includes="${dirs.toppkg}/client/**/${junit.testpattern}"/>
@@ -88,12 +102,15 @@
       </testpackages>
       <libraries>
         <path refid="paths.client.runtime"/>
+        <path refid="paths.test"/>
+        <path refid="paths.clientlibs"/>
         <pathelement
             location="${dirs.testbin}/${dirs.toppkg}/client/testing/dto/client-testdtos.jar"/>
         <pathelement
             location="${dirs.testgen}"/>
         <pathelement
             location="${dirs.gen}"/>
+      <include name="${dirs.toppkg}/client/**/*.java"/>
       </libraries>
     </do.junit>
   </target>

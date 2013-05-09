@@ -15,11 +15,11 @@
 package com.google.collide.client.search;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.code.EditableContentArea;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.status.StatusMessage;
+import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.workspace.FileTreeUiController;
 import com.google.collide.dto.SearchResponse;
 import com.google.collide.dto.ServerError.FailureReason;
@@ -33,13 +33,13 @@ public class SearchPlaceNavigationHandler extends PlaceNavigationHandler<
     SearchPlace.NavigationEvent> {
 
   private final AppContext context;
-  private final EditableContentArea contentArea;
+  private final MultiPanel<?,?> contentArea;
   private final FileTreeUiController fileTreeUiController;
   private final Place currentPlace;
   private SearchContainer searchContainer;
 
   public SearchPlaceNavigationHandler(AppContext context,
-      EditableContentArea contentArea, FileTreeUiController fileTreeUiController,
+      MultiPanel<?,?> contentArea, FileTreeUiController fileTreeUiController,
       Place currentPlace) {
     this.context = context;
     this.contentArea = contentArea;
@@ -50,7 +50,7 @@ public class SearchPlaceNavigationHandler extends PlaceNavigationHandler<
 
   @Override
   public void cleanup() {
-    contentArea.getEditorToolBar().show();
+    contentArea.getToolBar().show();
   }
 
   @Override
@@ -66,7 +66,7 @@ public class SearchPlaceNavigationHandler extends PlaceNavigationHandler<
     }
 
     contentArea.setContent(searchContainer);
-    contentArea.getEditorToolBar().hide();
+    contentArea.getToolBar().hide();
     StatusMessage message = new StatusMessage(
         context.getStatusManager(), StatusMessage.MessageType.LOADING, "Searching...");
     message.fireDelayed(200);
@@ -77,7 +77,7 @@ public class SearchPlaceNavigationHandler extends PlaceNavigationHandler<
         new ApiCallback<SearchResponse>() {
 
           @Override
-          public void onFail(FailureReason reason) {          
+          public void onFail(FailureReason reason) {
             new StatusMessage(context.getStatusManager(), StatusMessage.MessageType.ERROR,
                 "Search failed in 3 attempts.  Try again later.").fire();
           }

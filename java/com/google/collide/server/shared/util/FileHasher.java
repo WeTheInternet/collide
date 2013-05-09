@@ -14,7 +14,6 @@
 
 package com.google.collide.server.shared.util;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.hash.Hashing;
 import com.google.protobuf.ByteString;
 
@@ -23,7 +22,6 @@ import com.google.protobuf.ByteString;
  */
 public class FileHasher {
   public static ByteString getSha1(String contents) {
-    Stopwatch stopWatch = new Stopwatch().start();
     ByteString sha1 = ByteString.copyFrom(Hashing.sha1().hashString(contents).asBytes());
     return sha1;
   }

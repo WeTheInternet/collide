@@ -46,7 +46,7 @@ public abstract class BootstrappedGwtTestCase extends GWTTestCase {
     assertVisibility(visibility, Elements.asJsElement(elem));
   }
 
-  protected void assertVisibility(boolean visibility, elemental.html.Element elem) {
+  protected void assertVisibility(boolean visibility, elemental.dom.Element elem) {
     assertEquals(visibility, CssUtils.isVisible(elem));
   }
 

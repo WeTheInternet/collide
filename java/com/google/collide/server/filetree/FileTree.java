@@ -30,6 +30,7 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -418,6 +419,8 @@ public class FileTree extends BusModBase {
       @Override
       public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes attrs) {
         DirInfoExt dir = new DirInfoExt(path, resourceIdAllocator++);
+        if (blacklist.contains(dir.getName()))
+          return FileVisitResult.SKIP_SUBTREE;
         if (parents.isEmpty()) {
           // System.out.println("scanning from: " + path.toAbsolutePath() + '/');
           root = dir;
@@ -455,7 +458,8 @@ public class FileTree extends BusModBase {
         WatchKey key = dir.register(watchService, StandardWatchEventKinds.ENTRY_CREATE,
             StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY,
             StandardWatchEventKinds.OVERFLOW);
-        watchkeyToDir.put(key, dirInfo);
+        if (!blacklist.contains(dirInfo.getName()))
+          watchkeyToDir.put(key, dirInfo);
         return FileVisitResult.CONTINUE;
       }
     };
@@ -525,10 +529,15 @@ public class FileTree extends BusModBase {
 
   Thread watcherThread = null;
 
+  HashSet<String> blacklist = new HashSet<>();
+  
   @Override
   public void start() {
     super.start();
-
+    
+    blacklist.add("classes");
+    blacklist.add("eclipse");
+    
     try {
       watchService = FileSystems.getDefault().newWatchService();
       Path rootPath = new File("").toPath();     

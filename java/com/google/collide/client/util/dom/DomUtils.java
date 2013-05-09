@@ -18,12 +18,12 @@ import com.google.collide.client.util.BrowserUtils;
 import com.google.collide.client.util.Elements;
 import com.google.gwt.user.client.DOM;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
 import elemental.html.ClientRect;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /**
  * Utility methods for DOM manipulation.

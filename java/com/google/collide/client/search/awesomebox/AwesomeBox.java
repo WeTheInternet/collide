@@ -241,7 +241,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
   public interface SectionIterationCallback {
     public boolean onIteration(AwesomeBoxSection section);
   }
-  
+
   private static final String NO_QUERY = "";
 
   private final AwesomeBoxModel model;
@@ -274,7 +274,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
       }
     });
   }
-  
+
   /**
    * Returns the view for this component.
    */
@@ -312,10 +312,10 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
   }
 
   @Override
-  public elemental.html.Element getElement() {
+  public elemental.dom.Element getElement() {
     return getView().getElement();
   }
-  
+
   @Override
   public String getTooltipText() {
     return "Press Alt+Enter to quickly access the AwesomeBox";
@@ -347,13 +347,13 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
   public void selectQuery() {
     getView().awesomeBoxInput.select();
   }
-  
+
   @Override
   public void onShow(ComponentHost host, ShowReason reason) {
     super.onShow(host, reason);
     // We assume the alt+enter shortcut focused us (and its a keydown listener).
     ignoreEnterKeyUp = reason == ShowReason.OTHER;
-    
+
     JsonArray<AwesomeBoxSection> sections = getModel().getCurrentSections();
     for (int i = 0; i < sections.size(); i++) {
       AwesomeBoxSection section = sections.get(i);
@@ -370,7 +370,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
   @Override
   public void onHide() {
     super.onHide();
-    
+
     getModel().clearSelection();
 
     JsonArray<AwesomeBoxSection> sections = getModel().getCurrentSections();
@@ -381,7 +381,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
     }
 
     lastDispatchedQuery = NO_QUERY;
-    
+
     getView().awesomeBoxInput.setValue("");
     getView().setInputEmptyStyle(false);
   }
@@ -465,7 +465,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
           ignoreEnterKeyUp = false;
           return;
         }
-        
+
         AwesomeBoxSection section =
             getModel().getSelection(AwesomeBoxModel.SelectMode.TRY_AUTOSELECT_FIRST_ITEM);
         if (section != null
@@ -605,7 +605,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
      * Attaches several handlers to the awesome box input and the container.
      */
     private void attachHandlers() {
-      Elements.asJsElement(awesomeBoxInput).setOnBlur(new EventListener() {
+      Elements.asJsElement(awesomeBoxInput).setOnblur(new EventListener() {
         @Override
         public void handleEvent(Event event) {
           // blur removes the focus then we hide the actual panel
@@ -615,7 +615,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
         }
       });
 
-      Elements.asJsElement(awesomeBoxInput).setOnKeyDown(new EventListener() {
+      Elements.asJsElement(awesomeBoxInput).setOnkeydown(new EventListener() {
         @Override
         public void handleEvent(Event event) {
           KeyboardEvent keyEvent = (KeyboardEvent) event;
@@ -626,14 +626,14 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
         }
       });
 
-      Elements.asJsElement(closeButton).setOnClick(new EventListener() {
+      Elements.asJsElement(closeButton).setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event arg0) {
           getDelegate().onCloseClicked();
         }
       });
 
-      getElement().setOnKeyUp(new EventListener() {
+      getElement().setOnkeyup(new EventListener() {
         @Override
         public void handleEvent(Event event) {
           KeyboardEvent keyEvent = (KeyboardEvent) event;
@@ -643,7 +643,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
         }
       });
 
-      getElement().setOnMouseDown(new EventListener() {
+      getElement().setOnmousedown(new EventListener() {
         @Override
         public void handleEvent(Event event) {
           MouseEvent mouseEvent = (MouseEvent) event;

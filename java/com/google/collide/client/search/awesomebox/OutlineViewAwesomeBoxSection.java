@@ -26,7 +26,7 @@ import com.google.collide.mvp.HasView;
 import com.google.collide.shared.util.StringUtils;
 import com.google.common.base.Preconditions;
 
-import elemental.html.Element;
+import elemental.dom.Element;
 import elemental.html.SpanElement;
 
 /**

@@ -38,7 +38,7 @@ public class AwesomeBoxUtils {
    * Creates a element with the OS appropriate text for the shortcut consisting
    * of the specified modifier keys and character.
    *
-   * @param modifiers A binary OR of the appropriate ModifierKeys constants
+   * @param modifiers A binarySuffix OR of the appropriate ModifierKeys constants
    * @return a div containing the shortcut text
    */
   public static elemental.html.DivElement createSectionShortcut(

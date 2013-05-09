@@ -51,7 +51,7 @@
   margin-top: 3px;
 }
 
-.gearButtonContainer {
+.pluginButtonContainer {
   /* Account for the shadows on the sync/submit buttons */
 /*  margin-top: 3px;*/
 }
@@ -67,12 +67,12 @@
   /* Override Button Minimum Width */
   min-width: 0px !important;
 }
-.gearButton, .terminalButton {
+.pluginButton {
   width: 32px;
   -webkit-transition: none;
 
   /* Override Button Minimum Width */
-  min-width: 0px !important;
+  min-width: 32px !important;
 }
 
 .runDropdownButton {
@@ -95,12 +95,18 @@
   opacity: 1.0;
 }
 
-.runIcon, .gearIcon, .terminalIcon {
+.runIcon, .pluginIcon {
   /* We don't want the buttonImage fading in and out */
   opacity: 1.0 !important;
 }
 
 .syncButtons {
+  margin-left: 10px;
+
+  /* Discount the positioning effect of shadows on sync/submit buttons */
+  margin-top: 1px;
+}
+.pluginButtons {
   margin-left: 10px;
 
   /* Discount the positioning effect of shadows on sync/submit buttons */

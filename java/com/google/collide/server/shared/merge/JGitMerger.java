@@ -14,14 +14,14 @@
 
 package com.google.collide.server.shared.merge;
 
-import com.google.common.collect.Lists;
+import java.util.List;
 
 import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.merge.MergeAlgorithm;
 import org.eclipse.jgit.merge.MergeChunk.ConflictState;
 
-import java.util.List;
+import com.google.common.collect.Lists;
 
 /**
  * Merger for performing a 3-way-merge using JGit.

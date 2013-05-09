@@ -98,6 +98,7 @@ public class FileSelectedPlace extends Place {
     public boolean shouldForceReload() {
       return forceReload;
     }
+
   }
 
   public static final FileSelectedPlace PLACE = new FileSelectedPlace();

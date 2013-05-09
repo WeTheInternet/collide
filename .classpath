@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="deps/gwt-r11004/gwt-codeserver.jar" sourcepath="/home/x/workspace/deps/gwt/dev/codeserver/java"/>
-	<classpathentry kind="lib" path="deps/gwt-r11004/gwt-user.jar"/>
-	<classpathentry kind="lib" path="deps/gwt-r11004/gwt-servlet-deps.jar"/>
-	<classpathentry kind="lib" path="deps/xapi-0.2/xapi-super-0.2.jar"/>
-	<classpathentry kind="lib" path="deps/gson-2.2.1/gson-2.2.1.jar"/>
-	<classpathentry kind="lib" path="deps/guava-12.0/guava-12.0.jar" sourcepath="/home/x/.m2/repository/com/google/guava/guava/12.0/guava-12.0-sources.jar"/>
-	<classpathentry kind="lib" path="deps/jackson/jackson-all-1.9.8.jar"/>
-	<classpathentry kind="lib" path="deps/wave-r1342740/client-common-src.jar"/>
-	<classpathentry kind="lib" path="deps/wave-r1342740/model-src.jar"/>
-	<classpathentry kind="lib" path="deps/wave-r1342740/client-scheduler-src.jar"/>
-	<classpathentry kind="lib" path="deps/wave-r1342740/waveinabox-import-0.3.jar"/>
-	<classpathentry kind="src" path="java"/>
-	<classpathentry kind="src" path="plugin"/>
-	<classpathentry kind="src" path="javatests"/>
-	<classpathentry kind="src" path="bin/gen"/>
-	<classpathentry kind="src" path="bin/test/gen"/>
-	<classpathentry kind="lib" path="deps/gwt-r11004/gwt-dev.jar"/>
-	<classpathentry kind="lib" path="deps/easymock-3.1/easymock-3.1.jar"/>
-	<classpathentry kind="lib" path="deps/elemental/elemental.new.jar"/>
-	<classpathentry kind="lib" path="deps/jgit-1.3.0.201202151440-r/org.eclipse.jgit-1.3.0.201202151440-r.jar"/>
-	<classpathentry kind="lib" path="deps/jsr-305/jsr305.jar"/>
-	<classpathentry kind="lib" path="deps/vert.x-1.1.0.final/lib/jars/vert.x-core.jar" sourcepath="/home/x/workspace/deps/vert.x/vertx-core"/>
-	<classpathentry kind="lib" path="deps/vert.x-1.1.0.final/lib/jars/vert.x-platform.jar" sourcepath="/home/x/workspace/deps/vert.x/vertx-platform/src"/>
-	<classpathentry kind="lib" path="deps/vert.x-1.1.0.final/lib/jars/netty.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-7-oracle"/>
-	<classpathentry kind="lib" path="deps/hazelcast-2.2.jar/hazelcast-2.2.jar"/>
-	<classpathentry kind="lib" path="deps/gwt-r11004/validation-api-1.0.0.GA-sources.jar"/>
-	<classpathentry kind="lib" path="deps/gwt-r11004/validation-api-1.0.0.GA.jar"/>
-	<classpathentry kind="output" path="bin/eclipse"/>
+	<classpathentry kind="src" output="bin/classes" path="java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="bin/classes" path="plugin">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="bin/classes" path="bin/gen">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="bin/test/classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

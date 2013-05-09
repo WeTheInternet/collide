@@ -19,8 +19,8 @@ import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.list.SimpleList.View;
 import com.google.collide.client.util.Elements;
 
+import elemental.dom.Element;
 import elemental.html.AnchorElement;
-import elemental.html.Element;
 import elemental.html.UListElement;
 
 /**

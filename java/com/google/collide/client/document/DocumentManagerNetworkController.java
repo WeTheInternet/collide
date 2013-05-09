@@ -107,7 +107,7 @@ class DocumentManagerNetworkController {
   /**
    * Called when the file contents are received from the network. Routes to the appropriate content
    * handling mechanism depending on whether or not the file content type is text, an image, or some
-   * other binary file.
+   * other binarySuffix file.
    */
   private void handleFileReceived(GetFileContentsResponse response) {
     boolean isUneditable =

@@ -47,7 +47,7 @@ public class GenericOperationChannel<M> implements RevisionProvider {
 
   /** Whether debug/info logging is enabled */
   private static final boolean LOG_ENABLED = false;
-  
+
   /**
    * Provides a channel for incoming operations.
    */

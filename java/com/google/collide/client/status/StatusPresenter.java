@@ -32,10 +32,10 @@ import com.google.gwt.resources.client.ImageResource;
 import elemental.css.CSSStyleDeclaration;
 import elemental.css.CSSStyleDeclaration.Display;
 import elemental.css.CSSStyleDeclaration.Visibility;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.DivElement;
-import elemental.html.Element;
 import elemental.html.PreElement;
 import elemental.html.SpanElement;
 
@@ -127,7 +127,7 @@ public class StatusPresenter extends UiComponent<StatusPresenter.View>
         final StatusAction statusAction = statusActions.get(i);
         SpanElement action = Elements.createSpanElement(css.action());
         statusAction.renderAction(action);        
-        action.setOnClick(new EventListener() {
+        action.setOnclick(new EventListener() {
           @Override
           public void handleEvent(Event evt) {
             statusAction.onAction();
@@ -209,7 +209,7 @@ public class StatusPresenter extends UiComponent<StatusPresenter.View>
       DivElement root = Elements.createDivElement(css.statusArea());
       statusText = Elements.createDivElement(css.statusText());
       statusDismiss = Elements.createDivElement(css.statusDismiss());
-      statusDismiss.setOnClick(new EventListener() {
+      statusDismiss.setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           getDelegate().onStatusDismissed();
@@ -224,7 +224,7 @@ public class StatusPresenter extends UiComponent<StatusPresenter.View>
       more = Elements.createSpanElement();
       more.setClassName(css.more());
       more.setTextContent("show more details...");
-      more.setOnClick(new EventListener() {
+      more.setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           getDelegate().onStatusExpanded();

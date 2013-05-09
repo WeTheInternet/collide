@@ -15,12 +15,12 @@
 package com.google.collide.client.filehistory;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.code.EditableContentArea;
-import com.google.collide.client.code.EditableContentArea.Content;
 import com.google.collide.client.diff.EditorDiffContainer;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
+import com.google.collide.client.ui.panel.MultiPanel;
+import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 
@@ -35,14 +35,14 @@ public class FileHistoryNavigationHandler
   private final EditorDiffContainer editorDiffContainer;
   private final Timeline timeline;
   private final FileHistory fileHistory;
-  private final EditableContentArea contentArea;
+  private final MultiPanel<?,?> contentArea;
   private final FileHistoryApi api;
   private final AppContext appContext;
-  private Content oldContent;
+  private PanelContent oldContent;
 
   public FileHistoryNavigationHandler(Place currentPlace,
       AppContext appContext,
-      EditableContentArea contentArea,
+      MultiPanel<?,?> contentArea,
       DocumentManager documentManager) {
     this.appContext = appContext;
     this.contentArea = contentArea;
@@ -59,7 +59,7 @@ public class FileHistoryNavigationHandler
   @Override
   public void cleanup() {
     fileHistory.teardown();
-    contentArea.getEditorToolBar().show();
+    contentArea.getToolBar().show();
     if (oldContent != null) {
       contentArea.setContent(oldContent);
     }
@@ -72,9 +72,9 @@ public class FileHistoryNavigationHandler
 
     oldContent = contentArea.getCurrentContent();
     contentArea.setContent(fileHistory);
-    contentArea.setLocationBreadcrumbsVisibility(false);
+    contentArea.setHeaderVisibility(false);
     fileHistory.setup(contentArea.getView().getHeaderElement());
-    contentArea.getEditorToolBar().hide();
+    contentArea.getToolBar().hide();
 
     /* Get file contents and diff */
     PathUtil filePath = navigationEvent.getPath();

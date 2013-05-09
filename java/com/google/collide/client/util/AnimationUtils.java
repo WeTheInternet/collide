@@ -18,9 +18,9 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Utility class for using CSS3 transitions.
@@ -131,7 +131,7 @@ public class AnimationUtils {
 
   /**
    * Disables CSS3 transitions.
-   * 
+   *
    * If you want to reset transitions after enabling them, use
    * {@link #removeTransitions(CSSStyleDeclaration)} instead.
    */
@@ -149,14 +149,14 @@ public class AnimationUtils {
 
   /**
    * Enables CSS3 transitions for a given element.
-   * 
+   *
    * If you want to reset transitions after disabling them, use
    * {@link #removeTransitions(CSSStyleDeclaration)} instead.
-   * 
+   *
    * @param style the style object belonging to the element we want to animate.
    * @param duration the length of time we want the animation to last.
    */
-  public static void enableTransitions(CSSStyleDeclaration style, double duration) {    
+  public static void enableTransitions(CSSStyleDeclaration style, double duration) {
     style.setProperty("-webkit-transition-property", TRANSITION_PROPERTIES);
     style.setProperty("-moz-transition-property", TRANSITION_PROPERTIES);
     style.setProperty("-webkit-transition-duration", duration + "s");

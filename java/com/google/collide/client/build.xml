@@ -12,7 +12,11 @@
   <include optional="false" as="src.dto"
 	   file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
 
+
   <target name="build" depends="build-java, build-gwt"
+       description="JavaC and GWT compile client"/>
+
+  <target name="plugin" depends="build-java, build-plugin"
        description="JavaC and GWT compile client"/>
 
   <target name="build-java" depends="src.json.build, src.dto.client,
@@ -20,6 +24,7 @@
     <!-- The groupings here ensure that at least a clean build enforces some
          modularity, so that the "low-level" subpackages don't compile if they
          accidentally reach higher-level subpackage code. -->
+         <!-- This modularity would be better accomplished with maven. -->
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
       <include name="${dirs.toppkg}/mvp/*.java"/>
       <classpath refid="paths.client.build"/>
@@ -29,7 +34,7 @@
       <classpath refid="paths.client.build"/>
     </do.javac>
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
-      <include name="${dirs.toppkg}/client/util/*.java"/>
+      <include name="${dirs.toppkg}/client/util/**/*.java"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
@@ -44,7 +49,10 @@
       <include name="${dirs.toppkg}/client/communication/*.java"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
-    <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+   <!--  <do.javac srcdir="${dirs.plugin}" destdir="${dirs.bin}">
+      <classpath refid="paths.client.build"/>
+    </do.javac> -->
+    <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}">
       <include name="${dirs.toppkg}/client/**/*.java"/>
       <exclude name="${dirs.toppkg}/client/bootstrap/**"/>
       <exclude name="${dirs.toppkg}/client/communication/**"/>
@@ -53,8 +61,54 @@
       <exclude name="${dirs.toppkg}/client/testing/**"/>
       <exclude name="${dirs.toppkg}/clientlibs/**"/>
       <exclude name="${dirs.toppkg}/codemirror2/**"/>
+      <include name="${dirs.toppkg}/plugin/client/**/*.java"/>
+      <include name="${dirs.toppkg}/emul/**/*.java"/>
+      <include name="${dirs.toppkg}/**/*.xml"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
+  </target>
+
+
+  <target name="build-plugin" depends="build-java">
+    <mkdir dir="${dirs.gen}/${dirs.toppkg}/codemirror2"/>
+    <copy todir="${dirs.gen}/${dirs.toppkg}/codemirror2" overwrite="false">
+      <fileset dir="${dirs.lib}/codemirror2">
+        <include name="*.js"/>
+      </fileset>
+    </copy>
+    <parallel>
+    <gwt.compile outdir="${dirs.webfe.gwtapp}" extradir="${dirs.gwtextra}"
+        style="${gwtc.style}" workers="${gwtc.workers}"
+        module="collide.demo.Parent">
+      <sources>
+        <fileset dir="${dirs.src}/${dirs.toppkg}">
+          <include name="client/**"/>
+          <include name="shared/**"/>
+          <include name="dtogen/shared/**"/>
+          <include name="dto/*.java"/>
+          <include name="dto/client/**"/>
+          <include name="dto/shared/**"/>
+	  <!-- TODO: Arguably, these should refactor under client -->
+          <include name="clientlibs/**"/>
+          <include name="codemirror2/**"/>
+          <include name="mvp/**"/>
+        </fileset>
+        <fileset dir="${dirs.gen}/${dirs.toppkg}">
+          <include name="dto/client/**"/>
+        </fileset>
+        <fileset dir="${dirs.plugin}/${dirs.toppkg}">
+          <include name="plugin/client/**"/>
+          <include name="emul/**"/>
+        </fileset>
+      </sources>
+      <srcroots>
+        <pathelement location="${dirs.src}"/>
+        <pathelement location="${dirs.plugin}"/>
+        <pathelement location="${dirs.demo}"/>
+        <pathelement location="${dirs.gen}"/>
+      </srcroots>
+    </gwt.compile>
+    </parallel>
   </target>
 
   <target name="build-gwt" depends="build-java">
@@ -64,8 +118,10 @@
         <include name="*.js"/>
       </fileset>
     </copy>
+    <parallel>
     <gwt.compile outdir="${dirs.webfe.gwtapp}" extradir="${dirs.gwtextra}"
-        style="${gwtc.style}" workers="${gwtc.workers}"
+        style="${gwtc.style}" workers="${gwtc.workers}" loglevel="INFO"
+        
         module="com.google.collide.client.Collide">
       <sources>
         <fileset dir="${dirs.src}/${dirs.toppkg}">
@@ -83,12 +139,18 @@
         <fileset dir="${dirs.gen}/${dirs.toppkg}">
           <include name="dto/client/**"/>
         </fileset>
+        <fileset dir="${dirs.plugin}/${dirs.toppkg}">
+          <include name="plugin/client/**"/>
+          <include name="emul/**"/>
+        </fileset>
       </sources>
       <srcroots>
         <pathelement location="${dirs.src}"/>
+        <pathelement location="${dirs.demo}"/>
         <pathelement location="${dirs.gen}"/>
       </srcroots>
     </gwt.compile>
+    </parallel>
   </target>
 
   <target name="dev-gwt" depends="build-java">
@@ -118,9 +180,14 @@
         <fileset dir="${dirs.gen}/${dirs.toppkg}">
           <include name="dto/client/**"/>
         </fileset>
+        <fileset dir="${dirs.plugin}/${dirs.toppkg}">
+          <include name="plugin/client/**"/>
+          <include name="emul/**"/>
+        </fileset>
       </sources>
       <srcroots>
         <pathelement location="${dirs.src}"/>
+        <pathelement location="${dirs.plugin}"/>
         <pathelement location="${dirs.gen}"/>
       </srcroots>
     </gwt.devmode>

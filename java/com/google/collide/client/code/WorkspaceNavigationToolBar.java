@@ -30,9 +30,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
-import elemental.html.Element;
 
 /**
  * Footer toolbar in the WorkspaceNavigation on the left of the CodePerspective below the file tree.
@@ -139,7 +139,7 @@ public class WorkspaceNavigationToolBar extends UiComponent<WorkspaceNavigationT
     }
 
     protected void attachHandlers() {
-      getElement().setOnClick(new EventListener() {
+      getElement().setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();

@@ -1,9 +1,9 @@
 var Login =  window.Login || {};
-
+var path = window.location.pathname;
+path = path.indexOf('/collide') == -1 ? '/' : '/collide/';
 (function () {
-
 // Connect the event bus and display the login prompt.
-var eb = new vertx.EventBus(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/eventbus');
+var eb = new vertx.EventBus(window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + path+ 'eventbus');
 eb.onopen = function() {
   transition("connecting", "username-dialog");
 };
@@ -44,7 +44,7 @@ function login(username, password) {
 
 function installAuthCookie(sessionId) {
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "/_auth", true)
+  xhr.open("POST", path+"_auth", true)
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhr.withCredentials = "true";
 
@@ -53,7 +53,7 @@ function installAuthCookie(sessionId) {
       if (xhr.status == 200) {
         eb.close();
         eb.onclose = function() {
-          window.location.href = "/";
+          window.location.href = path;
         };
       } else {
         transition(showing, "fail-dialog");

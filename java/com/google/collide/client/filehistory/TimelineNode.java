@@ -80,7 +80,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     String nodeBranchRange();
 
     String nodeSync();
-    
+
     String nodeSyncRange();
 
     String nodeIndicator();
@@ -102,7 +102,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     // Regular Node
     @Source("node.png")
     ImageResource node();
-    
+
     @Source("conflictIcon.png")
     ImageResource conflictIcon();
 
@@ -128,7 +128,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     // Sync Node
     @Source("nodeSync.png")
     ImageResource nodeSync();
-    
+
     @Source("nodeSyncHover.png")
     ImageResource nodeSyncHover();
 
@@ -183,7 +183,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     }
 
     protected void attachHandlers() {
-      nodeWrapper.setOnDblClick(new EventListener() {
+      nodeWrapper.setOndblclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();
@@ -194,7 +194,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
         }
       });
 
-      nodeWrapper.setOnClick(new EventListener() {
+      nodeWrapper.setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
           ViewEvents delegate = getDelegate();
@@ -275,7 +275,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
       // Check if dot inside the range line or not
       if (index > timeline.currentLeftRange.index && index < timeline.currentRightRange.index) {
 
-        // If clicked inside the range line, 
+        // If clicked inside the range line,
         if (isCtrlKey) {
           // act as dragging the right side
           setTempRightRange(true);
@@ -367,14 +367,14 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     timeline.resetRightRange();
 
     timeline.adjustRangeLine();
-    
+
     timeline.setDiffForRevisions();
   }
 
   // Timeline Node types (sync, branch)
 
   static class NodeType {
-    
+
   /**
    * Static factory method for a NodeType.
    */
@@ -437,7 +437,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     RevisionType getType(){
       return type;
     }
-    
+
     String getBaseClassName() {
       return baseClassName;
     }
@@ -449,7 +449,7 @@ public class TimelineNode extends UiComponent<TimelineNode.View> {
     String getWrapperClassName() {
       return wrapperClassName;
     }
-    
+
     String getIndicatorClassName(){
       return indicatorClassName;
     }

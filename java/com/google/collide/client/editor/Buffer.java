@@ -45,13 +45,13 @@ import com.google.collide.shared.util.TextUtils;
 
 import elemental.client.Browser;
 import elemental.css.CSSStyleDeclaration;
+import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.MouseEvent;
 import elemental.html.ClientRect;
 import elemental.html.DivElement;
-import elemental.html.Element;
 
 /*
  * TODO: Buffer has turned into an EditorSurface, but is still
@@ -416,7 +416,7 @@ public class Buffer extends UiComponent<Buffer.View>
     private void reset() {
       scrollableElement.setScrollTop(0);
       scrollTopFromPreviousDispatch = 0;
-      
+
       textLayerElement.setInnerHTML("");
     }
 
@@ -693,7 +693,6 @@ public class Buffer extends UiComponent<Buffer.View>
         updateTextWidth();
         updateVerticalScrollbarDisplayVisibility();
         updateColumnMarkerHeight();
-
         resizeListenerManager.dispatch(new Dispatcher<ResizeListener>() {
           @Override
           public void dispatch(ResizeListener listener) {
