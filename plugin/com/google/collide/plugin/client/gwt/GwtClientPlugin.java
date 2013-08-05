@@ -6,7 +6,6 @@ import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.plugin.ClientPlugin;
 import com.google.collide.client.plugin.FileAssociation;
 import com.google.collide.client.plugin.RunConfiguration;
@@ -142,9 +141,6 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
     @Override
     public void onMessageReceived(CompileResponse message) {
       CompilerState state = message.getCompilerStatus();
-      switch (state) {
-      
-      }
       X_Log.info("Gwt state",state);
       if (state == CompilerState.RUNNING) {
         

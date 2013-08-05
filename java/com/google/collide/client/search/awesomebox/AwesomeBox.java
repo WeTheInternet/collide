@@ -435,6 +435,7 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
       }
     }
 
+    @SuppressWarnings("incomplete-switch")
     private void sectionClicked(MouseEvent mouseEvent) {
       JsonArray<AwesomeBoxSection> sections = getModel().getCurrentSections();
       for (int i = 0; i < sections.size(); i++) {

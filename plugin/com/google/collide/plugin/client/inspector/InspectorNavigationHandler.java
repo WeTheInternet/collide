@@ -3,20 +3,11 @@ package com.google.collide.plugin.client.inspector;
 import xapi.inject.impl.LazyPojo;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
-import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
-import com.google.collide.client.util.logging.Log;
-import com.google.collide.dto.GwtSettings;
-import com.google.collide.dto.ServerError.FailureReason;
-import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
-import com.google.collide.json.client.JsoArray;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell.Resources;
-import com.google.collide.plugin.client.gwt.GwtCompilerShell.View;
 import com.google.collide.plugin.client.inspector.InspectorPlace.NavigationEvent;
 import com.google.gwt.core.shared.GWT;
 

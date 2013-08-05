@@ -29,7 +29,6 @@ import elemental.css.CSSStyleDeclaration;
 import elemental.dom.Element;
 import elemental.util.ArrayOf;
 import elemental.util.Collections;
-@Deprecated
 public class Panel
 <Delegate, V extends Panel.View<Delegate>>
 extends UiComponent<V>

@@ -87,6 +87,7 @@ public class OutlineNodeRenderer implements NodeRenderer<OutlineNode> {
     return (Element) treeNodeLabel.getChildNodes().item(LABEL_NODE_INDEX);
   }
 
+  @SuppressWarnings("incomplete-switch")
   @Override
   public SpanElement renderNodeContents(OutlineNode data) {
     SpanElement root = Elements.createSpanElement(css.root());

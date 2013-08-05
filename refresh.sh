@@ -10,11 +10,11 @@ rm -f xapi-dev-$V2.jar
 
 cd /repo/net/wetheinter/ 
 cp xapi-gwt/$V/xapi-gwt-$V.jar $COLLIDE/deps/xapi-$V2/
-cp xapi-jre/$V/xapi-jre-$V-uber.jar $COLLIDE/deps/xapi-$V2/
+cp xapi-jre/$V/xapi-jre-$V.jar $COLLIDE/deps/xapi-$V2/
 
 cd $COLLIDE/deps/xapi-$V2/
 mv xapi-gwt-$V.jar xapi-gwt-$V2.jar
-mv xapi-jre-$V-uber.jar xapi-dev-$V2.jar
+mv xapi-jre-$V.jar xapi-dev-$V2.jar
 
 cd /opt/collide
 ant dist

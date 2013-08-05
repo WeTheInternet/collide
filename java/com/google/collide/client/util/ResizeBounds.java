@@ -2,8 +2,6 @@ package com.google.collide.client.util;
 
 import javax.inject.Provider;
 
-import xapi.util.api.ProvidesValue;
-
 import com.google.collide.client.ui.panel.Panel.Interpolator;
 
 import elemental.client.Browser;

@@ -10,7 +10,6 @@ import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;

@@ -48,6 +48,11 @@ public class Composer {
    * Exception thrown when a composition fails.
    */
   public static class ComposeException extends Exception {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5790109173803687121L;
+
     private ComposeException(String message, Exception e) {
       super(message, e);
     }
@@ -60,6 +65,11 @@ public class Composer {
    * transformation that converts these to the public exception.
    */
   private static class InternalComposeException extends RuntimeException {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -8754601577190652698L;
+
     private InternalComposeException(String message) {
       super(message);
     }

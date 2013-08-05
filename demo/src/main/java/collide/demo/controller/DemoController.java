@@ -17,8 +17,6 @@ import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.document.DocumentManager.LifecycleListener;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.plugin.ClientPlugin;
 import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.plugin.FileAssociation;

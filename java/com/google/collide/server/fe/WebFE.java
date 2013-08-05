@@ -562,11 +562,11 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         .append(JsonFieldConstants.SESSION_USER_ID).append(": \"").append(userId).append("\",\n")
         .append(JsonFieldConstants.SESSION_ACTIVE_ID).append(": \"").append(activeClientId)
         .append("\",\n").append(JsonFieldConstants.SESSION_USERNAME).append(": \"")
-        .append(username).append("\"\n}\n")
+        .append(username).append("\"\n};\n")
         
         .append("window['collide'] = {\n")
         .append("name: 'Guest', module: 'collide.demo.Child', open: '/demo/src/main/java" +
-        		"/collide/demo/child/ChildModule.java };")
+        		"/collide/demo/child/ChildModule.java' };")
         .append("</script>");
   }
 

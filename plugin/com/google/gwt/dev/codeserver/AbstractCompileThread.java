@@ -10,9 +10,7 @@ import org.vertx.java.core.net.NetSocket;
 
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.plugin.server.gwt.CompilerBusyException;
 import com.google.collide.plugin.server.gwt.CompilerRunner;
 import com.google.collide.plugin.shared.CompiledDirectory;
@@ -20,7 +18,6 @@ import com.google.collide.plugin.shared.IsCompiler;
 import com.google.collide.server.shared.launcher.VertxLauncher;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
-import com.google.gwt.core.ext.TreeLogger.Type;
 
 public abstract class AbstractCompileThread
 <CompileType extends CodeModule>

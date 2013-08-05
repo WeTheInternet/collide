@@ -2,8 +2,6 @@ package com.google.collide.plugin.client.terminal;
 
 import xapi.collect.impl.AbstractInitMap;
 import xapi.collect.impl.AbstractMultiInitMap;
-import xapi.collect.impl.InitMapDefault;
-import xapi.inject.impl.LazyPojo;
 import xapi.inject.impl.SingletonProvider;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
@@ -15,14 +13,10 @@ import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
-import com.google.collide.client.util.Elements;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.plugin.client.terminal.TerminalLogView.Resources;
 import com.google.collide.plugin.client.terminal.TerminalLogView.ViewEvents;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.DivElement;
-
-import elemental.dom.Element;
 
 public class TerminalNavigationHandler extends
     PlaceNavigationHandler<TerminalPlace.NavigationEvent> 

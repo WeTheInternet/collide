@@ -11,7 +11,6 @@ import org.vertx.java.core.json.JsonObject;
 import xapi.log.X_Log;
 
 import com.google.collide.plugin.server.AbstractPluginServer;
-import com.google.gwt.dev.codeserver.AbstractCompileThread;
 import com.google.gwt.dev.codeserver.GwtCompilerThread;
 
 @SuppressWarnings("rawtypes")

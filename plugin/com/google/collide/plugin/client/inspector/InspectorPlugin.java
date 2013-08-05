@@ -2,8 +2,6 @@ package com.google.collide.plugin.client.inspector;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.plugin.ClientPlugin;
 import com.google.collide.client.plugin.FileAssociation;
 import com.google.collide.client.plugin.RunConfiguration;

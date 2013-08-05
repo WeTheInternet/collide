@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.apache.tools.ant.filters.StringInputStream;
 import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.net.NetSocket;
 

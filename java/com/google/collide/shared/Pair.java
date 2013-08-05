@@ -90,7 +90,7 @@ public class Pair<A, B> implements Serializable {
   }
 
   /** Returns a function that yields {@link #first}. */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <A, B> Function<Pair<A, B>, A> firstFunction() {
     // The safety of the unchecked conversion here is implied by the
     // implementation of the PairFirstFunction which always returns the first
@@ -99,7 +99,7 @@ public class Pair<A, B> implements Serializable {
   }
 
   /** Returns a function that yields {@link #second}. */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <A, B> Function<Pair<A, B>, B> secondFunction() {
     // The safety of the unchecked conversion here is implied by the
     // implementation of the PairSecondFunction which always returns the second
@@ -112,6 +112,7 @@ public class Pair<A, B> implements Serializable {
    * inference chokes: http://b/4863010
    */
 
+  @SuppressWarnings("serial")
   private static final class PairFirstFunction<A, B>
       implements Function<Pair<A, B>, A>, Serializable {
     static final PairFirstFunction<Object, Object> INSTANCE =
@@ -127,6 +128,7 @@ public class Pair<A, B> implements Serializable {
     }
   }
 
+  @SuppressWarnings("serial")
   private static final class PairSecondFunction<A, B>
       implements Function<Pair<A, B>, B>, Serializable {
     static final PairSecondFunction<Object, Object> INSTANCE =
@@ -146,7 +148,7 @@ public class Pair<A, B> implements Serializable {
    * Returns a comparator that compares two Pair objects by comparing the
    * result of {@link #getFirst()} for each.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <A extends Comparable, B> Comparator<Pair<A, B>>
       compareByFirst() {
     return (Comparator) FirstComparator.FIRST_COMPARATOR;
@@ -156,14 +158,14 @@ public class Pair<A, B> implements Serializable {
    * Returns a comparator that compares two Pair objects by comparing the
    * result of {@link #getSecond()} for each.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   public static <A, B extends Comparable> Comparator<Pair<A, B>>
       compareBySecond() {
     return (Comparator) SecondComparator.SECOND_COMPARATOR;
   }
 
   // uses raw Comparable to support classes defined without generics
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private enum FirstComparator implements Comparator<Pair<Comparable, Object>> {
     FIRST_COMPARATOR;
 
@@ -175,7 +177,7 @@ public class Pair<A, B> implements Serializable {
   }
 
   // uses raw Comparable to support classes defined without generics
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({ "unchecked", "rawtypes" })
   private enum SecondComparator
       implements Comparator<Pair<Object, Comparable>> {
     SECOND_COMPARATOR;

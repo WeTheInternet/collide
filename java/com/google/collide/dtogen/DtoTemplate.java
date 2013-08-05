@@ -40,6 +40,7 @@ import com.google.common.base.Preconditions;
  *
  */
 public class DtoTemplate {
+  @SuppressWarnings("serial")
   public static class MalformedDtoInterfaceException extends RuntimeException {
     public MalformedDtoInterfaceException(String msg) {
       super(msg);
@@ -197,10 +198,11 @@ public class DtoTemplate {
       builder.append("import com.google.gson.JsonParser;\n");
       builder.append("import com.google.gson.JsonPrimitive;\n");
       builder.append("\n");
-      builder.append("import java.util.List;\n");
+//      builder.append("import java.util.List;\n"); //unused
       builder.append("import java.util.Map;\n");
     }
-    builder.append("\n\n@SuppressWarnings({\"unchecked\", \"cast\"})\n");
+    builder.append("\n\n@SuppressWarnings({\"unchecked\", \"cast\", \"rawtypes\"})\n");
+    
     // Note that we always use fully qualified path names when referencing Types
     // so we need not add any import statements for anything.
     builder.append("public class ");

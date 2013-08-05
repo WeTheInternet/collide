@@ -283,6 +283,7 @@ class EvaluableExpressionFinder {
    * @return a new instance of {@link Result}, or {@code null} if no expression
    *         was found
    */
+  @SuppressWarnings("incomplete-switch")
   Result find(LineInfo lineInfo, int column, @Nullable DocumentParser parser) {
     Result result = find(lineInfo.line().getText(), column);
     if (result == null || parser == null) {

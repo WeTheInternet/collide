@@ -335,6 +335,7 @@ public class Autocompleter {
   /**
    * Applies textual and UI changes specified with {@link AutocompleteResult}.
    */
+  @SuppressWarnings("incomplete-switch")
   private void applyChanges(AutocompleteResult result) {
     switch (result.getPopupAction()) {
       case CLOSE:

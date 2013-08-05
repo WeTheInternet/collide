@@ -2,8 +2,6 @@ package collide.demo.shared;
 
 import java.io.File;
 
-import elemental.client.Browser;
-
 import xapi.annotation.reflect.KeepClass;
 import xapi.annotation.reflect.KeepConstructor;
 import xapi.annotation.reflect.KeepField;

@@ -1,8 +1,6 @@
 package com.google.collide.plugin.client.gwt;
 
 import xapi.inject.impl.LazyPojo;
-import xapi.log.X_Log;
-
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationEvent;

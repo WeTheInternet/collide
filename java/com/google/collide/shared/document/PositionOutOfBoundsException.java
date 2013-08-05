@@ -20,6 +20,11 @@ package com.google.collide.shared.document;
  *
  */
 public class PositionOutOfBoundsException extends RuntimeException {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -709766127638236771L;
+
   public PositionOutOfBoundsException(String message) {
     super(message);
   }

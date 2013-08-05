@@ -240,6 +240,7 @@ public class UnicodeUtils {
         return this;
       }
 
+      @SuppressWarnings("incomplete-switch")
       public CharacterClass build(String... characterClass) {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append(inverted ? "[^" : "[").append(join(characterClass)).append(']');

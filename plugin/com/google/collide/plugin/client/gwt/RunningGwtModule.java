@@ -2,13 +2,10 @@ package com.google.collide.plugin.client.gwt;
 
 import xapi.util.impl.StringId;
 
-import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell.View;
-import com.google.collide.plugin.client.launcher.LauncherService;
 import com.google.collide.plugin.client.terminal.TerminalLogHeader;
-import com.google.collide.shared.plugin.PublicServices;
 import com.google.gwt.user.client.Window;
 
 import elemental.client.Browser;
@@ -40,6 +37,7 @@ public class RunningGwtModule extends StringId implements TerminalLogHeader {
     return getId();
   }
 
+  @SuppressWarnings("incomplete-switch")
   public void processResponse(CompileResponse status, View view) {
     switch (status.getCompilerStatus()) {
     case BLOCKING:

@@ -1,7 +1,5 @@
 package com.google.collide.plugin.client.gwt;
 
-import xapi.log.X_Log;
-
 import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.shared.CookieKeys;
 import com.google.collide.mvp.CompositeView;

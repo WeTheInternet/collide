@@ -10,13 +10,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
-import org.vertx.java.core.impl.VertxThreadFactory;
-
 import xapi.inject.impl.LazyPojo;
 
 import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.plugin.shared.IsCompiler;
-import com.google.common.io.Files;
 import com.google.gwt.dev.cfg.ResourceLoader;
 
 public class RecompileController implements IsCompiler {

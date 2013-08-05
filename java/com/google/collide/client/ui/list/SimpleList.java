@@ -194,7 +194,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
    * and DOM elements.
    *
    */
-  public class Model<M> implements HasSelection<M> {
+  public class Model<I> implements HasSelection<I> {
 
     private static final int NO_SELECTION = -1;
     /**
@@ -202,15 +202,15 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
      */
     private static final String SELECTED_ATTRIBUTE = "SELECTED";
 
-    private final ListEventDelegate<M> delegate;
-    private final JsonArray<ListItem<M>> listItems = JsonCollections.createArray();
+    private final ListEventDelegate<I> delegate;
+    private final JsonArray<ListItem<I>> listItems = JsonCollections.createArray();
     private int selectedIndex;
 
     /**
      * Creates a new model for use by SimpleList. The provided delegate should
      * not be null.
      */
-    public Model(ListEventDelegate<M> delegate) {
+    public Model(ListEventDelegate<I> delegate) {
       this.delegate = delegate;
       // set the initially selected item
       selectedIndex = 0;
@@ -222,15 +222,15 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
     }
 
     @Override
-    public M getSelectedItem() {
-      ListItem<M> selectedListItem = getSelectedListItem();
+    public I getSelectedItem() {
+      ListItem<I> selectedListItem = getSelectedListItem();
       return selectedListItem != null ? selectedListItem.getData() : null;
     }
 
     /**
      * Returns the currently selected list element or null.
      */
-    private ListItem<M> getSelectedListItem() {
+    private ListItem<I> getSelectedListItem() {
       if (selectedIndex >= 0 && selectedIndex < listItems.size()) {
         return listItems.get(selectedIndex);
       }
@@ -283,7 +283,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
 
     @Override
     public void handleClick() {
-      ListItem<M> item = getSelectedListItem();
+      ListItem<I> item = getSelectedListItem();
       if (item != null) {
         delegate.onListItemClicked(item, item.getData());
       }
@@ -314,7 +314,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
     }
 
     @Override
-    public boolean setSelectedItem(M item) {
+    public boolean setSelectedItem(I item) {
       int index = -1;
       for (int i = 0; i < listItems.size(); i++) {
         if (listItems.get(i).getData().equals(item)) {
@@ -333,7 +333,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
      * Removes selection from the currently selected element if it exists.
      */
     private void maybeRemoveSelectionFromElement() {
-      ListItem<M> element = getSelectedListItem();
+      ListItem<I> element = getSelectedListItem();
       if (element != null) {
         element.removeAttribute(SELECTED_ATTRIBUTE);
       }

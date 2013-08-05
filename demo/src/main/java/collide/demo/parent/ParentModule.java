@@ -17,11 +17,9 @@ import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.plugin.client.CollideBootstrap;
-import com.google.collide.plugin.client.gwt.GwtCompileModel;
 import com.google.collide.plugin.client.gwt.GwtCompilerService;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell.Resources;
-import com.google.collide.plugin.client.gwt.GwtCompilerShell.View;
 import com.google.collide.plugin.client.terminal.TerminalService;
 import com.google.collide.shared.plugin.PublicServices;
 import com.google.gwt.core.client.EntryPoint;
@@ -30,8 +28,6 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.user.client.Timer;
 
 import elemental.client.Browser;
-import elemental.dom.Element;
-import elemental.html.HTMLCollection;
 import elemental.html.ScriptElement;
 
 /**

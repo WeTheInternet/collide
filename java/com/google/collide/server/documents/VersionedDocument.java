@@ -115,6 +115,11 @@ public class VersionedDocument {
    * Thrown when there was a problem with document operations transformation or composition.
    */
   public static class DocumentOperationException extends Exception {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -7596186181810388015L;
+
     public DocumentOperationException(String text, Throwable cause) {
       super(text, cause);
     }

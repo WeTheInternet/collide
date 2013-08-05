@@ -34,6 +34,11 @@ import com.google.collide.server.shared.merge.ConflictChunk;
 public interface FileEditSession extends ImmutableFileEditSession {
 
   public class FileEditSessionClosedException extends IllegalStateException {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -5178850406109791383L;
+
     public FileEditSessionClosedException(String resourceId, long closedTimeMs) {
       super(String.format(
           "Operation not allowed on closed FileEditSession [%s], closed [%d] ms ago", resourceId,

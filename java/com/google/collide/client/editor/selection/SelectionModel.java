@@ -633,6 +633,7 @@ public class SelectionModel implements Buffer.MouseDragListener {
    *        parameter. (The cursor may move to the next line if the selection
    *        granularity is line.)
    */
+  @SuppressWarnings("incomplete-switch")
   private void moveCursorUsingSelectionGranularity(LineInfo targetLineInfo, int x,
       boolean updatePreferredColumn) {
 

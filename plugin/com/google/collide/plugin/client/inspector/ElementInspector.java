@@ -1,7 +1,6 @@
 package com.google.collide.plugin.client.inspector;
 
 import xapi.inject.impl.SingletonProvider;
-import xapi.log.X_Log;
 import xapi.util.api.ReceivesValue;
 import xapi.util.api.RemovalHandler;
 

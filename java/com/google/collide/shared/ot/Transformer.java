@@ -50,6 +50,11 @@ public class Transformer {
    * operations.
    */
   public static class TransformException extends RuntimeException {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5029139051395933161L;
+
     public TransformException(String message, Throwable cause) {
       super(message, cause);
     }

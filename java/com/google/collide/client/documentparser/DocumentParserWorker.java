@@ -42,6 +42,11 @@ class DocumentParserWorker {
   private static final int LINE_LENGTH_LIMIT = 1000;
 
   private static class ParserException extends Exception {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 6948743423268020824L;
+
     ParserException(Throwable t) {
       super(t);
     }

@@ -2,8 +2,6 @@ package com.google.collide.client.plugin;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.ui.button.ImageButton;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.workspace.Header.Resources;

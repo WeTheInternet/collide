@@ -3,7 +3,6 @@ package com.google.collide.plugin.client.gwt;
 import xapi.util.X_String;
 
 import com.google.collide.client.util.Elements;
-import com.google.collide.dto.GwtCompile;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -15,7 +14,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.DOM;
 
-import elemental.dom.Node;
 import elemental.html.DivElement;
 import elemental.html.LIElement;
 import elemental.html.LabelElement;

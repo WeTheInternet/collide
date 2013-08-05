@@ -6,7 +6,6 @@ import collide.demo.resources.DemoResources;
 import com.google.collide.client.util.CssUtils;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.plugin.client.inspector.ElementInspector;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.client.Browser;
@@ -16,7 +15,6 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.MouseEvent;
-import elemental.util.Collections;
 import elemental.util.Timer;
 
 public class SplitPanel {

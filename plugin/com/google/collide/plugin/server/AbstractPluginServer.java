@@ -334,7 +334,7 @@ public abstract class AbstractPluginServer <Compiler extends AbstractCompileThre
       return uri.toURL();
     }catch (Exception e) {
       e.printStackTrace();
-      throw X_Debug.wrap(e);
+      throw X_Debug.rethrow(e);
     }
   }
 

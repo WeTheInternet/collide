@@ -201,7 +201,7 @@ public class JsoArrayListAdapter<T> implements List<T> {
   }
 
   @Override
-  public <T> T[] toArray(T[] a) {
+  public <E> E[] toArray(E[] a) {
     // TODO Consider implementing this.
     throw new RuntimeException("Method toArray is not yet supported for JSOArrayListAdapter!");
   }

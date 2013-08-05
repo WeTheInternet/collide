@@ -1,12 +1,7 @@
 package collide.demo.view;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
 import xapi.inject.impl.SingletonProvider;
 
-import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.mvp.CompositeView;
 import com.google.gwt.core.client.GWT;
