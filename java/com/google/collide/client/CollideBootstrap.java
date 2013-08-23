@@ -1,10 +1,5 @@
-package com.google.collide.plugin.client;
+package com.google.collide.client;
 
-import xapi.inject.impl.LazyPojo;
-import xapi.util.api.SuccessHandler;
-
-import com.google.collide.client.AppContext;
-import com.google.collide.client.Resources;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.util.ClientImplementationsInjector;
 import com.google.collide.client.util.Elements;
@@ -15,6 +10,8 @@ import com.google.gwt.dom.client.StyleInjector;
 import com.google.gwt.user.client.Window;
 
 import elemental.html.DivElement;
+import xapi.inject.impl.LazyPojo;
+import xapi.util.api.SuccessHandler;
 
 public class CollideBootstrap extends LazyPojo<AppContext>{
 

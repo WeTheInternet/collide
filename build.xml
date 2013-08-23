@@ -98,13 +98,13 @@
     <!-- Parallelize build; we don't need to be waiting on gwt to compile. -->
    <sequential> 
    <if>
-                  <not><equals arg1="${nogwt}" arg2="true" /></not>
-                  <then>
+      <not><equals arg1="${nogwt}" arg2="true" /></not>
+      <then>
    <parallel>
       <!-- Builds full screen client -->
-   <!--   <sequential>
+       <sequential>
         <antcall target="src.client.build"/>
-      </sequential> -->
+      </sequential>
 
       <!-- Builds standalone plugin client -->
       <sequential>

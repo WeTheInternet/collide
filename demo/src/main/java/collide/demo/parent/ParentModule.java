@@ -2,11 +2,11 @@ package collide.demo.parent;
 
 import xapi.log.X_Log;
 import xapi.util.api.SuccessHandler;
-
 import collide.demo.controller.DemoController;
 import collide.demo.view.DemoView;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.CollideBootstrap;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.status.StatusManager;
@@ -16,7 +16,6 @@ import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
-import com.google.collide.plugin.client.CollideBootstrap;
 import com.google.collide.plugin.client.gwt.GwtCompilerService;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell;
 import com.google.collide.plugin.client.gwt.GwtCompilerShell.Resources;

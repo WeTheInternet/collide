@@ -168,18 +168,11 @@
     <when-property-is name="webide.release_mode" value="release"/>
   </replace-with>
 
-  <!-- Single permutation settings for development.
-  <set-property name="webide.debuggingApi" value="chrome"/>
-  <set-property name="webide.clientOs" value="x11"/>
-  <set-property name="webide.release_mode" value="debug"/>
-  <set-property name="user.agent" value="safari" />
-  -->
-
 
   <add-linker name="xsiframe"/>
   <set-configuration-property name="devModeRedirectEnabled" value="true"/>
 <!--   <set-configuration-property name="installScriptJs" value="com/google/gwt/core/ext/linker/impl/installScriptDirect.js"/> -->
-  <!-- <set-configuration-property name="installCode" value="true"/> -->
+<!-- <set-configuration-property name="installCode" value="true"/> -->
 <!--   <set-configuration-property name="computeScriptBaseJs" value="com/google/gwt/dev/codeserver/computeScriptBase.js"/> -->
 
 </module>

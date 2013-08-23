@@ -3,6 +3,7 @@ package com.google.collide.plugin.client.standalone;
 import xapi.util.api.SuccessHandler;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.CollideBootstrap;
 import com.google.collide.client.history.HistoryUtils;
 import com.google.collide.client.history.HistoryUtils.ValueChangeListener;
 import com.google.collide.client.history.RootPlace;
@@ -11,7 +12,6 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.clientlibs.navigation.NavigationToken;
 import com.google.collide.json.shared.JsonArray;
-import com.google.collide.plugin.client.CollideBootstrap;
 import com.google.collide.plugin.client.PluginNavigationHandler;
 import com.google.collide.plugin.client.PluginPlace;
 import com.google.gwt.core.client.EntryPoint;

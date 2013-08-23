@@ -534,7 +534,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     // Include Javascript dependencies.
     sb.append("<script src=\"" + path +"/static/sockjs-0.2.1.min.js\"></script>\n");
     sb.append("<script src=\"" + path+"/static/vertxbus.js\"></script>\n");
-    sb.append("<script src=\"" +path+"/static/Demo/Demo." +
+    sb.append("<script src=\"" +path+"/static/Collide/Collide." +
     		"nocache.js\"></script>\n");
     
     

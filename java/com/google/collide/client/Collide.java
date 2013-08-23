@@ -25,7 +25,6 @@ import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.client.workspace.WorkspacePlaceNavigationHandler;
 import com.google.collide.clientlibs.navigation.NavigationToken;
 import com.google.collide.json.shared.JsonArray;
-import com.google.collide.plugin.client.CollideBootstrap;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.core.client.EntryPoint;
 

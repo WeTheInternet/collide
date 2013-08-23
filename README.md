@@ -24,6 +24,8 @@ and then recompile and hotswap that code, for extremely rapid development iterat
 
 The recompiler is being refactored to exist outside of collide and merely plugin to the application, to allow lightweight reuse in any GWT project.
 
+You may test this feature by browsing to /res/demo.html#/ (or right-click demo.html in file navigator and select View in Browser).
+
 ## Build ##
 
     `ant dist`

@@ -1,4 +1,6 @@
-<module>
-  <entry-point class="com.google.collide.client.Collide" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.1//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
+<module rename-to="Collide">
   <inherits name="com.google.collide.client.Imports" />
+  <entry-point class="com.google.collide.client.Collide" />
 </module>
