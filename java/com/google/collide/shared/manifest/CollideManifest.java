@@ -1,9 +1,7 @@
 package com.google.collide.shared.manifest;
 
 import static xapi.util.X_String.join;
-
-import com.google.collide.client.util.logging.Log;
-
+import xapi.log.X_Log;
 import elemental.util.ArrayOf;
 import elemental.util.Collections;
 
@@ -98,7 +96,7 @@ public class CollideManifest {
   }
 
   private boolean bail(String type, String entry) {
-    Log.error(getClass(), "Invalid " +type+" entry: "+entry);
+    X_Log.error("Invalid " +type+" entry: "+entry);
     return true;
   }
   

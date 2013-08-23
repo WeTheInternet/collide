@@ -1,22 +1,25 @@
 package collide.demo.child;
 
+import static com.google.gwt.reflect.client.GwtReflect.magicClass;
+import static xapi.util.X_Runtime.isJava;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 
-import xapi.annotation.reflect.KeepClass;
 import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
-import xapi.reflect.X_Reflect;
-import xapi.util.X_Runtime;
 import xapi.util.X_Util;
 import collide.demo.child.view.PanelHeader;
 import collide.demo.shared.SharedClass;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
 
-@KeepClass
+@ReflectionStrategy
 public class ChildModule implements EntryPoint {
 static class Jso extends JavaScriptObject{
 protected Jso(){}
@@ -28,19 +31,10 @@ protected Jso(){}
   public void onModuleLoad() {
     PanelHeader head = PanelHeader.create();
     
-//    Browser.getDocument().appendChild(head.getElement());
-//    head.getElement().setOnclick(new EventListener() {
-      
-//      @Override
-//      public void handleEvent(Event evt) {
-//        Window.alert("Oh hai");
-//      }
-//    });
-    
     try {
-      out("Hello world!!!\n\n");
+      out("Hello world!!!!!!\n\n");
       // First, enhance our classes.
-      X_Reflect.magicClass(SharedClass.class);
+      magicClass(SharedClass.class);
       // Log to console for inspection
       out(SharedClass.class);
       out("\n");
@@ -60,10 +54,11 @@ protected Jso(){}
 
   ChildModule() {
     try {
-      out = X_Runtime.isJava() 
-          ? X_Log.class.getMethod("info", Object[].class)
-          : X_Reflect.magicClass(ChildModule.class)
-            .getMethod("jsOut", Object[].class);
+      if (isJava()) {
+        out = X_Log.class.getMethod("info", Object[].class);
+      } else {
+        out = magicClass(ChildModule.class).getDeclaredMethod("jsOut", Object[].class);
+      }
     } catch (Exception e) {
       throw X_Util.rethrow(e);
     }
@@ -111,9 +106,10 @@ protected Jso(){}
   }
 
   void codesourceTest(SharedClass test) throws Exception {
-    out("Compiled from:\n"
-        + test.getClass().getProtectionDomain().getCodeSource().getLocation()
-            .toExternalForm());
+    ProtectionDomain pd = test.getClass().getProtectionDomain();
+    CodeSource cs = pd.getCodeSource();
+    String loc = cs.getLocation().toExternalForm();
+    out("Compiled from:\n"+loc);
   }
 
   void sharedObjectTest(SharedClass test) {
