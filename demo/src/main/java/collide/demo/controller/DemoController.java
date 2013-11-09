@@ -2,6 +2,7 @@ package collide.demo.controller;
 
 import xapi.log.X_Log;
 import xapi.util.X_String;
+import xapi.util.api.RemovalHandler;
 import collide.demo.view.DemoView;
 
 import com.google.collide.client.AppContext;
@@ -234,8 +235,8 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
 
 
   @Override
-  public void openInIframe(String id, String url) {
-    view.openIframe(id, url);
+  public RemovalHandler openInIframe(String id, String url) {
+    return view.openIframe(id, url);
   }
 
 

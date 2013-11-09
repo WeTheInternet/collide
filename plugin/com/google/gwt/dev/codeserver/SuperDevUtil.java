@@ -47,7 +47,7 @@ public class SuperDevUtil {
       sourcePath.add(dir);
     }
       Recompiler compiler = new Recompiler(app, module.split("/")[0], sourcePath ,
-        "localhost:"+port,logger);
+        "127.0.0.1:"+port,logger);
       try{
         RecompileController recompiler = new RecompileController(compiler);
         compilers.put(module, recompiler);

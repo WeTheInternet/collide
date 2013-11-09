@@ -4,6 +4,9 @@ import xapi.log.X_Log;
 import xapi.util.api.SuccessHandler;
 import collide.demo.controller.DemoController;
 import collide.demo.view.DemoView;
+import collide.gwtc.ui.GwtCompilerService;
+import collide.gwtc.ui.GwtCompilerShell;
+import collide.gwtc.ui.GwtCompilerShell.Resources;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideBootstrap;
@@ -11,20 +14,22 @@ import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.status.StatusMessage;
+import com.google.collide.client.util.Elements;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
-import com.google.collide.plugin.client.gwt.GwtCompilerService;
-import com.google.collide.plugin.client.gwt.GwtCompilerShell;
-import com.google.collide.plugin.client.gwt.GwtCompilerShell.Resources;
 import com.google.collide.plugin.client.terminal.TerminalService;
 import com.google.collide.shared.plugin.PublicServices;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 
 import elemental.client.Browser;
 import elemental.html.ScriptElement;
@@ -118,7 +123,19 @@ public class ParentModule implements EntryPoint{
         
         final GwtCompilerShell gwt = gwtCompiler.getShell();
         // Attach compiler
-        body.append(gwt);
+        body.initGwt(gwt);
+        
+        ResizeHandler handler = new ResizeHandler() {
+          @Override
+          public void onResize(ResizeEvent event) {
+            Elements.getBody().getStyle().setWidth(Browser.getWindow().getInnerWidth()+"px");
+            Elements.getBody().getStyle().setHeight(Browser.getWindow().getInnerHeight()+"px");
+          }
+        };
+        Elements.getBody().getStyle().setPosition("absolue");
+        
+        Window.addResizeHandler(handler);
+        handler.onResize(null);
         
         // Request module configs
         context.getFrontendApi().GWT_SETTINGS.request(

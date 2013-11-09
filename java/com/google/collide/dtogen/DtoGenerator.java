@@ -39,7 +39,6 @@ import com.google.common.io.Files;
  */
 public class DtoGenerator {
 
-  private static final String INVALID_PATH = "invalid path";
   private static final String SERVER = "server";
   private static final String CLIENT = "client";
 
@@ -98,14 +97,15 @@ public class DtoGenerator {
       // interfaces. Collect class files to load.
       List<String> classFilePaths = new ArrayList<String>();
 
-      JarFile jarFile = new JarFile(interfaceJar);
-      Enumeration<JarEntry> entries = jarFile.entries();
-      while (entries.hasMoreElements()) {
-        String entryFilePath = entries.nextElement().getName();
-        if (entryFilePath.endsWith(".class")) {
-          classFilePaths.add(entryFilePath);
+      try(JarFile jarFile = new JarFile(interfaceJar);){
+        Enumeration<JarEntry> entries = jarFile.entries();
+        while (entries.hasMoreElements()) {
+          String entryFilePath = entries.nextElement().getName();
+          if (entryFilePath.endsWith(".class")) {
+            classFilePaths.add(entryFilePath);
+          }
         }
-      }
+      }finally{}
 
       // Load the classes that we found above.
       URL[] urls = {interfaceJar.toURI().toURL()};

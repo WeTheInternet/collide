@@ -30,6 +30,8 @@ import com.google.collide.dto.GetDirectory;
 import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.GetFileContents;
 import com.google.collide.dto.GetFileContentsResponse;
+import com.google.collide.dto.GetFileRevisions;
+import com.google.collide.dto.GetFileRevisionsResponse;
 import com.google.collide.dto.GetRunConfig;
 import com.google.collide.dto.GetRunConfigResponse;
 import com.google.collide.dto.GetWorkspaceMetaData;
@@ -190,6 +192,8 @@ public class FrontendApi {
     }
   }
 
+  
+
   // ///////////////////////////////
   // BEGIN AVAILABLE FRONTEND APIS
   // ///////////////////////////////
@@ -219,6 +223,12 @@ public class FrontendApi {
    */
   public final RequestResponseApi<GetFileContents, GetFileContentsResponse> GET_FILE_CONTENTS =
       makeApi("documents.createEditSession");
+
+  /**
+   * Get the revisions for a file to enable reversioning.
+   */
+  public final RequestResponseApi<GetFileRevisions, GetFileRevisionsResponse> GET_FILE_REVISIONS = 
+      makeApi("documents.getRevisions");
 
   /**
    * Get a subdirectory. Just the subtree rooted at that path. No associated meta data.

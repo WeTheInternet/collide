@@ -201,7 +201,11 @@ public class DtoTemplate {
 //      builder.append("import java.util.List;\n"); //unused
       builder.append("import java.util.Map;\n");
     }
-    builder.append("\n\n@SuppressWarnings({\"unchecked\", \"cast\", \"rawtypes\"})\n");
+    builder.append("\n\n@SuppressWarnings({\"cast\"");
+    if (isServerType) {
+      builder.append(", \"unchecked\", \"rawtypes\"");
+    }
+    builder.append("})\n");
     
     // Note that we always use fully qualified path names when referencing Types
     // so we need not add any import statements for anything.

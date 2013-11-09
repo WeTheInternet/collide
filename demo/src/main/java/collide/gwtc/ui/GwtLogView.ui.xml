@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="res"
+		type="collide.gwtc.ui.GwtCompilerShell.Resources" />
+	<div ui:field="root" class="{res.gwtLogCss.logContainer}">
+		<div ui:field="background" class="{res.gwtLogCss.logPad}">
+			<div ui:field="logHeader" class="{res.gwtLogCss.logHeader}">
+				<!-- Put in clear buttons, log level filter, etc. -->
+			</div>
+			<div ui:field="logBody" class="{res.gwtLogCss.logBody}">
+			</div>
+			<div class="{res.gwtLogCss.bottomPlaceHolder}"/>
+		</div>
+	</div>
+</ui:UiBinder>

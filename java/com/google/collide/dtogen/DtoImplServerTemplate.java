@@ -417,18 +417,20 @@ public class DtoImplServerTemplate extends DtoImpl {
     builder.append("      }\n\n");
     builder.append("      ").append(getImplClassName()).append(" dto = new ")
         .append(getImplClassName()).append("();\n");
-    if (isCompactJson()) {
-      builder.append("      JsonArray json = jsonElem.getAsJsonArray();\n");
-      for (Method method : methods) {
-        if (method == null) {
-          continue;
+    if (methods.size() > 0) {
+      if (isCompactJson()) {
+        builder.append("      JsonArray json = jsonElem.getAsJsonArray();\n");
+        for (Method method : methods) {
+          if (method == null) {
+            continue;
+          }
+          emitDeserializeFieldForMethodCompact(method, builder);
         }
-        emitDeserializeFieldForMethodCompact(method, builder);
-      }
-    } else {
-      builder.append("      JsonObject json = jsonElem.getAsJsonObject();\n");
-      for (Method method : methods) {
-        emitDeserializeFieldForMethod(method, builder);
+      } else {
+        builder.append("      JsonObject json = jsonElem.getAsJsonObject();\n");
+        for (Method method : methods) {
+          emitDeserializeFieldForMethod(method, builder);
+        }
       }
     }
     builder.append("\n      return dto;\n");

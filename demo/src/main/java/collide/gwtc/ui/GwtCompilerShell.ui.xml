@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+  <ui:with field="res" type="collide.gwtc.ui.GwtCompilerShell.Resources" />
+  <ui:with field="compileState" type="collide.gwtc.ui.GwtCompileModel"></ui:with>
+    	<div class="{res.gwtCompilerCss.leftPanel}">
+    	<div ui:field="status" class="{res.gwtCompilerCss.status} {res.gwtCompilerCss.statusHidden}"></div>
+    	<div ui:field="moduleContainer" class="{res.gwtCompilerCss.moduleContainer}"></div>
+    	<div ui:field="buttonContainer" class="{res.gwtModuleCss.centered}">
+    	 <a href="javascript:;" ui:field="draftButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue}">Draft Compile</a>
+    	 <a href="javascript:;" ui:field="compileButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue}">Full Compile</a>
+    	 <a href="javascript:;" ui:field="killButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue}">Kill Compiler</a>
+    	</div>
+    	<div ui:field="settingsContainer" class="{res.gwtCompilerCss.settingsContainer}"></div>
+    	<div ui:field="srcContainer" class="{res.gwtCompilerCss.srcContainer}"></div>
+    	<div class="{res.gwtModuleCss.centered}">
+    	 <a href="javascript:;" ui:field="save" class="{res.baseCss.button} {res.baseCss.buttonBlue}"
+    	   >Save Settings</a>
+    	 <a href="javascript:;" ui:field="load" class="{res.baseCss.button} {res.baseCss.buttonBlue}"
+    	   >Load Settings</a>
+    	</div>
+    </div>
+</ui:UiBinder>

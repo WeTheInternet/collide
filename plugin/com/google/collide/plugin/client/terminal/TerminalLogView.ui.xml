@@ -9,15 +9,15 @@
 		<div ui:field="background" class="{res.terminalLogCss.logPad}">
 			<div ui:field="logBody" class="{res.terminalLogCss.logBody}">
 			</div>
-			<div class="{res.terminalLogCss.cliContainer}">
-		<!-- <div 
+			<!-- <div class="{res.terminalLogCss.cliContainer}">
+		<div 
         ui:field="cliInput"
         contenteditable=""
       > </div>
       <a href="javascript:;" ui:field="runButton"
           class="{res.baseCss.button} {res.baseCss.buttonBlue}"> Run! </a>
-      -->
-      </div>
+     
+      </div> -->
 			<div class="{res.terminalLogCss.bottomPlaceHolder}"/>
 		</div>
   

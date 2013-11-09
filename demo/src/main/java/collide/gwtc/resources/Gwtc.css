@@ -1,0 +1,88 @@
+.headerContainer {
+  margin-left: 5px;
+  margin-right: 5px;
+  height: 100%;
+  vertical-align: middle;
+  position: relative;
+}
+.header, .icons, .controls{
+ vertical-align: middle;
+ height: 100%;
+ display: inline-block;
+}
+.header{
+ margin: 0px;
+ white-space: nowrap;
+ height: 25px;
+ padding-right: 35px;
+}
+
+.close{
+	border: solid 2px black;
+	text-align: center;
+	vertical-align: middle;
+	width: 15px;
+} 
+.close:hover {
+	border: solid 2px #ccd;
+	color: #ccd;
+	background-color: #334;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	width: 15px;
+} 
+.close:active {
+	border: solid 2px black;
+	color: black;
+	background-color: white;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	width: 15px;
+} 
+
+.topHeader, .controls {
+	/* TODO make this the icon height */
+	height: 32px;
+}
+
+.bottomHeader > div {
+	display: inline-block;
+	width: 30%;
+}
+
+.controls {
+ position: absolute;
+ right: 5px;
+ top: 0px;
+ width: 35px;
+}
+
+.icons{
+}
+
+@sprite .reloadIcon {
+  gwt-image: "reload";
+}
+
+@sprite .gear {
+  gwt-image: "gear";
+}
+
+@sprite .radarGreen, .success {
+  gwt-image: "radarGreenSmall";
+}
+
+@sprite .radarRed, .fail {
+  gwt-image: "radarRedSmall";
+}
+
+@sprite .radarYellow, .warn {
+  gwt-image: "radarYellowSmall";
+}
+
+.reloadIcon, .radarGreen, .radarRed, .radarYellow, .success, .warn, .fail, .gear  {
+  cursor: pointer;
+  display: inline-block;
+}

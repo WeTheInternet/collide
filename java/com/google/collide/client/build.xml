@@ -68,7 +68,6 @@
     </do.javac>
   </target>
 
-
   <target name="build-plugin" depends="build-java">
     <mkdir dir="${dirs.gen}/${dirs.toppkg}/codemirror2"/>
     <copy todir="${dirs.gen}/${dirs.toppkg}/codemirror2" overwrite="false">
@@ -76,10 +75,9 @@
         <include name="*.js"/>
       </fileset>
     </copy>
-    <parallel>
     <gwt.compile outdir="${dirs.webfe.gwtapp}" extradir="${dirs.gwtextra}"
-        style="${gwtc.style}" workers="${gwtc.workers}"
-        module="collide.demo.Parent">
+        style="${gwtc.style}" workers="${gwtc.workers}" logLevel="INFO"
+        module="collide.demo.Parent" renamed="Demo">
       <sources>
         <fileset dir="${dirs.src}/${dirs.toppkg}">
           <include name="client/**"/>
@@ -105,10 +103,10 @@
         <pathelement location="${dirs.src}"/>
         <pathelement location="${dirs.plugin}"/>
         <pathelement location="${dirs.demo}"/>
+        <pathelement location="${dirs.demo.res}"/>
         <pathelement location="${dirs.gen}"/>
       </srcroots>
     </gwt.compile>
-    </parallel>
   </target>
 
   <target name="build-gwt" depends="build-java">
@@ -118,11 +116,9 @@
         <include name="*.js"/>
       </fileset>
     </copy>
-    <parallel>
     <gwt.compile outdir="${dirs.webfe.gwtapp}" extradir="${dirs.gwtextra}"
         style="${gwtc.style}" workers="${gwtc.workers}" loglevel="INFO"
-        
-        module="com.google.collide.client.Collide">
+        module="com.google.collide.client.Collide" renamed="Collide">
       <sources>
         <fileset dir="${dirs.src}/${dirs.toppkg}">
           <include name="client/**"/>
@@ -147,10 +143,10 @@
       <srcroots>
         <pathelement location="${dirs.src}"/>
         <pathelement location="${dirs.demo}"/>
+        <pathelement location="${dirs.demo.res}"/>
         <pathelement location="${dirs.gen}"/>
       </srcroots>
     </gwt.compile>
-    </parallel>
   </target>
 
   <target name="dev-gwt" depends="build-java">

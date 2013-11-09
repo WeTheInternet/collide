@@ -9,5 +9,7 @@ import com.google.collide.json.shared.JsonArray;
 public interface GwtCompile extends CodeModule, ClientToServerDto, ServerToClientDto{
 
   JsonArray<GwtPermutation> getPermutations();
+  boolean getAutoOpen();
+  int getPort();
 
 }

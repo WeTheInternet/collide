@@ -1,0 +1,116 @@
+.container {
+  margin-left: 5px;
+  margin-right: 5px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.leftPanel, .rightPanel{
+	top: 0px;
+	bottom: 0px;
+}
+.leftPanel {
+	width: 600px;
+	float: left;
+}
+.rightPanel {
+	left: 600px;
+	float: right;
+	right: 0px;
+}
+
+.next {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.otherpage {
+  margin: 1em;
+  color: blue;
+  cursor: pointer;
+}
+
+.pager {
+  margin-top: 2em;
+  text-align: center;
+  width: 100%;
+}
+
+.previous {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.second {
+  margin-top: 2em;
+}
+
+.status {
+ font-weight: bold;
+ text-align: center;
+ transition: height 1s; /* IE and all modern browsers */
+-moz-transition: height 1s; /* Firefox 4 */
+-webkit-transition: height 1s; /* Safari and Chrome */
+-o-transition: height 1s; /* Opera */
+ margin-top: 2px;
+}
+
+.status pre {
+ padding: 0.15em;
+ border-color: black;
+ border-width: 1px;
+ border-style: solid;
+ background-color: #ff0;
+ display: inline;
+}
+
+.statusHidden {
+ overflow: hidden;
+}
+
+.statusHidden pre {
+ border-width: 0px;
+}
+
+
+.moduleContainer {
+ text-align: center;
+}
+
+.moduleContainer, .srcContainer, .settingsContainer{
+	padding: 1em;
+}
+
+.settingsContainer {
+  display: inline-block;
+	vertical-align: top;
+}
+
+.srcContainer {
+	vertical-align: top;
+  display: inline-block;
+}
+
+.radioLabel {
+	cursor: pointer;
+	padding-left: 0.5em;
+}
+
+.snippet {
+  cursor: pointer;
+}
+
+.thispage {
+  margin: 1em;
+  color: black;
+}
+
+.title {
+  font-size: large;
+  color: blue;
+  cursor: pointer;
+}
+.options {
+ text-align: left;
+ padding: 0.5em;
+}

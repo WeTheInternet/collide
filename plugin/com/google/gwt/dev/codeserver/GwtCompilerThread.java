@@ -1,5 +1,6 @@
 package com.google.gwt.dev.codeserver;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
@@ -22,13 +23,19 @@ import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.plugin.server.AbstractCompileThread;
+import com.google.collide.plugin.server.IsCompileThread;
+import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
 import com.google.collide.plugin.server.gwt.CompilerBusyException;
 import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 
-public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
+public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile>
+implements IsCompileThread <GwtCompile> {
 
   private final class RunningModule extends StringId {
     GwtCompile compile;
@@ -41,12 +48,17 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
   }
 
   private final HashMap<String, CompiledDirectory> modules = new HashMap<>();
+  ReflectionChannelTreeLogger logger;
+  private boolean started;
 
+  @Override
+  protected TreeLogger logger() {
+    return logger == null ? new PrintWriterTreeLogger() : logger;
+  }
+  
   // these are native objects, created using reflection
   @Override
   public void run() {
-    ReflectionChannelTreeLogger logger = new ReflectionChannelTreeLogger(io,
-        Type.INFO);
     while (!Thread.interrupted())
       try {
         // grab our request from originating thread
@@ -81,9 +93,7 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
 
         server.get();
         RecompileController controller = SuperDevUtil.getOrMakeController(
-            logger, request, 8080
-        // server.getPort()
-            );
+            logger, request, server.getPort());
         CompiledDirectory dir = controller.recompile();
         modules.put(request.getModule(), dir);
         // notify user we completed successfully
@@ -102,9 +112,12 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
         // This message is routed to WebFE
         io.send("_frontend.symlink_" + dir.toString());
 
-        System.out.println("Finished gwt compile for "
+        logger.log(Type.INFO, "Finished gwt compile for "
             + controller.getModuleName());
 
+        // reset interrupted flag so we loop back to the beginning
+        Thread.interrupted();
+        
       } catch (Throwable e) {
         System.out.println("Exception caught...");
         logger.log(Type.ERROR, "Error encountered during compile : " + e);
@@ -137,7 +150,9 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
 
   @Override
   public void setChannel(ClassLoader cl, Object io) {
-    this.io = new ReflectionChannel(cl, io);
+    ReflectionChannel channel = new ReflectionChannel(cl, io);
+    this.io = channel;
+    logger = new ReflectionChannelTreeLogger(channel, Type.INFO);
   }
 
   @Override
@@ -150,26 +165,23 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
   @Override
   public void compile(String request) throws CompilerBusyException {
     if (working)
-      throw new CompilerBusyException(GwtCompileImpl.fromJsonString(request)
-          .getModule());
+      throw new CompilerBusyException(GwtCompileImpl.fromJsonString(request).getModule());
     synchronized (GwtCompilerThread.class) {
-      if (isAlive()) {
-        // if we're already running, we should notify so we can continue
-        // working.
-        getClass().notify();// wake up!
-      }
       working = true;
-      if (!isAlive()) {
-        try {
+      try {
+        if (!isAlive()) {
           start();
-        } catch (Exception e) {
-          X_Log.error("Fatal error trying to start gwt compiler", e);
-          try {
-            io.destroy();
-          } catch (Exception e1) {
-            e1.printStackTrace();
-          }
         }
+      } catch (Exception e) {
+        logger().log(Type.ERROR, "Fatal error trying to start gwt compiler", e);
+        try {
+          io.destroy();
+        } catch (Exception e1) {
+          e1.printStackTrace();
+        }
+      } finally {
+        // wake everyone up to check if they have work to do
+        getClass().notify();
       }
     }
   }
@@ -183,20 +195,26 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
     //
 
     int len = buffer.length();
-    String got = buffer.getString(0, len);
+    String path = buffer.getString(0, len);
     Map<String, String> headers = new HashMap<>();
-    for (String line : got.split("\n")) {
+    for (String line : path.split("\n")) {
       int ind = line.indexOf(' ');
       if (ind > 0)
         headers.put(line.substring(0, ind), line.substring(ind + 1));
     }
-    if (got.contains("sourcemaps")) {
-      got = got.split("sourcemaps[/]")[1].split("\\s")[0];
+    if (path.contains("sourcemaps")) {
+      path = path.split("sourcemaps[/]")[1].split("\\s")[0];
     }
     // if requesting gwtSourceMap.json, we must resolve the compiled directory
-    if (got.endsWith("gwtSourceMap.json")) {
-      String module = got.split("/")[0];
-      CompiledDirectory dir = modules.get(module);
+    String module = path.split("/")[0];
+    CompiledDirectory dir = modules.get(module);
+    if (path.endsWith("gwtSourceMap.json")) {
+      if (dir == null) {
+        print(event, "<pre>"
+            + "Module " + module + "not yet compiled"
+            + "</pre>");
+        return;
+      }
       File extras = new File(dir.getSourceMapDir());
       if (!extras.exists()) {
         throw new RuntimeException("Can't find symbolMaps dir for " + module);
@@ -207,6 +225,12 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
           return name.matches(".*_sourceMap.*[.]json");
         }
       });
+      if (sourceMapFiles.length == 0) {
+        print(event, "<pre>"
+            + "No sourcemaps found for " + module
+            + "</pre>");
+        return;
+      }
       File winner = sourceMapFiles[0];
       if (sourceMapFiles.length > 1) {
         // more than one permutation; we need to look up permutation map
@@ -214,6 +238,7 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
         String userAgent = headers.get("User-Agent:").toLowerCase();
         String strongName;
         Map<String, String> permutations = dir.getUserAgentMap();
+        // TODO lookup the user agent selection script used and run in ScriptEngine
         if (userAgent.contains("safari")) {
           strongName = permutations.get("safari");
         } else if (userAgent.indexOf("gecko") > 0) {
@@ -239,21 +264,54 @@ public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile> {
         throw new RuntimeException("No sourcemap files found in "
             + extras.getCanonicalPath());
       }
+      X_Log.trace(getClass(), "Streaming source map file ",winner);
       stream(event, new FileInputStream(winner));
       // event.sendFile(winner.getCanonicalPath());
     } else {
       // assume non-sourcemap request wants a java / resource file.
-      URL res = controller.getResourceLoader().getResource(got);
+      URL res = controller.getResourceLoader().getResource(path);
       if (res == null) {
-        System.err.println("Proxy only supports sourcemaps " + got);
-        stream(event, new StringInputStream(
-            "<pre>Proxy only supports sourcemaps. You sent: " + got + "</pre>"));
+        String resolved = path.replace(module+"/", "");
+        if (resolved.startsWith("gen/")) {
+          resolved = resolved.replace("gen/", "");
+       // Check the generated source filed
+          if (dir == null) {
+            X_Log.warn(getClass(), "No directory found for ",module," this gwt module may not have finished compiling.");
+          } else {
+            File genDir = new File(dir.getGenDir());
+            if (genDir.exists()) {
+              X_Log.debug(getClass(), "Checking gen dir ",genDir," for ",resolved);
+              File genSrc = new File(genDir, resolved);
+              if (genSrc.exists()) {
+                X_Log.debug(getClass(), "Using ",genSrc," for ",path);
+                resolved = genSrc.getCanonicalPath();
+                res = genSrc.toURI().toURL();
+              } else {
+                X_Log.debug(getClass(), "No file exists @ ",genSrc," for ",path);
+              }
+            } else {
+              X_Log.warn(getClass(), "gen dir ",genDir," does not exist for ", path);
+            }
+          }
+        } else {
+          res = controller.getResourceLoader().getResource(resolved);
+        }
+        X_Log.trace(getClass(), "Could not find ", path," checking ",resolved," resulted in ", res);
+      }
+      if (res == null) {
+        String error = "Proxy only supports sourcemaps and webserver resources; you sent " + path;
+        X_Log.error(getClass(), error);
+        print(event, "<pre>" + error + "</pre>");
       } else {
         stream(event, res.openStream());
       }
     }
   }
 
+  private void print(final NetSocket event, String out) throws IOException {
+    stream(event, new ByteArrayInputStream(out.getBytes()));
+  }
+  
   private void stream(final NetSocket event, InputStream in) throws IOException {
     byte[] buff;
     Buffer b = new Buffer();

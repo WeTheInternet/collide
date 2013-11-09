@@ -16,6 +16,8 @@ package com.google.collide.client.filehistory;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
+import com.google.collide.client.communication.FrontendApi;
+import com.google.collide.client.communication.RetryCallbackWithStatus;
 import com.google.collide.client.diff.EditorDiffContainer;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.util.PathUtil;
@@ -25,7 +27,9 @@ import com.google.collide.dto.DiffChunkResponse;
 import com.google.collide.dto.DiffChunkResponse.DiffType;
 import com.google.collide.dto.FileContents;
 import com.google.collide.dto.GetFileRevisions;
+import com.google.collide.dto.GetFileRevisionsResponse;
 import com.google.collide.dto.Revision;
+import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.DiffChunkResponseImpl;
 import com.google.collide.dto.client.DtoClientImpls.GetFileRevisionsImpl;
 import com.google.collide.json.client.JsoArray;
@@ -88,22 +92,21 @@ class FileHistoryApi {
    * Fetch a list of revisions for the given file, and call Timeline's drawNodes
    */
   private void getFileRevisions(final GetFileRevisions message) {
-    
-//    appContext.getFrontendRestApi().GET_FILE_REVISIONS
-//        .send(message, 3, new RetryCallbackWithStatus<GetFileRevisionsResponse>(
-//            appContext.getStatusManager(), "Getting file revisions") {
-//
-//          @Override
-//          public void onFail(FailureReason reason) {
-//            Log.warn(getClass(), "Call to get revisions for file failed.");
-//          }
-//
-//          @Override
-//          public void onMessageReceived(GetFileRevisionsResponse message) {
-//            // Render timeline with newly fetched revisions
-//            timeline.drawNodes((JsoArray<Revision>) message.getRevisions());
-//          }
-//        });
+//    appContext.getStatusManager(). ("Getting file revisions");
+    appContext.getFrontendApi().GET_FILE_REVISIONS
+    .send(message, 
+        new FrontendApi.ApiCallback<GetFileRevisionsResponse>() {
+      @Override
+      public void onFail(FailureReason reason) {
+        Log.warn(getClass(), "Call to get revisions for file failed.");
+      }
+
+      @Override
+      public void onMessageReceived(GetFileRevisionsResponse message) {
+        // Render timeline with newly fetched revisions
+        timeline.drawNodes((JsoArray<Revision>) message.getRevisions());
+      }
+    });
   }
 
   /**

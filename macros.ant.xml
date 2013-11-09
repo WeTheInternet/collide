@@ -46,6 +46,7 @@
   <!-- Classpaths for plugins -->
   <path id="plugins.shared">
     <pathelement location="${dirs.root}/plugin"/>
+    <pathelement location="${dirs.root}/demo/src/main/java"/>
   </path>
 
   <!-- Classpaths for clientlibs -->
@@ -200,7 +201,7 @@
     <element name="libs" optional="true"
         description="library files for GWT compiler classpath"/>
     <sequential>
-      <outofdate>
+      <outofdate outputsources="@{renamed}.sources.path">
         <sourcefiles>
           <sources/>
         </sourcefiles>
@@ -208,11 +209,10 @@
           <fileset dir="@{outdir}/@{renamed}" erroronmissingdir="false">
             <include name="*.nocache.js"/>
           </fileset>
-        </targetfiles>
+        </targetfiles> 
         <sequential>
-          <!-- Start by deleting old dirt, so e.g. old permutations don't
-               build up. -->
-          <delete dir="@{outdir}"/>
+          <echo message="Recompiling gwt because the following files have changed (or because @{renamed}/*.nocache.js do not exist): ${@{renamed}.sources.path}" level="info" />
+          <delete dir="@{outdir}/@{renamed}"/>
           <mkdir dir="@{outdir}"/>
           <condition property="gwtc.jvmdebug"
             value=""

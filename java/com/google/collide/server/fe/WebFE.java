@@ -173,11 +173,13 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
   @Override
   public void handle(HttpServerRequest req) {
-    String path = req.path;
-    if (path.equals("/")) {
+    if (req.path.equals("/") || req.path.equals("/demo/")) {
       //send login page
       authAndWriteHostPage(req);
-    } else if (path.contains("..")) {
+      return;
+    }
+    String path = req.path.replace("/demo/", "/");
+    if (path.contains("..")) {
       //sanitize hack attempts
       sendStatusCode(req, 404);
     } else if (path.startsWith(CODESERVER_FRAGMENT)) {
@@ -190,6 +192,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       else if (path.startsWith(WEBROOT_PATH) && (webRootPrefix != null)){
         //TODO: sanitize this path
         //check for symlinks
+        logger.info(path);
         SymlinkRequest request = new SymlinkRequest();
         request.urlFragment = path.substring(WEBROOT_PATH.length());
         request.defaultTarget = webRootPrefix;
@@ -243,11 +246,11 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     if (uri.charAt(0)=='/')uri = uri.substring(1);
     for (Object key : keys){
       final String symlink = String.valueOf(key);
-//      System.out.println("Checking against symlink "+symlink);
       if (uri.contains(symlink)){
         Object link =  map.get(symlink);
         //TODO: also serve up _gen, _extra, _source, etc.
         if (("/"+uri).contains(SOURCEMAP_PATH)){
+          X_Log.info("Checking against symlink ",uri," .contains( ",symlink," )");
           //serve up file from our sourcemap directory
           try{
             if (uri.endsWith(".java")||uri.endsWith("gwtSourceMap.json")){
@@ -301,19 +304,6 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
               }
               response.handled = success.get();
               return response;
-//              //we prefer generated source from live gwt-dev mode.
-//              vertx.eventBus().send("gwt.proxy", uri, new Handler<Message<String>>() {
-//                @Override
-//                public void handle(Message<String> event) {
-//                  System.out.println("Got result: "+event.body);
-//                }
-//              });
-
-              //but, as a backup, we set a timer in case there is no reply or a failed reply,
-              //and we lookup the source in collide's FileTree as well.
-              //This may lead to non-parity to the compiled source,
-              //but at least it will work if the codeserver is not running.
-
             }
 
             String base = String.valueOf(link.getClass().getMethod("getSourceMapDir").invoke(link));
@@ -345,7 +335,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
           response.resolved =
               link.getClass().getMethod("getWarDir").invoke(link)+"/"+symlink
               +uri.substring(symlink.length());
-          logger.warn("Symlink resolved to "+response.resolved);
+          logger.info("Symlink resolved to "+response.resolved);
           response.handled = true;
           applySourceMapHeader(request.response, response.resolved);
           request.response.sendFile(response.resolved);
@@ -458,13 +448,13 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
           final String sessionId = loginSessionIdList.get(0);
           final String username = usernameList.get(0);
-          System.out.println("Writing session cookie; "+username+" / "+sessionId);
+          X_Log.info("Writing session cookie; ",username," / ",sessionId);
           vertx.eventBus().send("participants.authorise",
               new JsonObject().putString("sessionID", sessionId).putString("username", username),
               new Handler<Message<JsonObject>>() {
                   @Override
                 public void handle(Message<JsonObject> event) {
-                    System.out.println("Writing session cookie; "+event.body.toString());
+                  X_Log.trace("Writing session cookie; ",event.body);
                   if ("ok".equals(event.body.getString("status"))) {
                     req.response.headers().put("Set-Cookie",
                         AUTH_COOKIE_NAME + "=" + sessionId + "__" + username + "; HttpOnly");
@@ -504,8 +494,14 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
                 sendStatusCode(req, HttpStatus.SC_INTERNAL_SERVER_ERROR);
                 return;
               }
-
-              String responseText = getHostPage(req.path, sessionId, username, activeClientId);
+              String path = req.path;
+              String module = "Collide";
+              
+              if (path.endsWith("demo/")) {
+                path = path.replace("/demo", "");
+                module = "Demo";
+              }
+              String responseText = getHostPage(path, module, sessionId, username, activeClientId);
               response.statusCode = HttpStatus.SC_OK;
               byte[] page = responseText.getBytes(Charset.forName("UTF-8"));
               response.putHeader("Content-Length", page.length);
@@ -522,7 +518,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
    * Generate the header for the host page that includes the client bootstrap information as well as
    * relevant script includes.
    */
-  private String getHostPage(String path, String userId, String username, String activeClientId) {
+  private String getHostPage(String path, String module, String userId, String username, String activeClientId) {
     StringBuilder sb = new StringBuilder();
     sb.append("<!doctype html>\n");
     sb.append("<html>\n");
@@ -530,11 +526,11 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     sb.append("<title>CollIDE - Collaborative Development</title>\n");
     if (path.endsWith("/"))
       path = path.substring(0, path.length()-1);
-//    System.out.println(path);
-    // Include Javascript dependencies.
+    if (module.indexOf('/') == -1)
+      module = module + '/' + module;
     sb.append("<script src=\"" + path +"/static/sockjs-0.2.1.min.js\"></script>\n");
     sb.append("<script src=\"" + path+"/static/vertxbus.js\"></script>\n");
-    sb.append("<script src=\"" +path+"/static/Collide/Collide." +
+    sb.append("<script src=\"" +path+"/static/" + module + "." +
     		"nocache.js\"></script>\n");
     
     

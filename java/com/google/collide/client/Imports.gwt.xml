@@ -25,7 +25,6 @@
   <inherits name="com.google.collide.json.Json"/>
   <inherits name="com.google.collide.mvp.Mvp"/>
   <inherits name="com.google.collide.shared.Shared"/>
-  <inherits name="com.google.collide.plugin.Plugin"/>
 
   <!-- Debugging API permutations -->
   <define-property name="webide.debuggingApi" values="chrome,none"/>

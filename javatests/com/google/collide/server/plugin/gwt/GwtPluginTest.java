@@ -27,7 +27,7 @@ import org.vertx.java.deploy.impl.VertxLocator;
 import com.google.collide.plugin.server.PluginManager;
 import com.google.collide.plugin.server.gwt.GwtServerPlugin;
 import com.google.collide.server.shared.util.Dto;
-import com.google.collide.shared.manifest.CollideManifest;
+import collide.shared.manifest.CollideManifest;
 
 public class GwtPluginTest extends TestCase {
 

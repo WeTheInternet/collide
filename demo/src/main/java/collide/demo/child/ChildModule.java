@@ -12,27 +12,44 @@ import java.security.ProtectionDomain;
 import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Util;
-import collide.demo.child.view.PanelHeader;
 import collide.demo.shared.SharedClass;
+import collide.gwtc.GwtCompileStatus;
+import collide.gwtc.GwtcController;
+import collide.gwtc.view.GwtcModuleControlView;
 
+import com.google.collide.client.util.Elements;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
+import com.google.gwt.user.client.ui.RootPanel;
+
+import elemental.client.Browser;
 
 @ReflectionStrategy
 public class ChildModule implements EntryPoint {
-static class Jso extends JavaScriptObject{
-protected Jso(){}
-}
+
   public static void main(String[] args) {
     new ChildModule().onModuleLoad();
   }
-  @Override
+  @Override 
   public void onModuleLoad() {
-    PanelHeader head = PanelHeader.create();
-    
+    GwtcModuleControlView test = GwtcModuleControlView.create(new GwtcController() {
+      @Override
+      public void onReloadClicked() {
+      }
+      @Override
+      public void onCloseClicked() {
+      }
+      @Override
+      public void onRefreshClicked() {
+        
+      }
+    });
+    test.setHeader("Test Header");
+    test.setCompileStatus(GwtCompileStatus.Good);
+    Browser.getDocument().getBody().appendChild(test.getElement());
     try {
-      out("Hello world!!!!!!\n\n");
+      out("Hello world!!!!!\n\n");
       // First, enhance our classes.
       magicClass(SharedClass.class);
       // Log to console for inspection
@@ -44,6 +61,8 @@ protected Jso(){}
       methodTest(instance);
       constructorTest(instance);
       codesourceTest(instance);
+      out("Annotation: ");
+      out(SharedClass.class.getAnnotation(ReflectionStrategy.class));
       sharedObjectTest(instance);
     } catch (Throwable e) {
       fail(e);
@@ -80,6 +99,9 @@ protected Jso(){}
 
   void fieldTest(SharedClass test) throws Exception {
     Field field = SharedClass.class.getField("sharedInt");
+    out("Field:");
+    out(field);
+    out("\n");
     int was = test.sharedInt;
     out("Changing " + field + " from " + field.get(test) + " to 3;");
     field.set(test, 3);
@@ -91,12 +113,14 @@ protected Jso(){}
     Method doStuff = test.getClass().getDeclaredMethod("doStuff");
     doStuff.setAccessible(true);
     doStuff.invoke(test);
+    out("Method:");
     out(doStuff);
     out("\n");
   }
 
   void constructorTest(SharedClass test) throws Exception {
     Constructor<SharedClass> ctor = SharedClass.class.getConstructor();
+    out("Constructor:");
     out(ctor);
     SharedClass other = ctor.newInstance();
     if (other == null)
@@ -109,7 +133,9 @@ protected Jso(){}
     ProtectionDomain pd = test.getClass().getProtectionDomain();
     CodeSource cs = pd.getCodeSource();
     String loc = cs.getLocation().toExternalForm();
-    out("Compiled from:\n"+loc);
+    out("Compiled from:");
+    out(loc);
+    out("\n");
   }
 
   void sharedObjectTest(SharedClass test) {

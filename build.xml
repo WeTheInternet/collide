@@ -100,18 +100,11 @@
    <if>
       <not><equals arg1="${nogwt}" arg2="true" /></not>
       <then>
-   <parallel>
-      <!-- Builds full screen client -->
-       <sequential>
-        <antcall target="src.client.build"/>
-      </sequential>
-
-      <!-- Builds standalone plugin client -->
-      <sequential>
-        <antcall target="src.client.plugin"/>
-      </sequential>
-
-    </parallel>
+        <!-- Builds full screen client -->
+        <parallel>
+          <antcall target="src.client.build"/>
+          <antcall target="src.client.plugin"/>
+        </parallel>
     </then>
    </if>
         <antcall target="src.server.build"/>

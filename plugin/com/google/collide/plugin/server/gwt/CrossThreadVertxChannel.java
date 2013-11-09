@@ -11,13 +11,11 @@ import com.google.collide.server.shared.util.ReflectionChannel;
 public class CrossThreadVertxChannel extends ReflectionChannel{
 
   private final Stack<String> jsonString = new Stack<String>();
-//  Message<JsonObject> reply;
   private EventBus eb;
   private String address;
   public CrossThreadVertxChannel(ClassLoader cl, String jsonString,  EventBus eb,String address) {
     super(cl, null);
     this.jsonString.push(jsonString);
-//    this.reply = message;
     this.eb = eb;
     this.address = address;
   }
@@ -60,7 +58,6 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
     public static String encode(String address, JsonSerializable message) {
       assert !address.contains("_") : "You may not use _ in addresses sent through CrossThreadVertxChannel";
       String encoded = message.toJson();
-      System.out.println("Sending: "+address+" : "+encoded.replaceAll(",", "\n,"));
       return "_"+address+"_"+encoded;
     }
   

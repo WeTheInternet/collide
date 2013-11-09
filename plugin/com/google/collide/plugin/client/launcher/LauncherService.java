@@ -1,8 +1,10 @@
 package com.google.collide.plugin.client.launcher;
 
+import xapi.util.api.RemovalHandler;
+
 public interface LauncherService {
 
-  void openInIframe(String id, String url);
+  RemovalHandler openInIframe(String id, String url);
   
   void openInNewWindow(String id, String url);
   

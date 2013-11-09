@@ -21,6 +21,9 @@ import org.vertx.java.core.json.JsonObject;
 import xapi.inject.impl.LazyPojo;
 import xapi.log.X_Log;
 import xapi.util.X_Debug;
+import xapi.util.X_Namespace;
+import xapi.util.X_Properties;
+import xapi.util.X_Runtime;
 import xapi.util.X_String;
 
 import com.google.collide.dto.CompileResponse.CompilerState;
@@ -34,7 +37,6 @@ import com.google.collide.plugin.server.gwt.CrossThreadVertxChannel;
 import com.google.collide.plugin.server.gwt.UrlAndSystemClassLoader;
 import com.google.collide.server.shared.util.Dto;
 import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.dev.codeserver.AbstractCompileThread;
 import com.google.gwt.dev.codeserver.GwtCompilerThread;
 import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 
@@ -64,146 +66,6 @@ public abstract class AbstractPluginServer <Compiler extends AbstractCompileThre
       vertx.eventBus().registerHandler(pluginBase+"."+handle.getKey(), handle.getValue());
     }
   }
-
-  public class GwtCompileHandler implements Handler<Message<JsonObject>> {
-    public class CompilerCleanup implements Runnable{
-      @Override
-      public void run() {
-        logger.info("Cleaning up runtime thread "+getClass());
-        io = null;
-        cl = null;
-//        if (lastCompile != null)
-//          allModules.get().remove(lastCompile.getModule());
-        compileLauncher.reset();
-      }
-    }
-    UrlAndSystemClassLoader cl;
-    URL[] cp;
-    CrossThreadVertxChannel io;
-    Object compiler;
-    GwtCompile lastCompile;
-
-    private final LazyPojo<Method> compileLauncher = new LazyPojo<Method>(){
-
-      @Override
-      protected Method initialValue() {
-        try{
-          //prepare our compiler's classpath
-          PrintWriterTreeLogger log = new PrintWriterTreeLogger();
-
-          // We have to prime this classloader without touching it directly,
-          // otherwise it will start loading from our classloader, and very bad things will happen.
-          cl = new UrlAndSystemClassLoader(cp, log);
-          // So, instead we have to use reflection to prepare our foreign thread.
-          final Class<?> runCls = cl.loadClass(GwtCompilerThread.class.getName());
-          compiler = runCls.newInstance();
-
-          // Tell our foreign thread
-          Method method = runCls.getMethod("setChannel", cl.loadClass(ClassLoader.class.getName()),Object.class);
-          Object otherChannel = method.invoke(compiler, getClass().getClassLoader(), io);
-          io.setChannel(otherChannel);
-          method = compiler.getClass().getMethod("setDaemon", boolean.class);
-          method.invoke(compiler, true);
-
-          method = runCls.getMethod("setOnDestroy", cl.loadClass(Object.class.getName()));
-          method.invoke(compiler, new CompilerCleanup());
-          //set 'foreign' classloader :)
-          method = compiler.getClass().getMethod("setContextClassLoader", cl.loadClass(ClassLoader.class.getName()));
-          method.invoke(compiler, cl);
-
-
-          method = compiler.getClass().getMethod("compile", String.class);
-          cl.setAllowSystem(false);//turn off system classloader for compile
-          return method;
-        }catch (Exception e) {
-          //send this exception through io to client...
-          e.printStackTrace();
-          if (vertx instanceof VertxInternal)
-            ((VertxInternal)vertx).reportException(e);
-          throw new RuntimeException(e);
-        }
-      };
-    };
-    boolean isrepeat = false;
-    @Override
-    public void handle(final Message<JsonObject> message) {
-      //TODO(james): before handling, broadcast on internal channel for existing recompiler
-
-      String jsonString = Dto.get(message);
-      GwtCompileImpl compileRequest = GwtCompileImpl.fromJsonString(jsonString);
-      X_Log.info(compileRequest.getDeps());
-      X_Log.info(compileRequest.getSrc());
-      //TODO compare this compile request with the previous one;
-      //if the classpath has changed, we should kill our thread and start again.
-      lastCompile = compileRequest;
-      //create a reflection channel to help us send serialized json between threads
-      Method method;
-      boolean rerun = compileLauncher.isSet();
-      //TODO: check if classpath has changed, and kill server if different.
-      synchronized(this){//only create one please!
-        if (null==io){
-          io = new CrossThreadVertxChannel(cl, jsonString, eb,getAddressBase()+".log"){
-            @Override
-            public void destroy() throws Exception {
-              compileLauncher.reset();
-              io = null;
-              super.destroy();
-            }
-          };
-        }
-        cp = getServerClasspath(lastCompile, io).toArray(new URL[0]);
-        io.setOutput(lastCompile.toString());
-        method = compileLauncher.get();
-      }
-
-      try {
-        try {
-          CompileResponseImpl reply = CompileResponseImpl.make()
-              .setModule(compileRequest.getModule())
-              .setCompilerStatus(CompilerState.RUNNING)
-           ;
-          if (!rerun){
-            //let the client know this is the first compile, and may be slow...
-            reply.setCompilerStatus(CompilerState.UNLOADED);
-          }
-          method.invoke(compiler, jsonString);
-          message.reply(Dto.wrap(reply));
-        } catch (InvocationTargetException e) {
-          Throwable t = e;
-          while (t instanceof InvocationTargetException&&t.getCause() != null)
-            t = t.getCause();
-          throw t;
-        }
-      } catch (Throwable e) {
-        e.printStackTrace();
-        if (e.getClass().getName().contains(RuntimeException.class.getSimpleName()) && e.getCause() != null)
-          e = e.getCause();
-        if (e.getClass().getName().contains(CompilerBusyException.class.getSimpleName())){
-          CompileResponseImpl status = CompileResponseImpl.make();
-          status.setCompilerStatus(CompilerState.BLOCKING);
-          status.setModule(compileRequest.getModule());
-          message.reply(Dto.wrap(status));
-        }else if (!isrepeat&&e.getClass().getName().contains(IllegalMonitorStateException.class.getSimpleName())){
-          io = null;
-          compileLauncher.reset();
-          try{
-            isrepeat = true;
-            handle(message);
-          }finally{
-            isrepeat = false;
-          }
-        }else{
-          io = null;
-          compileLauncher.reset();
-          e.printStackTrace();
-          if (vertx instanceof VertxInternal)
-            ((VertxInternal)vertx).reportException(e);
-          throw new RuntimeException(e);
-        }
-      }
-    }
-  }
-
 
   protected List<URL> getServerClasspath(final GwtCompile request, final CrossThreadVertxChannel io) {
     List<URL> list = new ArrayList<URL>(){
@@ -249,7 +111,7 @@ public abstract class AbstractPluginServer <Compiler extends AbstractCompileThre
     list.add(toUrl(libDir,"vertx/lib/jackson-mapper-asl-1.9.4.jar"));//required to run vertx threads
     list.add(toUrl(libDir,"vertx/lib/netty-3.5.9.Final.jar"));//required to run vertx threads
     list.add(toUrl(libDir,"vertx/lib/hazelcast-2.4.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"collide-server.jar"));//needed to run vertx threads
+    list.add(toUrl(libDir,"collide-server.jar"));//required to run vertx threads
 
     //now, add all the jars listed as source
     for (String cp : request.getSrc().asIterable()){
@@ -264,12 +126,10 @@ public abstract class AbstractPluginServer <Compiler extends AbstractCompileThre
     }
 
 
-    String xapiVersion = System.getProperty("xapi.version", "0.3");
-    if (!X_String.isEmpty(xapiVersion))
-    list.add(toUrl(libDir,"xapi-gwt-"+xapiVersion+".jar"));//needs to be before gwt-dev.
-    //inherit guava first, to avoid old repackaged jars
-//    list.add(toUrl(libDir,"guava-gwt-12.0.jar"));//needed for collide compile
-//    list.add(toUrl(libDir,"guava-12.0.jar"));//needed for collide compile
+    String xapiVersion = System.getProperty("xapi.version", "0.3");//Hardcode X_Namespace.XAPI_VERSION for now
+    if (!X_String.isEmpty(xapiVersion)) {
+      list.add(toUrl(libDir,"xapi-gwt-"+xapiVersion+".jar"));//needs to be before gwt-dev.
+    }
     
     list.add(toUrl(libDir,"gwt-user.jar"));//required by compiler
     list.add(toUrl(libDir,"gwt-dev.jar"));//required by compiler

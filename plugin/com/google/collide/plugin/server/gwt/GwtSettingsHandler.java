@@ -12,12 +12,12 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
 import xapi.log.X_Log;
+import collide.shared.manifest.CollideManifest;
+import collide.shared.manifest.CollideManifest.GwtEntry;
 
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtSettingsImpl;
 import com.google.collide.server.shared.util.Dto;
-import com.google.collide.shared.manifest.CollideManifest;
-import com.google.collide.shared.manifest.CollideManifest.GwtEntry;
 
 import elemental.util.ArrayOf;
 

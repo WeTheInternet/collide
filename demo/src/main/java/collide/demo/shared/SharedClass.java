@@ -2,14 +2,10 @@ package collide.demo.shared;
 
 import java.io.File;
 
-import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
-
-import xapi.annotation.reflect.KeepClass;
-import xapi.annotation.reflect.KeepConstructor;
-import xapi.annotation.reflect.KeepField;
-import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Runtime;
+
+import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
 
 /**
  * This is a test class for our reflection api;
@@ -19,7 +15,7 @@ import xapi.util.X_Runtime;
  * @author "James X. Nelson (james@wetheinter.net)"
  *
  */
-@ReflectionStrategy(keepCodeSource=true)
+@ReflectionStrategy(keepCodeSource=true, annotationRetention=ReflectionStrategy.ALL)
 public class SharedClass {
 
   public int sharedInt = 10;

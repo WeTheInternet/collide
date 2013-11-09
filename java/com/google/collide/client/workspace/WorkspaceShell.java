@@ -18,6 +18,7 @@ import com.google.collide.client.code.CodePerspective;
 import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.dom.Element;
@@ -71,7 +72,9 @@ public class WorkspaceShell extends UiComponent<WorkspaceShell.View> {
       this.headerView = new Header.View(res, detached);
       this.headerView.getElement().addClassName(res.workspaceShellCss().header());
       this.perspectivePanel = Elements.createDivElement(res.workspaceShellCss().perspectivePanel());
-
+      if (GWT.getModuleName().equals("Collie")) {
+        this.perspectivePanel.getStyle().setTop("57px");
+      }
       Element elem = getElement();
       elem.appendChild(headerView.getElement());
       elem.appendChild(perspectivePanel);

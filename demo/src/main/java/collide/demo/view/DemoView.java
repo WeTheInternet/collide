@@ -1,6 +1,14 @@
 package collide.demo.view;
 
 import xapi.log.X_Log;
+import xapi.util.api.RemovalHandler;
+import collide.demo.view.SplitPanel;
+import collide.gwtc.GwtCompileStatus;
+import collide.gwtc.GwtcController;
+import collide.gwtc.ui.GwtCompilePlace;
+import collide.gwtc.ui.GwtCompilerShell;
+import collide.gwtc.ui.GwtStatusListener;
+import collide.gwtc.view.GwtcModuleControlView;
 
 import com.google.collide.client.code.FileContent;
 import com.google.collide.client.ui.panel.MultiPanel;
@@ -11,12 +19,17 @@ import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.WorkspaceShell;
+import com.google.collide.dto.CompileResponse;
+import com.google.collide.dto.CompileResponse.CompilerState;
+import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.mvp.ShowableUiComponent;
 import com.google.collide.mvp.UiComponent;
-import com.google.collide.plugin.client.gwt.GwtCompilePlace;
-import com.google.collide.plugin.client.gwt.GwtCompilerShell;
 import com.google.collide.plugin.client.standalone.StandaloneConstants;
 import com.google.collide.plugin.client.terminal.TerminalLogView;
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 
 import elemental.client.Browser;
 import elemental.dom.Document;
@@ -58,17 +71,27 @@ extends MultiPanel<PanelModel, ControllerView>
   
   private Element browser, editor, compiler, header;
   private ShowableUiComponent<?> bar;
-  private SplitPanel body;
+  private final SplitPanel middleBar;
+  private final SplitPanel bottomBar;
+  private final SplitPanel verticalSplit;
   
   public DemoView() {
     super(new ControllerView(findBody(), true));
-    body = new SplitPanel(false);
+    
+    middleBar = new SplitPanel(false);
+    bottomBar = new SplitPanel(false);
+    verticalSplit = new SplitPanel(true);
+    
     header = Browser.getDocument().createDivElement();
-    header.getStyle().setHeight(65, "px");
+    header.getStyle().setHeight(58, "px");
     Browser.getDocument().getBody().appendChild(header);
     Element el = getView().getElement();
-    el.getStyle().setTop(65, "px");
-    el.appendChild(body.getElement());
+    el.getStyle().setTop(58, "px");
+    
+    verticalSplit.addChild(middleBar.getElement(), 0.75);
+    verticalSplit.addChild(bottomBar.getElement(), 0.25);
+    el.appendChild(verticalSplit.getElement());
+    
     bar = new ShowableUiComponent<View<?>>() {
       // We aren't using the toolbar just yet.
       @Override
@@ -86,15 +109,27 @@ extends MultiPanel<PanelModel, ControllerView>
     editor = createElement(-1, -1);
     editor.setId(StandaloneConstants.WORKSPACE_PANEL);
 
-    compiler = createElement(-1, 650);
+    compiler = Browser.getDocument().createDivElement();
+    middleBar.addChild(compiler, 650);
     
-//    terminal = createElement(-1, 0.25);
+    attachHandlers();
     
   }
   
+  protected void attachHandlers() {
+    Window.addResizeHandler(new ResizeHandler() {
+      @Override
+      public void onResize(ResizeEvent event) {
+        verticalSplit.refresh();
+        middleBar.refresh();
+        bottomBar.refresh();
+      }
+    });
+  }
+
   private Element createElement(int index, double width) {
     DivElement el = Browser.getDocument().createDivElement();
-    body.addChild(el, width);
+    middleBar.addChild(el, width);
     return el;
   }
 
@@ -105,7 +140,7 @@ extends MultiPanel<PanelModel, ControllerView>
   }
 
   private void append(Element element) {
-    body.addChild(wrapChild(element), 0.2);
+    bottomBar.addChild(wrapChild(element), 0.2);
   }
   public void append(UiComponent<?> element) {
     Element el = wrapChild(element.getView().getElement());
@@ -150,17 +185,18 @@ extends MultiPanel<PanelModel, ControllerView>
       editor.getFirstChildElement().getLastElementChild().setInnerHTML("");
       editor.getFirstChildElement().getLastElementChild().appendChild(file.getContentElement());
     } else if (panelContent instanceof TerminalLogView) {
-        body.addChild(panelContent.getContentElement(), 500, 4);
-      }
-      else if (panelContent instanceof UiComponent){
-        append((UiComponent<?>)panelContent);
-      } else {
-        X_Log.warn("Unhandled panel type: ",panelContent.getClass(), panelContent);
-        append(panelContent.getContentElement());
-        throw new RuntimeException();
+      bottomBar.addChild(panelContent.getContentElement(), 500, 0);
+    } else if (panelContent instanceof GwtCompilerShell){
+//      Element el = wrapChild(((UiComponent<?>)panelContent).getView().getElement());
+//      bottomBar.addChild(el, 0.3);
+    } else if (panelContent instanceof UiComponent){
+      append((UiComponent<?>)panelContent);
+    } else {
+      X_Log.warn("Unhandled panel type: ",panelContent.getClass(), panelContent);
+      append(panelContent.getContentElement());
+      throw new RuntimeException();
     }
     panelContent.onContentDisplayed();
-//    append(panelContent);
   }
   
   public void minimizeFile(final PathUtil path) {
@@ -180,58 +216,154 @@ extends MultiPanel<PanelModel, ControllerView>
     return bar;
   }
 
-  private final MapFromStringTo<IFrameElement> iframes = Collections.mapFromStringTo();
+  private static final class GwtCompileState {
+    IFrameElement el;
+    GwtCompileStatus status = GwtCompileStatus.Pending;
+    Type logLevel = Type.ALL;
+    public GwtcModuleControlView header;
+  }
   
-  public void openIframe(final String id, String url) {
+  private final MapFromStringTo<GwtCompileState> compileStates = Collections.mapFromStringTo();
+  private GwtCompilerShell gwt;
+  
+  public RemovalHandler openIframe(final String id, final String url) {
     
-    IFrameElement iframe = iframes.get(id);
+    final GwtCompileState gwtc = getCompileState(id);
+    IFrameElement iframe = gwtc.el;
     if (iframe == null) {
-      iframe = Browser.getDocument().createIFrameElement();
-      iframe.getStyle().setPosition("absolute");
-      iframe.getStyle().setWidth("93%");
-      iframe.getStyle().setHeight("85%");
-      iframe.getStyle().setTop("50px");
-      iframes.put(id, iframe);
+      DivElement sizer = Elements.createDivElement();
+      sizer.getStyle().setPosition("absolute");
+      sizer.getStyle().setLeft("0px");
+      sizer.getStyle().setRight("10px");
+      sizer.getStyle().setTop("50px");
+      sizer.getStyle().setBottom("20px");
+
+      gwtc.el = iframe = Browser.getDocument().createIFrameElement();
+      iframe.getStyle().setWidth("100%");
+      iframe.getStyle().setHeight("100%");
+
       iframe.setSrc(url);
-      DivElement wrapper = Browser.getDocument().createDivElement();
-//      DivElement header = Browser.getDocument().createDivElement();
-      ImageElement reload = Browser.getDocument().createImageElement();
-      /**
-       * Image credit: 
-       * <a href='http://www.123rf.com/photo_15417761_reload-icon.html'>alexwhite / 123RF Stock Photo</a>
-       * (license is paid, but requires attribution)
-       */
-      reload.setSrc("/static/Demo/reload.png");
-      reload.getStyle().setCursor("pointer");
-      reload.setOnclick(new EventListener() {
+      sizer.appendChild(iframe);
+      
+      final RemovalHandler[] remover = new RemovalHandler[1];
+      gwtc.header = GwtcModuleControlView.create(new GwtcController() {
         @Override
-        public void handleEvent(Event evt) {
+        public void onReloadClicked() {
           GwtCompilePlace.PLACE.fireRecompile(id);
         }
+        @Override
+        public void onCloseClicked() {
+          if (remover[0] != null) {
+            removeCompileState(id);
+            remover[0].remove();
+            remover[0] = null;
+          }
+        }
+        @Override
+        public void onRefreshClicked() {
+          gwtc.el.setSrc(url);
+        }
       });
-      PanelHeader headerWidget = PanelHeader.create(wrapper, null, null);
-      Elements.asJsElement(headerWidget.icons).appendChild(reload);
-      Element head = Elements.asJsElement(headerWidget.header);
-      head.setInnerHTML(id);
-      head.getStyle().setPosition("absolute");
-      head.getStyle().setLeft("50px");
-      head.getStyle().setMargin("0px");
-      head.getStyle().setTop("5px");
       
-//      wrapper.appendChild(headerWidget.getElement());
-      wrapper.appendChild(iframe);
+      Element wrapper = gwtc.header.getElement();
+      gwtc.header.setHeader(id);
+      wrapper.appendChild(sizer);
       wrapper.getStyle().setOverflow("hidden");
-      body.addChild(wrapper, 450, 2);
+      remover[0] = bottomBar.addChild(wrapper, 450, 0);
     } else {
       iframe.setSrc("about:blank");
       iframe.setSrc(url);
     }
     iframe.scrollIntoViewIfNeeded(true);
+    return new RemovalHandler() {
+      @Override
+      public void remove() {
+        removeCompileState(id);
+      }
+    };
+  }
+
+  protected GwtCompileState getCompileState(String id) {
+    GwtCompileState state = compileStates.get(id);
+    if (state == null) {
+      state = new GwtCompileState();
+      compileStates.put(id, state);
+    }
+    return state;
+  }
+  protected void removeCompileState(String id) {
+    compileStates.remove(id);
+    // TODO kill any active compiles?
   }
 
   @Override
   public Builder<PanelModel> newBuilder() {
     return defaultBuilder();
+  }
+
+  public void initGwt(final GwtCompilerShell gwt) {
+    this.gwt = gwt;
+
+    gwt.addCompileStateListener(new GwtStatusListener() {
+      
+      @Override
+      public void onLogLevelChange(String module, Type level) {
+        GwtCompileState gwtc = getCompileState(module);
+        gwtc.logLevel = level;
+        switch (level) {
+          case ERROR:
+            gwtc.status = GwtCompileStatus.Fail;
+            if (gwtc.header != null) {
+              gwtc.header.setCompileStatus(gwtc.status);
+            }
+            break;
+          case WARN:
+            gwtc.status = GwtCompileStatus.Warn;
+            if (gwtc.header != null) {
+              gwtc.header.setCompileStatus(gwtc.status);
+            }
+            break;
+        }
+      }
+      
+      @Override
+      public void onGwtStatusUpdate(CompileResponse status) {
+        GwtCompileState gwtc = getCompileState(status.getModule());
+        CompilerState state = status.getCompilerStatus();
+        X_Log.info(getClass(), "State change",status.getModule(),state, new Exception());
+        switch (state) {
+          case FAILED:
+            gwtc.status = GwtCompileStatus.Fail;
+            if (gwtc.header != null) {
+              gwtc.header.setCompileStatus(gwtc.status);
+            }
+            break;
+          case FINISHED:
+          case SERVING:
+            if (gwtc.logLevel.ordinal() >= Type.ERROR.ordinal()) {
+              gwtc.status = GwtCompileStatus.PartialSuccess;
+            } else {
+              gwtc.status = GwtCompileStatus.Success;
+            }
+            if (gwtc.header != null) {
+              gwtc.header.setCompileStatus(gwtc.status);
+            }
+            break;
+          case RUNNING:
+            gwtc.status = GwtCompileStatus.Good;
+            if (gwt.isAutoOpen()) {
+              GwtCompileImpl value = gwt.getValue();
+              gwt.getView().getDelegate().openIframe(value.getModule(), value.getPort());
+            }
+            if (gwtc.header != null) {
+              gwtc.header.setCompileStatus(gwtc.status);
+            }
+          case BLOCKING:
+          case UNLOADED:
+        }
+      }
+    });
+    append(gwt);
   }
   
 }

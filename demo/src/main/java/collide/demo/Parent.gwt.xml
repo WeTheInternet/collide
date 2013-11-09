@@ -2,8 +2,7 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.1//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
 <module rename-to="Demo">
   <source path="" />
-  <inherits name="xapi.X_Reflect"/>
-  <inherits name="elemental.Elemental"/>
+  <inherits name="collide.Gwtc"/>
   
   <inherits name="com.google.collide.plugin.Plugin" />
   <inherits name="com.google.collide.client.Imports" />

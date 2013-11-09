@@ -11,6 +11,7 @@ import org.vertx.java.core.net.NetServer;
 import org.vertx.java.core.net.NetSocket;
 
 import xapi.inject.impl.LazyPojo;
+import xapi.log.X_Log;
 
 public class VertxLauncher extends LazyPojo<Vertx> {
 
@@ -61,12 +62,12 @@ public class VertxLauncher extends LazyPojo<Vertx> {
         event.closedHandler(new Handler<Void>() {
           @Override
           public void handle(Void event) {
-            System.out.println("Closed");
+            X_Log.debug("Closed");
           }
         });
         event.dataHandler(new Handler<Buffer>() {
           public void handle(Buffer buffer) {
-            System.out.println("Buffering");
+            X_Log.debug("Buffering");
             try{
               handleBuffer(event, buffer);
             }catch (Exception e) {
@@ -80,7 +81,7 @@ public class VertxLauncher extends LazyPojo<Vertx> {
         event.endHandler(new Handler<Void>() {
           @Override
           public void handle(Void event) {
-            System.out.println("Ending");
+            X_Log.debug("Ending");
           }
         });
       }

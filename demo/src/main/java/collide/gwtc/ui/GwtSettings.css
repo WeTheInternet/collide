@@ -1,0 +1,19 @@
+.settingsContainer {
+ 
+}
+
+.urlBoxContainer {
+ overflow: hidden;
+ transition: height 0.5s; /* IE10 and all modern browsers */
+-moz-transition: height 0.5s; /* Firefox 4 */
+-webkit-transition: height 0.5s; /* Safari and Chrome */
+-o-transition: height 0.5s; /* Opera */ 
+}
+.urlBox {}
+
+input:focus {
+ -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-box-shadow: 0 0 3px 5px #28f;
+  box-shadow: 0 0 3px 3px rgba(140, 190, 255, 255);
+}
