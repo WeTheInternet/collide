@@ -14,14 +14,15 @@
 
 package com.google.collide.client.code;
 
+import collide.client.filetree.FileTreeUiController;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.gotodefinition.GoToDefinitionRenderer;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.client.ui.panel.PanelModel.Builder;
-import com.google.collide.client.util.Elements;
-import com.google.collide.client.workspace.FileTreeUiController;
 import com.google.collide.mvp.ShowableUiComponent;
 import com.google.gwt.resources.client.CssResource;
 
@@ -69,7 +70,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
       NoFileSelectedPanel.Resources,
       UneditableDisplay.Resources {
 
-    @Source({"com/google/collide/client/common/constants.css", "EditableContentArea.css"})
+    @Source({"collide/client/common/constants.css", "EditableContentArea.css"})
     Css editableContentAreaCss();
   }
 

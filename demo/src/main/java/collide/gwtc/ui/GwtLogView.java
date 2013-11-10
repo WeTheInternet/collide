@@ -1,7 +1,8 @@
 package collide.gwtc.ui;
 
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources;
+
+import collide.client.util.Elements;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.json.client.JsoArray;
@@ -67,7 +68,7 @@ public class GwtLogView extends UiComponent<GwtLogView.View>{
 
   public interface Resources extends 
     ClientBundle 
-    ,BaseResources.Resources
+    ,CommonResources.BaseResources
     {
     @Source("GwtLogView.css")
     Css gwtLogCss();

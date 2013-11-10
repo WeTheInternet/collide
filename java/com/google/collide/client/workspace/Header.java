@@ -14,6 +14,10 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.history.Place;
@@ -32,8 +36,6 @@ import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.UserDetails;
 import com.google.collide.mvp.CompositeView;
@@ -196,7 +198,7 @@ public class Header extends UiComponent<Header.View> {
     @Source("trunk_branch_icon.png")
     ImageResource trunkBranchIcon();
 
-    @Source({"Header.css", "constants.css", "com/google/collide/client/common/constants.css"})
+    @Source({"Header.css", "constants.css", "collide/client/common/constants.css"})
     Css workspaceHeaderCss();
   }
 

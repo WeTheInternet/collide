@@ -14,8 +14,7 @@
 
 package com.google.collide.client.util.dom;
 
-import com.google.collide.client.util.Elements;
-
+import collide.client.util.Elements;
 import elemental.css.CSSStyleDeclaration;
 import elemental.dom.Element;
 

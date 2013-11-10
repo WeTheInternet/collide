@@ -75,7 +75,7 @@ public class ParenMatchHighlighter {
    * Paren match highlighting resources.
    */
   public interface Resources extends ClientBundle {
-    @Source({"ParenMatchHighlighter.css", "com/google/collide/client/common/constants.css"})
+    @Source({"ParenMatchHighlighter.css", "collide/client/common/constants.css"})
     Css parenMatchHighlighterCss();
   }
 

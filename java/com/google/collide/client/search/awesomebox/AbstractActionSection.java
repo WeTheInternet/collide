@@ -14,8 +14,9 @@
 
 package com.google.collide.client.search.awesomebox;
 
+import collide.client.util.CssUtils;
+
 import com.google.collide.client.search.awesomebox.AwesomeBox.Resources;
-import com.google.collide.client.util.CssUtils;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.StringUtils;
 

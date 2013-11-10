@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui.list;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.ElementView;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.shared.JsonArray;
@@ -119,7 +120,7 @@ public class SimpleList<M> extends UiComponent<SimpleList.View> {
   }
 
   public interface Resources extends ClientBundle {
-    @Source({"SimpleList.css", "com/google/collide/client/common/constants.css"})
+    @Source({"SimpleList.css", "collide/client/common/constants.css"})
     Css defaultSimpleListCss();
 
     @Source({"Sidebar.css"})

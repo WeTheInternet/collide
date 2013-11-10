@@ -14,6 +14,8 @@
 
 package com.google.collide.client.util;
 
+import collide.client.util.BrowserUtils;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 

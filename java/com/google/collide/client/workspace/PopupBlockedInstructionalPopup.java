@@ -14,9 +14,10 @@
 
 package com.google.collide.client.workspace;
 
-import com.google.collide.client.common.BaseResources;
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.popup.CenterPanel;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;
@@ -59,9 +60,9 @@ public class PopupBlockedInstructionalPopup
   }
 
   /**
-   * Resources interface.
+   * BaseResources interface.
    */
-  public interface Resources extends BaseResources.Resources, CenterPanel.Resources {
+  public interface Resources extends CommonResources.BaseResources, CenterPanel.Resources {
     @Source("PopupBlockedInstructionalPopup.css")
     Css popupBlockedInstructionalPopupCss();
 
@@ -83,7 +84,7 @@ public class PopupBlockedInstructionalPopup
     final Resources res;
 
     @UiField(provided = true)
-    final BaseResources.Css baseCss;
+    final CommonResources.BaseCss baseCss;
 
     @UiField(provided = true)
     final Css css;

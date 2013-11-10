@@ -15,8 +15,8 @@
 package com.google.collide.client.workspace;
 
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel.NodeRequestCallback;
-import com.google.collide.client.workspace.FileTreeModelNetworkController.OutgoingController;
+import collide.client.filetree.FileTreeModel.NodeRequestCallback;
+import collide.client.filetree.FileTreeModelNetworkController.OutgoingController;
 
 /**
  * A no-op mock of {@link OutgoingController}.

@@ -14,6 +14,12 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.filetree.AppContextFileTreeController;
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeModelNetworkController;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.Resources;
 import com.google.collide.client.code.CodePanelBundle;
@@ -28,7 +34,6 @@ import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.search.TreeWalkFileNameSearchImpl;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.util.Elements;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GetWorkspaceMetaDataImpl;
@@ -100,11 +105,12 @@ public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<Work
     WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res, isDetached());
     workspacePlace = navigationEvent.getPlace();
 
+    final FileTreeController<?> fileTreeController = new AppContextFileTreeController(appContext);
     FileTreeModelNetworkController.OutgoingController fileTreeModelOutgoingNetworkController = new FileTreeModelNetworkController.OutgoingController(
-      appContext);
+      fileTreeController);
     FileTreeModel fileTreeModel = new FileTreeModel(fileTreeModelOutgoingNetworkController);
 
-    documentManager = DocumentManager.create(fileTreeModel, appContext);
+    documentManager = DocumentManager.create(fileTreeModel, fileTreeController);
 
     searchIndex.setFileTreeModel(fileTreeModel);
 
@@ -116,7 +122,7 @@ public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<Work
 
     DocOpsSavedNotifier docOpSavedNotifier = new DocOpsSavedNotifier(documentManager, collaborationManager);
 
-    fileNetworkController = FileTreeModelNetworkController.create(fileTreeModel, appContext,
+    fileNetworkController = FileTreeModelNetworkController.create(fileTreeModel, fileTreeController,
       navigationEvent.getPlace());
 
     header = Header.create(workspaceShellView.getHeaderView(), workspaceShellView, workspacePlace,
@@ -148,7 +154,7 @@ public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<Work
       }
     });
 
-    codePanelBundle = createCodePanelBundle(appContext, shell, fileTreeModel, searchIndex, documentManager,
+    codePanelBundle = createCodePanelBundle(appContext, shell, fileTreeController, fileTreeModel, searchIndex, documentManager,
       participantModel, docOpRecipient, navigationEvent.getPlace());
     codePanelBundle.attach(isDetached());
     codePanelBundle.setMasterPanel(createMasterPanel(res));
@@ -200,9 +206,9 @@ public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<Work
   }
 
   protected CodePanelBundle createCodePanelBundle(AppContext appContext, WorkspaceShell shell,
-    FileTreeModel fileTreeModel, FileNameSearch searchIndex, DocumentManager documentManager,
+    FileTreeController<?> fileTreeController, FileTreeModel fileTreeModel, FileNameSearch searchIndex, DocumentManager documentManager,
     ParticipantModel participantModel, IncomingDocOpDemultiplexer docOpRecipient, WorkspacePlace place) {
-    return new CodePanelBundle(appContext, shell, fileTreeModel, searchIndex, documentManager,
+    return new CodePanelBundle(appContext, shell, fileTreeController, fileTreeModel, searchIndex, documentManager,
       participantModel, docOpRecipient, place);
   }
 

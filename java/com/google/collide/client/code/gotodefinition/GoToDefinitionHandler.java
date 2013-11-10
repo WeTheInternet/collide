@@ -18,6 +18,8 @@ import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEvent.KeyModifier;
 import org.waveprotocol.wave.client.common.util.UserAgent;
 
+import collide.client.filetree.FileTreeModel;
+
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.codeunderstanding.CubeClient;
 import com.google.collide.client.documentparser.DocumentParser;
@@ -31,7 +33,6 @@ import com.google.collide.client.editor.input.Shortcut;
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
 import com.google.collide.shared.document.LineFinder;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.util.ListenerRegistrar;

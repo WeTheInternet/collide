@@ -14,14 +14,15 @@
 
 package com.google.collide.client.editor;
 
+import collide.client.common.CommonResources;
+import collide.client.common.Constants;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.common.Constants;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator.RoundingStrategy;
 import com.google.collide.client.editor.renderer.Renderer;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.Executor;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.client.util.dom.DomUtils.Offset;
@@ -71,9 +72,9 @@ public class Buffer extends UiComponent<Buffer.View>
   /**
    * Static factory method for obtaining an instance of Buffer.
    */
-  public static Buffer create(AppContext appContext, FontDimensions fontDimensions,
+  public static Buffer create(Buffer.Resources resources, FontDimensions fontDimensions,
       LineDimensionsCalculator lineDimensions, Executor renderTimeExecutor) {
-    View view = new View(appContext.getResources());
+    View view = new View(resources);
     Buffer buffer = new Buffer(view, fontDimensions, lineDimensions, renderTimeExecutor);
     MouseWheelRedirector.redirect(buffer, view.scrollableElement);
     return buffer;
@@ -151,8 +152,8 @@ public class Buffer extends UiComponent<Buffer.View>
   /**
    * ClientBundle for the editor.
    */
-  public interface Resources extends BaseResources.Resources {
-    @Source({"Buffer.css", "constants.css", "com/google/collide/client/common/constants.css"})
+  public interface Resources extends CommonResources.BaseResources {
+    @Source({"Buffer.css", "constants.css", "collide/client/common/constants.css"})
 
     Css workspaceEditorBufferCss();
   }
@@ -257,7 +258,7 @@ public class Buffer extends UiComponent<Buffer.View>
       setElement(rootElement);
     }
 
-    private Element createScrollbarElement(BaseResources.Css baseCss) {
+    private Element createScrollbarElement(CommonResources.BaseCss baseCss) {
       final DivElement scrollbarElement = Elements.createDivElement(css.scrollbar());
       scrollbarElement.addClassName(baseCss.documentScrollable());
 
@@ -282,7 +283,7 @@ public class Buffer extends UiComponent<Buffer.View>
       return scrollbarElement;
     }
 
-    private Element createScrollableElement(BaseResources.Css baseCss) {
+    private Element createScrollableElement(CommonResources.BaseCss baseCss) {
       final DivElement scrollableElement = Elements.createDivElement(css.scrollable());
       scrollableElement.addClassName(baseCss.documentScrollable());
 

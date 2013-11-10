@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui.button;
 
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.ImageResourceUtils;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
@@ -37,12 +38,12 @@ public class ImageButton extends UiComponent<ImageButton.View> {
    * Creates an {@link ImageButton}.
    */
   public static class Builder {
-    private final BaseResources.Resources res;
+    private final CommonResources.BaseResources res;
     private ImageResource image;
     private String text;
     private AnchorElement element;
 
-    public Builder(BaseResources.Resources res) {
+    public Builder(CommonResources.BaseResources res) {
       this.res = res;
     }
 
@@ -94,12 +95,12 @@ public class ImageButton extends UiComponent<ImageButton.View> {
      */
     private static final int ICON_SPACING = 8;
 
-    private final BaseResources.Css baseCss;
+    private final CommonResources.BaseCss baseCss;
     private final DivElement imageElem;
     private final DivElement imagePositioner;
     private final DivElement textElem;
 
-    public View(BaseResources.Resources res, AnchorElement button) {
+    public View(CommonResources.BaseResources res, AnchorElement button) {
       baseCss = res.baseCss();
 
       // Create an outer element.

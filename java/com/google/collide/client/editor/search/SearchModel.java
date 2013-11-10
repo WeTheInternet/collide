@@ -15,6 +15,7 @@
 package com.google.collide.client.editor.search;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.editor.EditorContext;
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.renderer.Renderer;
 import com.google.collide.client.editor.selection.SelectionModel;
@@ -37,7 +38,7 @@ import com.google.gwt.regexp.shared.RegExp;
  */
 public class SearchModel {
 
-  public static SearchModel create(AppContext context,
+  public static SearchModel create(EditorContext<?> context,
       Document document,
       Renderer renderer,
       ViewportModel viewport,
@@ -63,7 +64,7 @@ public class SearchModel {
         selectionModel);
   }
 
-  public static SearchModel createWithManagerAndScheduler(AppContext context,
+  public static SearchModel createWithManagerAndScheduler(EditorContext<?> context,
       Document document,
       Renderer renderer,
       ViewportModel viewport,
@@ -130,7 +131,7 @@ public class SearchModel {
   private final SelectionModel selectionModel;
   private final SearchTaskHandler searchTaskHandler;
 
-  protected SearchModel(AppContext context,
+  protected SearchModel(EditorContext<?> context,
       Document document,
       Renderer renderer,
       ViewportModel viewport,

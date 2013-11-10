@@ -14,7 +14,8 @@
 
 package com.google.collide.client.status;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.collide.json.client.JsoArray;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;

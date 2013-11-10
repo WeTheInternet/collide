@@ -1,19 +1,17 @@
 package collide.gwtc.ui;
 
-import java.util.ArrayList;
-
 import xapi.collect.impl.InitMapDefault;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
 import xapi.util.api.ReceivesValue;
 import xapi.util.api.RemovalHandler;
 import xapi.util.api.SuccessHandler;
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.PluginContent;
-import com.google.collide.client.common.BaseResources;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.ResizeBounds.BoundsBuilder;
 import com.google.collide.client.util.logging.Log;
@@ -30,7 +28,6 @@ import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.CompileResponseImpl;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.dto.client.DtoClientImpls.LogMessageImpl;
-import com.google.collide.dto.shared.CookieKeys;
 import com.google.collide.json.client.Jso;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -50,7 +47,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 
 import elemental.dom.Element;
 import elemental.events.Event;
@@ -104,7 +100,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
   public interface Resources extends
     ClientBundle
-    ,BaseResources.Resources
+    ,CommonResources.BaseResources
     ,GwtLogView.Resources
     ,GwtModuleView.Resources
     ,GwtClasspathView.Resources

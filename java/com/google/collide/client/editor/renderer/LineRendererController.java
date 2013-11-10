@@ -14,9 +14,10 @@
 
 package com.google.collide.client.editor.renderer;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.document.linedimensions.LineDimensionsUtils;
 import com.google.collide.client.editor.Buffer;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Line;

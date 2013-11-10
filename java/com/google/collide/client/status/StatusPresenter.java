@@ -14,11 +14,12 @@
 
 package com.google.collide.client.status;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.testing.DebugAttributeSetter;
 import com.google.collide.client.testing.DebugId;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.mvp.CompositeView;
@@ -87,7 +88,7 @@ public class StatusPresenter extends UiComponent<StatusPresenter.View>
     @Source("fatal_border.png")
     ImageResource fatalBorder();
 
-    @Source({"com/google/collide/client/common/constants.css", "StatusPresenter.css"})
+    @Source({"collide/client/common/constants.css", "StatusPresenter.css"})
     Css statusPresenterCss();
   }
 

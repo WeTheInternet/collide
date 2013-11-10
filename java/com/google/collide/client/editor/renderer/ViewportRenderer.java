@@ -16,13 +16,14 @@ package com.google.collide.client.editor.renderer;
 
 import java.util.EnumSet;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.ViewportModel.Edge;
 import com.google.collide.client.editor.renderer.Renderer.LineLifecycleListener;
 import com.google.collide.client.testing.DebugAttributeSetter;
-import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.Line;

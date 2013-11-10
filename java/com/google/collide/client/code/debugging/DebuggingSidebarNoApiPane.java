@@ -16,8 +16,9 @@ package com.google.collide.client.code.debugging;
 
 import javax.annotation.Nullable;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.AnimationUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;

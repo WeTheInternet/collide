@@ -14,10 +14,11 @@
 
 package com.google.collide.client.search;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.FileContent;
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.SearchResponse;
 import com.google.collide.dto.SearchResult;

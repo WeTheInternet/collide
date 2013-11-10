@@ -14,15 +14,16 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeLabelRenamer;
+import collide.client.treeview.TreeNodeMutator;
+
 import com.google.collide.client.ui.dropdown.DropdownController;
 import com.google.collide.client.ui.dropdown.DropdownController.DropdownPositionerBuilder;
 import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer;
-import com.google.collide.client.ui.tree.TreeNodeMutator;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.StringUtils;

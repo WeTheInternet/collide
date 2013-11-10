@@ -14,10 +14,11 @@
 
 package com.google.collide.client.ui.dropdown;
 
-import com.google.collide.client.common.BaseResources;
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.button.ImageButton2;
 import com.google.collide.client.ui.list.SimpleList;
-import com.google.collide.client.util.Elements;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;
 
@@ -55,7 +56,7 @@ public class DropdownWidgets {
     public String splitButtonArrow();
   }
 
-  public interface Resources extends BaseResources.Resources, SimpleList.Resources {
+  public interface Resources extends CommonResources.BaseResources, SimpleList.Resources {
     @Source("DropdownWidgets.css")
     Css dropdownWidgetsCss();
   }
@@ -136,7 +137,7 @@ public class DropdownWidgets {
     private final ImageButton2 triggerButton;
 
     public SplitDropdownButton(Resources res, Element container, ImageResource labelImage) {
-      BaseResources.Css baseCss = res.baseCss();
+      CommonResources.BaseCss baseCss = res.baseCss();
       Css css = res.dropdownWidgetsCss();
 
       labelButton = new ImageButton2(res, labelImage);

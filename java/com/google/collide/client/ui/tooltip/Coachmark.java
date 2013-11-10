@@ -14,12 +14,13 @@
 
 package com.google.collide.client.ui.tooltip;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Coachmark.View;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.CssResource;

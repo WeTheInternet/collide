@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
-import com.google.collide.client.ui.tree.Tree.Css;
+import collide.client.treeview.Tree.Css;
+
 import com.google.collide.client.util.AnimationController;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
 import elemental.css.CSSStyleDeclaration;
 import elemental.dom.Element;
 import elemental.html.DivElement;

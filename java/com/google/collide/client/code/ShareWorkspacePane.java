@@ -14,11 +14,12 @@
 
 package com.google.collide.client.code;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.HistoryUtils;
 import com.google.collide.client.util.AnimationController;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.ClientBundle;

@@ -49,7 +49,7 @@
 @def landingTitleFontSize 20px;
 @def titleFontSize 16px;
 @def secondaryTextFontSize 11px;
-@eval scrollbarSize com.google.collide.client.common.Constants.SCROLLBAR_SIZE+"px";
+@eval scrollbarSize collide.client.common.Constants.SCROLLBAR_SIZE+"px";
 @def largeLabel 14px;
 @def largeDropdownLabel 12px;
 

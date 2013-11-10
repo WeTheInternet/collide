@@ -17,7 +17,8 @@ package com.google.collide.client.editor;
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.UserAgent;
 
-import com.google.collide.client.common.Constants;
+import collide.client.common.Constants;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.shared.document.LineInfo;

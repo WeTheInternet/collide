@@ -14,6 +14,9 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.CallFrame;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.Location;
@@ -23,8 +26,6 @@ import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObject;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.Scope;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.testing.DebugAttributeSetter;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.JsIntegerMap;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
@@ -72,9 +73,9 @@ public class DebuggingModelRenderer {
     DataResource breakpointGutterInactiveResource();
   }
 
-  public static DebuggingModelRenderer create(AppContext appContext, Editor editor,
+  public static DebuggingModelRenderer create(DebuggingModelRenderer.Resources resources, Editor editor,
       DebuggingSidebar debuggingSidebar, DebuggerState debuggerState) {
-    return new DebuggingModelRenderer(appContext, editor, debuggingSidebar, debuggerState);
+    return new DebuggingModelRenderer(resources, editor, debuggingSidebar, debuggerState);
   }
 
   private final Css css;
@@ -84,9 +85,9 @@ public class DebuggingModelRenderer {
   private JsIntegerMap<Element> lineNumberToElementCache = JsIntegerMap.create();
   private AnchoredExecutionLine anchoredExecutionLine;
 
-  private DebuggingModelRenderer(AppContext appContext, Editor editor,
+  private DebuggingModelRenderer(DebuggingModelRenderer.Resources resources, Editor editor,
       DebuggingSidebar debuggingSidebar, DebuggerState debuggerState) {
-    this.css = appContext.getResources().workspaceEditorDebuggingModelCss();
+    this.css = resources.workspaceEditorDebuggingModelCss();
     this.editor = editor;
     this.debuggingSidebar = debuggingSidebar;
     this.debuggerState = debuggerState;

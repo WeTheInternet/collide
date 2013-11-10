@@ -14,8 +14,9 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.ResizeController;
 import com.google.collide.client.util.ResizeController.ResizeProperty;
 import com.google.collide.client.workspace.outline.OutlineSection;
@@ -89,7 +90,7 @@ public class WorkspaceNavigation extends UiComponent<WorkspaceNavigation.View> {
       WorkspaceNavigationToolBar.Resources,
       ResizeController.Resources {
 
-    @Source({"com/google/collide/client/common/constants.css", "WorkspaceNavigation.css"})
+    @Source({"collide/client/common/constants.css", "WorkspaceNavigation.css"})
     Css workspaceNavigationCss();
   }
 

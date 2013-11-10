@@ -12,13 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
+
+import collide.client.filetree.FileTreeUiController.DragDropListener;
+import collide.client.treeview.SelectionModel;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
-import com.google.collide.client.ui.tree.SelectionModel;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeUiController.DragDropListener;
+import com.google.collide.client.workspace.WorkspaceReadOnlyChangedEvent;
+import com.google.collide.client.workspace.WorkspaceReadOnlyChangedEvent.Handler;
 import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.Mutation;
 import com.google.collide.dto.ServerError.FailureReason;

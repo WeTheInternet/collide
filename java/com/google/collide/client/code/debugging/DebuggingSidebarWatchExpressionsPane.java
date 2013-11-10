@@ -15,7 +15,8 @@
 package com.google.collide.client.code.debugging;
 
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.common.annotations.VisibleForTesting;

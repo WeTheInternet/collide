@@ -14,6 +14,9 @@
 
 package com.google.collide.client.code;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.filehistory.FileHistoryPlace;
 import com.google.collide.client.history.Place;
@@ -22,8 +25,6 @@ import com.google.collide.client.ui.menu.PositionController.Position;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.mvp.CompositeView;

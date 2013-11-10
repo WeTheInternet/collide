@@ -12,14 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEventImpl;
 
 import com.google.collide.client.util.AnimationController;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.dom.MouseGestureListener;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -45,8 +47,8 @@ import elemental.js.html.JsDragEvent;
  * data type is specified in the class parameterization.
  *
  * Users of this widget must specify an appropriate
- * {@link com.google.collide.client.ui.tree.NodeDataAdapter} and
- * {@link com.google.collide.client.ui.tree.NodeRenderer}.
+ * {@link collide.client.treeview.NodeDataAdapter} and
+ * {@link collide.client.treeview.NodeRenderer}.
  *
  *  The DOM structure for a tree is a recursive structure of the following form
  * (note that class names will be obfuscated at runtime, and are just specified
@@ -82,7 +84,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
   }
 
   /**
-   * Css selectors applied to DOM elements in the tree.
+   * BaseCss selectors applied to DOM elements in the tree.
    */
   public interface Css extends CssResource {
     String active();
@@ -192,7 +194,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
   }
 
   /**
-   * Images and Css resources used by the Tree.
+   * Images and BaseCss resources used by the Tree.
    *
    * In order to theme the Tree, you extend this interface and override
    * {@link Tree.Resources#treeCss()}.
@@ -202,7 +204,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
     ImageResource expansionIcon();
 
     // Default Stylesheet.
-    @Source({"com/google/collide/client/common/constants.css",
+    @Source({"collide/client/common/constants.css",
         "Tree.css"})
     Css treeCss();
   }
@@ -845,7 +847,7 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
 
   /**
    * Replaces the old node in the tree with data representing the subtree rooted
-   * where the old node used to be iff the old node was rendered.
+   * where the old node used to be if the old node was rendered.
    *
    * <p>{@code oldSubtreeData} and {@code incomingSubtreeData} are allowed to be
    * the same node (it will simply get re-rendered).

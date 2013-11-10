@@ -1,8 +1,9 @@
 package com.google.collide.plugin.client.standalone;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideSettings;
-import com.google.collide.client.util.Elements;
 
 public class StandaloneContext {
   static StandaloneContext create(AppContext ctx) {

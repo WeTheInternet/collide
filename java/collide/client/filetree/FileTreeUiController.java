@@ -12,19 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
-import com.google.collide.client.AppContext;
-import com.google.collide.client.Resources;
+import collide.client.common.CanRunApplication;
+import collide.client.filetree.FileTreeContextMenuController.ContextMenuMode;
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeLabelRenamer;
+
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.communication.ResourceUriUtils;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer;
+import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeContextMenuController.ContextMenuMode;
 import com.google.collide.json.shared.JsonArray;
 
 import elemental.html.Location;
@@ -43,8 +44,8 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
   public static FileTreeUiController create(Place place,
       FileTreeModel fileTreeModel,
       Tree<FileTreeNode> tree,
-      AppContext appContext,
-      DebuggingModelController debuggingModelController) {
+      FileTreeController<?> controller,
+      CanRunApplication applicationRunner) {
 
     // Set the initial root node for the tree. This will simply be null on first
     // load. But if it isn't we should probably still render what ever was in
@@ -52,14 +53,14 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
     tree.getModel().setRoot(fileTreeModel.getWorkspaceRoot());
     TreeNodeLabelRenamer<FileTreeNode> nodeLabelMutator = new TreeNodeLabelRenamer<FileTreeNode>(
         tree.getModel().getNodeRenderer(), tree.getModel().getDataAdapter(),
-        appContext.getResources().workspaceNavigationFileTreeNodeRendererCss());
+        controller.getResources().workspaceNavigationFileTreeNodeRendererCss());
     FileTreeUiController treeUiController = new FileTreeUiController(place,
-        appContext.getResources(),
+        controller.getResources(),
         fileTreeModel,
         tree,
         nodeLabelMutator,
-        appContext,
-        debuggingModelController);
+        controller,
+        applicationRunner);
     fileTreeModel.addModelChangeListener(treeUiController);
     treeUiController.attachEventHandlers();
     return treeUiController;
@@ -80,12 +81,12 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
   private final Place currentPlace;
 
   FileTreeUiController(Place place,
-      Resources res,
+      DropdownWidgets.Resources res,
       FileTreeModel fileTreeModel,
       Tree<FileTreeNode> tree,
       TreeNodeLabelRenamer<FileTreeNode> nodeLabelMutator,
-      AppContext appContext,
-      DebuggingModelController debuggingModelController) {
+      FileTreeController<?> controller,
+      CanRunApplication applicationRunner) {
     this.currentPlace = place;
     this.fileTreeModel = fileTreeModel;
     this.tree = tree;
@@ -94,13 +95,13 @@ public class FileTreeUiController implements FileTreeModel.TreeModelChangeListen
         this,
         fileTreeModel,
         nodeLabelMutator,
-        appContext,
-        debuggingModelController);
+        controller,
+        applicationRunner);
   }
 
   /**
    * Programmatically selects a node in the tree. This will cause any external handlers of the
-   * {@link Tree} to have their {@link com.google.collide.client.ui.tree.Tree.Listener#onNodeAction(TreeNodeElement)}
+   * {@link Tree} to have their {@link collide.client.treeview.Tree.Listener#onNodeAction(TreeNodeElement)}
    * method get invoked.
    */
   public void autoExpandAndSelectNode(FileTreeNode nodeToSelect, boolean dispatchNodeAction) {

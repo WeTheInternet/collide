@@ -14,12 +14,13 @@
 
 package com.google.collide.client.diff;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileContent;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Buffer.ScrollListener;
 import com.google.collide.client.editor.Editor;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.DiffChunkResponse;
 import com.google.collide.dto.Revision;

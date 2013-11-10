@@ -14,10 +14,11 @@
 
 package com.google.collide.client.workspace.outline;
 
-import com.google.collide.client.ui.tree.NodeRenderer;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.treeview.NodeRenderer;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.ImageResource;

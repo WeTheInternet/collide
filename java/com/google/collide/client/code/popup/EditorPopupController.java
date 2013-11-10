@@ -16,6 +16,8 @@ package com.google.collide.client.code.popup;
 
 import javax.annotation.Nullable;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.renderer.SingleChunkLineRenderer;
@@ -25,7 +27,6 @@ import com.google.collide.client.ui.menu.PositionController.Position;
 import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.popup.Popup;
-import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.LineInfo;

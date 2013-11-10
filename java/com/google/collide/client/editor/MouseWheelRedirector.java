@@ -16,8 +16,9 @@ package com.google.collide.client.editor;
 
 import org.waveprotocol.wave.client.common.util.UserAgent;
 
+import collide.client.util.BrowserUtils;
+
 import com.google.collide.client.editor.Buffer.ScrollListener;
-import com.google.collide.client.util.BrowserUtils;
 import com.google.collide.json.client.Jso;
 
 import elemental.dom.Element;

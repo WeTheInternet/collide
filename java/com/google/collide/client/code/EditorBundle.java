@@ -14,6 +14,9 @@
 
 package com.google.collide.client.code;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.autoindenter.Autoindenter;
 import com.google.collide.client.code.autocomplete.integration.AutocompleterFacade;
@@ -37,11 +40,9 @@ import com.google.collide.client.editor.TextActions;
 import com.google.collide.client.editor.input.RootActionExecutor;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.syntaxhighlighter.SyntaxHighlighter;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.UserActivityManager;
 import com.google.collide.client.util.logging.Log;
-import com.google.collide.client.workspace.FileTreeModel;
 import com.google.collide.client.workspace.outline.OutlineController;
 import com.google.collide.client.workspace.outline.OutlineModel;
 import com.google.collide.codemirror2.CodeMirror2;
@@ -92,9 +93,9 @@ public class EditorBundle implements FileContent {
     SelectionRestorer selectionRestorer = new SelectionRestorer(editor);
 
     DebuggingModel debuggingModel = new DebuggingModel();
-    DebuggingModelController debuggingModelController =
+    DebuggingModelController<?> debuggingModelController =
         DebuggingModelController.create(currentPlace,
-            appContext,
+            appContext.getResources(),
             debuggingModel,
             editor,
             editorPopupController,
@@ -128,7 +129,7 @@ public class EditorBundle implements FileContent {
   private final GoToDefinitionHandler goToDefinition;
   private DocumentParser parser;
   private final SelectionRestorer selectionRestorer;
-  private final DebuggingModelController debuggingModelController;
+  private final DebuggingModelController<?> debuggingModelController;
   private final WorkspaceLocationBreadcrumbs breadcrumbs;
   private final CubeClientWrapper cubeClientWrapper;
   private final OutlineController outlineController;
@@ -153,7 +154,7 @@ public class EditorBundle implements FileContent {
       AutocompleterFacade autoCompleter,
       GoToDefinitionHandler goToDefinition,
       SelectionRestorer selectionRestorer,
-      DebuggingModelController debuggingModelController,
+      DebuggingModelController<?> debuggingModelController,
       WorkspaceLocationBreadcrumbs breadcrumbs,
       CubeClientWrapper cubeClientWrapper,
       OutlineController outlineController,
@@ -197,7 +198,7 @@ public class EditorBundle implements FileContent {
     return path;
   }
 
-  public DebuggingModelController getDebuggingModelController() {
+  public DebuggingModelController<?> getDebuggingModelController() {
     return debuggingModelController;
   }
 

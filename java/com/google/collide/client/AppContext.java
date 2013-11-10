@@ -17,6 +17,7 @@ package com.google.collide.client;
 import com.google.collide.client.communication.FrontendApi;
 import com.google.collide.client.communication.MessageFilter;
 import com.google.collide.client.communication.PushChannel;
+import com.google.collide.client.editor.EditorContext;
 import com.google.collide.client.search.awesomebox.AwesomeBoxModel;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHostModel;
 import com.google.collide.client.status.StatusManager;
@@ -31,7 +32,7 @@ import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
  * Application context object that exposes getters for our PushChannel and our Event Bus.
  *
  */
-public class AppContext {
+public class AppContext implements EditorContext<Resources> {
 
   // This is static final for now, but could be more flexible later.
   public static final String GWT_ROOT = "gwt_root";

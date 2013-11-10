@@ -14,8 +14,7 @@
 
 package com.google.collide.client.ui.menu;
 
-import com.google.collide.client.util.Elements;
-
+import collide.client.util.Elements;
 import elemental.dom.Element;
 import elemental.events.EventListener;
 

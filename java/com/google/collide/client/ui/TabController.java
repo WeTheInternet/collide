@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui;
 
-import com.google.collide.client.common.BaseResources.Resources;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources.BaseResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.json.shared.JsonArray;
 
 import elemental.dom.Element;
@@ -33,7 +34,7 @@ public class TabController<T> {
   /**
    * Creates a TabController for a list of elements.
    */
-  public static <T> TabController<T> create(Resources res, TabClickedListener<T> listener,
+  public static <T> TabController<T> create(BaseResources res, TabClickedListener<T> listener,
       Element tabContainer, JsonArray<TabElement<T>> headers) {
     TabController<T> controller = new TabController<T>(res, listener, tabContainer);
 
@@ -61,7 +62,7 @@ public class TabController<T> {
     /**
      * Creates a tab element from an element and data.
      */
-    public static <T> TabElement<T> create(Resources res, String label, T data) {
+    public static <T> TabElement<T> create(BaseResources res, String label, T data) {
       @SuppressWarnings("unchecked")
       TabElement<T> element = (TabElement<T>) Elements.createDivElement(res.baseCss().tab());
       element.setTextContent(label);
@@ -82,12 +83,12 @@ public class TabController<T> {
     }-*/;
   }
 
-  private final Resources res;
+  private final BaseResources res;
   private final TabClickedListener<T> listener;
   private final Element container;
   private TabElement<T> activeTab;
 
-  private TabController(Resources res, TabClickedListener<T> listener, Element container) {
+  private TabController(BaseResources res, TabClickedListener<T> listener, Element container) {
     this.container = container;
     this.res = res;
     this.listener = listener;

@@ -89,7 +89,7 @@ public class MavenResources implements Serializable{
   /**
    * @return the war Target Directory
    *
-   * This is the folder to which your clean Web App Resources will be merged with generated war.
+   * This is the folder to which your clean Web App BaseResources will be merged with generated war.
    */
   public File getWarTargetDir() {
     return warTargetFolder.get();

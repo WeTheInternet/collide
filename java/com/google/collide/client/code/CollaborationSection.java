@@ -14,10 +14,11 @@
 
 package com.google.collide.client.code;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.util.AnimationController;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 
 /**
  * The Presenter for the Collaboration/People section at the bottom of the

@@ -16,6 +16,9 @@ package com.google.collide.client.search.awesomebox.components;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.Editor.KeyListener;
 import com.google.collide.client.editor.FocusManager;
@@ -31,8 +34,6 @@ import com.google.collide.client.search.awesomebox.shared.ShortcutManager.Shortc
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.input.ModifierKeys;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.HasView;

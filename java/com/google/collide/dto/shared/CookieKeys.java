@@ -2,7 +2,7 @@ package com.google.collide.dto.shared;
 
 public class CookieKeys {
 
-//  public static final String GWT_COMPILE_TARGET = "gc";
+  public static final String GWT_COMPILE_TARGET = "gwtc-target";
 //  public static final String OPEN_COMPILE_IN_IFRAME = "if";
 //  public static final String OPEN_COMPILE_IN_WINDOW = "ow";
 //  public static final String OPEN_COMPILE_IN_SELF = "is";

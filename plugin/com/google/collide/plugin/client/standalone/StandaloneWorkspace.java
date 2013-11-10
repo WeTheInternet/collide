@@ -1,6 +1,7 @@
 package com.google.collide.plugin.client.standalone;
 
 import xapi.log.X_Log;
+import collide.client.util.Elements;
 
 import com.google.collide.client.CollideSettings;
 import com.google.collide.client.Resources;
@@ -17,7 +18,6 @@ import com.google.collide.client.ui.panel.Panel;
 import com.google.collide.client.ui.panel.Panel.Interpolator;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.ResizeBounds.BoundsBuilder;
 import com.google.collide.client.util.ResizeController;

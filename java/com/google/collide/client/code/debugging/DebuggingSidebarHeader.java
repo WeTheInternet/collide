@@ -14,12 +14,13 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.testing.DebugAttributeSetter;
 import com.google.collide.client.testing.DebugId;
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.slider.Slider;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;

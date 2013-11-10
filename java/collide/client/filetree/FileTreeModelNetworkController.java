@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
+
+import collide.client.filetree.FileTreeModel.NodeRequestCallback;
+import collide.client.filetree.FileTreeModel.RootNodeRequestCallback;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
@@ -24,8 +27,6 @@ import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.logging.Log;
-import com.google.collide.client.workspace.FileTreeModel.NodeRequestCallback;
-import com.google.collide.client.workspace.FileTreeModel.RootNodeRequestCallback;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.Mutation;
@@ -51,11 +52,11 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
    * Static factory method to obtain an instance of FileTreeModelNetworkController.
    */
   public static FileTreeModelNetworkController create(FileTreeModel fileTreeModel,
-      AppContext appContext, Place currentPlace) {
+      FileTreeController<?> fileTreeController, Place currentPlace) {
     FileTreeModelNetworkController networkController =
-        new FileTreeModelNetworkController(fileTreeModel, appContext);
+        new FileTreeModelNetworkController(fileTreeModel, fileTreeController);
     currentPlace.registerSimpleEventHandler(FileTreeInvalidatedEvent.TYPE, networkController);
-    networkController.registerForInvalidations(appContext.getMessageFilter());
+    networkController.registerForInvalidations(fileTreeController.getMessageFilter());
 
     // Load the tree.
     networkController.reloadDirectory(PathUtil.WORKSPACE_ROOT);
@@ -72,10 +73,10 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
    */
   public static class OutgoingController {
 
-    private final AppContext appContext;
+    private final FileTreeController<?> fileTreeController;
 
-    public OutgoingController(AppContext appContext) {
-      this.appContext = appContext;
+    public OutgoingController(FileTreeController<?> fileTreeController) {
+      this.fileTreeController = fileTreeController;
     }
 
     /**
@@ -83,7 +84,6 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
      */
     void requestWorkspaceNode(final FileTreeModel fileTreeModel, final PathUtil path,
         final NodeRequestCallback callback) {
-
       // Wait until the root node has been loaded.
       fileTreeModel.requestWorkspaceRoot(new RootNodeRequestCallback() {
         @Override
@@ -115,7 +115,7 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
               .setRootId(fileTreeModel.getLastAppliedTreeMutationRevision());
               // Include the root path so we load parent directories leading up to the file.
               //.setRootPath(closest.getNodePath().getPathString());
-          appContext.getFrontendApi().GET_DIRECTORY.send(
+          fileTreeController.getDirectory(
               getDirectoryAndPath, new ApiCallback<GetDirectoryResponse>() {
 
                 @Override
@@ -165,7 +165,7 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
           .setPath(path.getPathString())
           .setDepth(FrontendConstants.DEFAULT_FILE_TREE_DEPTH)
           .setRootId(fileTreeModel.getLastAppliedTreeMutationRevision());
-      appContext.getFrontendApi().GET_DIRECTORY.send(getDirectory,
+      fileTreeController.getDirectory(getDirectory,
           new ApiCallback<GetDirectoryResponse>() {
 
             @Override
@@ -200,7 +200,7 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
                 callback.onError(reason);
               } else {
                 StatusMessage fatal = new StatusMessage(
-                    appContext.getStatusManager(), MessageType.FATAL,
+                    fileTreeController.getStatusManager(), MessageType.FATAL,
                     "Could not retrieve children of directory.  Please try again.");
                 fatal.setDismissable(true);
                 fatal.fire();
@@ -211,12 +211,12 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
 
   }
 
-  private final AppContext appContext;
+  private final FileTreeController<?> fileTreeController;
   private final FileTreeModel fileTreeModel;
 
-  FileTreeModelNetworkController(FileTreeModel fileTreeModel, AppContext appContext) {
+  FileTreeModelNetworkController(FileTreeModel fileTreeModel, FileTreeController<?> fileTreeController) {
     this.fileTreeModel = fileTreeModel;
-    this.appContext = appContext;
+    this.fileTreeController = fileTreeController;
   }
 
   /**
@@ -378,7 +378,7 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
     // Fetch the parent directory of the file
     request.setPath(invalidatedPath.toString());
 
-    appContext.getFrontendApi().GET_DIRECTORY.send(request,
+    fileTreeController.getDirectory(request,
         new ApiCallback<GetDirectoryResponse>() {
 
           @Override
@@ -390,7 +390,7 @@ public class FileTreeModelNetworkController implements FileTreeInvalidatedEvent.
           public void onFail(FailureReason reason) {
             Log.error(getClass(), "Failed to retrieve file metadata for workspace.");
             StatusMessage fatal = new StatusMessage(
-                appContext.getStatusManager(), MessageType.FATAL,
+                fileTreeController.getStatusManager(), MessageType.FATAL,
                 "There was a problem refreshing changes within the file tree :(.");
             fatal.addAction(StatusMessage.RELOAD_ACTION);
             fatal.setDismissable(true);

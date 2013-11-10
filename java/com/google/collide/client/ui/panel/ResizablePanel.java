@@ -3,9 +3,10 @@ package com.google.collide.client.ui.panel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.ResizeController;
 import com.google.collide.client.util.ResizeController.ElementInfo;
@@ -66,7 +67,7 @@ public class ResizablePanel <Res extends ResizablePanel.Resources & ResizeContro
   }
 
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css", "Panel.css"})
+    @Source({"collide/client/common/constants.css", "Panel.css"})
     Css panelCss();
   }
 

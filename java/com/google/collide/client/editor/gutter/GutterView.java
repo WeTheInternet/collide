@@ -14,10 +14,11 @@
 
 package com.google.collide.client.editor.gutter;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.gutter.Gutter.Position;
 import com.google.collide.client.editor.gutter.Gutter.ViewDelegate;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.client.util.dom.MouseGestureListener;
 import com.google.collide.client.util.dom.ScrollbarSizeCalculator;

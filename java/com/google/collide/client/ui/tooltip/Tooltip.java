@@ -14,7 +14,9 @@
 
 package com.google.collide.client.ui.tooltip;
 
-import com.google.collide.client.common.Constants;
+import collide.client.common.Constants;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.AutoHideComponent;
 import com.google.collide.client.ui.menu.AutoHideView;
 import com.google.collide.client.ui.menu.PositionController;
@@ -24,7 +26,6 @@ import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.util.AnimationController;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.HoverController.HoverListener;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.shared.JsonArray;
@@ -209,10 +210,10 @@ public class Tooltip extends AutoHideComponent<AutoHideView<Void>,
   }
 
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css", "Tooltip.css"})
+    @Source({"collide/client/common/constants.css", "Tooltip.css"})
     Css tooltipCss();
     
-    @Source({"com/google/collide/client/common/constants.css", "Coachmark.css"})
+    @Source({"collide/client/common/constants.css", "Coachmark.css"})
     Coachmark.Css coachmarkCss();
   }
 

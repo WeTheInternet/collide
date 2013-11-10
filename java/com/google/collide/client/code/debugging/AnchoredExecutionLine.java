@@ -14,9 +14,10 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.testing.DebugAttributeSetter;
-import com.google.collide.client.util.Elements;
 import com.google.collide.shared.document.Document;
 import com.google.collide.shared.document.LineInfo;
 import com.google.collide.shared.document.anchor.Anchor;

@@ -127,15 +127,15 @@
 
   
   <replace-with
-     class="com.google.collide.client.util.BrowserUtils.Chrome">
+     class="collide.client.util.BrowserUtils.Chrome">
     <when-type-is
-       class="com.google.collide.client.util.BrowserUtils"/>
+       class="collide.client.util.BrowserUtils"/>
     <when-property-is name="user.agent" value="safari"/>
   </replace-with>
   <replace-with
-     class="com.google.collide.client.util.BrowserUtils.Firefox">
+     class="collide.client.util.BrowserUtils.Firefox">
     <when-type-is
-       class="com.google.collide.client.util.BrowserUtils"/>
+       class="collide.client.util.BrowserUtils"/>
     <when-property-is name="user.agent" value="gecko1_8"/>
   </replace-with>
 

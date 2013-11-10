@@ -14,14 +14,15 @@
 
 package com.google.collide.client.search.awesomebox;
 
+import collide.client.common.CommonResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
-import com.google.collide.client.common.BaseResources;
 import com.google.collide.client.search.awesomebox.AwesomeBoxModel.ContextChangeListener;
 import com.google.collide.client.search.awesomebox.host.AbstractAwesomeBoxComponent;
 import com.google.collide.client.search.awesomebox.host.ComponentHost;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.UserActivityManager;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -104,8 +105,8 @@ public class AwesomeBox extends AbstractAwesomeBoxComponent implements HasView<A
     String searchIcon();
   }
 
-  public interface Resources extends BaseResources.Resources, Tooltip.Resources {
-    @Source({"AwesomeBox.css", "com/google/collide/client/common/constants.css"})
+  public interface Resources extends CommonResources.BaseResources, Tooltip.Resources {
+    @Source({"AwesomeBox.css", "collide/client/common/constants.css"})
     public Css awesomeBoxCss();
 
     @Source("AwesomeBoxSection.css")

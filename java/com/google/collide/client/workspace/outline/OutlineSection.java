@@ -14,9 +14,10 @@
 
 package com.google.collide.client.workspace.outline;
 
+import collide.client.treeview.Tree;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.WorkspaceNavigationSection;
-import com.google.collide.client.ui.tree.Tree;
 import com.google.collide.client.workspace.outline.OutlineModel.OutlineModelListener;
 
 /**

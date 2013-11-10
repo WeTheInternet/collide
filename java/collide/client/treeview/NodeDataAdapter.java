@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
 import javax.annotation.Nonnull;
 

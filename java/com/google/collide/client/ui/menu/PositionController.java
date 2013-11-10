@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui.menu;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.RelativeClientRect;
 import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.Window;

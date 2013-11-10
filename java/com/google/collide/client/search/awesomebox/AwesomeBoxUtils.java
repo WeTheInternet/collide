@@ -14,9 +14,10 @@
 
 package com.google.collide.client.search.awesomebox;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ClientOs;
 import com.google.collide.client.search.awesomebox.AwesomeBox.Resources;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.input.ModifierKeys;
 import com.google.gwt.core.client.GWT;
 

@@ -14,9 +14,10 @@
 
 package com.google.collide.client.code;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.history.Place;
 import com.google.collide.client.ui.panel.PanelContent;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
@@ -54,7 +55,7 @@ public class NoFileSelectedPanel extends UiComponent<NoFileSelectedPanel.View>
    * Images and CSS.
    */
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css", "NoFileSelectedPanel.css"})
+    @Source({"collide/client/common/constants.css", "NoFileSelectedPanel.css"})
 
     Css noFileSelectedPanelCss();
 

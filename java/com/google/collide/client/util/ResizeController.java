@@ -15,6 +15,9 @@
 package com.google.collide.client.util;
 
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.dom.eventcapture.MouseCaptureListener;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.animation.client.AnimationScheduler;

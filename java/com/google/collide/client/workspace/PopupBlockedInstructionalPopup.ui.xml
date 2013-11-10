@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
   <ui:with field="baseCss"
-    type="com.google.collide.client.common.BaseResources.Css" />
+    type="collide.client.common.CommonResources.BaseCss" />
   <ui:with field="css"
     type="com.google.collide.client.workspace.PopupBlockedInstructionalPopup.Css" />
   <ui:with field="res"

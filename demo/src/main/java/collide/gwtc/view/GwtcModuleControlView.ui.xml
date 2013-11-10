@@ -18,7 +18,7 @@
 		<div class="{res.panelHeaderCss.bottomHeader}">
       <div>Actions</div>
       <div>All Source</div>
-      <div>Generated</div>
+      <div ui:field="generated"> </div>
 		</div>
 	</div>
 </ui:UiBinder>

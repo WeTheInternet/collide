@@ -14,18 +14,19 @@
 
 package com.google.collide.client.code;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeModel.NodeRequestCallback;
+import collide.client.filetree.FileTreeNode;
+import collide.client.filetree.FileTreeUiController;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.util.Elements;
+
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.document.DocumentManager.GetDocumentCallback;
 import com.google.collide.client.document.DocumentMetadata;
 import com.google.collide.client.history.RootPlace;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeModel.NodeRequestCallback;
-import com.google.collide.client.workspace.FileTreeNode;
-import com.google.collide.client.workspace.FileTreeUiController;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.dto.FileContents;
 import com.google.collide.dto.ServerError.FailureReason;

@@ -169,7 +169,7 @@ class CollaboratorCursorController {
   }
 
   private void createCursor(final String userId, Line line, int lineNumber, int column) {
-    final CursorView cursorView = CursorView.create(appContext, false);
+    final CursorView cursorView = CursorView.create(appContext.getResources(), false);
     cursorView.setVisibility(true);
 
     Participant participant = participantModel.getParticipantByUserId(userId);

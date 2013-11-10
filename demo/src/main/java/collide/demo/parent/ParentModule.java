@@ -14,7 +14,7 @@ import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.status.StatusMessage;
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.GwtCompile;

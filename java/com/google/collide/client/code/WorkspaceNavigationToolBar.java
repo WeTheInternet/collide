@@ -13,11 +13,12 @@
 // limitations under the License.
 package com.google.collide.client.code;
 
-import com.google.collide.client.common.BaseResources;
+import collide.client.common.CommonResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.workspace.outline.OutlineSection;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
@@ -65,7 +66,7 @@ public class WorkspaceNavigationToolBar extends UiComponent<WorkspaceNavigationT
   /**
    * Images and CssResources consumed by the WorkspaceNavigationToolBar.
    */
-  public interface Resources extends Tooltip.Resources, BaseResources.Resources {
+  public interface Resources extends Tooltip.Resources, CommonResources.BaseResources {
     @Source("collaborate_icon.png")
     ImageResource collaborateIcon();
 
@@ -82,7 +83,7 @@ public class WorkspaceNavigationToolBar extends UiComponent<WorkspaceNavigationT
     ImageResource navigatorIcon();
 
     @Source({"WorkspaceNavigationToolBar.css", "constants.css",
-        "com/google/collide/client/common/constants.css"})
+        "collide/client/common/constants.css"})
     Css workspaceNavigationToolBarCss();
   }
 

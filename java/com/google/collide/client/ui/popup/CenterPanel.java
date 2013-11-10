@@ -16,7 +16,9 @@ package com.google.collide.client.ui.popup;
 
 import javax.annotation.Nullable;
 
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources.BaseCss;
+import collide.client.util.Elements;
+
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;
@@ -66,12 +68,12 @@ public class CenterPanel extends UiComponent<CenterPanel.View> {
    * The resources used by this UI component.
    */
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css", "CenterPanel.css"})
+    @Source({"collide/client/common/constants.css", "CenterPanel.css"})
     Css centerPanelCss();
   }
 
   /**
-   * The Css Style names used by this panel.
+   * The BaseCss Style names used by this panel.
    */
   public interface Css extends CssResource {
     /**
@@ -136,7 +138,7 @@ public class CenterPanel extends UiComponent<CenterPanel.View> {
 
     /**
      * Returns the duration of the popup animation in milliseconds. The return
-     * value should equal the value of {@link Css#animationDuration()}.
+     * value should equal the value of {@link BaseCss#animationDuration()}.
      */
     protected int getAnimationDuration() {
       return css.animationDuration();

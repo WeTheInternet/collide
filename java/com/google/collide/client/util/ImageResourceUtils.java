@@ -14,6 +14,8 @@
 
 package com.google.collide.client.util;
 
+import collide.client.util.Elements;
+
 import com.google.gwt.resources.client.ImageResource;
 
 import elemental.css.CSSStyleDeclaration;

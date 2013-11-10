@@ -2,10 +2,10 @@ package com.google.collide.client;
 
 import xapi.inject.impl.LazyPojo;
 import xapi.util.api.SuccessHandler;
+import collide.client.util.Elements;
 
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.util.ClientImplementationsInjector;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.xhrmonitor.XhrWarden;
 import com.google.collide.codemirror2.CodeMirror2;
 import com.google.gwt.core.client.GWT;

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.common;
+package collide.client.common;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -23,9 +23,9 @@ import com.google.gwt.resources.client.ImageResource;
  * ClientBundle resources that are shared across multiple top level presenters.
  *
  */
-public class BaseResources {
+public class CommonResources {
 
-  public interface Css extends CssResource {
+  public interface BaseCss extends CssResource {
 
     /**
      * Returns the left and right side padding on buttons.
@@ -141,10 +141,10 @@ public class BaseResources {
     String activeTab();
   }
 
-  public interface Resources extends ClientBundle {
+  public interface BaseResources extends ClientBundle {
 
-    @Source({"base.css", "com/google/collide/client/common/constants.css"})
-    Css baseCss();
+    @Source({"base.css", "collide/client/common/constants.css"})
+    BaseCss baseCss();
 
     @Source("check_no_box.png")
     DataResource checkNoBoxData();

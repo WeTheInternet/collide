@@ -14,7 +14,6 @@
 
 package com.google.collide.client.editor.selection;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.Editor.ReadOnlyListener;
@@ -35,10 +34,10 @@ public class LocalCursorController
       FocusManager.FocusListener,
       ReadOnlyListener {
 
-  public static LocalCursorController create(AppContext appContext, FocusManager focusManager,
+  public static LocalCursorController create(CursorView.Resources resources, FocusManager focusManager,
       SelectionModel selectionModel, Buffer buffer, Editor editor) {
 
-    CursorView cursorView = CursorView.create(appContext, true);
+    CursorView cursorView = CursorView.create(resources, true);
 
     return new LocalCursorController(focusManager, selectionModel, cursorView, buffer, editor);
   }

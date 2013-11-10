@@ -3,6 +3,11 @@ package collide.demo.controller;
 import xapi.log.X_Log;
 import xapi.util.X_String;
 import xapi.util.api.RemovalHandler;
+import collide.client.filetree.AppContextFileTreeController;
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeModelNetworkController;
+import collide.client.util.Elements;
 import collide.demo.view.DemoView;
 
 import com.google.collide.client.AppContext;
@@ -25,9 +30,6 @@ import com.google.collide.client.plugin.RunConfiguration;
 import com.google.collide.client.search.TreeWalkFileNameSearchImpl;
 import com.google.collide.client.ui.button.ImageButton;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.util.Elements;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeModelNetworkController;
 import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.KeepAliveTimer;
 import com.google.collide.client.workspace.UnauthorizedUser;
@@ -88,12 +90,12 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
     WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res, true);
     workspacePlace = WorkspacePlace.PLACE; // Used to come from event...
     workspacePlace.setIsStrict(false);
-
+    FileTreeController<?> fileTreeController = new AppContextFileTreeController(appContext);
     FileTreeModelNetworkController.OutgoingController fileTreeModelOutgoingNetworkController = new FileTreeModelNetworkController.OutgoingController(
-      appContext);
+      fileTreeController);
     FileTreeModel fileTreeModel = new FileTreeModel(fileTreeModelOutgoingNetworkController);
 
-    documentManager = DocumentManager.create(fileTreeModel, appContext);
+    documentManager = DocumentManager.create(fileTreeModel, fileTreeController);
 
     searchIndex.setFileTreeModel(fileTreeModel);
 
@@ -105,7 +107,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
 
     DocOpsSavedNotifier docOpSavedNotifier = new DocOpsSavedNotifier(documentManager, collaborationManager);
 
-    FileTreeModelNetworkController fileNetworkController = FileTreeModelNetworkController.create(fileTreeModel, appContext, workspacePlace);
+    FileTreeModelNetworkController fileNetworkController = FileTreeModelNetworkController.create(fileTreeModel, fileTreeController, workspacePlace);
 
     final Header header = Header.create(workspaceShellView.getHeaderView(), workspaceShellView, workspacePlace,
       appContext, searchIndex, fileTreeModel);
@@ -134,7 +136,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
       }
     });
 
-    codePanelBundle = new StandaloneCodeBundle(appContext, shell, fileTreeModel, searchIndex,
+    codePanelBundle = new StandaloneCodeBundle(appContext, shell, fileTreeController, fileTreeModel, searchIndex,
         documentManager, participantModel, docOpRecipient, workspacePlace){
       @Override
       protected ClientPluginService initPlugins(MultiPanel<?, ?> masterPanel) {

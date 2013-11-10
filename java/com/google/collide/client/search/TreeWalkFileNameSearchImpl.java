@@ -14,9 +14,10 @@
 
 package com.google.collide.client.search;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.regexp.shared.RegExp;

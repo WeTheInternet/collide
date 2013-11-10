@@ -15,8 +15,8 @@
 package com.google.collide.client.search;
 
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
 import com.google.collide.client.workspace.MockOutgoingController;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.json.shared.JsonArray;

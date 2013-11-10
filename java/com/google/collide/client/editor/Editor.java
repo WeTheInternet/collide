@@ -16,6 +16,9 @@ package com.google.collide.client.editor;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.parenmatch.ParenMatchHighlighter;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator;
@@ -33,8 +36,6 @@ import com.google.collide.client.editor.selection.LocalCursorController;
 import com.google.collide.client.editor.selection.SelectionLineRenderer;
 import com.google.collide.client.editor.selection.SelectionManager;
 import com.google.collide.client.editor.selection.SelectionModel;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.FontDimensionsCalculator;
 import com.google.collide.client.util.dom.FontDimensionsCalculator.FontDimensions;
 import com.google.collide.json.shared.JsonArray;
@@ -72,22 +73,22 @@ public class Editor extends UiComponent<Editor.View> {
   /**
    * Static factory method for obtaining an instance of the Editor.
    */
-  public static Editor create(AppContext appContext) {
+  public static Editor create(EditorContext<?> editorContext) {
 
     FontDimensionsCalculator fontDimensionsCalculator =
-        FontDimensionsCalculator.get(appContext.getResources().workspaceEditorCss().editorFont());
+        FontDimensionsCalculator.get(editorContext.getResources().workspaceEditorCss().editorFont());
     RenderTimeExecutor renderTimeExecutor = new RenderTimeExecutor();
     LineDimensionsCalculator lineDimensions =
         LineDimensionsCalculator.create(fontDimensionsCalculator);
 
     Buffer buffer =
-        Buffer.create(appContext, fontDimensionsCalculator.getFontDimensions(), lineDimensions,
+        Buffer.create(editorContext.getResources(), fontDimensionsCalculator.getFontDimensions(), lineDimensions,
             renderTimeExecutor);
     InputController input = new InputController();
     View view =
-        new View(appContext.getResources(), buffer.getView().getElement(), input.getInputElement());
+        new View(editorContext.getResources(), buffer.getView().getElement(), input.getInputElement());
     FocusManager focusManager = new FocusManager(buffer, input.getInputElement());
-    return new Editor(appContext, view, buffer, input, focusManager, fontDimensionsCalculator,
+    return new Editor(editorContext, view, buffer, input, focusManager, fontDimensionsCalculator,
         renderTimeExecutor);
   }
 
@@ -279,7 +280,7 @@ public class Editor extends UiComponent<Editor.View> {
   public static final int ANIMATION_DURATION = 100;
   private static int idCounter = 0;
   
-  private final AppContext appContext;
+  private final EditorContext<?> editorContext;
   private final Buffer buffer;
   private Document document;
   private final ListenerManager<DocumentListener> documentListenerManager =
@@ -313,26 +314,25 @@ public class Editor extends UiComponent<Editor.View> {
   private boolean isReadOnly;
   private final RenderTimeExecutor renderTimeExecutor;
 
-  private Editor(AppContext appContext, View view, Buffer buffer, InputController input,
+  private Editor(EditorContext<?> editorContext, View view, Buffer buffer, InputController input,
       FocusManager focusManager, FontDimensionsCalculator editorFontDimensionsCalculator,
       RenderTimeExecutor renderTimeExecutor) {
     super(view);
-    this.appContext = appContext;
+    this.editorContext = editorContext;
     this.buffer = buffer;
     this.input = input;
     this.focusManager = focusManager;
     this.editorFontDimensionsCalculator = editorFontDimensionsCalculator;
     this.renderTimeExecutor = renderTimeExecutor;
-
     Gutter leftGutter = createGutter(
-        false, Gutter.Position.LEFT, appContext.getResources().workspaceEditorCss().leftGutter());
+        false, Gutter.Position.LEFT, editorContext.getResources().workspaceEditorCss().leftGutter());
     leftGutterManager = new LeftGutterManager(leftGutter, buffer);
 
     editorDocumentMutator = new EditorDocumentMutator(this);
     mouseHoverManager = new MouseHoverManager(this);
 
     editorActivityManager =
-        new EditorActivityManager(appContext.getUserActivityManager(),
+        new EditorActivityManager(editorContext.getUserActivityManager(),
             buffer.getScrollListenerRegistrar(), getKeyListenerRegistrar());
 
     // TODO: instantiate input from here
@@ -519,7 +519,7 @@ public class Editor extends UiComponent<Editor.View> {
     buffer.handleDocumentChanged(document);
     leftGutterManager.handleDocumentChanged(document);
     selectionManager =
-        SelectionManager.create(document, buffer, focusManager, appContext.getResources());
+        SelectionManager.create(document, buffer, focusManager, editorContext.getResources());
 
     SelectionModel selection = selectionManager.getSelectionModel();
     viewport = ViewportModel.create(document, selection, buffer);
@@ -531,7 +531,7 @@ public class Editor extends UiComponent<Editor.View> {
         selection,
         focusManager,
         this,
-        appContext.getResources(),
+        editorContext.getResources(),
         renderTimeExecutor);
 
     // Delayed core editor component initialization
@@ -545,14 +545,14 @@ public class Editor extends UiComponent<Editor.View> {
 
     // Non-core editor components
     editorUndoManager = EditorUndoManager.create(this, document, selection);
-    searchModel = SearchModel.create(appContext,
+    searchModel = SearchModel.create(editorContext,
         document,
         renderer,
         viewport,
         selection,
         editorDocumentMutator);
     localCursorController =
-        LocalCursorController.create(appContext, focusManager, selection, buffer, this);
+        LocalCursorController.create(editorContext.getResources(), focusManager, selection, buffer, this);
 
     documentListenerManager.dispatch(new Dispatcher<Editor.DocumentListener>() {
       @Override

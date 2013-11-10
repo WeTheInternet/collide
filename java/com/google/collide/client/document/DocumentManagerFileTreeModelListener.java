@@ -14,11 +14,12 @@
 
 package com.google.collide.client.document;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.history.RootPlace;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.Pair;

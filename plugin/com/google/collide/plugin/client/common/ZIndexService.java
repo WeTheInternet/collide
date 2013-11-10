@@ -4,8 +4,8 @@ import xapi.log.X_Log;
 import xapi.log.api.LogLevel;
 import xapi.util.api.ReceivesValue;
 import xapi.util.api.RemovalHandler;
+import collide.client.util.Elements;
 
-import com.google.collide.client.util.Elements;
 import com.google.common.base.Preconditions;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

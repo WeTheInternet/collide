@@ -14,9 +14,9 @@
 
 package com.google.collide.client.editor.selection;
 
-import com.google.collide.client.AppContext;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.resources.client.ClientBundle;
@@ -34,8 +34,8 @@ public class CursorView extends UiComponent<CursorView.View> {
   /**
    * Static factory method for obtaining an instance of the CursorView.
    */
-  public static CursorView create(AppContext appContext, boolean isLocal) {
-    View view = new View(appContext.getResources(), isLocal);
+  public static CursorView create(CursorView.Resources res, boolean isLocal) {
+    View view = new View(res, isLocal);
     return new CursorView(view, isLocal);
   }
 

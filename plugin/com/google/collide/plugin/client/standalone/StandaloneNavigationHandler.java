@@ -14,6 +14,10 @@
 
 package com.google.collide.plugin.client.standalone;
 
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.Resources;
 import com.google.collide.client.code.CodePanelBundle;
@@ -22,8 +26,6 @@ import com.google.collide.client.collaboration.IncomingDocOpDemultiplexer;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.util.Elements;
-import com.google.collide.client.workspace.FileTreeModel;
 import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.client.workspace.WorkspacePlace.NavigationEvent;
@@ -68,9 +70,9 @@ public class StandaloneNavigationHandler extends WorkspacePlaceNavigationHandler
 
   @Override
   protected CodePanelBundle createCodePanelBundle(AppContext appContext, WorkspaceShell shell,
-    FileTreeModel fileTreeModel, FileNameSearch searchIndex, DocumentManager documentManager,
+    FileTreeController<?> fileTreeController, FileTreeModel fileTreeModel, FileNameSearch searchIndex, DocumentManager documentManager,
     ParticipantModel participantModel, IncomingDocOpDemultiplexer docOpRecipient, WorkspacePlace place) {
-    return new StandaloneCodeBundle(appContext, shell, fileTreeModel, searchIndex, documentManager,
+    return new StandaloneCodeBundle(appContext, shell, fileTreeController,  fileTreeModel, searchIndex, documentManager,
       participantModel, docOpRecipient, place);
   }
 

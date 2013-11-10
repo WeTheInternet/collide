@@ -25,7 +25,7 @@ import com.google.collide.client.util.PathUtil;
  * Mapping between the local files in the project and remote scripts and
  * resource files on the debuggee application.
  */
-interface SourceMapping {
+public interface SourceMapping {
 
   /**
    * @return local {@link PathUtil} path of a given JavaScript source

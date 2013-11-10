@@ -2,9 +2,7 @@ package collide.gwtc.ui;
 
 import collide.shared.manifest.OpenAction;
 
-import com.google.collide.client.util.Elements;
 import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.shared.CookieKeys;
 import com.google.collide.mvp.CompositeView;
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
@@ -17,7 +15,6 @@ import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.DOM;
 
 import elemental.dom.Element;

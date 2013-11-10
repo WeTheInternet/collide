@@ -16,6 +16,9 @@ package com.google.collide.client.code.autocomplete.integration;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.autocomplete.AutocompleteBox;
 import com.google.collide.client.code.autocomplete.AutocompleteProposal;
 import com.google.collide.client.code.autocomplete.AutocompleteProposals;
@@ -25,8 +28,6 @@ import com.google.collide.client.editor.FocusManager;
 import com.google.collide.client.ui.list.SimpleList;
 import com.google.collide.client.ui.list.SimpleList.View;
 import com.google.collide.client.ui.menu.AutoHideController;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.anchor.ReadOnlyAnchor;

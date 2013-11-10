@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
 import com.google.collide.client.util.PathUtil;
 import com.google.gwt.event.shared.EventHandler;

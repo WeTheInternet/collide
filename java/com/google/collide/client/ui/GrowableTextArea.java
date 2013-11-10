@@ -14,7 +14,8 @@
 
 package com.google.collide.client.ui;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.common.base.Preconditions;
 
 import elemental.css.CSSStyleDeclaration;

@@ -27,11 +27,11 @@ import com.google.common.base.Preconditions;
  * Identity source mapping to be used for static files.
  *
  */
-class StaticSourceMapping implements SourceMapping {
+public class StaticSourceMapping implements SourceMapping {
 
   private final String resourceBaseUri;
 
-  static StaticSourceMapping create(String baseUri) {
+  public static StaticSourceMapping create(String baseUri) {
     Preconditions.checkNotNull(baseUri, "Base URI is NULL!");
     return new StaticSourceMapping(baseUri);
   }

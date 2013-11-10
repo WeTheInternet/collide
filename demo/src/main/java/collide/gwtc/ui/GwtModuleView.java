@@ -131,7 +131,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
     String requested = settings.getModule();
     GwtCompile best = null;
     if (requested == null) {
-      requested = Cookies.getCookie(CookieKeys.GWT_COMPILE_TARGET);
+      requested = Browser.getWindow().getLocalStorage().getItem(CookieKeys.GWT_COMPILE_TARGET);
     }
     if (requested != null) {
       for (GwtCompile compile : modules.asIterable()) {

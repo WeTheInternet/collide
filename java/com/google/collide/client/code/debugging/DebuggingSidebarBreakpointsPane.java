@@ -14,8 +14,9 @@
 
 package com.google.collide.client.code.debugging;
 
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.client.util.logging.Log;

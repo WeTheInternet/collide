@@ -17,13 +17,14 @@ package com.google.collide.client.filehistory;
 import java.util.Date;
 import java.util.List;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ClientConfig;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Position;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.MouseMovePauseDetector;
 import com.google.collide.client.util.dom.eventcapture.MouseCaptureListener;
 import com.google.collide.clientlibs.model.Workspace;

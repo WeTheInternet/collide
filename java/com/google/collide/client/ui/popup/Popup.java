@@ -16,11 +16,12 @@ package com.google.collide.client.ui.popup;
 
 import javax.annotation.Nullable;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.AutoHideComponent;
 import com.google.collide.client.ui.menu.AutoHideView;
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
-import com.google.collide.client.util.Elements;
 import com.google.common.base.Preconditions;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
@@ -39,7 +40,7 @@ public class Popup extends AutoHideComponent<Popup.View, AutoHideComponent.AutoH
   }
 
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css", "Popup.css"})
+    @Source({"collide/client/common/constants.css", "Popup.css"})
     Css popupCss();
   }
 

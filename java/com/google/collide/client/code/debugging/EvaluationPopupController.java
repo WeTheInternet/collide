@@ -16,14 +16,15 @@ package com.google.collide.client.code.debugging;
 
 import javax.annotation.Nullable;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnEvaluateExpressionResponse;
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.MouseHoverManager;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;

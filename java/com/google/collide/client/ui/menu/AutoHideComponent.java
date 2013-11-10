@@ -14,8 +14,9 @@
 
 package com.google.collide.client.ui.menu;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.HoverController;
 import com.google.collide.client.util.HoverController.UnhoverListener;
 import com.google.collide.json.shared.JsonArray;

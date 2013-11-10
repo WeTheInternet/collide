@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
 import java.util.Comparator;
 
-import com.google.collide.client.ui.tree.TreeNodeElement;
+import collide.client.treeview.TreeNodeElement;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.FileInfo;

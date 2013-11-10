@@ -12,10 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
-import com.google.collide.client.ui.tree.TreeNodeMutator.Css;
-
+import collide.client.treeview.TreeNodeMutator.Css;
 import elemental.dom.Element;
 
 /**

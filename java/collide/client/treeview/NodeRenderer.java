@@ -1,4 +1,4 @@
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
 import elemental.dom.Element;
 import elemental.html.SpanElement;

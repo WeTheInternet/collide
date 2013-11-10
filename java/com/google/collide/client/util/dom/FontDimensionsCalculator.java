@@ -14,8 +14,9 @@
 
 package com.google.collide.client.util.dom;
 
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.event.logical.shared.ResizeEvent;

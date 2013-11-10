@@ -1,8 +1,9 @@
 package com.google.collide.plugin.client.terminal;
 
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.PluginContent;
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.ResizeBounds.BoundsBuilder;
 import com.google.collide.dto.LogMessage;
@@ -73,7 +74,7 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
 
   public interface Resources extends
     ClientBundle
-    ,BaseResources.Resources
+    ,CommonResources.BaseResources
     {
     @Source("TerminalLogView.css")
     Css terminalLogCss();

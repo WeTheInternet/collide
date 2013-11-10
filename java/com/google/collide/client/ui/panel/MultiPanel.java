@@ -1,7 +1,8 @@
 package com.google.collide.client.ui.panel;
 
+import collide.client.util.CssUtils;
+
 import com.google.collide.client.ui.panel.PanelModel.Builder;
-import com.google.collide.client.util.CssUtils;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.ShowableUiComponent;
 import com.google.collide.mvp.UiComponent;

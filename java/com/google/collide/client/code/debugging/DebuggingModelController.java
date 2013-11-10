@@ -14,7 +14,8 @@
 
 package com.google.collide.client.code.debugging;
 
-import com.google.collide.client.AppContext;
+import collide.client.common.CanRunApplication;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.code.RightSidebarExpansionEvent;
@@ -41,12 +42,21 @@ import elemental.html.Window;
 /**
  * A controller for the debugging model state.
  */
-public class DebuggingModelController {
+public class DebuggingModelController <R extends 
+  DebuggingModelRenderer.Resources &
+  PopupBlockedInstructionalPopup.Resources &
+  EvaluationPopupController.Resources & 
+  DebuggingSidebar.Resources> implements CanRunApplication {
 
-  public static DebuggingModelController create(Place currentPlace, AppContext appContext,
+  public static <R extends 
+    DebuggingModelRenderer.Resources & 
+    PopupBlockedInstructionalPopup.Resources & 
+    EvaluationPopupController.Resources &
+    DebuggingSidebar.Resources> 
+    DebuggingModelController<R> create(Place currentPlace, R resources,
       DebuggingModel debuggingModel, Editor editor, EditorPopupController editorPopupController,
       DocumentManager documentManager) {
-    DebuggingModelController dmc = new DebuggingModelController(currentPlace, appContext,
+    DebuggingModelController<R> dmc = new DebuggingModelController<R>(currentPlace, resources,
         debuggingModel, editor, editorPopupController, documentManager);
     dmc.populateDebuggingSidebar();
 
@@ -76,13 +86,13 @@ public class DebuggingModelController {
    * But in case it is not truth, we show alert to user that instructs how to
    * enable popups.
    */
-  public static Window createOrOpenPopup(AppContext appContext) {
+  public static Window createOrOpenPopup(PopupBlockedInstructionalPopup.Resources res) {
     Window popup =
         Browser.getWindow().open("", BootstrapSession.getBootstrapSession().getActiveClientId());
     if (popup == null) {
       if (!doNotShowPopupBlockedInstruction) {
         doNotShowPopupBlockedInstruction = true;
-        PopupBlockedInstructionalPopup.create(appContext.getResources()).show();
+        PopupBlockedInstructionalPopup.create(res).show();
       }
     }
     return popup;
@@ -286,7 +296,7 @@ public class DebuggingModelController {
         }
       };
 
-  private final AppContext appContext;
+  private final PopupBlockedInstructionalPopup.Resources popupResources;
   private final Editor editor;
   private final DebuggingModel debuggingModel;
   private final ListenerRegistrar.Remover leftGutterClickListenerRemover;
@@ -305,10 +315,10 @@ public class DebuggingModelController {
    */
   private boolean sidebarDiscovered;
 
-  private DebuggingModelController(Place currentPlace, AppContext appContext,
+  private DebuggingModelController(Place currentPlace, R resources,
       DebuggingModel debuggingModel, Editor editor, EditorPopupController editorPopupController,
       DocumentManager documentManager) {
-    this.appContext = appContext;
+    this.popupResources = resources;
     this.editor = editor;
     this.currentPlace = currentPlace;
     this.debuggingModel = debuggingModel;
@@ -320,12 +330,12 @@ public class DebuggingModelController {
         + System.currentTimeMillis();
     this.debuggerState = DebuggerState.create(sessionId);
 
-    this.debuggingSidebar = DebuggingSidebar.create(appContext.getResources(), debuggerState);
+    this.debuggingSidebar = DebuggingSidebar.create(resources, debuggerState);
     this.debuggingModelRenderer =
-        DebuggingModelRenderer.create(appContext, editor, debuggingSidebar, debuggerState);
+        DebuggingModelRenderer.create(resources, editor, debuggingSidebar, debuggerState);
     this.cssLiveEditController = new CssLiveEditController(debuggerState, documentManager);
     this.evaluationPopupController = EvaluationPopupController.create(
-        appContext.getResources(), editor, editorPopupController, debuggerState);
+        resources, editor, editorPopupController, debuggerState);
 
     this.debuggingModel.addModelChangeListener(debuggingModelChangeListener);
     this.debuggerState.getDebuggerStateListenerRegistrar().add(debuggerStateListener);
@@ -394,7 +404,7 @@ public class DebuggingModelController {
       debuggerState.setBreakpointsEnabled(debuggingModel.isBreakpointsEnabled());
       return true;
     } else {
-      Window popup = createOrOpenPopup(appContext);
+      Window popup = createOrOpenPopup(popupResources);
       if (popup != null) {
         popup.getLocation().assign(absoluteResourceUri);
         // Show the sidebar once to promote the Debugger Extension.

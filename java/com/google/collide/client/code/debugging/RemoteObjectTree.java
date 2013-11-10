@@ -16,18 +16,19 @@ package com.google.collide.client.code.debugging;
 
 import javax.annotation.Nullable;
 
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeLabelRenamer;
+import collide.client.treeview.TreeNodeMutator;
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnEvaluateExpressionResponse;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnRemoteObjectPropertiesResponse;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnRemoteObjectPropertyChanged;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.PropertyDescriptor;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObject;
 import com.google.collide.client.ui.dropdown.DropdownWidgets;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer;
-import com.google.collide.client.ui.tree.TreeNodeMutator;
 import com.google.collide.client.util.AnimationUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.mvp.CompositeView;

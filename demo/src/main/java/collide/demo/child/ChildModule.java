@@ -12,12 +12,12 @@ import java.security.ProtectionDomain;
 import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Util;
+import collide.client.util.Elements;
 import collide.demo.shared.SharedClass;
 import collide.gwtc.GwtCompileStatus;
 import collide.gwtc.GwtcController;
 import collide.gwtc.view.GwtcModuleControlView;
 
-import com.google.collide.client.util.Elements;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
@@ -33,21 +33,6 @@ public class ChildModule implements EntryPoint {
   }
   @Override 
   public void onModuleLoad() {
-    GwtcModuleControlView test = GwtcModuleControlView.create(new GwtcController() {
-      @Override
-      public void onReloadClicked() {
-      }
-      @Override
-      public void onCloseClicked() {
-      }
-      @Override
-      public void onRefreshClicked() {
-        
-      }
-    });
-    test.setHeader("Test Header");
-    test.setCompileStatus(GwtCompileStatus.Good);
-    Browser.getDocument().getBody().appendChild(test.getElement());
     try {
       out("Hello world!!!!!\n\n");
       // First, enhance our classes.

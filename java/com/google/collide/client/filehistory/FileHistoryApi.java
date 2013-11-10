@@ -17,7 +17,6 @@ package com.google.collide.client.filehistory;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.communication.FrontendApi;
-import com.google.collide.client.communication.RetryCallbackWithStatus;
 import com.google.collide.client.diff.EditorDiffContainer;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.util.PathUtil;

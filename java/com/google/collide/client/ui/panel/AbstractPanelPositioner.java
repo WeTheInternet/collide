@@ -6,8 +6,8 @@ import java.util.Iterator;
 import xapi.collect.impl.IteratorWrapper;
 import xapi.util.api.ConvertsValue;
 import xapi.util.api.RemovalHandler;
+import collide.client.util.Elements;
 
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.client.JsoArray;

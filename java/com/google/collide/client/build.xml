@@ -23,8 +23,8 @@
        src.shared.build">
     <!-- The groupings here ensure that at least a clean build enforces some
          modularity, so that the "low-level" subpackages don't compile if they
-         accidentally reach higher-level subpackage code. -->
-         <!-- This modularity would be better accomplished with maven. -->
+         accidentally reach higher-level subpackage code.
+         This modularity would be better accomplished with maven. -->
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
       <include name="${dirs.toppkg}/mvp/*.java"/>
       <classpath refid="paths.client.build"/>
@@ -33,7 +33,11 @@
       <include name="${dirs.toppkg}/client/bootstrap/*.java"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
+  	<copy todir="${dirs.bin}">
+      <fileset dir="${dirs.src}/collide" />
+    </copy>
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+      <include name="collide/client/**/*.*"/>
       <include name="${dirs.toppkg}/client/util/**/*.java"/>
       <classpath refid="paths.client.build"/>
     </do.javac>

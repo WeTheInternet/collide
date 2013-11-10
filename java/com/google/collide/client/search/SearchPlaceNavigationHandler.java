@@ -14,13 +14,14 @@
 
 package com.google.collide.client.search;
 
+import collide.client.filetree.FileTreeUiController;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.ui.panel.MultiPanel;
-import com.google.collide.client.workspace.FileTreeUiController;
 import com.google.collide.dto.SearchResponse;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.SearchImpl;

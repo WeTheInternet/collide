@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
 
   <ui:with field="baseCss"
-    type="com.google.collide.client.common.BaseResources.Css" />
+    type="collide.client.common.CommonResources.BaseCss" />
 
   <ui:with field="res"
     type="com.google.collide.client.code.WorkspaceNavigationSection.Resources" />

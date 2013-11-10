@@ -14,15 +14,18 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.AppContext;
-import com.google.collide.client.code.debugging.DebuggingModelController;
+import collide.client.common.CanRunApplication;
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+import collide.client.filetree.FileTreeNodeDataAdapter;
+import collide.client.filetree.FileTreeNodeRenderer;
+import collide.client.filetree.FileTreeUiController;
+import collide.client.treeview.Tree;
+import collide.client.util.Elements;
+
 import com.google.collide.client.history.Place;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.util.Elements;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
-import com.google.collide.client.workspace.FileTreeUiController;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.ProjectInfo;
 import com.google.gwt.resources.client.CssResource;
@@ -40,26 +43,26 @@ public class FileTreeSection extends WorkspaceNavigationSection<FileTreeSection.
   /**
    * Static factory method for obtaining an instance of the FileTreeSection.
    */
-  public static FileTreeSection create(Place place, AppContext appContext,
+  public static FileTreeSection create(Place place, FileTreeController<?> controller,
       FileTreeModel fileTreeModel,
-      DebuggingModelController debuggingModelController) {
+      CanRunApplication applicationRunner) {
 
     // create the view
-    FileTreeSection.View view = new FileTreeSection.View(appContext.getResources());
+    FileTreeSection.View view = new FileTreeSection.View(controller.getResources());
 
     // Create the Tree presenter.
     FileTreeNodeRenderer nodeRenderer =
-        FileTreeNodeRenderer.create(appContext.getResources());
+        FileTreeNodeRenderer.create(controller.getResources());
     FileTreeNodeDataAdapter nodeDataAdapter = new FileTreeNodeDataAdapter();
     Tree<FileTreeNode> tree = Tree.create(
-        view.treeView, nodeDataAdapter, nodeRenderer, appContext.getResources());
+        view.treeView, nodeDataAdapter, nodeRenderer, controller.getResources());
 
     // Create the UI controller.
     FileTreeUiController treeUiController = FileTreeUiController.create(place,
         fileTreeModel,
         tree,
-        appContext,
-        debuggingModelController);
+        controller,
+        applicationRunner);
 
     // attach a file tree menu to the button
     treeUiController.getContextMenuController()
@@ -91,7 +94,7 @@ public class FileTreeSection extends WorkspaceNavigationSection<FileTreeSection.
   /**
    * View for the FileTreeSection.
    */
-  static class View extends WorkspaceNavigationSection.View<WorkspaceNavigationSection.ViewEvents> {
+  public static class View extends WorkspaceNavigationSection.View<WorkspaceNavigationSection.ViewEvents> {
     final Element root;
     Tree.View<FileTreeNode> treeView;
 

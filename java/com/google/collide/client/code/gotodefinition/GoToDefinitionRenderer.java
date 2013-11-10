@@ -16,12 +16,13 @@ package com.google.collide.client.code.gotodefinition;
 
 import javax.annotation.Nullable;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.popup.EditorPopupController;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.renderer.LineRenderer;
 import com.google.collide.client.editor.renderer.Renderer;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
-import com.google.collide.client.util.Elements;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.shared.document.Line;
 import com.google.collide.shared.document.LineFinder;

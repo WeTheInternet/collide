@@ -14,8 +14,8 @@
 
 package com.google.collide.client.workspace;
 
-import com.google.collide.client.code.FileTreeNodeDataAdapter;
-import com.google.collide.client.code.FileTreeNodeRenderer;
+import collide.client.filetree.FileTreeNodeDataAdapter;
+import collide.client.filetree.FileTreeNodeRenderer;
 import com.google.collide.client.code.debugging.DebuggingModel;
 import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.code.popup.EditorPopupController;

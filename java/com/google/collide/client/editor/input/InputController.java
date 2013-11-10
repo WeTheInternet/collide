@@ -16,6 +16,9 @@ package com.google.collide.client.editor.input;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
+import collide.client.util.BrowserUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.document.linedimensions.LineDimensionsUtils;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.Editor.KeyListener;
@@ -23,8 +26,6 @@ import com.google.collide.client.editor.Editor.NativeKeyUpListener;
 import com.google.collide.client.editor.Editor.ReadOnlyListener;
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.selection.SelectionModel;
-import com.google.collide.client.util.BrowserUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.SignalEventUtils;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.shared.document.Document;

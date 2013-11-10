@@ -14,8 +14,9 @@
 
 package com.google.collide.client.workspace.outline;
 
-import com.google.collide.client.ui.tree.NodeDataAdapter;
-import com.google.collide.client.ui.tree.TreeNodeElement;
+import collide.client.treeview.NodeDataAdapter;
+import collide.client.treeview.TreeNodeElement;
+
 import com.google.collide.json.shared.JsonArray;
 
 /**

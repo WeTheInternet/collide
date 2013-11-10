@@ -14,6 +14,8 @@
 
 package com.google.collide.client.util;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.gwt.core.client.JavaScriptObject;
 

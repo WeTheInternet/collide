@@ -14,10 +14,11 @@
 
 package com.google.collide.client.diff;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.Elements;
 import com.google.collide.dto.DiffStatsDto;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;

@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.common;
+package collide.client.common;
 
-import com.google.collide.client.util.BrowserUtils;
+import collide.client.util.BrowserUtils;
 
 /**
  * Constants that we can use in CssResource expressions.

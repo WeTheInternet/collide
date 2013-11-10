@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui.button;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.dropdown.DropdownWidgets.Resources;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.resources.client.ImageResource;
 

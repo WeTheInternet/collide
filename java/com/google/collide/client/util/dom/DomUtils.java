@@ -14,8 +14,9 @@
 
 package com.google.collide.client.util.dom;
 
-import com.google.collide.client.util.BrowserUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.BrowserUtils;
+import collide.client.util.Elements;
+
 import com.google.gwt.user.client.DOM;
 
 import elemental.dom.Element;

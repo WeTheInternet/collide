@@ -14,9 +14,9 @@
 
 package com.google.collide.client.ui.tree;
 
-import com.google.collide.client.code.FileTreeNodeDataAdapter;
-import com.google.collide.client.code.FileTreeNodeRenderer;
-import com.google.collide.client.workspace.FileTreeNode;
+import collide.client.filetree.FileTreeNodeDataAdapter;
+import collide.client.filetree.FileTreeNodeRenderer;
+import collide.client.filetree.FileTreeNode;
 import com.google.collide.json.client.JsoArray;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;

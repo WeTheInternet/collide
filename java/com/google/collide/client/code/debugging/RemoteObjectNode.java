@@ -14,10 +14,11 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.treeview.TreeNodeElement;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObject;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectSubType;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectType;
-import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.SortedList;

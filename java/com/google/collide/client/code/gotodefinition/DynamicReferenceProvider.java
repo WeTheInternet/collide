@@ -16,9 +16,10 @@ package com.google.collide.client.code.gotodefinition;
 
 import javax.annotation.Nullable;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.codemirror2.Token;
 import com.google.collide.codemirror2.TokenType;
 import com.google.collide.json.shared.JsonArray;

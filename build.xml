@@ -43,8 +43,10 @@
     <copy todir="${dirs.dist}">
       <fileset dir="${dirs.bin}">
         <include name="bootstrap.js" />
-        <include name="collide" />
       </fileset>
+      <fileset dir="${dirs.root}">
+        <include name="collide" />
+    	</fileset>
     </copy>
 
     <!-- Copy the GWT client. -->

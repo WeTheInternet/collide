@@ -14,9 +14,10 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;
@@ -54,9 +55,9 @@ public class UnauthorizedUser extends UiComponent<UnauthorizedUser.View> {
   /**
    * Images and CssResources.
    */
-  public interface Resources extends BaseResources.Resources {
+  public interface Resources extends CommonResources.BaseResources {
 
-    @Source({"UnauthorizedUser.css", "com/google/collide/client/common/constants.css"})
+    @Source({"UnauthorizedUser.css", "collide/client/common/constants.css"})
     Css unauthorizedUserCss();
   }
 

@@ -14,10 +14,11 @@
 
 package com.google.collide.client.ui.slider;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.testing.DebugAttributeSetter;
 import com.google.collide.client.util.AnimationUtils;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeController;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
@@ -38,7 +39,7 @@ public class Slider extends UiComponent<Slider.View> {
   private static final String SLIDER_MODE = "slidermode";
 
   /**
-   * Css selectors applied to DOM elements in the slider.
+   * BaseCss selectors applied to DOM elements in the slider.
    */
   public interface Css extends CssResource {
     String sliderRoot();
@@ -50,7 +51,7 @@ public class Slider extends UiComponent<Slider.View> {
   }
 
   /**
-   * Resources used by the Slider.
+   * BaseResources used by the Slider.
    *
    * In order to theme the Slider, you extend this interface and override
    * {@link Slider.Resources#sliderCss()}.

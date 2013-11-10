@@ -16,6 +16,10 @@ package com.google.collide.client.code;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNodeMoveController;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideSettings;
 import com.google.collide.client.code.CodePerspective.Resources;
@@ -23,6 +27,7 @@ import com.google.collide.client.code.CodePerspective.View;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.code.errorrenderer.EditorErrorListener;
 import com.google.collide.client.collaboration.IncomingDocOpDemultiplexer;
+import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.document.DocumentManager;
 import com.google.collide.client.editor.Editor.DocumentListener;
 import com.google.collide.client.history.Place;
@@ -40,16 +45,17 @@ import com.google.collide.client.search.awesomebox.PrimaryWorkspaceActionSection
 import com.google.collide.client.search.awesomebox.components.FindReplaceComponent;
 import com.google.collide.client.search.awesomebox.components.FindReplaceComponent.FindMode;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHost.AwesomeBoxComponentHiddenListener;
+import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.dom.eventcapture.GlobalHotKey;
 import com.google.collide.client.util.logging.Log;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNodeMoveController;
 import com.google.collide.client.workspace.WorkspaceShell;
 import com.google.collide.client.workspace.outline.OutlineModel;
 import com.google.collide.client.workspace.outline.OutlineSection;
+import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.GetWorkspaceMetaDataResponse;
+import com.google.collide.dto.WorkspaceTreeUpdate;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.Document;
@@ -101,9 +107,11 @@ public class CodePanelBundle {
   private FileTreeSection fileTreeSection;
   private ClientPluginService plugins;
   private MultiPanel<?,?> masterPanel;
+  private final FileTreeController<?> fileTreeController;
 
   public CodePanelBundle(AppContext appContext,
       WorkspaceShell shell,
+      FileTreeController<?> fileTreeController,
       FileTreeModel fileTreeModel,
       FileNameSearch searchIndex,
       DocumentManager documentManager,
@@ -112,6 +120,7 @@ public class CodePanelBundle {
       Place place) {
     this.appContext = appContext;
     this.shell = shell;
+    this.fileTreeController = fileTreeController;
     this.fileTreeModel = fileTreeModel;
     this.searchIndex = searchIndex;
     this.documentManager = documentManager;
@@ -192,7 +201,7 @@ public class CodePanelBundle {
         EditorReloadingFileTreeListener.create(currentPlace, editorBundle, fileTreeModel);
 
     fileTreeSection = FileTreeSection.create(
-        currentPlace, appContext, fileTreeModel, editorBundle.getDebuggingModelController());
+        currentPlace, fileTreeController, fileTreeModel, editorBundle.getDebuggingModelController());
     fileTreeSection.getTree().renderTree(0);
 
     // TODO: The term "Section" is overloaded here. It

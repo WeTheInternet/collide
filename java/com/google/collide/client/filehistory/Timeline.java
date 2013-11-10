@@ -14,10 +14,11 @@
 
 package com.google.collide.client.filehistory;
 
+import collide.client.common.CommonResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.dom.MouseMovePauseDetector;
 import com.google.collide.client.util.dom.eventcapture.MouseCaptureListener;
@@ -68,7 +69,7 @@ public class Timeline extends UiComponent<Timeline.View> {
   /**
    * CSS and images used by the Timeline.
    */
-  public interface Resources extends BaseResources.Resources {
+  public interface Resources extends CommonResources.BaseResources {
     @Source("Timeline.css")
     Css timelineCss();
 

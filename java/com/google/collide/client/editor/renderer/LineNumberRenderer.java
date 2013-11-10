@@ -14,12 +14,13 @@
 
 package com.google.collide.client.editor.renderer;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.gutter.Gutter;
 import com.google.collide.client.editor.selection.SelectionModel;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.JsIntegerMap;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.LineInfo;
@@ -117,7 +118,7 @@ public class LineNumberRenderer {
    * Line number resources.
    */
   public interface Resources extends ClientBundle {
-    @Source({"com/google/collide/client/common/constants.css",
+    @Source({"collide/client/common/constants.css",
         "LineNumberRenderer.css"})
     Css lineNumberRendererCss();
   }

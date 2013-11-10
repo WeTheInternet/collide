@@ -16,7 +16,6 @@ package com.google.collide.client.editor.renderer;
 
 import java.util.EnumSet;
 
-import com.google.collide.client.Resources;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.editor.FocusManager;
@@ -41,7 +40,7 @@ public class Renderer {
 
   public static Renderer create(Document document, ViewportModel viewport,
       Buffer buffer, Gutter leftGutter, SelectionModel selection, FocusManager focusManager,
-      Editor editor, Resources res, RenderTimeExecutor renderTimeExecutor) {
+      Editor editor, LineNumberRenderer.Resources res, RenderTimeExecutor renderTimeExecutor) {
     return new Renderer(document, viewport, buffer, leftGutter, selection, focusManager, 
       editor, res, renderTimeExecutor);
   }
@@ -85,7 +84,7 @@ public class Renderer {
   
   private Renderer(Document document, ViewportModel viewport, Buffer buffer,
       Gutter leftGutter, SelectionModel selection, FocusManager focusManager, 
-      Editor editor, Resources res, RenderTimeExecutor renderTimeExecutor) {
+      Editor editor, LineNumberRenderer.Resources res, RenderTimeExecutor renderTimeExecutor) {
     this.viewport = viewport;
     this.renderTimeExecutor = renderTimeExecutor;
     this.completionListenerManager = ListenerManager.create();

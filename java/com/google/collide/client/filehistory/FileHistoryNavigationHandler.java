@@ -14,6 +14,8 @@
 
 package com.google.collide.client.filehistory;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.diff.EditorDiffContainer;
 import com.google.collide.client.document.DocumentManager;
@@ -21,7 +23,6 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 
 /**

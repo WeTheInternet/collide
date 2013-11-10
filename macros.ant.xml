@@ -28,6 +28,7 @@
 
   <!-- Classpaths for various contexts -->
   <path id="paths.shared">
+    <pathelement location="${dirs.root}/java/collide/client"/>
     <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-gwt-${libs.xapi}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>

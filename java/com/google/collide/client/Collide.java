@@ -15,12 +15,12 @@
 package com.google.collide.client;
 
 import xapi.util.api.SuccessHandler;
+import collide.client.util.Elements;
 
 import com.google.collide.client.history.HistoryUtils;
 import com.google.collide.client.history.HistoryUtils.ValueChangeListener;
 import com.google.collide.client.history.RootPlace;
 import com.google.collide.client.status.StatusPresenter;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.client.workspace.WorkspacePlaceNavigationHandler;
 import com.google.collide.clientlibs.navigation.NavigationToken;

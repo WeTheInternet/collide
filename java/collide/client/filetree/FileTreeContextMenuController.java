@@ -12,13 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.collide.client.AppContext;
-import com.google.collide.client.Resources;
+import collide.client.common.CanRunApplication;
+import collide.client.filetree.FileTreeModel.NodeRequestCallback;
+import collide.client.treeview.SelectionModel;
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeLabelRenamer;
+import collide.client.treeview.TreeNodeLabelRenamer.LabelRenamerCallback;
+import collide.client.util.BrowserUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
@@ -28,22 +36,17 @@ import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.testing.DebugAttributeSetter;
 import com.google.collide.client.ui.dropdown.DropdownController;
+import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.dropdown.DropdownController.DropdownPositionerBuilder;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.ui.tree.SelectionModel;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer.LabelRenamerCallback;
-import com.google.collide.client.util.BrowserUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel.NodeRequestCallback;
+import com.google.collide.client.workspace.UploadClickedEvent;
 import com.google.collide.client.workspace.UploadClickedEvent.UploadType;
+import com.google.collide.client.workspace.WorkspaceUtils;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.FileInfo;
@@ -124,24 +127,24 @@ public class FileTreeContextMenuController {
    * Static factory method for obtaining an instance of FileTreeContextMenuController.
    */
   public static FileTreeContextMenuController create(Place place,
-      Resources res,
+      DropdownWidgets.Resources res,
       FileTreeUiController fileTreeUiController,
       FileTreeModel fileTreeModel,
       TreeNodeLabelRenamer<FileTreeNode> nodeLabelMutator,
-      AppContext appContext,
-      DebuggingModelController debuggingModelController) {
+      FileTreeController<?> controller,
+      CanRunApplication applicationRunner) {
 
     FileTreeContextMenuController ctxMenuController = new FileTreeContextMenuController(place,
         fileTreeUiController,
         fileTreeModel,
         nodeLabelMutator,
-        appContext,
-        debuggingModelController);
+        controller,
+        applicationRunner);
     ctxMenuController.installContextMenu(res);
     return ctxMenuController;
   }
 
-  private final AppContext appContext;
+  private final FileTreeController<?> controller;
 
   private DropdownController<FileTreeMenuItem> contextDropdownController;
 
@@ -164,7 +167,7 @@ public class FileTreeContextMenuController {
   private final FileTreeUiController fileTreeUiController;
   private final TreeNodeLabelRenamer<FileTreeNode> nodeLabelMutator;
   private final Place place;
-  private final DebuggingModelController debuggingModelController;
+  private final CanRunApplication applicationRunner;
 
   private Tooltip invalidNameTooltip;
 
@@ -176,14 +179,14 @@ public class FileTreeContextMenuController {
       FileTreeUiController fileTreeUiController,
       FileTreeModel fileTreeModel,
       TreeNodeLabelRenamer<FileTreeNode> nodeLabelMutator,
-      AppContext appContext,
-      DebuggingModelController debuggingModelController) {
+      FileTreeController<?> controller,
+      CanRunApplication applicationRunner) {
     this.place = place;
     this.fileTreeUiController = fileTreeUiController;
     this.fileTreeModel = fileTreeModel;
-    this.appContext = appContext;
+    this.controller = controller;
     this.nodeLabelMutator = nodeLabelMutator;
-    this.debuggingModelController = debuggingModelController;
+    this.applicationRunner = applicationRunner;
 
     createMenuItems();
 
@@ -210,7 +213,7 @@ public class FileTreeContextMenuController {
     Positioner positioner = new DropdownPositionerBuilder().setHorizontalAlign(
         HorizontalAlign.RIGHT).buildAnchorPositioner(anchorElement);
     buttonDropdownController = new DropdownController.Builder<FileTreeMenuItem>(positioner,
-        anchorElement, appContext.getResources(), listener, renderer).setShouldAutoFocusOnOpen(true)
+        anchorElement, controller.getResources(), listener, renderer).setShouldAutoFocusOnOpen(true)
         .build();
     buttonDropdownController.setItems(rootMenuItems);
   }
@@ -250,7 +253,7 @@ public class FileTreeContextMenuController {
           node.getFileEditSessionKey()));
     }
 
-    appContext.getFrontendApi().MUTATE_WORKSPACE_TREE.send(
+    controller.mutateWorkspaceTree(
         msg, new ApiCallback<EmptyMessage>() {
 
           @Override
@@ -393,13 +396,13 @@ public class FileTreeContextMenuController {
            * collaborator deletes it (your XHR response comes faster than the tree mutation push
            * message)
            */
-          new StatusMessage(appContext.getStatusManager(), MessageType.ERROR,
+          new StatusMessage(controller.getStatusManager(), MessageType.ERROR,
               "The destination folder for the paste no longer exists.").fire();
         }
 
         @Override
         public void onError(FailureReason reason) {
-          new StatusMessage(appContext.getStatusManager(), MessageType.ERROR,
+          new StatusMessage(controller.getStatusManager(), MessageType.ERROR,
               "The paste had a problem, please try again.").fire();
         }
       });
@@ -430,7 +433,7 @@ public class FileTreeContextMenuController {
       copiedNodes.clear();
     }
 
-    appContext.getFrontendApi().MUTATE_WORKSPACE_TREE.send(
+    controller.mutateWorkspaceTree(
         msg, new ApiCallback<EmptyMessage>() {
 
           @Override
@@ -484,7 +487,7 @@ public class FileTreeContextMenuController {
             Mutation.Type.MOVE, oldPath, node.getData().getNodePath(), node.getData().isDirectory(),
             node.getData().getFileEditSessionKey()));
 
-        appContext.getFrontendApi().MUTATE_WORKSPACE_TREE.send(
+        controller.mutateWorkspaceTree(
             msg, new ApiCallback<EmptyMessage>() {
 
               @Override
@@ -524,7 +527,7 @@ public class FileTreeContextMenuController {
   }
 
   private void handleViewFile(TreeNodeElement<FileTreeNode> node) {
-    debuggingModelController.runApplication(node.getData().getNodePath());
+    applicationRunner.runApplication(node.getData().getNodePath());
   }
 
   /**
@@ -585,7 +588,7 @@ public class FileTreeContextMenuController {
         msg.getMutations().add(FileTreeUtils.makeMutation(Mutation.Type.ADD, null,
             installedNode.getNodePath(), installedNode.isDirectory(), null));
 
-        appContext.getFrontendApi().MUTATE_WORKSPACE_TREE.send(
+        controller.mutateWorkspaceTree(
             msg, new ApiCallback<EmptyMessage>() {
 
               @Override
@@ -925,7 +928,7 @@ public class FileTreeContextMenuController {
   /**
    * Create the context menu.
    */
-  private void installContextMenu(Resources res) {
+  private void installContextMenu(DropdownWidgets.Resources res) {
 
     DropdownController.Listener<FileTreeMenuItem> listener =
         new DropdownController.BaseListener<FileTreeMenuItem>() {
@@ -987,7 +990,7 @@ public class FileTreeContextMenuController {
       invalidNameTooltip.destroy();
     }
     invalidNameTooltip = Tooltip.create(
-        appContext.getResources(), node, PositionController.VerticalAlign.MIDDLE,
+        controller.getResources(), node, PositionController.VerticalAlign.MIDDLE,
         PositionController.HorizontalAlign.RIGHT, message);
     invalidNameTooltip.setDelay(0);
     invalidNameTooltip.show();

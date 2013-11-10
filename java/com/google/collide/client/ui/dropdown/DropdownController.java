@@ -14,6 +14,9 @@
 
 package com.google.collide.client.ui.dropdown;
 
+import collide.client.common.CommonResources.BaseResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.dropdown.DropdownWidgets.Resources;
 import com.google.collide.client.ui.list.KeyboardSelectionController;
 import com.google.collide.client.ui.list.SimpleList;
@@ -25,7 +28,6 @@ import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
-import com.google.collide.client.util.Elements;
 import com.google.collide.json.shared.JsonArray;
 
 import elemental.css.CSSStyleDeclaration;
@@ -182,7 +184,7 @@ public class DropdownController<M> {
   /**
    * Creates a DropdownController which appears relative to an anchor.
    *
-   * @param res the {@link Resources}
+   * @param res the {@link BaseResources}
    * @param listener a {@link Listener} for dropdown events.
    * @param renderer the {@link ListItemRenderer} for rendering each list item
    * @param positioner the {@link Positioner} used by {@link PositionController} to position the

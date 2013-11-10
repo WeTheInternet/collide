@@ -14,7 +14,8 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.FileContents;
 import com.google.collide.dto.FileContents.ContentType;

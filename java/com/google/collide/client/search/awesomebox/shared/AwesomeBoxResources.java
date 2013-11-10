@@ -14,7 +14,8 @@
 
 package com.google.collide.client.search.awesomebox.shared;
 
-import com.google.collide.client.common.BaseResources;
+import collide.client.common.CommonResources;
+
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponent;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHost;
 import com.google.collide.client.ui.tooltip.Tooltip;
@@ -23,7 +24,7 @@ import com.google.gwt.resources.client.CssResource;
 /**
  * The resources shared by the awesomebox related objects.
  */
-public interface AwesomeBoxResources extends BaseResources.Resources, Tooltip.Resources {
+public interface AwesomeBoxResources extends CommonResources.BaseResources, Tooltip.Resources {
 
   /**
    * Shared CSS styles by all {@link AwesomeBoxComponent} objects.
@@ -71,9 +72,9 @@ public interface AwesomeBoxResources extends BaseResources.Resources, Tooltip.Re
     String numMatches();
   }
 
-  @Source({"AwesomeBoxComponentHost.css", "com/google/collide/client/common/constants.css"})
+  @Source({"AwesomeBoxComponentHost.css", "collide/client/common/constants.css"})
   public AwesomeBoxComponentHost.Css awesomeBoxHostCss();
 
-  @Source({"AwesomeBoxComponent.css", "com/google/collide/client/common/constants.css"})
+  @Source({"AwesomeBoxComponent.css", "collide/client/common/constants.css"})
   public ComponentCss awesomeBoxComponentCss();
 }

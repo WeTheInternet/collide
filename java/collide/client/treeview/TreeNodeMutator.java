@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.dom.Element;
@@ -44,7 +44,7 @@ public class TreeNodeMutator<D> {
   }
 
   /**
-   * Css for the mutator.
+   * BaseCss for the mutator.
    */
   public interface Css extends CssResource {
     String nodeNameInput();

@@ -3,4 +3,5 @@
 <source path="client" />
 <super-source path="emul" />
 <inherits name="xapi.X_Inherit" />
+<inherits name="collide.client.FileTree" />
 </module>

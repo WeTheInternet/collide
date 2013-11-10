@@ -14,6 +14,9 @@
 
 package com.google.collide.client.code;
 
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.autocomplete.integration.AutocompleteUiController;
 import com.google.collide.client.code.debugging.DebuggingModelRenderer;
@@ -28,8 +31,6 @@ import com.google.collide.client.filehistory.FileHistory;
 import com.google.collide.client.filehistory.TimelineNode;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.syntaxhighlighter.SyntaxHighlighterRenderer;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ResizeController;
 import com.google.collide.client.workspace.Header;
 import com.google.collide.codemirror2.CodeMirror2;
@@ -97,7 +98,7 @@ public class CodePerspective extends UiComponent<CodePerspective.View> {
       EditableContentArea.Resources,
       AutocompleteUiController.Resources {
 
-    @Source({"CodePerspective.css", "com/google/collide/client/common/constants.css"})
+    @Source({"CodePerspective.css", "collide/client/common/constants.css"})
     Css codePerspectiveCss();
   }
 

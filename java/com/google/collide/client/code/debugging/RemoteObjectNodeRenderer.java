@@ -14,12 +14,13 @@
 
 package com.google.collide.client.code.debugging;
 
+import collide.client.treeview.NodeRenderer;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObject;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.RemoteObjectType;
-import com.google.collide.client.ui.tree.NodeRenderer;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.dom.DomUtils;
 import com.google.collide.shared.util.StringUtils;
 import com.google.gwt.regexp.shared.RegExp;

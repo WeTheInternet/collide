@@ -30,7 +30,7 @@ import com.google.collide.shared.document.Document;
 public class SelectionManager {
 
   public static SelectionManager create(Document document, Buffer buffer,
-      FocusManager focusManager, Resources resources) {
+      FocusManager focusManager, SelectionLineRenderer.Resources resources) {
     SelectionModel selectionModel = SelectionModel.create(document, buffer);
     SelectionLineRenderer selectionLineRenderer =
         new SelectionLineRenderer(selectionModel, focusManager, resources);

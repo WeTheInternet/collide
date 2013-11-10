@@ -15,9 +15,10 @@
 package com.google.collide.client.workspace;
 
 import xapi.log.X_Log;
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
 
 import com.google.collide.client.AppContext;
-import com.google.collide.client.common.BaseResources;
 import com.google.collide.client.plugin.RunConfiguration;
 import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.ui.dropdown.AutocompleteController;
@@ -36,7 +37,6 @@ import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.util.ClientStringUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.RunTarget;
 import com.google.collide.dto.client.DtoClientImpls.RunTargetImpl;
@@ -167,7 +167,7 @@ public class RunButtonTargetPopup
     String stayActive();
   }
 
-  public interface Resources extends BaseResources.Resources, DropdownWidgets.Resources {
+  public interface Resources extends CommonResources.BaseResources, DropdownWidgets.Resources {
     @Source("RunButtonTargetPopup.css")
     Css runButtonTargetPopupCss();
 

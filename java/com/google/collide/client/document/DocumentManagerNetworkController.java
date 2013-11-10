@@ -14,6 +14,8 @@
 
 package com.google.collide.client.document;
 
+import collide.client.filetree.FileTreeController;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.document.DocumentManager.GetDocumentCallback;
@@ -42,16 +44,16 @@ import com.google.common.base.Preconditions;
 class DocumentManagerNetworkController {
 
   private final DocumentManager documentManager;
-  private final AppContext appContext;
+  private final FileTreeController<?> fileTreeController;
 
   /** Path to a list of {@link GetDocumentCallback} */
   JsonStringMap<JsonArray<GetDocumentCallback>> outstandingCallbacks = JsonCollections.createMap();
 
   private StatusMessage loadingMessage;
 
-  DocumentManagerNetworkController(DocumentManager documentManager, AppContext appContext) {
+  DocumentManagerNetworkController(DocumentManager documentManager, FileTreeController<?> fileTreeController) {
     this.documentManager = documentManager;
-    this.appContext = appContext;
+    this.fileTreeController = fileTreeController;
   }
 
   public void teardown() {
@@ -59,7 +61,7 @@ class DocumentManagerNetworkController {
       cancelLoadingMessage();
     }
     
-    appContext.getMessageFilter().removeMessageRecipient(RoutingTypes.GETFILECONTENTSRESPONSE);
+    fileTreeController.getMessageFilter().removeMessageRecipient(RoutingTypes.GETFILECONTENTSRESPONSE);
   }
 
   void load(PathUtil path, GetDocumentCallback callback) {
@@ -89,7 +91,7 @@ class DocumentManagerNetworkController {
     
     // Fetch the file's contents
     GetFileContentsImpl getFileContents = GetFileContentsImpl.make().setPath(path.getPathString());
-    appContext.getFrontendApi().GET_FILE_CONTENTS.send(getFileContents, 
+    fileTreeController.getFileContents(getFileContents, 
         new ApiCallback<GetFileContentsResponse>() {
 
           @Override
@@ -138,7 +140,7 @@ class DocumentManagerNetworkController {
   private void delayLoadingMessage(PathUtil path) {
     cancelLoadingMessage();
     loadingMessage =
-        new StatusMessage(appContext.getStatusManager(), MessageType.LOADING, "Loading "
+        new StatusMessage(fileTreeController.getStatusManager(), MessageType.LOADING, "Loading "
             + path.getBaseName() + "...");
     loadingMessage.fireDelayed(StatusMessage.DEFAULT_DELAY);
   }

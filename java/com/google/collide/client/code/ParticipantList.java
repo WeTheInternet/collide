@@ -14,7 +14,8 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap.IterationCallback;
 import com.google.collide.mvp.CompositeView;

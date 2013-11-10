@@ -14,10 +14,11 @@
 
 package com.google.collide.client.search.awesomebox.host;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponent.HiddenBehavior;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponent.HideMode;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponent.ShowReason;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.shared.util.ListenerManager;

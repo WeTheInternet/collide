@@ -14,15 +14,17 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -62,6 +64,12 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     String menuButton();
   }
 
+  public interface Resources extends CommonResources.BaseResources {
+    @Source({"WorkspaceNavigationSection.css", "constants.css",
+        "collide/client/common/constants.css"})
+    Css workspaceNavigationSectionCss();
+  }
+
   public interface ViewEvents {
     void onTitleClicked();
 
@@ -94,7 +102,7 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     static MyBinder binder = GWT.create(MyBinder.class);
 
     @UiField(provided = true)
-    final BaseResources.Css baseCss;
+    final CommonResources.BaseCss baseCss;
 
     @UiField(provided = true)
     final Css css;
@@ -205,12 +213,6 @@ public class WorkspaceNavigationSection<V extends WorkspaceNavigationSection.Vie
     protected void setUnderlineHeader(boolean underline) {
       CssUtils.setClassNameEnabled(Elements.asJsElement(header), css.underlineHeader(), underline);
     }
-  }
-
-  public interface Resources extends BaseResources.Resources {
-    @Source({"WorkspaceNavigationSection.css", "constants.css",
-        "com/google/collide/client/common/constants.css"})
-    Css workspaceNavigationSectionCss();
   }
 
   public void setVisible(boolean visible) {

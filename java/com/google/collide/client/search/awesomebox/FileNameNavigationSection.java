@@ -14,6 +14,8 @@
 
 package com.google.collide.client.search.awesomebox;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.history.Place;
@@ -21,7 +23,6 @@ import com.google.collide.client.search.FileNameSearch;
 import com.google.collide.client.search.awesomebox.AwesomeBox.Resources;
 import com.google.collide.client.search.awesomebox.FileNameNavigationSection.FileNavItem;
 import com.google.collide.client.util.ClientStringUtils;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;

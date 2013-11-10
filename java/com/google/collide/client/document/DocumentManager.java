@@ -14,11 +14,13 @@
 
 package com.google.collide.client.document;
 
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.dto.ConflictChunk;
 import com.google.collide.dto.FileContents;
 import com.google.collide.dto.NodeConflictDto.ConflictHandle;
@@ -41,8 +43,8 @@ import com.google.collide.shared.util.ListenerRegistrar;
  */
 public class DocumentManager {
 
-  public static DocumentManager create(FileTreeModel fileTreeModel, AppContext appContext) {
-    return new DocumentManager(fileTreeModel, appContext);
+  public static DocumentManager create(FileTreeModel fileTreeModel, FileTreeController<?> fileTreeController) {
+    return new DocumentManager(fileTreeModel, fileTreeController);
   }
 
   /**
@@ -115,9 +117,9 @@ public class DocumentManager {
    */
   private Editor editor;
 
-  private DocumentManager(FileTreeModel fileTreeModel, AppContext appContext) {
+  private DocumentManager(FileTreeModel fileTreeModel, FileTreeController<?> fileTreeController) {
     this.fileTreeModel = fileTreeModel;
-    networkController = new DocumentManagerNetworkController(this, appContext);
+    networkController = new DocumentManagerNetworkController(this, fileTreeController);
     fileTreeModelListener = new DocumentManagerFileTreeModelListener(this, fileTreeModel);
   }
 

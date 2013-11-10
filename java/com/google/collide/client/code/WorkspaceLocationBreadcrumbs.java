@@ -14,7 +14,8 @@
 
 package com.google.collide.client.code;
 
-import com.google.collide.client.util.Elements;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.NodeConflictDto.ConflictedPath;
 import com.google.collide.dto.TreeNodeInfo;
@@ -40,7 +41,7 @@ import elemental.dom.Element;
 public class WorkspaceLocationBreadcrumbs extends UiComponent<WorkspaceLocationBreadcrumbs.View> {
 
   /**
-   * Css resources for breadcrumbs.
+   * BaseCss resources for breadcrumbs.
    */
   public interface Css extends CssResource {
     String breadcrumbBar();
@@ -78,10 +79,10 @@ public class WorkspaceLocationBreadcrumbs extends UiComponent<WorkspaceLocationB
     @Source("WorkspaceLocationBreadcrumbs.css")
     Css workspaceLocationBreadcrumbsCss();
 
-    @Source("com/google/collide/client/common/folder_breadcrumb.png")
+    @Source("collide/client/common/folder_breadcrumb.png")
     DataResource directoryImg();
 
-    @Source("com/google/collide/client/common/file_breadcrumb.png")
+    @Source("collide/client/common/file_breadcrumb.png")
     DataResource fileImg();
 
     @Source("path_slash.png")

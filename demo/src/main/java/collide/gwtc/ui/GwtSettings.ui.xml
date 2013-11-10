@@ -101,7 +101,7 @@
          /><label ui:field="labelLogAll" class="{res.gwtCompilerCss.radioLabel}" for="radioLogAll">All</label>
       
       </div>
-      <!-- 
+      <!--
       <div ui:field="containerToOpen" class="{res.gwtSettingsCss.urlBoxContainer}" style="height:0px">
         <label ui:field="labelToOpen" class="{res.gwtCompilerCss.radioLabel}">Url to open:<br/></label>
         <input ui:field="inputToOpen" class="{res.gwtSettingsCss.urlBox}" type="text" value="/static/$module/index.html"

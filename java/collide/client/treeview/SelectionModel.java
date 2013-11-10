@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.ui.tree;
+package collide.client.treeview;
 
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
-import com.google.collide.client.ui.tree.Tree.Css;
+import collide.client.treeview.Tree.Css;
+
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;

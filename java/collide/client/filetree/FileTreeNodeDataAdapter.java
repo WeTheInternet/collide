@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.code;
+package collide.client.filetree;
 
-import com.google.collide.client.ui.tree.NodeDataAdapter;
-import com.google.collide.client.ui.tree.TreeNodeElement;
+import collide.client.treeview.NodeDataAdapter;
+import collide.client.treeview.TreeNodeElement;
+
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 

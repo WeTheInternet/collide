@@ -14,10 +14,11 @@
 
 package com.google.collide.client.ui.list;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.list.SimpleList.ListEventDelegate;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.list.SimpleList.View;
-import com.google.collide.client.util.Elements;
 
 import elemental.dom.Element;
 import elemental.html.AnchorElement;

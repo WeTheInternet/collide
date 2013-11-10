@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.code;
+package collide.client.filetree;
 
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.ui.tree.NodeRenderer;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeMutator;
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
-import com.google.collide.client.workspace.FileTreeNode;
+import collide.client.common.CommonResources;
+import collide.client.treeview.NodeRenderer;
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeMutator;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.client.workspace.WorkspaceUtils;
 
 import elemental.dom.Element;
@@ -60,8 +60,8 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
     String nodeNameInput();
   }
 
-  public interface Resources extends BaseResources.Resources, Tree.Resources {
-    @Source({"FileTreeNodeRenderer.css", "com/google/collide/client/common/constants.css"})
+  public interface Resources extends CommonResources.BaseResources, Tree.Resources {
+    @Source({"FileTreeNodeRenderer.css", "collide/client/common/constants.css"})
     Css workspaceNavigationFileTreeNodeRendererCss();
   }
 

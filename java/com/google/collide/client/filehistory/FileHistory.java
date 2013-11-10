@@ -14,11 +14,12 @@
 
 package com.google.collide.client.filehistory;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileContent;
 import com.google.collide.client.code.FileSelectedPlace;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.mvp.CompositeView;

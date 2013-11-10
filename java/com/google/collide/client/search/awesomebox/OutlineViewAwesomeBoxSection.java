@@ -14,9 +14,10 @@
 
 package com.google.collide.client.search.awesomebox;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.search.awesomebox.AwesomeBox.Resources;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.ViewListController;
 import com.google.collide.client.workspace.outline.OutlineModel;
 import com.google.collide.client.workspace.outline.OutlineNode;

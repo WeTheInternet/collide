@@ -14,8 +14,9 @@
 
 package com.google.collide.client.workspace.outline;
 
+import collide.client.treeview.TreeNodeElement;
+
 import com.google.collide.client.documentparser.AsyncParser;
-import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.document.anchor.Anchor;
 import com.google.collide.shared.document.anchor.AnchorType;

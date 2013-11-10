@@ -14,8 +14,9 @@
 
 package com.google.collide.client.diff;
 
-import com.google.collide.client.common.BaseResources;
-import com.google.collide.client.util.Elements;
+import collide.client.common.CommonResources;
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.dto.NodeConflictDto;
 import com.google.collide.dto.NodeMutationDto;
@@ -47,7 +48,7 @@ public class DiffCommon {
     String commonIcon();
   }
 
-  public interface Resources extends BaseResources.Resources {
+  public interface Resources extends CommonResources.BaseResources {
     @Source("added.png")
     ImageResource addedIcon();
 

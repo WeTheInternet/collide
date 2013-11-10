@@ -14,9 +14,10 @@
 
 package com.google.collide.plugin.client;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationHandler;
-import com.google.collide.client.util.Elements;
 import com.google.collide.plugin.client.PluginPlace.NavigationEvent;
 import com.google.collide.plugin.client.standalone.StandaloneContext;
 

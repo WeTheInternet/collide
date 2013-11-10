@@ -14,6 +14,10 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.communication.ResourceUriUtils;
@@ -28,7 +32,6 @@ import com.google.collide.client.ui.menu.PositionController.Positioner;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.tooltip.Tooltip;
 import com.google.collide.client.ui.tooltip.Tooltip.TooltipRenderer;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.RunButtonTargetPopup.RunTargetType;
 import com.google.collide.dto.RunTarget;

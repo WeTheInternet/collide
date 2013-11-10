@@ -14,7 +14,9 @@
 
 package com.google.collide.client;
 
-import com.google.collide.client.common.BaseResources;
+import collide.client.common.CommonResources;
+import collide.client.common.CommonResources.BaseResources;
+
 import com.google.collide.client.status.StatusPresenter;
 import com.google.collide.client.ui.panel.Panel;
 import com.google.collide.client.ui.popup.Popup;
@@ -30,7 +32,7 @@ import com.google.gwt.resources.client.CssResource.NotStrict;
  */
 public interface Resources
     extends
-    BaseResources.Resources,
+    BaseResources,
     StatusPresenter.Resources,
     WorkspaceShell.Resources,
     // TODO: Once we have actual consumers of the Tooltip class, we
@@ -45,7 +47,7 @@ public interface Resources
   public interface AppCss extends CssResource {
   }
 
-  @Source({"app.css", "com/google/collide/client/common/constants.css"})
+  @Source({"app.css", "collide/client/common/constants.css"})
   @NotStrict
   AppCss appCss();
 }

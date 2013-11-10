@@ -14,8 +14,9 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.code.CodePerspective;
-import com.google.collide.client.util.Elements;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.gwt.core.client.GWT;

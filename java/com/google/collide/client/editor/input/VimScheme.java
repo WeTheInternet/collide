@@ -18,11 +18,12 @@ import org.waveprotocol.wave.client.common.util.JsoIntMap;
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEvent.MoveUnit;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.editor.search.SearchModel;
 import com.google.collide.client.editor.selection.LocalCursorController;
 import com.google.collide.client.editor.selection.SelectionModel;
 import com.google.collide.client.editor.selection.SelectionModel.MoveAction;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.input.CharCodeWithModifiers;
 import com.google.collide.client.util.input.KeyCodeMap;
 import com.google.collide.client.util.input.ModifierKeys;

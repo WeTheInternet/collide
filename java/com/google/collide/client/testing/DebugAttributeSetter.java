@@ -17,8 +17,9 @@ package com.google.collide.client.testing;
 import java.util.HashMap;
 import java.util.Map;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ClientConfig;
-import com.google.collide.client.util.Elements;
 
 import elemental.dom.Element;
 

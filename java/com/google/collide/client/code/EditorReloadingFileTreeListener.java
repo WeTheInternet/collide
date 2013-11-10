@@ -14,10 +14,11 @@
 
 package com.google.collide.client.code;
 
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
+
 import com.google.collide.client.history.Place;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.workspace.FileTreeModel;
-import com.google.collide.client.workspace.FileTreeNode;
 import com.google.collide.json.shared.JsonArray;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

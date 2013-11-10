@@ -2,6 +2,7 @@ package collide.demo.view;
 
 import xapi.log.X_Log;
 import xapi.util.api.RemovalHandler;
+import collide.client.util.Elements;
 import collide.demo.view.SplitPanel;
 import collide.gwtc.GwtCompileStatus;
 import collide.gwtc.GwtcController;
@@ -15,7 +16,6 @@ import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.client.ui.panel.PanelModel.Builder;
-import com.google.collide.client.util.Elements;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.WorkspaceShell;

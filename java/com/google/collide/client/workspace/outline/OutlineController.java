@@ -15,6 +15,8 @@
 package com.google.collide.client.workspace.outline;
 
 import static com.google.collide.shared.grok.GrokUtils.findFileCodeBlock;
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
 
 import com.google.collide.client.codeunderstanding.CubeClient;
 import com.google.collide.client.codeunderstanding.CubeData;
@@ -22,8 +24,6 @@ import com.google.collide.client.codeunderstanding.CubeDataUpdates;
 import com.google.collide.client.codeunderstanding.CubeUpdateListener;
 import com.google.collide.client.documentparser.DocumentParser;
 import com.google.collide.client.editor.Editor;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
 import com.google.collide.codemirror2.SyntaxType;
 import com.google.collide.dto.CodeBlock;
 import com.google.collide.json.shared.JsonArray;
