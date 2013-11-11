@@ -144,10 +144,20 @@ public class GwtCompilePlace extends Place{
     return true;
   }
 
+  public void fireCompile(String module) {
+    GwtCompileImpl compile = GwtCompileImpl.make();
+    compile.setModule(module);
+    compile.setIsRecompile(false);
+    fire(compile);
+  }
   public void fireRecompile(String module) {
     GwtCompileImpl compile = GwtCompileImpl.make();
     compile.setModule(module);
     compile.setIsRecompile(true);
+    fire(compile);
+  }
+
+  private void fire(GwtCompileImpl compile) {
     PlaceNavigationEvent<?> child = WorkspacePlace.PLACE.getCurrentChildPlaceNavigation();
     WorkspacePlace.PLACE.disableHistorySnapshotting();
     setIsActive(true, WorkspacePlace.PLACE);

@@ -14,34 +14,29 @@ import collide.gwtc.GwtcController;
 import collide.gwtc.resources.GwtcResources;
 
 import com.google.collide.client.code.FileTreeSection;
-import com.google.collide.client.code.debugging.DebuggingModel;
 import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.code.debugging.DebuggingModelRenderer;
 import com.google.collide.client.code.debugging.DebuggingSidebar;
 import com.google.collide.client.code.debugging.EvaluationPopupController;
 import com.google.collide.client.code.debugging.SourceMapping;
 import com.google.collide.client.code.debugging.StaticSourceMapping;
-import com.google.collide.client.code.debugging.DebuggingModelRenderer.Resources;
-import com.google.collide.client.code.popup.EditorPopupController;
-import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.communication.FrontendApi;
+import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.communication.MessageFilter;
 import com.google.collide.client.communication.PushChannel;
 import com.google.collide.client.communication.ResourceUriUtils;
-import com.google.collide.client.document.DocumentManager;
-import com.google.collide.client.editor.Editor;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.client.search.awesomebox.AwesomeBoxModel;
-import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHostModel;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.ui.dropdown.DropdownWidgets;
+import com.google.collide.client.ui.menu.PositionController.AnchorPositioner;
+import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
+import com.google.collide.client.ui.menu.PositionController.Position;
+import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
+import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.ui.popup.Popup;
 import com.google.collide.client.ui.tooltip.Tooltip;
 import com.google.collide.client.util.PathUtil;
-import com.google.collide.client.util.UserActivityManager;
-import com.google.collide.client.util.WindowUnloadingController;
-import com.google.collide.client.util.dom.eventcapture.KeyBindings;
 import com.google.collide.client.workspace.PopupBlockedInstructionalPopup;
 import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.GetDirectory;
@@ -49,14 +44,12 @@ import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.GetFileContents;
 import com.google.collide.dto.GetFileContentsResponse;
 import com.google.collide.dto.WorkspaceTreeUpdate;
-import com.google.collide.dto.client.DtoClientImpls.GetDirectoryImpl;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.Window;
 
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -135,10 +128,16 @@ public class GwtcModuleControlView {
     SpanElement contents = FileTreeNodeRenderer.renderNodeContents(css, "Generated", false, new EventListener() {
       @Override
       public void handleEvent(Event evt) {
-        Window.alert("open");
         FileTreeSection files = testFileTree();
         generated.<JsElement>cast().appendChild(files.getView().getElement());
         files.getTree().renderTree(0);
+        Popup popup = Popup.create(resources);
+        popup.addPartner(generated.<JsElement>cast());
+        popup.setContentElement(files.getView().getElement());
+        popup.show(new PositionerBuilder()
+          .setVerticalAlign(VerticalAlign.BOTTOM)
+          .setPosition(Position.NO_OVERLAP)
+          .buildAnchorPositioner(generated.<JsElement>cast()));
       }
     }, true);
     Elements.asJsElement(generated).appendChild(contents);

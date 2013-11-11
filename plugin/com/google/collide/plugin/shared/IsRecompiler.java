@@ -2,7 +2,7 @@ package com.google.collide.plugin.shared;
 
 import com.google.gwt.dev.cfg.ResourceLoader;
 
-public interface IsCompiler {
+public interface IsRecompiler {
 
   ResourceLoader getResourceLoader();
 

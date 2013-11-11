@@ -11,9 +11,8 @@ public interface CodeModule extends ClientToServerDto, ServerToClientDto {
 
   String getModule();
   boolean isRecompile();
-  JsonArray<String> getSrc();
-//  JsonArray<String> getLib();
-  JsonArray<String> getDeps();
   TreeLogger.Type getLogLevel();
+  JsonArray<String> getSrc();
+  JsonArray<String> getDeps();
 
 }

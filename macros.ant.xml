@@ -116,12 +116,13 @@
     <attribute name="srcdir" default="${dirs.src}" description="Source root"/>
     <attribute name="plugindir" default="@{srcdir}" description="Plugin root"/>
     <attribute name="destdir" default="${dirs.bin}" description="Output root"/>
+    <attribute name="verbose" default="false" description="Javac verbosity"/>
     <element name="nested" implicit="true"/>
     <sequential>
       <mkdir dir="@{destdir}"/>
       <javac srcdir="@{srcdir}; @{plugindir}" destdir="@{destdir}"
              compiler="${javac.compiler}" debug="${javac.debug}"
-             deprecation="${javac.deprecation}"
+             deprecation="${javac.deprecation}" verbose="${verbose}"
              includeAntRuntime="false" fork="yes">
         <nested/>
       </javac>

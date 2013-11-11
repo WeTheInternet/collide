@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client;
+package collide.plugin;
 
 import xapi.annotation.inject.SingletonDefault;
 import collide.gwtc.ui.GwtClientPlugin;

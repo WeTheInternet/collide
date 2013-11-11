@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -127,9 +128,17 @@ public class DtoGenerator {
         }
       }
 
-      // Emit the generated file.
+      // Emit the generated file, only if it has changed (prevents spurious gwt recompile).
+      String outputFile = dtoTemplate.toString();
+      if (outFile.exists()) {
+        String current = Files.toString(outFile, Charsets.UTF_8);
+        if (current.equals(outputFile)) {
+          System.err.println("Skipping dto generation as output file already matches generated values");
+          return;
+        }
+      }
       BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
-      writer.write(dtoTemplate.toString());
+      writer.write(outputFile);
       writer.close();
     } catch (MalformedURLException e1) {
       e1.printStackTrace();

@@ -37,24 +37,22 @@ import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile>
 implements IsCompileThread <GwtCompile> {
 
-  private final class RunningModule extends StringId {
-    GwtCompile compile;
-    CompiledDirectory dir;
-
-    public RunningModule(String module) {
-      super(module);
-    }
-
+  public GwtCompilerThread() {
   }
-
+  public GwtCompilerThread(String module) {
+    this.module = module;
+  }
+  
   private final HashMap<String, CompiledDirectory> modules = new HashMap<>();
   ReflectionChannelTreeLogger logger;
-  private boolean started;
+  private boolean started, recompile;
 
   @Override
   protected TreeLogger logger() {
     return logger == null ? new PrintWriterTreeLogger() : logger;
   }
+  RecompileController controller;
+  private String module;
   
   // these are native objects, created using reflection
   @Override
@@ -77,7 +75,7 @@ implements IsCompileThread <GwtCompile> {
         }
         working = true;
         GwtCompile request = GwtCompileImpl.fromJsonString(compileRequest);
-
+        module = request.getModule();
         // prepare a response to let the user know we are working
         CompileResponseImpl response;
         response = CompileResponseImpl.make();
@@ -92,7 +90,7 @@ implements IsCompileThread <GwtCompile> {
         io.send(response.toJson());
 
         server.get();
-        RecompileController controller = SuperDevUtil.getOrMakeController(
+        controller = SuperDevUtil.getOrMakeController(
             logger, request, server.getPort());
         CompiledDirectory dir = controller.recompile();
         modules.put(request.getModule(), dir);
@@ -128,7 +126,10 @@ implements IsCompileThread <GwtCompile> {
             logger.log(Type.ERROR, trace.toString());
           cause = cause.getCause();
         }
-        
+        if (status == null) {
+          status = CompileResponseImpl.make();
+          status.setModule(module);
+        }
         status.setCompilerStatus(CompilerState.FAILED);
         io.send(status.toJson());
         if (isFatal(e))
@@ -337,6 +338,28 @@ implements IsCompileThread <GwtCompile> {
         }
       });
     }
+  }
+
+  @Override
+  public boolean isRunning() {
+    return working;
+  }
+
+  @Override
+  public boolean isStarted() {
+    return started;
+  }
+
+  @Override
+  public void kill() {
+    if (controller != null) {
+      controller.cleanup();
+    }
+  }
+
+  @Override
+  public void doRecompile() {
+    recompile = true;
   }
 
 }

@@ -13,9 +13,8 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
   private final Stack<String> jsonString = new Stack<String>();
   private EventBus eb;
   private String address;
-  public CrossThreadVertxChannel(ClassLoader cl, String jsonString,  EventBus eb,String address) {
+  public CrossThreadVertxChannel(ClassLoader cl, EventBus eb,String address) {
     super(cl, null);
-    this.jsonString.push(jsonString);
     this.eb = eb;
     this.address = address;
   }
@@ -29,7 +28,7 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
     public String receive() {
       if (jsonString.isEmpty())
         return null;
-       return jsonString.pop();
+      return jsonString.pop();
     }
     
     public void setOutput(String next){

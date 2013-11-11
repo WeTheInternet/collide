@@ -3,6 +3,7 @@
 <module>
   <source path="gwtc" />
   <source path="shared" />
+  <source path="plugin" />
   <inherits name="xapi.X_Inherit"/>
   <inherits name="elemental.Elemental"/>
   <inherits name="collide.client.FileTree"/>

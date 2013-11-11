@@ -4,6 +4,7 @@ import xapi.log.X_Log;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
+import com.google.collide.client.communication.FrontendApi.RequestResponseApi;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
 import com.google.collide.client.plugin.ClientPlugin;
@@ -15,6 +16,7 @@ import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.Header.Resources;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
+import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.json.client.JsoArray;
@@ -136,8 +138,11 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
   @Override
   public void run(AppContext appContext, PathUtil file) {
   GwtCompileImpl gwtCompile = getCompilerSettings();
-
-  appContext.getFrontendApi().COMPILE_GWT.send(gwtCompile , new ApiCallback<CompileResponse>() {
+  RequestResponseApi<GwtCompile, CompileResponse> endpoint = 
+      gwtCompile.isRecompile()
+        ? appContext.getFrontendApi().RE_COMPILE_GWT
+        : appContext.getFrontendApi().COMPILE_GWT;
+  endpoint.send(gwtCompile , new ApiCallback<CompileResponse>() {
     @Override
     public void onMessageReceived(CompileResponse message) {
       CompilerState state = message.getCompilerStatus();

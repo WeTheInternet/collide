@@ -281,6 +281,9 @@ public class FrontendApi {
 
   public final RequestResponseApi<GwtCompile,CompileResponse> COMPILE_GWT =
       makeApi("gwt.compile");
+  
+  public final RequestResponseApi<GwtCompile,CompileResponse> RE_COMPILE_GWT =
+      makeApi("gwt.recompile");
 
   public final RequestResponseApi<GwtCompile, CompileResponse> KILL_GWT =
       makeApi("gwt.status");

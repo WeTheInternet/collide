@@ -18,6 +18,8 @@ import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
+import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
 import com.google.collide.client.util.RelativeClientRect;
 import com.google.common.base.Preconditions;
 import com.google.gwt.user.client.Window;
@@ -26,6 +28,7 @@ import elemental.css.CSSStyleDeclaration;
 import elemental.css.CSSStyleDeclaration.Unit;
 import elemental.dom.Element;
 import elemental.html.ClientRect;
+import elemental.js.dom.JsElement;
 
 /**
  * A controller which handles positioning an element relative to another element. This controller is

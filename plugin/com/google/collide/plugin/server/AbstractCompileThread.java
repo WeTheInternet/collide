@@ -14,7 +14,7 @@ import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.plugin.server.gwt.CompilerBusyException;
 import com.google.collide.plugin.server.gwt.CompilerRunner;
 import com.google.collide.plugin.shared.CompiledDirectory;
-import com.google.collide.plugin.shared.IsCompiler;
+import com.google.collide.plugin.shared.IsRecompiler;
 import com.google.collide.server.shared.launcher.VertxLauncher;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
@@ -32,7 +32,7 @@ implements CompilerRunner
   protected boolean working = false;
   protected int port;
 
-  protected IsCompiler controller;
+  protected IsRecompiler controller;
 
   protected final VertxLauncher server = new VertxLauncher() {
     @Override
@@ -65,7 +65,7 @@ implements CompilerRunner
     io.send(status.toJson());
   }
 
-  protected synchronized void startOrUpdateProxy(CompiledDirectory impl, IsCompiler compiler) {
+  protected synchronized void startOrUpdateProxy(CompiledDirectory impl, IsRecompiler compiler) {
     this.compileRequest = impl;
     this.controller = compiler;
     System.out.println("Starting plugin thread "+getClass());

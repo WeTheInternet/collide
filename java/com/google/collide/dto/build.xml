@@ -10,15 +10,17 @@
           depends="client,server"/>
 
   <target name="interfaces">
-    <outofdate>
+    <outofdate outputsources="dto.out.of.date">
       <sourcefiles>
         <fileset file="build.xml"/>
         <fileset dir="${dirs.src}/${dirs.toppkg}/dto"/>
       </sourcefiles>
       <targetfiles path="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
       <sequential>
+      	<echo>Out of date files: 
+      		${dto.out.of.date}</echo>
         <mkdir dir="${dirs.bin}/${dirs.toppkg}/dto"/>
-        <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}">
+        <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}" verbose="true">
           <include name="${dirs.toppkg}/dto/*.java"/>
       	  <include name="${dirs.toppkg}/emul/**/*.java"/>
           <classpath>
@@ -34,7 +36,7 @@
   </target>
 
   <target name="client" depends="interfaces,tools.dtogen.build">
-    <outofdate>
+    <outofdate outputsources="dto.out.of.date">
       <sourcefiles>
         <fileset file="build.xml"/>
         <fileset dir="${dirs.bin}/${dirs.toppkg}/dtogen"/>
@@ -43,6 +45,8 @@
       <targetfiles
           path="${dirs.gen}/${dirs.toppkg}/dto/client/DtoClientImpls.java"/>
       <sequential>
+      	<echo>Out of date files: 
+      		${dto.out.of.date}</echo>
         <mkdir dir="${dirs.gen}/${dirs.toppkg}/dto/client"/>
         <java classname="${pkg.toppkg}.dtogen.DtoGenerator" fork="true"
               failonerror="true" timeout="5000">

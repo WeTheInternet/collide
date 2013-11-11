@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.inspector;
+package collide.plugin.inspector;
 
 import xapi.inject.impl.LazyPojo;
 import collide.gwtc.ui.GwtCompilerShell.Resources;
@@ -8,6 +8,7 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelModel;
+import com.google.collide.plugin.client.inspector.InspectorPlace;
 import com.google.collide.plugin.client.inspector.InspectorPlace.NavigationEvent;
 import com.google.gwt.core.shared.GWT;
 

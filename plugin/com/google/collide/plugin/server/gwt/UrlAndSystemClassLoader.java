@@ -8,10 +8,11 @@ import com.google.gwt.core.ext.TreeLogger.Type;
 
 public class UrlAndSystemClassLoader extends URLClassLoader{
   boolean allowSystem = true;
+  boolean useParent = false;
   private TreeLogger log;
-  public UrlAndSystemClassLoader(URL[] urls, TreeLogger log2){
+  public UrlAndSystemClassLoader(URL[] urls, TreeLogger log){
     super(urls,null);
-    this.log = log2;
+    this.log = log;
   }
   @Override
   public Class<?> loadClass(String name) throws ClassNotFoundException {
@@ -20,13 +21,19 @@ public class UrlAndSystemClassLoader extends URLClassLoader{
         //TODO: handle hot-swapping...
         return ClassLoader.getSystemClassLoader().loadClass(name);
       }catch (Exception e) {
-        log.log(Type.TRACE, "Could not load "+name+" from system classloader");
+        log.log(Type.TRACE, "Couldn't load "+name+" from system classloader");
       }
     try{
+      if (useParent) {
+        return getClass().getClassLoader().loadClass(name);
+      }
       return super.loadClass(name);
     }catch (Exception e) {
       //last resort, use our context classloader.
       //this is required to do stuff like launch a working vertx server in compiler thread.
+      if (useParent) {
+        return super.loadClass(name);
+      }
       return getClass().getClassLoader().loadClass(name);
     }
   }

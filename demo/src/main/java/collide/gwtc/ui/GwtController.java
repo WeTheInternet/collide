@@ -14,4 +14,6 @@ public interface GwtController {
   void openWindow(String module, int port);
   void recompile(GwtCompile existing);
   void setAutoOpen(boolean auto);
+  void onSaveButtonClicked();
+  void onLoadButtonClicked();
 }

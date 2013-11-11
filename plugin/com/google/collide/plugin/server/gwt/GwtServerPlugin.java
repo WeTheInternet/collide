@@ -3,6 +3,7 @@ package com.google.collide.plugin.server.gwt;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -13,18 +14,18 @@ import org.vertx.java.core.impl.VertxInternal;
 import org.vertx.java.core.json.JsonObject;
 
 import xapi.collect.api.InitMap;
-import xapi.collect.impl.InitMapDefault;
 import xapi.collect.impl.InitMapString;
 import xapi.inject.impl.LazyPojo;
 import xapi.log.X_Log;
 import xapi.util.api.ConvertsValue;
+import xapi.util.api.ReceivesValue;
 
 import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.dto.server.DtoServerImpls.GwtKillImpl;
 import com.google.collide.plugin.server.AbstractPluginServer;
-import com.google.collide.plugin.server.IsCompileThread;
 import com.google.collide.server.shared.util.Dto;
 import com.google.common.collect.ImmutableMap;
 import com.google.gwt.dev.codeserver.GwtCompilerThread;
@@ -45,10 +46,12 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
     return "gwt";
   }
 
-  private final InitMap<String, IsCompileThread<GwtCompile>> compilers = new InitMapString<IsCompileThread<GwtCompile>>(new ConvertsValue<String, IsCompileThread<GwtCompile>>() {
+  private final InitMap<String, GwtCompiler> compilers = 
+    new InitMapString<GwtCompiler>(
+        new ConvertsValue<String, GwtCompiler>() {
     @Override
-    public IsCompileThread<GwtCompile> convert(String module) {
-      return null;
+    public GwtCompiler convert(String module) {
+      return new GwtCompiler(module);
     }
   });
   
@@ -59,6 +62,7 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
           Map<String, Handler<Message<JsonObject>>> map =
               new HashMap<String, Handler<Message<JsonObject>>>();
 
+          map.put("recompile", new GwtRecompileHandler());
           map.put("compile", new GwtCompileHandler());
           map.put("settings", new GwtSettingsHandler());
           map.put("proxy", new GwtProxyHandle());
@@ -75,13 +79,55 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
 
   class GwtKillHandle implements Handler<Message<JsonObject>> {
     @Override
-    public void handle(Message<JsonObject> event) {
-      
+    public void handle(Message<JsonObject> message) {
+      String jsonString = Dto.get(message);
+      GwtKillImpl killRequest = GwtKillImpl.fromJsonString(jsonString);
+      String module = message.body.getString("module");
+      if (compilers.containsKey(module)) {
+        compilers.get(module).kill();
+        compilers.removeValue(killRequest.getModule());
+      }
     }
   }
   
 
   public class GwtCompileHandler implements Handler<Message<JsonObject>> {
+    @Override
+    public void handle(Message<JsonObject> message) {
+      String jsonString = Dto.get(message);
+      GwtCompileImpl compileRequest = GwtCompileImpl.fromJsonString(jsonString);
+      GwtCompiler compiler = compilers.get(compileRequest.getModule());
+      // This is an initialization request, so we should create a new compile server
+      boolean classpathMatches = compiler.isMatchingClasspath(compileRequest);
+      if (classpathMatches) {
+        if (compiler.isRunning()) {
+          compiler.scheduleRecompile();
+          // TODO reply w/ success log
+        } else if (compiler.isStarted()){
+          compiler.compile(compileRequest.toString());
+        }
+        return;
+      } else {
+        compiler.kill();
+      }
+      // Initialize new compiler
+      synchronized (GwtServerPlugin.this) {
+        final ArrayList<String> logMessages = new ArrayList<>();
+        URL[] cp = getCompilerClasspath(compileRequest, new ReceivesValue<String>() {
+          @Override
+          public void set(String log) {
+            logMessages.add(log);
+          }
+        }).toArray(new URL[0]);
+        compiler.initialize(compileRequest, cp, eb, getAddressBase()+".log");
+        for (String item : logMessages) {
+          compiler.log(item);
+        }
+      }
+      compiler.compile(compileRequest.toString());
+    }
+  }
+  public class GwtRecompileHandler implements Handler<Message<JsonObject>> {
     public class CompilerCleanup implements Runnable{
       @Override
       public void run() {
@@ -156,9 +202,10 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
       Method method;
       boolean rerun = compileLauncher.isSet();
       //TODO: check if classpath has changed, and kill server if different.
-      synchronized(this){//only create one please!
+      synchronized(this){
+        //only create one please!
         if (null==io){
-          io = new CrossThreadVertxChannel(cl, jsonString, eb,getAddressBase()+".log"){
+          io = new CrossThreadVertxChannel(cl, eb,getAddressBase()+".log"){
             @Override
             public void destroy() throws Exception {
               compileLauncher.reset();
@@ -167,6 +214,7 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
             }
           };
         }
+        
         cp = getServerClasspath(lastCompile, io).toArray(new URL[0]);
         io.setOutput(lastCompile.toString());
         method = compileLauncher.get();

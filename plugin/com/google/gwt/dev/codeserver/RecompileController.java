@@ -14,10 +14,10 @@ import org.apache.commons.io.FileUtils;
 import xapi.inject.impl.LazyPojo;
 
 import com.google.collide.plugin.shared.CompiledDirectory;
-import com.google.collide.plugin.shared.IsCompiler;
+import com.google.collide.plugin.shared.IsRecompiler;
 import com.google.gwt.dev.cfg.ResourceLoader;
 
-public class RecompileController implements IsCompiler {
+public class RecompileController implements IsRecompiler {
 
   private Logger log = Logger.getLogger(getClass().getSimpleName());
 
@@ -74,7 +74,7 @@ public class RecompileController implements IsCompiler {
         }
       }
 
-      return new CompiledDirectory()
+      CompiledDirectory compiled = new CompiledDirectory()
         .setDeployDir(dir.getDeployDir().getAbsolutePath())
         .setExtraDir(dir.getExtraDir().getAbsolutePath())
         .setGenDir(dir.getGenDir().getAbsolutePath())
@@ -85,6 +85,7 @@ public class RecompileController implements IsCompiler {
         .setUri(getModuleName())
         .setUserAgentMap(permutations)
       ;
+      return compiled;
     };
     @Override
     public void reset() {
@@ -93,18 +94,23 @@ public class RecompileController implements IsCompiler {
     };
   };
   private final Recompiler recompiler;
-
   public RecompileController(Recompiler compiler) {
     this.recompiler = compiler;
   }
 
   public CompiledDirectory recompile(){
+    CompiledDirectory toDestroy = null;
     if (compileDir.isSet()) {
-      // TODO maybe skip destroying the existing compile if clients are still connected.
-      destroy(compileDir.get());
+      toDestroy = compileDir.get();
     }
     compileDir.reset();
-    return compileDir.get();
+    try {
+      return compileDir.get();
+    } finally {
+      if (toDestroy != null) {
+        destroy(toDestroy, 10000);
+      }
+    }
   }
 
   /**
@@ -112,7 +118,7 @@ public class RecompileController implements IsCompiler {
 
    * @param dir - The draft compile to destroy.
    */
-  private void destroy(final CompiledDirectory dir) {
+  private void destroy(final CompiledDirectory dir, final int delay) {
     final File deployDir = new File(dir.getDeployDir());
     final File extraDir = new File(dir.getExtraDir());
     final File genDir = new File(dir.getGenDir());
@@ -123,22 +129,22 @@ public class RecompileController implements IsCompiler {
     Thread cleanup = new Thread(new Runnable() {
       @Override
       public void run() {
-        
         try {
           // wait thirty seconds before taking out the old compile
-          Thread.sleep(30000);
+          Thread.sleep(delay);
           destroy(deployDir);
-          Thread.sleep(1000);
+          int perDir = delay/30+1;
+          Thread.sleep(perDir);
           destroy(extraDir);
-          Thread.sleep(1000);
+          Thread.sleep(perDir);
           destroy(genDir);
-          Thread.sleep(1000);
+          Thread.sleep(perDir);
           destroy(mapDir);
-          Thread.sleep(1000);
+          Thread.sleep(perDir);
           destroy(warDir);
-          Thread.sleep(1000);
+          Thread.sleep(perDir);
           destroy(workDir);
-          Thread.sleep(1000);
+          Thread.sleep(perDir);
         } catch (InterruptedException e) {Thread.currentThread().interrupt();}
       }
 
@@ -166,8 +172,9 @@ public class RecompileController implements IsCompiler {
     defaultProps.put("user.agent", "safari,gecko1_8");
     defaultProps.put("locale", "en");
     defaultProps.put("compiler.useSourceMaps", "true");
+    CompileDir dir = null;
       try{
-        CompileDir dir = recompiler.compile(defaultProps);
+        dir = recompiler.compile(defaultProps);
         return dir;
       }catch (Exception e) {
         e.printStackTrace();
@@ -177,7 +184,10 @@ public class RecompileController implements IsCompiler {
     }
 
   public void cleanup() {
-
+    if (compileDir.isSet()) {
+      destroy(compileDir.get(), 1);
+      compileDir.reset();
+    }
   }
 
 }

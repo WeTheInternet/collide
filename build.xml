@@ -47,6 +47,7 @@
       <fileset dir="${dirs.root}">
         <include name="collide" />
     	</fileset>
+    	
     </copy>
 
     <!-- Copy the GWT client. -->
@@ -84,7 +85,7 @@
 
   <target name="copy.launch">
     <!-- Copy launch scripts to bin directory. -->
-    <copy todir="${dirs.bin}">
+    <copy todir="${dirs.dist}">
       <fileset dir="${dirs.root}">
         <include name="bootstrap.js" />
         <include name="collide" />
@@ -92,7 +93,7 @@
     </copy>
 
     <!-- To preserve executable file permissions on launcher script. -->
-    <chmod dir="${dirs.bin}" perm="ugo+rx"  includes="collide"/>
+    <chmod dir="${dirs.dist}" perm="ugo+rx"  includes="collide"/>
   </target>
 
   <target name="build" description="Build the whole Collide executable"

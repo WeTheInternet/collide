@@ -48,6 +48,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Timer;
 
+import elemental.client.Browser;
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -162,7 +163,6 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       this.compileState = model;
       
       setElement(Elements.asJsElement(binder.createAndBindUi(this)));
-      
 
       ((AnchorElement)draftButton).setOnclick(new EventListener() {
         @Override
@@ -180,6 +180,18 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         @Override
         public void handleEvent(Event evt) {
           getDelegate().onKillButtonClicked();
+        }
+      });
+      ((AnchorElement)save).setOnclick(new EventListener() {
+        @Override
+        public void handleEvent(Event evt) {
+          getDelegate().onSaveButtonClicked();
+        }
+      });
+      ((AnchorElement)load).setOnclick(new EventListener() {
+        @Override
+        public void handleEvent(Event evt) {
+          getDelegate().onLoadButtonClicked();
         }
       });
 
@@ -269,7 +281,9 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   public class GwtControllerImpl implements GwtController{
     @Override
     public void onDraftButtonClicked() {
-      context.getFrontendApi().COMPILE_GWT.send(getValue(), new ApiCallback<CompileResponse>() {
+      GwtCompileImpl value = getValue();
+      value.setIsRecompile(true);
+      context.getFrontendApi().RE_COMPILE_GWT.send(value, new ApiCallback<CompileResponse>() {
         @Override
         public void onMessageReceived(CompileResponse message) {
           if (message == null)
@@ -283,6 +297,14 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
       });
     }
+    @Override
+    public void onLoadButtonClicked() {
+      Browser.getWindow().alert("Load not yet implemented");
+    }
+    @Override
+    public void onSaveButtonClicked() {
+      Browser.getWindow().alert("Save not yet implemented");
+    }
     
     @Override
     public void setAutoOpen(boolean auto) {
@@ -293,7 +315,21 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     
     @Override
     public void onCompileButtonClicked() {
-      onDraftButtonClicked();//We aren't doing full compiles just yet
+      GwtCompileImpl value = getValue();
+      value.setIsRecompile(false);
+      context.getFrontendApi().COMPILE_GWT.send(value, new ApiCallback<CompileResponse>() {
+        @Override
+        public void onMessageReceived(CompileResponse message) {
+          if (message == null)
+            Log.error(getClass(), "Null gwt status message received");
+          else
+            onStatusMessageReceived(message);
+        }
+        @Override
+        public void onFail(FailureReason reason) {
+          
+        }
+      });
     }
   
     @Override

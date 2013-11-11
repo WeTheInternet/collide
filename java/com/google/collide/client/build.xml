@@ -33,9 +33,9 @@
       <include name="${dirs.toppkg}/client/bootstrap/*.java"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
-  	<copy todir="${dirs.bin}">
+<!--  	<copy todir="${dirs.bin}">
       <fileset dir="${dirs.src}/collide" />
-    </copy>
+    </copy>-->
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
       <include name="collide/client/**/*.*"/>
       <include name="${dirs.toppkg}/client/util/**/*.java"/>
@@ -56,7 +56,7 @@
    <!--  <do.javac srcdir="${dirs.plugin}" destdir="${dirs.bin}">
       <classpath refid="paths.client.build"/>
     </do.javac> -->
-    <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}">
+    <do.javac srcdir="${dirs.src}; ${dirs.plugin}; ${dirs.demo}" destdir="${dirs.bin}">
       <include name="${dirs.toppkg}/client/**/*.java"/>
       <exclude name="${dirs.toppkg}/client/bootstrap/**"/>
       <exclude name="${dirs.toppkg}/client/communication/**"/>
@@ -67,6 +67,7 @@
       <exclude name="${dirs.toppkg}/codemirror2/**"/>
       <include name="${dirs.toppkg}/plugin/client/**/*.java"/>
       <include name="${dirs.toppkg}/emul/**/*.java"/>
+      <include name="collide/**/*.java"/>
       <include name="${dirs.toppkg}/**/*.xml"/>
       <classpath refid="paths.client.build"/>
     </do.javac>
