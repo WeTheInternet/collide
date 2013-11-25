@@ -14,6 +14,7 @@ import java.util.Set;
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.Vertx;
+import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
@@ -23,7 +24,7 @@ import xapi.util.X_String;
 import xapi.util.api.ReceivesValue;
 
 import com.google.collide.dto.CodeModule;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.plugin.server.gwt.CrossThreadVertxChannel;
@@ -56,7 +57,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     }
   }
 
-  protected List<URL> getCompilerClasspath(final CodeModule request, final ReceivesValue<String> logger) {
+  public List<URL> getCompilerClasspath(final CodeModule request, final ReceivesValue<String> logger) {
     List<URL> list = new ArrayList<URL>(){
       private static final long serialVersionUID = 7809897000236224683L;
       @Override
@@ -80,7 +81,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     //add super-sources first (todo: implement)
 
     //add source folders
-    for (String cp : request.getSrc().asIterable()){
+    for (String cp : request.getSources().asIterable()){
       if (!cp.endsWith(".jar")){
         URL url = toUrl(webDir,cp);
         if (url != null && dedup.add(url.toExternalForm())){
@@ -101,7 +102,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     list.add(toUrl(libDir,"collide-server.jar"));//required to run vertx threads
     
     //now, add all the jars listed as source
-    for (String cp : request.getSrc().asIterable()){
+    for (String cp : request.getSources().asIterable()){
       
       if (cp.endsWith(".jar")) {
         URL url = toUrl(webDir,cp);
@@ -122,7 +123,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     list.add(toUrl(libDir,"gwt-dev.jar"));//required by compiler
     list.add(toUrl(libDir,"gwt-codeserver.jar"));//required by compiler
 
-    JsonArray<String> deps = request.getDeps();
+    JsonArray<String> deps = request.getDependencies();
     if (deps != null)
     for (String cp : deps.asIterable()){
       URL url = toUrl(libDir,cp);
@@ -140,7 +141,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     //clear our deps and put our entire resolved classpath back
     deps.clear();
     for (URL url : list){
-      deps.add(url.toExternalForm());
+      deps.add(url.toExternalForm().replace("file:", ""));
     }
     
     return list ;
@@ -169,7 +170,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     //add super-sources first (todo: implement)
 
     //add source folders
-    for (String cp : request.getSrc().asIterable()){
+    for (String cp : request.getSources().asIterable()){
       if (!cp.endsWith(".jar")){
         URL url = toUrl(webDir,cp);
         if (url != null && dedup.add(url.toExternalForm())){
@@ -192,7 +193,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     list.add(toUrl(libDir,"collide-server.jar"));//required to run vertx threads
 
     //now, add all the jars listed as source
-    for (String cp : request.getSrc().asIterable()){
+    for (String cp : request.getSources().asIterable()){
       
       if (cp.endsWith(".jar")) {
         URL url = toUrl(webDir,cp);
@@ -213,7 +214,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     list.add(toUrl(libDir,"gwt-dev.jar"));//required by compiler
     list.add(toUrl(libDir,"gwt-codeserver.jar"));//required by compiler
 
-    JsonArray<String> deps = request.getDeps();
+    JsonArray<String> deps = request.getDependencies();
     if (deps != null)
     for (String cp : deps.asIterable()){
       URL url = toUrl(libDir,cp);
@@ -274,6 +275,10 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
       e.printStackTrace();
       throw X_Debug.rethrow(e);
     }
+  }
+
+  public EventBus getEventBus() {
+    return eb;
   }
 
 

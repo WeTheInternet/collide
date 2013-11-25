@@ -3,7 +3,9 @@ package collide.shared.manifest;
 import static xapi.util.X_String.join;
 import xapi.log.X_Log;
 import elemental.util.ArrayOf;
+import elemental.util.ArrayOfString;
 import elemental.util.Collections;
+import elemental.util.MapFromStringTo;
 
 public class CollideManifest {
 
@@ -27,6 +29,7 @@ public class CollideManifest {
   }
   
   ArrayOf<GwtEntry> gwtEntries = Collections.arrayOf();
+  MapFromStringTo<GwtManifest> gwtcEntries = Collections.mapFromStringTo();
   
   public CollideManifest(String raw) {
     parse(raw);
@@ -110,12 +113,20 @@ public class CollideManifest {
     for (int i = 0, m = gwtEntries.length(); i < m; i++) {
       b.append(gwtEntries.get(i));
     }
+    ArrayOfString keys = gwtcEntries.keys();
+    for (int i = 0, m = keys.length(); i < m; i++) {
+      b.append(gwtcEntries.get(keys.get(i)));
+    }
     
     return b.toString();
   }
 
   public ArrayOf<GwtEntry> getGwtEntries() {
     return gwtEntries.concat(Collections.<GwtEntry>arrayOf());
+  }
+
+  public void addGwtc(GwtManifest gwtc) {
+    gwtcEntries.put(gwtc.getModuleName(), gwtc);
   }
   
 }

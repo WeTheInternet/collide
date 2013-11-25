@@ -5,10 +5,13 @@ import com.google.collide.dtogen.shared.RoutingType;
 import com.google.collide.dtogen.shared.ServerToClientDto;
 import com.google.collide.json.shared.JsonArray;
 
-@RoutingType(type = RoutingTypes.GWTSETTINGS)
-public interface GwtSettings extends ClientToServerDto, ServerToClientDto{
+@RoutingType(type = RoutingTypes.GWTRECOMPILE)
+public interface GwtRecompile extends CodeModule, ClientToServerDto, ServerToClientDto{
 
-  JsonArray<GwtRecompile> getModules();
-  
-  
+  JsonArray<GwtPermutation> getPermutations();
+
+  boolean getAutoOpen();
+
+  int getPort();
+
 }

@@ -1,9 +1,9 @@
 package com.google.gwt.dev.codeserver;
 
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.plugin.server.IsCompileThread;
 import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
 import com.google.collide.plugin.server.gwt.CompilerBusyException;
@@ -12,7 +12,7 @@ import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
-public class GwtRecompiler implements IsCompileThread<GwtCompile> {
+public class GwtRecompiler implements IsCompileThread<GwtRecompile> {
 
   private final class CompileThread extends Thread {
     String next;
@@ -44,7 +44,7 @@ public class GwtRecompiler implements IsCompileThread<GwtCompile> {
             working = true;
             // We have a pending gwt compile
             this.next = next;
-            GwtCompile request = GwtCompileImpl.fromJsonString(next);
+            GwtRecompile request = GwtRecompileImpl.fromJsonString(next);
             try {
               compile(request);
             } catch (Exception e) {
@@ -58,7 +58,7 @@ public class GwtRecompiler implements IsCompileThread<GwtCompile> {
       }
     }
 
-    private void compile(GwtCompile request) {
+    private void compile(GwtRecompile request) {
       assert module.equals(request.getModule()) : "GWT Compiler for "+module+
         " received request to compile "+request.getModule()+":\n"+request;
       // prepare a response to let the user know we are working

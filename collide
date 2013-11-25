@@ -24,7 +24,7 @@ echo $CONFIG >> $TMP_FILE
 VERTX_MODS=$BASE/lib/vertx/mods
 
 #TODO: Make the ant build generate this string.
-COLLIDE_CLASSPATH=$BASE/lib/xapi-gwt-0.3.jar:$BASE/lib/xapi-dev-0.3-SNAPSHOT.jar:$VERTX_MODS/gwt:$BASE/lib/gwt-dev.jar:$BASE/lib/gwt-user.jar:$BASE/lib/collide-server.jar:$BASE/lib/gwt-codeserver.jar:$BASE/lib/guava-12.0.jar:$BASE/lib/gson-2.2.1.jar:$BASE/lib/jsr305.jar:$BASE/lib/org.eclipse.jgit-1.3.0.201202151440-r.jar:$BASE/lib/waveinabox-import-0.3.jar:$BASE/lib/elemental.jar
+COLLIDE_CLASSPATH=$BASE/lib/xapi-dev-0.3.jar:$BASE/lib/xapi-gwt-0.3.jar:$VERTX_MODS/gwt:$BASE/lib/gwt-dev.jar:$BASE/lib/gwt-user.jar:$BASE/lib/collide-server.jar:$BASE/lib/gwt-codeserver.jar:$BASE/lib/guava-12.0.jar:$BASE/lib/gson-2.2.1.jar:$BASE/lib/jsr305.jar:$BASE/lib/org.eclipse.jgit-1.3.0.201202151440-r.jar:$BASE/lib/waveinabox-import-0.3.jar:$BASE/lib/elemental.jar
 
 
 

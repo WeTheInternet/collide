@@ -1,5 +1,8 @@
 package com.google.collide.dto;
 
+import collide.shared.api.ObfuscationLevel;
+import collide.shared.api.OpenAction;
+
 import com.google.collide.dtogen.shared.ClientToServerDto;
 import com.google.collide.dtogen.shared.RoutingType;
 import com.google.collide.dtogen.shared.ServerToClientDto;
@@ -7,12 +10,15 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.gwt.core.ext.TreeLogger;
 
 @RoutingType(type=RoutingTypes.CODEMODULE)
-public interface CodeModule extends ClientToServerDto, ServerToClientDto {
+public interface CodeModule extends HasModule, ClientToServerDto, ServerToClientDto {
 
-  String getModule();
+  String getManifestFile();
+  JsonArray<String> getExtraArgs();
   boolean isRecompile();
   TreeLogger.Type getLogLevel();
-  JsonArray<String> getSrc();
-  JsonArray<String> getDeps();
-
+  JsonArray<String> getSources();
+  JsonArray<String> getDependencies();
+  ObfuscationLevel getObfuscationLevel();
+  OpenAction getOpenAction();
+  
 }

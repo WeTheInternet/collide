@@ -107,6 +107,12 @@
    <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-gwt-${xapi.version}.jar</systemPath>
   </dependency>
   <dependency>
+   <groupId>net.wetheinter</groupId>
+   <artifactId>xapi-jre</artifactId>
+   <scope>system</scope>
+   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-dev-${xapi.version}.jar</systemPath>
+  </dependency>
+  <dependency>
    <groupId>com.google.code.gson</groupId>
    <artifactId>gson</artifactId>
   </dependency>

@@ -37,6 +37,7 @@ class AppSpace {
    */
   private AppSpace(File root, String module) {
     this.root = root;
+    root.deleteOnExit();
     this.module = module;
   }
 

@@ -5,7 +5,7 @@ import xapi.util.api.RemovalHandler;
 
 import com.google.collide.client.CollideSettings;
 import com.google.collide.client.util.logging.Log;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.shared.CookieKeys;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
@@ -60,8 +60,8 @@ public class GwtModuleView extends CompositeView<GwtController>{
   @UiField com.google.gwt.dom.client.LabelElement inputLabel;
   @UiField com.google.gwt.dom.client.Element data;
   private final DataListElement list;
-  private MapFromStringTo<GwtCompile> modules;
-  private final ArrayOf<ReceivesValue<GwtCompile>> listeners;
+  private MapFromStringTo<GwtRecompile> modules;
+  private final ArrayOf<ReceivesValue<GwtRecompile>> listeners;
 
   public GwtModuleView(Resources res, GwtCompileModel model) {
     listeners = Collections.arrayOf();
@@ -87,7 +87,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
         String is = input.getValue().trim();
         if (is.equals(was))return;
         was = is;
-        GwtCompile module = modules.get(is);
+        GwtRecompile module = modules.get(is);
         if (module != null) {
           showModule(module);
         }
@@ -97,11 +97,11 @@ public class GwtModuleView extends CompositeView<GwtController>{
     res.gwtModuleCss().ensureInjected();
   }
 
-  protected void showModule(GwtCompile module) {
+  protected void showModule(GwtRecompile module) {
     setModuleTextbox(module.getModule());
     input.select();
     for (int i = 0, m = listeners.length(); i < m; i++) {
-      ReceivesValue<GwtCompile> listener = listeners.get(i);
+      ReceivesValue<GwtRecompile> listener = listeners.get(i);
       listener.set(module);
     }
   }
@@ -119,22 +119,22 @@ public class GwtModuleView extends CompositeView<GwtController>{
     input.setDefaultValue(module);
   }
   
-  public GwtCompile getModule(String module) {
+  public GwtRecompile getModule(String module) {
     return modules.get(module);
   }
 
-  public void showResults(JsonArray<GwtCompile> modules, GwtClasspathView classpath) {
+  public void showResults(JsonArray<GwtRecompile> modules, GwtClasspathView classpath) {
     if (modules.size() == 0)
       return;
     CollideSettings settings = CollideSettings.get();
     
     String requested = settings.getModule();
-    GwtCompile best = null;
+    GwtRecompile best = null;
     if (requested == null) {
       requested = Browser.getWindow().getLocalStorage().getItem(CookieKeys.GWT_COMPILE_TARGET);
     }
     if (requested != null) {
-      for (GwtCompile compile : modules.asIterable()) {
+      for (GwtRecompile compile : modules.asIterable()) {
         if (requested.equals(compile.getModule())) {
           best = compile;
           break;
@@ -161,7 +161,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
       }
       m = modules.size();
       for (int i = 0; i < m; i++) {
-        GwtCompile module = modules.get(i);
+        GwtRecompile module = modules.get(i);
         Node duplicate = existing.get(module.getModule());
         if (duplicate != null) {
           // TODO check revision # and take freshest
@@ -174,10 +174,10 @@ public class GwtModuleView extends CompositeView<GwtController>{
     if (best == null)
      best = modules.get(0);
     setModuleTextbox(best.getModule());
-    classpath.setClasspath(best.getSrc(), best.getDeps());
+    classpath.setClasspath(best.getSources(), best.getDependencies());
   }
 
-  protected OptionElement createOption(GwtCompile module, boolean selected) {
+  protected OptionElement createOption(GwtRecompile module, boolean selected) {
     modules.put(module.getModule(), module);
     OptionElement option = Browser.getDocument().createOptionElement();
     option.setDefaultSelected(selected);
@@ -187,7 +187,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
     return option;
   }
 
-  public RemovalHandler addSelectListener(final ReceivesValue<GwtCompile> receivesValue) {
+  public RemovalHandler addSelectListener(final ReceivesValue<GwtRecompile> receivesValue) {
     listeners.push(receivesValue);
     return new RemovalHandler() {
       @Override

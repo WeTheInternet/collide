@@ -39,7 +39,10 @@ import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.GetWorkspaceParticipants;
 import com.google.collide.dto.GetWorkspaceParticipantsResponse;
 import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
+import com.google.collide.dto.GwtKill;
 import com.google.collide.dto.GwtSettings;
+import com.google.collide.dto.HasModule;
 import com.google.collide.dto.KeepAlive;
 import com.google.collide.dto.LogFatalRecord;
 import com.google.collide.dto.LogFatalRecordResponse;
@@ -282,14 +285,20 @@ public class FrontendApi {
   public final RequestResponseApi<GwtCompile,CompileResponse> COMPILE_GWT =
       makeApi("gwt.compile");
   
-  public final RequestResponseApi<GwtCompile,CompileResponse> RE_COMPILE_GWT =
+  public final RequestResponseApi<GwtRecompile,CompileResponse> RE_COMPILE_GWT =
       makeApi("gwt.recompile");
 
-  public final RequestResponseApi<GwtCompile, CompileResponse> KILL_GWT =
-      makeApi("gwt.status");
+  public final RequestResponseApi<GwtKill, CompileResponse> KILL_GWT =
+      makeApi("gwt.kill");
 
   public final ReceiveApi<GwtSettings> GWT_SETTINGS =
       makeApi("gwt.settings");
+
+  public final SendApi<GwtRecompile> GWT_SAVE =
+      makeApi("gwt.save");
+  
+  public final RequestResponseApi<HasModule, GwtRecompile> GWT_LOAD =
+      makeApi("gwt.load");
 
   /**
    * Retrieves code parsing results.

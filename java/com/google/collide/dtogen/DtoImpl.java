@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +122,7 @@ abstract class DtoImpl {
     }
 
     // Look at any interfaces our superInterface implements.
-    Class<?>[] superInterfaces = dtoInterface.getInterfaces();
+    Class<?>[] superInterfaces = getInterfaces(dtoInterface);
     List<Method> methodsToExclude = new ArrayList<Method>();
 
     // Collect methods on parent interfaces
@@ -137,6 +138,20 @@ abstract class DtoImpl {
       }
     }
     return false;
+  }
+
+  private Class<?>[] getInterfaces(Class<?> iface) {
+    HashSet<Class<?>> all = new HashSet<>();
+    loadInterfaces(all, iface);
+    return all.toArray(new Class<?>[all.size()]);
+  }
+
+  private void loadInterfaces(HashSet<Class<?>> all, Class<?> iface) {
+    for (Class<?> cls : iface.getInterfaces()) {
+      if (all.add(cls)) {
+        loadInterfaces(all, cls);
+      }
+    }
   }
 
   /**

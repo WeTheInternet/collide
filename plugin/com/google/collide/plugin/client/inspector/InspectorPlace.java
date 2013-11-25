@@ -7,8 +7,8 @@ import com.google.collide.client.CollideSettings;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationEvent;
-import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
+import com.google.collide.dto.GwtRecompile;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap;
@@ -29,11 +29,11 @@ public class InspectorPlace extends Place{
     private final JsoArray<String> srcDir;
     private final JsoArray<String> depsDir;
 
-    private NavigationEvent(GwtCompile module) {
+    private NavigationEvent(GwtRecompile module) {
       super(InspectorPlace.this);
       this.module = module.getModule();
-      this.srcDir = JsoArray.from(module.getSrc());
-      this.depsDir = JsoArray.from(module.getDeps());
+      this.srcDir = JsoArray.from(module.getSources());
+      this.depsDir = JsoArray.from(module.getDependencies());
     }
 
 
@@ -112,13 +112,13 @@ public class InspectorPlace extends Place{
       //guess our own module source
       module = guessModuleFromHostPage.get();
     }
-    GwtCompileImpl compile = GwtCompileImpl.make();
+    GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
     JsoArray<String>
     array = JsoArray.splitString(srcDir, "::");
-    compile.setSrc(array);
+    compile.setSources(array);
     array = JsoArray.splitString(libDir, "::");
-    compile.setDeps(array);
+    compile.setDependencies(array);
     return new NavigationEvent(compile);
   }
 
@@ -128,7 +128,7 @@ public class InspectorPlace extends Place{
    * @param module the gwt module to compile
    * @return a new navigation event
    */
-  public PlaceNavigationEvent<InspectorPlace> createNavigationEvent(GwtCompile compile) {
+  public PlaceNavigationEvent<InspectorPlace> createNavigationEvent(GwtRecompile compile) {
     return new NavigationEvent(compile);
   }
 

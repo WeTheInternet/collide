@@ -21,7 +21,7 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
   /**
    * @return a json string to ease communication between threads with different classloaders.
    * The only time in() is called is to get the gwt compile input json,
-   * which is an instance of @GwtCompile
+   * which is an instance of @GwtRecompile
    * 
    */
     @Override

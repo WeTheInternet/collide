@@ -20,9 +20,9 @@ import xapi.log.X_Log;
 import xapi.util.impl.StringId;
 
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.plugin.server.AbstractCompileThread;
 import com.google.collide.plugin.server.IsCompileThread;
 import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
@@ -34,8 +34,8 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 
-public final class GwtCompilerThread extends AbstractCompileThread<GwtCompile>
-implements IsCompileThread <GwtCompile> {
+public final class GwtCompilerThread extends AbstractCompileThread<GwtRecompile>
+implements IsCompileThread <GwtRecompile> {
 
   public GwtCompilerThread() {
   }
@@ -74,7 +74,7 @@ implements IsCompileThread <GwtCompile> {
           continue;
         }
         working = true;
-        GwtCompile request = GwtCompileImpl.fromJsonString(compileRequest);
+        GwtRecompile request = GwtRecompileImpl.fromJsonString(compileRequest);
         module = request.getModule();
         // prepare a response to let the user know we are working
         CompileResponseImpl response;
@@ -166,7 +166,7 @@ implements IsCompileThread <GwtCompile> {
   @Override
   public void compile(String request) throws CompilerBusyException {
     if (working)
-      throw new CompilerBusyException(GwtCompileImpl.fromJsonString(request).getModule());
+      throw new CompilerBusyException(GwtRecompileImpl.fromJsonString(request).getModule());
     synchronized (GwtCompilerThread.class) {
       working = true;
       try {

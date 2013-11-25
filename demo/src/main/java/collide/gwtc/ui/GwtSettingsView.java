@@ -1,8 +1,8 @@
 package collide.gwtc.ui;
 
-import collide.shared.manifest.OpenAction;
+import collide.shared.api.OpenAction;
 
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.mvp.CompositeView;
 import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
@@ -235,7 +235,7 @@ public class GwtSettingsView extends CompositeView<GwtController>{
     return mod;
   }
   
-  public void applySettings(GwtCompile module) {
+  public void applySettings(GwtRecompile module) {
     Type logLevel;
     
     inputAutoOpen.setChecked(module.getAutoOpen());

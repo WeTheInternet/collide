@@ -19,7 +19,7 @@ import com.google.collide.clientlibs.vertx.VertxBus.MessageHandler;
 import com.google.collide.clientlibs.vertx.VertxBus.ReplySender;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.dto.RoutingTypes;
@@ -27,6 +27,9 @@ import com.google.collide.dto.SearchResult;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.CompileResponseImpl;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
+import com.google.collide.dto.client.DtoClientImpls.GwtKillImpl;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
+import com.google.collide.dto.client.DtoClientImpls.HasModuleImpl;
 import com.google.collide.dto.client.DtoClientImpls.LogMessageImpl;
 import com.google.collide.json.client.Jso;
 import com.google.collide.json.shared.JsonArray;
@@ -47,8 +50,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 
-import elemental.client.Browser;
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -213,10 +216,10 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
     protected void addListeners() {
 
-        gwtModule.addSelectListener(new ReceivesValue<GwtCompile>(){
+        gwtModule.addSelectListener(new ReceivesValue<GwtRecompile>(){
       @Override
-      public void set(GwtCompile module) {
-        gwtSrc.setClasspath(module.getSrc(), module.getDeps());
+      public void set(GwtRecompile module) {
+        gwtSrc.setClasspath(module.getSources(), module.getDependencies());
         gwtSettings.applySettings(module);
       }
     });
@@ -255,14 +258,13 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
     public GwtCompileImpl getValue() {
       GwtCompileImpl compile = GwtCompileImpl.make();
-      //TODO send back copy instead of original
       String val = gwtModule.input.getValue();
       if (val != null && val.length()>0)
         compile.setModule(val);
       compile.setAutoOpen(gwtSettings.isAutoOpen());
       compile.setLogLevel(gwtSettings.getLogLevel());
-      compile.setSrc(gwtSrc.getSources());
-      compile.setDeps(gwtSrc.getDependencies());
+      compile.setSources(gwtSrc.getSources());
+      compile.setDependencies(gwtSrc.getDependencies());
       
       return compile;
     }
@@ -275,13 +277,17 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     public boolean isAutoOpen() {
       return gwtSettings.isAutoOpen();
     }
+
+    public String getModule() {
+      return gwtModule.getModule();
+    }
   }
 
 
   public class GwtControllerImpl implements GwtController{
     @Override
     public void onDraftButtonClicked() {
-      GwtCompileImpl value = getValue();
+      GwtRecompileImpl value = getValue();
       value.setIsRecompile(true);
       context.getFrontendApi().RE_COMPILE_GWT.send(value, new ApiCallback<CompileResponse>() {
         @Override
@@ -299,11 +305,24 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     }
     @Override
     public void onLoadButtonClicked() {
-      Browser.getWindow().alert("Load not yet implemented");
+      HasModuleImpl msg = HasModuleImpl.make();
+      msg.setModule(getModule());
+      context.getFrontendApi().GWT_LOAD.send(msg, new ApiCallback<GwtRecompile>() {
+
+        @Override
+        public void onMessageReceived(GwtRecompile message) {
+          setValue(message);
+        }
+
+        @Override
+        public void onFail(FailureReason reason) {
+          
+        }
+      });
     }
     @Override
     public void onSaveButtonClicked() {
-      Browser.getWindow().alert("Save not yet implemented");
+      context.getFrontendApi().GWT_SAVE.send(getValue());
     }
     
     @Override
@@ -334,13 +353,16 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   
     @Override
     public void onKillButtonClicked() {
-      context.getFrontendApi().KILL_GWT.send(getValue(), new ApiCallback<CompileResponse>() {
+      GwtKillImpl kill = GwtKillImpl.make();
+      kill.setModule(getModule());
+      context.getFrontendApi().KILL_GWT.send(kill, new ApiCallback<CompileResponse>() {
         @Override
         public void onFail(FailureReason reason) {
-  
+          Window.alert("Failed to kill gwt compile: "+reason+".");
         }
         @Override
         public void onMessageReceived(CompileResponse message) {
+          Window.alert("Killed compile: "+message.getModule()+".");
           RemovalHandler handler = iframeRemovals.get(message.getModule());
           if (handler != null) {
             handler.remove();
@@ -379,10 +401,8 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     }
     
     @Override
-    public void recompile(GwtCompile existing) {
-      getView().gwtModule.showModule(existing);
-      getView().gwtSettings.applySettings(existing);
-      getView().gwtSrc.setClasspath(existing.getSrc(), existing.getDeps());
+    public void recompile(GwtRecompile existing) {
+      setValue(existing);
       onDraftButtonClicked();
     }
     
@@ -396,6 +416,12 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
   public static GwtCompilerShell create(View view, AppContext context){
     return new GwtCompilerShell(view, context);
+  }
+
+  public void setValue(GwtRecompile existing) {
+    getView().gwtModule.showModule(existing);
+    getView().gwtSettings.applySettings(existing);
+    getView().gwtSrc.setClasspath(existing.getSources(), existing.getDependencies());
   }
 
   private AppContext context;
@@ -457,6 +483,10 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     });
   }
 
+  public String getModule() {
+    return getView().getModule();
+  }
+  
   public GwtCompileImpl getValue() {
     return getView().getValue();
   }
@@ -513,7 +543,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
    * @param pageCount the total number of pages
    * @param jsonArray the {@link SearchResult} items on this page.
    */
-  protected void showResultsImpl(JsonArray<GwtCompile> jsonArray) {
+  protected void showResultsImpl(JsonArray<GwtRecompile> jsonArray) {
     getView().gwtModule.showResults(jsonArray, getView().gwtSrc);
   }
 
@@ -543,13 +573,13 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     return new RunningGwtModule(from);
   }
 
-  public void compile(GwtCompile module,
+  public void compile(GwtRecompile module,
       SuccessHandler<CompileResponse> response) {
     
   }
 
   public void recompile(String module, SuccessHandler<CompileResponse> response) {
-    GwtCompile existing = getView().gwtModule.getModule(module);
+    GwtRecompile existing = getView().gwtModule.getModule(module);
     if (existing != null) {
       getView().getDelegate().recompile(existing);
       // TODO: use a per-module multi-map of CompileResponse event listeners.

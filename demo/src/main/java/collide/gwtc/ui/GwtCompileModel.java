@@ -1,18 +1,11 @@
 package collide.gwtc.ui;
 
-import java.util.Date;
 import java.util.Iterator;
 
-import collide.shared.manifest.ObfuscationLevel;
-import collide.shared.manifest.OpenAction;
-
-import com.google.collide.dto.shared.CookieKeys;
-import com.google.collide.json.client.JsoArray;
-import com.google.gwt.core.ext.TreeLogger;
+import collide.shared.api.ObfuscationLevel;
+import collide.shared.api.OpenAction;
 import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.user.client.Cookies;
 
-import elemental.util.ArrayOf;
 import elemental.util.ArrayOfString;
 import elemental.util.Collections;
 

@@ -52,12 +52,11 @@ public final class ReflectionChannelTreeLogger extends AbstractTreeLogger implem
       message.setLogLevel(type);
       message.setMessage(msg);
       message.setModule(module);
-      //TODO: put these back in LogMessage...
-//      if (caught != null)
-//        obj.putString("error", DebugUtil.getFullStacktrace(caught, "\n"));
-//      if (helpInfo != null){
-//        obj.putString("help",helpInfo.getPrefix()+": "+helpInfo.getAnchorText());
-//      }
+      if (caught != null)
+        message.setError(DebugUtil.getFullStacktrace(caught, "\n"));
+      if (helpInfo != null){
+        message.setHelpInfo(helpInfo.getPrefix()+": "+helpInfo.getAnchorText());
+      }
       io.send(message.toJson());
     }
   }

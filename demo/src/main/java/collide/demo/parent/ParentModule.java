@@ -2,6 +2,7 @@ package collide.demo.parent;
 
 import xapi.log.X_Log;
 import xapi.util.api.SuccessHandler;
+import collide.client.util.Elements;
 import collide.demo.controller.DemoController;
 import collide.demo.view.DemoView;
 import collide.gwtc.ui.GwtCompilerService;
@@ -14,10 +15,9 @@ import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.status.StatusMessage;
-import collide.client.util.Elements;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.clientlibs.model.Workspace;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.plugin.client.terminal.TerminalService;
@@ -25,7 +25,6 @@ import com.google.collide.shared.plugin.PublicServices;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
@@ -108,7 +107,7 @@ public class ParentModule implements EntryPoint{
   }
 
   private void addGwtCompiler(final AppContext context, final DemoView body) {
-    GWT.runAsync(GwtCompile.class, new RunAsyncCallback() {
+    GWT.runAsync(GwtRecompile.class, new RunAsyncCallback() {
       @Override
       public void onSuccess() {
         // Inject css

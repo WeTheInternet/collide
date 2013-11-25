@@ -15,11 +15,11 @@ import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.dto.CompileResponse;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
-import com.google.collide.json.client.JsoArray;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.shared.GWT;
 
@@ -142,7 +142,7 @@ implements GwtCompilerService
   }
 
   @Override
-  public void compile(GwtCompile module,
+  public void compile(GwtRecompile module,
       SuccessHandler<CompileResponse> response) {
     // We lazy-load the gwt shell, and just defer to it.
     gwtContainer.get().compile(module, response);

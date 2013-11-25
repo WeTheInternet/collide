@@ -1,7 +1,7 @@
 package collide.gwtc.ui;
 
 import com.google.collide.dto.CompileResponse;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.gwt.core.ext.TreeLogger.Type;
 
 public interface GwtController {
@@ -12,7 +12,7 @@ public interface GwtController {
   void onKillButtonClicked();
   void openIframe(String module, int port);
   void openWindow(String module, int port);
-  void recompile(GwtCompile existing);
+  void recompile(GwtRecompile existing);
   void setAutoOpen(boolean auto);
   void onSaveButtonClicked();
   void onLoadButtonClicked();

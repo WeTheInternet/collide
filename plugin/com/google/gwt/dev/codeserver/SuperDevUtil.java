@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import xapi.log.X_Log;
 
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.gwt.core.ext.TreeLogger;
 
 class SuperDevUtil {
@@ -18,7 +18,7 @@ class SuperDevUtil {
   private static final ConcurrentHashMap<String, RecompileController> compilers
     = new ConcurrentHashMap<String, RecompileController>();
 
-  public static RecompileController getOrMakeController(TreeLogger logger, GwtCompile request, int port) {
+  public static RecompileController getOrMakeController(TreeLogger logger, GwtRecompile request, int port) {
     String module = request.getModule();
     RecompileController ret = compilers.get(module);
     if (ret != null)  {
@@ -49,7 +49,7 @@ class SuperDevUtil {
       throw new Error("Unable to initialize gwt recompiler ",e1);
     }
     List<File> sourcePath = new ArrayList<File>();
-    for (String src : request.getDeps().asIterable()){
+    for (String src : request.getDependencies().asIterable()){
       //TODO: sanitize this somehow?
       if (".".equals(src))src = new File("").getAbsolutePath();
       if (src.startsWith("file:"))src = src.substring(5);

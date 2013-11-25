@@ -6,8 +6,8 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationEvent;
 import com.google.collide.client.workspace.WorkspacePlace;
-import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
+import com.google.collide.dto.GwtRecompile;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap;
@@ -29,16 +29,16 @@ public class GwtCompilePlace extends Place{
     private final JsoArray<String> depsDir;
     private final boolean recompile;
 
-    private NavigationEvent(GwtCompile module) {
+    private NavigationEvent(GwtRecompile module) {
       super(GwtCompilePlace.this);
       this.module = module.getModule();
       this.recompile = module.isRecompile();
-      if (module.getSrc() == null) {
+      if (module.getSources() == null) {
         this.srcDir = JsoArray.create();
         this.depsDir = JsoArray.create();
       } else {
-        this.srcDir = JsoArray.from(module.getSrc());
-        this.depsDir = JsoArray.from(module.getDeps());
+        this.srcDir = JsoArray.from(module.getSources());
+        this.depsDir = JsoArray.from(module.getDependencies());
       }
     }
 
@@ -118,13 +118,13 @@ public class GwtCompilePlace extends Place{
       //guess our own module source
       module = guessModuleFromHostPage.get();
     }
-    GwtCompileImpl compile = GwtCompileImpl.make();
+    GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
     JsoArray<String>
     array = JsoArray.splitString(srcDir, "::");
-    compile.setSrc(array);
+    compile.setSources(array);
     array = JsoArray.splitString(libDir, "::");
-    compile.setDeps(array);
+    compile.setDependencies(array);
     return new NavigationEvent(compile);
   }
 
@@ -134,7 +134,7 @@ public class GwtCompilePlace extends Place{
    * @param module the gwt module to compile
    * @return a new navigation event
    */
-  public PlaceNavigationEvent<GwtCompilePlace> createNavigationEvent(GwtCompile compile) {
+  public PlaceNavigationEvent<GwtCompilePlace> createNavigationEvent(GwtRecompile compile) {
     return new NavigationEvent(compile);
   }
 
@@ -145,19 +145,19 @@ public class GwtCompilePlace extends Place{
   }
 
   public void fireCompile(String module) {
-    GwtCompileImpl compile = GwtCompileImpl.make();
+    GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
     compile.setIsRecompile(false);
     fire(compile);
   }
-  public void fireRecompile(String module) {
-    GwtCompileImpl compile = GwtCompileImpl.make();
+  public void fireRecompile(String module){
+    GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
     compile.setIsRecompile(true);
     fire(compile);
   }
 
-  private void fire(GwtCompileImpl compile) {
+  private void fire(GwtRecompileImpl compile) {
     PlaceNavigationEvent<?> child = WorkspacePlace.PLACE.getCurrentChildPlaceNavigation();
     WorkspacePlace.PLACE.disableHistorySnapshotting();
     setIsActive(true, WorkspacePlace.PLACE);

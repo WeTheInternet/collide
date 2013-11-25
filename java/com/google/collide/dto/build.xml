@@ -14,15 +14,17 @@
       <sourcefiles>
         <fileset file="build.xml"/>
         <fileset dir="${dirs.src}/${dirs.toppkg}/dto"/>
+        <fileset dir="${dirs.demo}/collide/shared/api"/>
       </sourcefiles>
       <targetfiles path="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
       <sequential>
       	<echo>Out of date files: 
       		${dto.out.of.date}</echo>
         <mkdir dir="${dirs.bin}/${dirs.toppkg}/dto"/>
-        <do.javac srcdir="${dirs.src}; ${dirs.plugin}" destdir="${dirs.bin}" verbose="true">
+        <do.javac srcdir="${dirs.src}; ${dirs.plugin}; ${dirs.demo}" destdir="${dirs.bin}" verbose="true">
           <include name="${dirs.toppkg}/dto/*.java"/>
       	  <include name="${dirs.toppkg}/emul/**/*.java"/>
+      	  <include name="collide/shared/api/**"/>
           <classpath>
             <path refid="paths.shared"/>
           </classpath>

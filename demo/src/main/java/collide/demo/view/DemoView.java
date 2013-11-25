@@ -3,7 +3,6 @@ package collide.demo.view;
 import xapi.log.X_Log;
 import xapi.util.api.RemovalHandler;
 import collide.client.util.Elements;
-import collide.demo.view.SplitPanel;
 import collide.gwtc.GwtCompileStatus;
 import collide.gwtc.GwtcController;
 import collide.gwtc.ui.GwtCompilePlace;
@@ -21,7 +20,7 @@ import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.WorkspaceShell;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.mvp.ShowableUiComponent;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.plugin.client.standalone.StandaloneConstants;
@@ -34,11 +33,8 @@ import com.google.gwt.user.client.Window;
 import elemental.client.Browser;
 import elemental.dom.Document;
 import elemental.dom.Element;
-import elemental.events.Event;
-import elemental.events.EventListener;
 import elemental.html.DivElement;
 import elemental.html.IFrameElement;
-import elemental.html.ImageElement;
 import elemental.util.Collections;
 import elemental.util.MapFromStringTo;
 
@@ -352,7 +348,7 @@ extends MultiPanel<PanelModel, ControllerView>
           case RUNNING:
             gwtc.status = GwtCompileStatus.Good;
             if (gwt.isAutoOpen()) {
-              GwtCompileImpl value = gwt.getValue();
+            GwtRecompileImpl value = gwt.getValue();
               gwt.getView().getDelegate().openIframe(value.getModule(), value.getPort());
             }
             if (gwtc.header != null) {

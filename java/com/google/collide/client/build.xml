@@ -25,6 +25,10 @@
          modularity, so that the "low-level" subpackages don't compile if they
          accidentally reach higher-level subpackage code.
          This modularity would be better accomplished with maven. -->
+    <do.javac srcdir="${dirs.demo}" destdir="${dirs.bin}">
+      <include name="collide/shared/**/*.java"/>
+      <classpath refid="paths.client.build"/>
+    </do.javac>
     <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
       <include name="${dirs.toppkg}/mvp/*.java"/>
       <classpath refid="paths.client.build"/>
@@ -102,6 +106,9 @@
         <fileset dir="${dirs.plugin}/${dirs.toppkg}">
           <include name="plugin/client/**"/>
           <include name="emul/**"/>
+        </fileset>
+        <fileset dir="${dirs.demo}">
+          <include name="collide/shared/**"/>
         </fileset>
       </sources>
       <srcroots>

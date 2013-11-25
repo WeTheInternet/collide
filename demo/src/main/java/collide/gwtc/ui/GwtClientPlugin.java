@@ -16,9 +16,10 @@ import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.Header.Resources;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
+import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.shared.plugin.PublicService;
 import com.google.collide.shared.plugin.PublicServices;
@@ -69,8 +70,7 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
 
   @Override
   public void onClicked(ImageButton button) {
-
-    GwtCompileImpl gwtCompile = getCompilerSettings();
+    GwtRecompileImpl gwtCompile = getCompilerSettings();
     PlaceNavigationEvent<GwtCompilePlace> action = GwtCompilePlace.PLACE.createNavigationEvent(gwtCompile);
     place.fireChildPlaceNavigation(action);
 
@@ -81,8 +81,8 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
     if (null==gwtCompile.getModule()||gwtCompile.getModule().length()==0) {
       gwtCompile.setModule("com.google.collide.plugin.StandalonePlugin");
     }
-    if (null==gwtCompile.getSrc()||gwtCompile.getSrc().size()==0) {
-       gwtCompile.setSrc(JsoArray.<String>from(
+    if (null==gwtCompile.getSources()||gwtCompile.getSources().size()==0) {
+       gwtCompile.setSources(JsoArray.<String>from(
           //our source list.  These come before gwt sdk
       "java","bin/gen", "plugin" // workspace relative source paths (hardcoded to collide)
       //ok to add jars as source if you wish
@@ -91,7 +91,7 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
       ,"guava-gwt-12.0.jar"
       ,"collide-client.jar"
       ))
-      .setDeps(JsoArray.<String>from(
+      .setDependencies(JsoArray.<String>from(
           //our dependencies.  These come after gwt sdk
           "xapi-dev-0.3.jar"
           ,"elemental.jar"
@@ -136,27 +136,27 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
   }
 
   @Override
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public void run(AppContext appContext, PathUtil file) {
-  GwtCompileImpl gwtCompile = getCompilerSettings();
-  RequestResponseApi<GwtCompile, CompileResponse> endpoint = 
-      gwtCompile.isRecompile()
-        ? appContext.getFrontendApi().RE_COMPILE_GWT
-        : appContext.getFrontendApi().COMPILE_GWT;
-  endpoint.send(gwtCompile , new ApiCallback<CompileResponse>() {
-    @Override
-    public void onMessageReceived(CompileResponse message) {
-      CompilerState state = message.getCompilerStatus();
-      X_Log.info("Gwt state",state);
-      if (state == CompilerState.RUNNING) {
-        
+    GwtRecompileImpl gwtCompile = getCompilerSettings();
+    RequestResponseApi endpoint = 
+        gwtCompile.isRecompile()
+          ? appContext.getFrontendApi().RE_COMPILE_GWT
+          : appContext.getFrontendApi().COMPILE_GWT;
+    endpoint.send(gwtCompile , new ApiCallback<CompileResponse>() {
+      @Override
+      public void onMessageReceived(CompileResponse message) {
+        CompilerState state = message.getCompilerStatus();
+        X_Log.info("Gwt state",state);
+        if (state == CompilerState.RUNNING) {
+          
+        }
       }
-    }
-    @Override
-    public void onFail(FailureReason reason) {
-      Window.alert("fail! " + reason);
-    }
-  });
-
+      @Override
+      public void onFail(FailureReason reason) {
+        Window.alert("fail! " + reason);
+      }
+    });
   }
 
   @Override

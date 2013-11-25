@@ -15,7 +15,7 @@ import xapi.log.X_Log;
 import collide.shared.manifest.CollideManifest;
 import collide.shared.manifest.CollideManifest.GwtEntry;
 
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtSettingsImpl;
 import com.google.collide.server.shared.util.Dto;
 
@@ -48,15 +48,15 @@ public class GwtSettingsHandler implements Handler<Message<JsonObject>>{
         List<String> classpath = Arrays.asList(entry.dependencies);
         for (String module : entry.modules) {
           X_Log.info(module);
-          GwtCompileImpl build = GwtCompileImpl.make();
+          GwtRecompileImpl build = GwtRecompileImpl.make();
           build.setModule(module);
-          build.setSrc(sources);
-          build.setDeps(classpath);
+          build.setSources(sources);
+          build.setDependencies(classpath);
           reply.addModules(build);
         }
       }
     }
-    // TODO: send message to @FileTree, asking for .gwt.xml files...
+    // TODO: send message to @FileTree, asking for .gwt.xml files, and search for sibling .gwt.settings files...
     
     
     message.reply(Dto.wrap(reply));
