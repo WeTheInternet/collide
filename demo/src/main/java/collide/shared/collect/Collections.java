@@ -3,6 +3,9 @@ package collide.shared.collect;
 import java.util.ArrayList;
 import java.util.List;
 
+import xapi.collect.X_Collect;
+import xapi.collect.api.IntTo;
+import xapi.gwt.collect.IntToListGwt;
 import xapi.util.X_Debug;
 
 import com.google.collide.json.client.JsoArray;
@@ -58,12 +61,24 @@ public class Collections {
     return ret;
   }
 
-  public static ArrayOfString asArray(JsonArray<String> array) {
+  public static IntTo<String> asArray(JsonArray<String> array) {
     if (array instanceof JsoArray) {
-      return ((JsoArray<String>)array).<JsArrayOfString>cast();
+      return ((JsoArray<String>)array).<IntToListGwt<String>>cast();
+    } else {
+      IntTo<String> ret = X_Collect.newList(String.class);
+      for (String value : array.asIterable()) {
+        ret.push(value);
+      }
+      return ret;
+    }
+  }
+
+  public static ArrayOfString asArray(IntTo<String> array) {
+    if (array instanceof IntToListGwt) {
+      return ((IntToListGwt<String>)array).<JsArrayOfString>cast();
     } else {
       ArrayOfString ret = elemental.util.Collections.arrayOfString();
-      for (String value : array.asIterable()) {
+      for (String value : array.forEach()) {
         ret.push(value);
       }
       return ret;

@@ -10,10 +10,11 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
+import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 import collide.shared.manifest.CollideManifest;
-import collide.shared.manifest.GwtManifest;
 
+import com.google.collide.dto.client.DtoManifestUtil;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -24,7 +25,7 @@ public class GwtSaveHandler implements Handler<Message<JsonObject>>{
   public void handle(Message<JsonObject> message) {
     // extract the saved compiler settings
     GwtRecompileImpl impl = GwtRecompileImpl.fromJsonString(message.body.toString());
-    GwtManifest gwtc = new GwtManifest(impl);
+    GwtManifest gwtc = DtoManifestUtil.newGwtManifest(impl);
     
     // Check for META-INF/collide.settings
     URL collideSettings = GwtSettingsHandler.class.getResource("/META-INF/collide.settings");

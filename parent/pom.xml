@@ -18,7 +18,7 @@
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
     <gwt.version>2.5.1</gwt.version>
-    <xapi.version>0.3</xapi.version>
+    <xapi.version>0.4-SNAPSHOT</xapi.version>
     <guava.version>12.0</guava.version>
     <collide.home>${project.basedir}/..</collide.home>
     <collide.lib>${collide.home}/deps</collide.lib>

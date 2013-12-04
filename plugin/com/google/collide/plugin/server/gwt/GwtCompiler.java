@@ -11,15 +11,17 @@ import java.util.Arrays;
 import org.vertx.java.core.eventbus.EventBus;
 
 import xapi.file.X_File;
+import xapi.gwtc.api.GwtManifest;
 import xapi.io.api.LineReader;
+import xapi.io.api.SimpleLineReader;
 import xapi.log.X_Log;
 import xapi.shell.X_Shell;
 import xapi.shell.api.ShellSession;
 import xapi.util.X_Debug;
-import collide.shared.manifest.GwtManifest;
 
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.client.DtoManifestUtil;
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.json.shared.JsonArray;
@@ -167,8 +169,10 @@ public class GwtCompiler {
       method = recompilerClass.getMethod("setChannel", classLoaderClass, objectClass);
       method.invoke(compiler, getClass().getClassLoader(), io);
       io.setChannel(null);
-      log = new ReflectionChannelTreeLogger(io);
-      log.log(Type.INFO, "Initialized GWT recompiler for "+module);
+      ReflectionChannelTreeLogger logger = new ReflectionChannelTreeLogger(io);
+      logger.setModule(module);
+      log = logger;
+      log.log(Type.INFO, "Initialized GWT compiler for "+module);
       compileMethod = recompilerClass.getMethod("compile", String.class);
       cl.setAllowSystem(false);
     } catch (Exception e) {
@@ -210,46 +214,70 @@ public class GwtCompiler {
       }
     }
     
-    GwtManifest manifest = new GwtManifest(compileRequest);
+    GwtManifest manifest = DtoManifestUtil.newGwtManifest(compileRequest);
     X_Log.info(getClass(), "Starting gwt compile", compileRequest.getModule());
     X_Log.trace(compileRequest);
-    X_Log.info("Args: java ", manifest.toJvmArgs(),manifest.toProgramArgs());
-    X_Log.info("Requested Classpath\n",manifest.toClasspathFullCompile("lib"));
+    X_Log.trace("Args: java ", manifest.toJvmArgs(),manifest.toProgramArgs());
+    X_Log.debug("Requested Classpath\n",manifest.toClasspathFullCompile("lib"));
     X_Log.debug("Runtime cp", ((URLClassLoader)getClass().getClassLoader()).getURLs());
     ShellSession controller 
       = X_Shell.launchJava(Compiler.class, manifest.toClasspathFullCompile("lib"), manifest.toJvmArgArray(), manifest.toProgramArgs().split("[ ]+"));
-    controller.stdErr(new LineReader() {
-      @Override
-      public void onStart() {
-      }
-      
+    controller.stdErr(new SimpleLineReader() {
       @Override
       public void onLine(String errLog) {
-        if (!errLog.matches("\\s*[ERROR]")) {
-          errLog = "[ERROR] "+errLog;
-        }
-        System.err.println(errLog);
-        log(errLog);
-      }
-      
-      @Override
-      public void onEnd() {
+        doLog(errLog, Type.ERROR);
       }
     });
-    controller.stdOut(new LineReader() {
-      @Override
-      public void onStart() {
-      }
+    controller.stdOut(new SimpleLineReader() {
       @Override
       public void onLine(String logLine) {
-        System.out.println(logLine);
-        log(logLine);
-      }
-      @Override
-      public void onEnd() {
-        
+        doLog(logLine, Type.INFO);
       }
     });
+  }
+
+  protected void doLog(String logLine, Type level) {
+    int pos = logLine.indexOf('[');
+    test:
+    if (pos > -1) {
+      int end = logLine.indexOf(']', pos);
+      if (end > -1) {
+        switch (logLine.substring(pos+1, end)) {
+          case "ALL":
+            level = Type.ALL;
+            break;
+          case "SPAM":
+            level = Type.SPAM;
+            break;
+          case "DEBUG":
+            level = Type.DEBUG;
+            break;
+          case "TRACE":
+            level = Type.TRACE;
+            break;
+          case "INFO":
+            level = Type.INFO;
+            break;
+          case "WARN":
+            level = Type.WARN;
+            break;
+          case "ERROR":
+            level = Type.ERROR;
+            break;
+          default:
+            break test;
+        }
+        logLine = logLine.substring(end+1);
+      }
+    } else {
+      if (logLine.trim().length()==0) {
+        return;
+      }
+    }
+    if (logLine.endsWith("\n")) {
+      logLine = logLine.substring(0, logLine.length()-1);
+    }
+    log.log(level, logLine);
   }
 
 }

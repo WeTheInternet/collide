@@ -8,6 +8,7 @@
 
   <inherits name="xapi.X_Model" />
   <inherits name="xapi.X_Process" />
+  <inherits name="xapi.X_Gwtc" />
   <inherits name="elemental.Elemental" />
 
   <inherits name="collide.client.FileTree" />

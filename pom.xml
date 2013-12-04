@@ -14,7 +14,7 @@
  <url>http://collide.googlecode.com</url>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <gwt.version>2.5.1-rc1</gwt.version>
+  <gwt.version>2.5.1</gwt.version>
   <collide.home>${project.basedir}</collide.home>
  </properties>
 
@@ -103,14 +103,16 @@
   <dependency>
    <groupId>net.wetheinter</groupId>
    <artifactId>xapi-gwt</artifactId>
-   <scope>system</scope>
-   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-gwt-${xapi.version}.jar</systemPath>
+<!--    <scope>system</scope>
+   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-gwt-${xapi.version}.jar</systemPath> -->
+   <version>${xapi.version}</version>
   </dependency>
   <dependency>
    <groupId>net.wetheinter</groupId>
-   <artifactId>xapi-jre</artifactId>
-   <scope>system</scope>
-   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-dev-${xapi.version}.jar</systemPath>
+   <artifactId>xapi-dev</artifactId>
+   <!-- <scope>system</scope>
+   <systemPath>${project.basedir}/deps/xapi-${xapi.version}/xapi-dev-${xapi.version}.jar</systemPath> -->
+   <version>${xapi.version}</version>
   </dependency>
   <dependency>
    <groupId>com.google.code.gson</groupId>

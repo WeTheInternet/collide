@@ -1,6 +1,6 @@
 package collide.gwtc.ui;
 
-import collide.shared.api.OpenAction;
+import xapi.gwtc.api.OpenAction;
 
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.mvp.CompositeView;

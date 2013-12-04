@@ -22,7 +22,7 @@ public final class ReflectionChannelTreeLogger extends AbstractTreeLogger implem
   public ReflectionChannelTreeLogger(ReflectionChannel io, Type logLevel) {
     this(io ,"",logLevel);
   }
-  public ReflectionChannelTreeLogger(ReflectionChannel io,String indent, Type logLevel) {
+  public ReflectionChannelTreeLogger(ReflectionChannel io, String indent, Type logLevel) {
     this.io = io;
     this.indent = indent;
     setMaxDetail(logLevel);
@@ -45,7 +45,6 @@ public final class ReflectionChannelTreeLogger extends AbstractTreeLogger implem
   @Override
   protected void doLog(int indexOfLogEntryWithinParentLogger, Type type, String msg,
       Throwable caught, HelpInfo helpInfo) {
-    //TODO: filter on Type to allow debug level setting
     if (getMaxDetail().ordinal()>=type.ordinal()){
       System.out.println(indent+type+": "+msg+(null==caught?"":DebugUtil.getFullStacktrace(caught, "\n ")));
       LogMessageImpl message = LogMessageImpl.make();

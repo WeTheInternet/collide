@@ -4,8 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import collide.shared.api.ObfuscationLevel;
-import collide.shared.api.OpenAction;
+import xapi.gwtc.api.GwtManifest;
+import xapi.gwtc.api.ObfuscationLevel;
+import xapi.gwtc.api.OpenAction;
 
 import com.google.gwt.core.ext.TreeLogger.Type;
 

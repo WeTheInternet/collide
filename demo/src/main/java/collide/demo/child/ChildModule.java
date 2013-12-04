@@ -34,7 +34,7 @@ public class ChildModule implements EntryPoint {
   @Override 
   public void onModuleLoad() {
     try {
-      out("Hello world!!!!!\n\n");
+      out("Hello world!!!!!\n");
       // First, enhance our classes.
       magicClass(SharedClass.class);
       // Log to console for inspection

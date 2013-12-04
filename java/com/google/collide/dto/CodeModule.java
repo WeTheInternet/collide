@@ -1,7 +1,7 @@
 package com.google.collide.dto;
 
-import collide.shared.api.ObfuscationLevel;
-import collide.shared.api.OpenAction;
+import xapi.gwtc.api.ObfuscationLevel;
+import xapi.gwtc.api.OpenAction;
 
 import com.google.collide.dtogen.shared.ClientToServerDto;
 import com.google.collide.dtogen.shared.RoutingType;

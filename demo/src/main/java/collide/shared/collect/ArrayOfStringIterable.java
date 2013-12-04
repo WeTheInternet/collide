@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import xapi.log.X_Log;
 
-import com.google.common.base.Preconditions;
 import com.google.gwt.reflect.client.GwtReflect;
 
 import elemental.js.util.JsArrayOf;
@@ -18,7 +17,9 @@ public class ArrayOfStringIterable implements Iterable<String> {
   ArrayOf<String> array;
   
   public ArrayOfStringIterable(ArrayOfString strings) {
-    Preconditions.checkNotNull(strings, "Strings array cannot be null");
+    if (strings == null) {
+      throw new NullPointerException("Strings array cannot be null");
+    }
     if (strings instanceof JsArrayOfString) {
       array = ((JsArrayOfString) strings).<JsArrayOf<String>>cast();
     } else {

@@ -2,8 +2,9 @@ package collide.gwtc.ui;
 
 import java.util.Iterator;
 
-import collide.shared.api.ObfuscationLevel;
-import collide.shared.api.OpenAction;
+import xapi.gwtc.api.ObfuscationLevel;
+import xapi.gwtc.api.OpenAction;
+
 import com.google.gwt.core.ext.TreeLogger.Type;
 
 import elemental.util.ArrayOfString;
