@@ -1,14 +1,30 @@
 #!/bin/sh
 
-
-BASE=$(readlink $0)
-if [ -z "$BASE" ]; then
-BASE=.
-else
-BASE=$(dirname $BASE)
-fi
-
 WEBROOT=$(pwd)
+
+PRG="$0"
+# Need this for relative symlinks.
+while [ -h "$PRG" ] ; do
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+        PRG="$link"
+    else
+        PRG=`dirname "$PRG"`"/$link"
+    fi
+done
+SAVED="`pwd`"
+cd "`dirname \"$PRG\"`"
+BASE="`pwd -P`"
+cd "$SAVED"
+
+#BASE=$(readlink $0)
+#if [ -z "$BASE" ]; then
+#BASE=.
+#else
+#BASE=$(dirname $BASE)
+#fi
+
 CONFIG="{
   \"webRoot\": \"$WEBROOT\",
   \"staticFiles\": \"$BASE/static\",

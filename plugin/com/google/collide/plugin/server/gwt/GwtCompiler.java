@@ -190,6 +190,48 @@ public class GwtCompiler {
   }
 
   public void compile(GwtCompileImpl compileRequest) {
+    GwtManifest manifest = resolveCompile(compileRequest);
+
+    String programArgs = manifest.toProgramArgs();
+    String[] jvmArgs = manifest.toJvmArgArray();
+    String[] cp = manifest.toClasspathFullCompile("lib");
+
+    String tmpDir = System.getProperty("java.io.tmpdir");
+    tmpSearch:
+    if (tmpDir != null) {
+      for (String jvmArg : jvmArgs) {
+        if (jvmArg.startsWith("-Djava.io.tmpdir")) {
+          break tmpSearch;
+        }
+      }
+      String[] newArgs = new String[jvmArgs.length+1];
+      System.arraycopy(jvmArgs, 0, newArgs, 0, jvmArgs.length);
+      newArgs[newArgs.length-1] = "-Djava.io.tmpdir="+tmpDir;
+      jvmArgs = newArgs;
+    }
+    
+    X_Log.info(getClass(), "Starting gwt compile", compileRequest.getModule());
+    X_Log.trace(compileRequest);
+    X_Log.trace("Args: java ", jvmArgs,programArgs);
+    X_Log.debug("Requested Classpath\n",cp);
+    X_Log.debug("Runtime cp", ((URLClassLoader)getClass().getClassLoader()).getURLs());
+    ShellSession controller 
+      = X_Shell.launchJava(Compiler.class, cp, jvmArgs, programArgs.split("[ ]+"));
+    controller.stdErr(new SimpleLineReader() {
+      @Override
+      public void onLine(String errLog) {
+        doLog(errLog, Type.ERROR);
+      }
+    });
+    controller.stdOut(new SimpleLineReader() {
+      @Override
+      public void onLine(String logLine) {
+        doLog(logLine, Type.INFO);
+      }
+    });
+  }
+
+  public GwtManifest resolveCompile(GwtCompileImpl compileRequest) {
     if (compileRequest.getWarDir() == null) {
       File f = X_File.createTempDir("gwtc-"+compileRequest.getModule());
       if (f != null) {
@@ -213,27 +255,7 @@ public class GwtCompiler {
             "You will likely get unwanted gwtUnitcache folders in the directory you executed this program");
       }
     }
-    
-    GwtManifest manifest = DtoManifestUtil.newGwtManifest(compileRequest);
-    X_Log.info(getClass(), "Starting gwt compile", compileRequest.getModule());
-    X_Log.trace(compileRequest);
-    X_Log.trace("Args: java ", manifest.toJvmArgs(),manifest.toProgramArgs());
-    X_Log.debug("Requested Classpath\n",manifest.toClasspathFullCompile("lib"));
-    X_Log.debug("Runtime cp", ((URLClassLoader)getClass().getClassLoader()).getURLs());
-    ShellSession controller 
-      = X_Shell.launchJava(Compiler.class, manifest.toClasspathFullCompile("lib"), manifest.toJvmArgArray(), manifest.toProgramArgs().split("[ ]+"));
-    controller.stdErr(new SimpleLineReader() {
-      @Override
-      public void onLine(String errLog) {
-        doLog(errLog, Type.ERROR);
-      }
-    });
-    controller.stdOut(new SimpleLineReader() {
-      @Override
-      public void onLine(String logLine) {
-        doLog(logLine, Type.INFO);
-      }
-    });
+    return DtoManifestUtil.newGwtManifest(compileRequest);
   }
 
   protected void doLog(String logLine, Type level) {

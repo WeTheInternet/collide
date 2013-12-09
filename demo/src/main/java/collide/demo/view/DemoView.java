@@ -238,6 +238,7 @@ extends MultiPanel<PanelModel, ControllerView>
       iframe.getStyle().setWidth("100%");
       iframe.getStyle().setHeight("100%");
 
+      iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
       iframe.setSrc(url);
       sizer.appendChild(iframe);
       

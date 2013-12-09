@@ -12,18 +12,10 @@ import java.security.ProtectionDomain;
 import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Util;
-import collide.client.util.Elements;
 import collide.demo.shared.SharedClass;
-import collide.gwtc.GwtCompileStatus;
-import collide.gwtc.GwtcController;
-import collide.gwtc.view.GwtcModuleControlView;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
-import com.google.gwt.user.client.ui.RootPanel;
-
-import elemental.client.Browser;
 
 @ReflectionStrategy
 public class ChildModule implements EntryPoint {

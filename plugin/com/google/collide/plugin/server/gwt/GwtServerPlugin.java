@@ -55,6 +55,7 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread> {
 
           map.put("recompile", new GwtRecompileHandler(GwtServerPlugin.this));
           map.put("compile", new GwtCompileHandler(GwtServerPlugin.this));
+          map.put("test", new GwtCompileHandler(GwtServerPlugin.this));
           map.put("settings", new GwtSettingsHandler());
           map.put("kill", new GwtKillHandle(compilers));
           map.put("save", new GwtSaveHandler());

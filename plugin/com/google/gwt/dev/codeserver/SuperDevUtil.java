@@ -27,9 +27,7 @@ class SuperDevUtil {
     }
     AppSpace app;
     try {
-      boolean local = !Boolean.getBoolean("xapi.local");
-      File tmp = local ? File.createTempFile("recompile", "log")
-          : new File("/home/ajaxian/tmp"); // <- My vps has limited /tmp, so I have to move it out
+      File tmp = File.createTempFile("recompile", "log").getParentFile();
       tmp.deleteOnExit();
       // We've overridden AppSpace so we can use more deterministic names for our compile folders,
       // but if the user does not order the jars correctly, our overridden method will be missing.
@@ -39,10 +37,10 @@ class SuperDevUtil {
         Class<?> cls = cl.loadClass(AppSpace.class.getName());
         Method method = cls.getDeclaredMethod("create", File.class, String.class);
         method.setAccessible(true);
-        app = (AppSpace) method.invoke(null, local ? tmp.getParentFile() : tmp, module);
+        app = (AppSpace) method.invoke(null, tmp , module);
       } catch (Exception e) {
         e.printStackTrace();
-        app = AppSpace.create(local ? tmp.getParentFile() : tmp);
+        app = AppSpace.create(tmp);
       }
 
     } catch (IOException e1) {
