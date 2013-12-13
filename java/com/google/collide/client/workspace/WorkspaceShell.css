@@ -34,3 +34,7 @@
   left: 0;
   right: 0;
 }
+
+#gwt_root > .base > .perspectivePanel {
+	top: 58px;
+}

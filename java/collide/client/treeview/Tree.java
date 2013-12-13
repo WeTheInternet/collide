@@ -17,11 +17,10 @@ package collide.client.treeview;
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 import org.waveprotocol.wave.client.common.util.SignalEventImpl;
 
-import com.google.collide.client.util.AnimationController;
-
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
+import com.google.collide.client.util.AnimationController;
 import com.google.collide.client.util.dom.MouseGestureListener;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;

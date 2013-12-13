@@ -6,13 +6,11 @@ import java.util.TreeMap;
 import xapi.log.X_Log;
 import xapi.util.api.RemovalHandler;
 import collide.client.util.CssUtils;
-import collide.client.util.CssUtils;
 import collide.demo.resources.DemoResources;
 
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.plugin.client.inspector.ElementInspector;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.Window;
 
 import elemental.client.Browser;
 import elemental.dom.Document;

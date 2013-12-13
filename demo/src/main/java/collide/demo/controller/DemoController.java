@@ -87,7 +87,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
   public void initialize(DemoView view, final ClientPluginService plugins) {
     this.view = view;
     final Resources res = appContext.getResources();
-    WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res, true);
+    WorkspaceShell.View workspaceShellView = new WorkspaceShell.View(res, false);
     workspacePlace = WorkspacePlace.PLACE; // Used to come from event...
     workspacePlace.setIsStrict(false);
     FileTreeController<?> fileTreeController = new AppContextFileTreeController(appContext);

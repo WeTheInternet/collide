@@ -16,7 +16,6 @@ package com.google.collide.client.document;
 
 import collide.client.filetree.FileTreeController;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.document.DocumentManager.GetDocumentCallback;
 import com.google.collide.client.status.StatusMessage;

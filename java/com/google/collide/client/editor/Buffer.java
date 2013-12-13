@@ -19,7 +19,6 @@ import collide.client.common.Constants;
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator.RoundingStrategy;
 import com.google.collide.client.editor.renderer.Renderer;
@@ -239,15 +238,6 @@ public class Buffer extends UiComponent<Buffer.View>
       textLayerElement = Elements.createDivElement(css.textLayer());
 
       scrollableElement = createScrollableElement(res.baseCss());
-      if (false) {
-        /*
-         * TODO: Re-enable post-v1 when we have a settings page to configure the
-         * placement of this marker
-         */
-        // Note: columnMarkerElement is lying under the textLayerElement,
-        //       so spacers are not shadowed.
-        scrollableElement.appendChild(columnMarkerElement);
-      }
       scrollableElement.appendChild(textLayerElement);
 
       scrollbarElement = createScrollbarElement(res.baseCss());

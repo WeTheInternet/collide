@@ -14,7 +14,6 @@
 
 package com.google.collide.client.editor.selection;
 
-import com.google.collide.client.Resources;
 import com.google.collide.client.editor.Buffer;
 import com.google.collide.client.editor.FocusManager;
 import com.google.collide.client.editor.renderer.Renderer;

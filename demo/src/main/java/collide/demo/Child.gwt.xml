@@ -3,7 +3,7 @@
 <module>
   <source path="child" />
   <source path="shared" />
-  <inherits name="collide.Gwtc"/>
+  <inherits name="xapi.X_Inherit"/>
   <inherits name="com.google.gwt.reflect.Reflect"/>
   <entry-point class="collide.demo.child.ChildModule"/>
 </module>

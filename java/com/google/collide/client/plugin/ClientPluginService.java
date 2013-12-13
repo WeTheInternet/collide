@@ -42,6 +42,15 @@ public class ClientPluginService {
   public static ClientPlugin<?>[] getPlugins() {
     return SINGLETON.get().plugins();
   }
+  @SuppressWarnings("unchecked")
+  public static <T extends ClientPlugin<?>> T getPlugin(Class<T> cls) {
+    for (ClientPlugin<?> plugin : SINGLETON.get().plugins()) {
+      if (cls.isAssignableFrom(plugin.getClass())) {
+        return (T)plugin;
+      }
+    }
+    return null;
+  }
   public ClientPlugin<?>[] plugins() {
     return new ClientPlugin[0];
   }

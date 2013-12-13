@@ -16,4 +16,5 @@ public interface GwtController {
   void setAutoOpen(boolean auto);
   void onSaveButtonClicked();
   void onLoadButtonClicked();
+  void onTestButtonClicked();
 }

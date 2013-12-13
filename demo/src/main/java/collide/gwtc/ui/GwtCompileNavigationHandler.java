@@ -19,7 +19,6 @@ import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
-import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.gwt.core.client.Duration;
 import com.google.gwt.core.shared.GWT;
 

@@ -1,6 +1,5 @@
 package collide.shared.manifest;
 
-import collide.shared.manifest.AbstractLineEater.Stack;
 
 public class AbstractLineEater implements LineEater {
 

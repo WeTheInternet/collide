@@ -11,6 +11,7 @@ import collide.gwtc.ui.GwtStatusListener;
 import collide.gwtc.view.GwtcModuleControlView;
 
 import com.google.collide.client.code.FileContent;
+import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHost;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
@@ -65,11 +66,12 @@ extends MultiPanel<PanelModel, ControllerView>
 {
 
   
-  private Element browser, editor, compiler, header;
+  private Element browser, editor, compiler, headerEl;
   private ShowableUiComponent<?> bar;
   private final SplitPanel middleBar;
   private final SplitPanel bottomBar;
   private final SplitPanel verticalSplit;
+  private Header header;
   
   public DemoView() {
     super(new ControllerView(findBody(), true));
@@ -78,14 +80,14 @@ extends MultiPanel<PanelModel, ControllerView>
     bottomBar = new SplitPanel(false);
     verticalSplit = new SplitPanel(true);
     
-    header = Browser.getDocument().createDivElement();
-    header.getStyle().setHeight(58, "px");
-    Browser.getDocument().getBody().appendChild(header);
+    headerEl = Browser.getDocument().createDivElement();
+    headerEl.getStyle().setHeight(58, "px");
+    Browser.getDocument().getBody().appendChild(headerEl);
     Element el = getView().getElement();
     el.getStyle().setTop(58, "px");
     
-    verticalSplit.addChild(middleBar.getElement(), 0.75);
-    verticalSplit.addChild(bottomBar.getElement(), 0.25);
+    verticalSplit.addChild(middleBar.getElement(), 0.95);
+    verticalSplit.addChild(bottomBar.getElement(), 0.05);
     el.appendChild(verticalSplit.getElement());
     
     bar = new ShowableUiComponent<View<?>>() {
@@ -137,6 +139,7 @@ extends MultiPanel<PanelModel, ControllerView>
 
   private void append(Element element) {
     bottomBar.addChild(wrapChild(element), 0.2);
+    maybeGrowBottom();
   }
   public void append(UiComponent<?> element) {
     Element el = wrapChild(element.getView().getElement());
@@ -145,8 +148,8 @@ extends MultiPanel<PanelModel, ControllerView>
     } else if (element instanceof GwtCompilerShell) {
       compiler.appendChild(el);
     } else if (element instanceof Header) {
-      header.appendChild(element.getView().getElement());
-//      compiler.appendChild(el);
+      header = (Header)element;
+      headerEl.appendChild(element.getView().getElement());
     } else {
       X_Log.warn("Unknown element type",element);
       getView().getElement().appendChild(el);
@@ -182,6 +185,7 @@ extends MultiPanel<PanelModel, ControllerView>
       editor.getFirstChildElement().getLastElementChild().appendChild(file.getContentElement());
     } else if (panelContent instanceof TerminalLogView) {
       bottomBar.addChild(panelContent.getContentElement(), 500, 0);
+      maybeGrowBottom();
     } else if (panelContent instanceof GwtCompilerShell){
 //      Element el = wrapChild(((UiComponent<?>)panelContent).getView().getElement());
 //      bottomBar.addChild(el, 0.3);
@@ -195,16 +199,18 @@ extends MultiPanel<PanelModel, ControllerView>
     panelContent.onContentDisplayed();
   }
   
+  private boolean once = true;
+  private void maybeGrowBottom() {
+    if (once) {
+      once = false;
+      verticalSplit.head.next.size = .75;
+      verticalSplit.tail.size = .25;
+      verticalSplit.refresh();
+    }
+  }
+
   public void minimizeFile(final PathUtil path) {
     DivElement el = Browser.getDocument().createDivElement();
-    X_Log.info("minimizing",path);
-//    CollideBootstrap.start(new SuccessHandler<AppContext>() {
-//      @Override
-//      public void onSuccess(AppContext arg0) {
-////        Panel<Object, com.google.collide.client.ui.panel.Panel.View<Object>> panel = Panel.create(path, arg0.getResources(), ResizeBounds.withMaxSize(200, 64).build());
-////        header.appendChild(panel.getView().getElement());
-//      }
-//    });
   }
 
   @Override
@@ -304,6 +310,7 @@ extends MultiPanel<PanelModel, ControllerView>
     gwt.addCompileStateListener(new GwtStatusListener() {
       
       @Override
+      @SuppressWarnings("incomplete-switch")
       public void onLogLevelChange(String module, Type level) {
         GwtCompileState gwtc = getCompileState(module);
         gwtc.logLevel = level;
@@ -337,11 +344,12 @@ extends MultiPanel<PanelModel, ControllerView>
             break;
           case FINISHED:
           case SERVING:
-            if (gwtc.logLevel.ordinal() >= Type.ERROR.ordinal()) {
+            if (gwtc.logLevel.ordinal() == Type.ERROR.ordinal()) {
               gwtc.status = GwtCompileStatus.PartialSuccess;
             } else {
               gwtc.status = GwtCompileStatus.Success;
             }
+            gwtc.logLevel = Type.WARN;
             if (gwtc.header != null) {
               gwtc.header.setCompileStatus(gwtc.status);
             }
@@ -349,8 +357,10 @@ extends MultiPanel<PanelModel, ControllerView>
           case RUNNING:
             gwtc.status = GwtCompileStatus.Good;
             if (gwt.isAutoOpen()) {
-            GwtRecompileImpl value = gwt.getValue();
-              gwt.getView().getDelegate().openIframe(value.getModule(), value.getPort());
+              GwtRecompileImpl value = gwt.getValue();
+              String key = status.getStaticName() == null ? value.getModule() : status.getStaticName();
+              gwt.setMessageKey(value.getModule(), key);
+              gwt.getView().getDelegate().openIframe(key, value.getPort());
             }
             if (gwtc.header != null) {
               gwtc.header.setCompileStatus(gwtc.status);
@@ -362,5 +372,9 @@ extends MultiPanel<PanelModel, ControllerView>
     });
     append(gwt);
   }
-  
+
+  public AwesomeBoxComponentHost getAwesomeBoxComponentHost() {
+    return header.getAwesomeBoxComponentHost();
+  }
+
 }

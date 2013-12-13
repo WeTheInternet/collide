@@ -16,7 +16,6 @@ import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.Header.Resources;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GwtCompileImpl;
 import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
@@ -65,7 +64,7 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
 
   @Override
   public ImageResource getIcon(Resources res) {
-    return res.gearIcon();
+    return res.gwtIcon();
   }
 
   @Override
@@ -154,7 +153,7 @@ implements ClientPlugin<GwtCompilePlace>, RunConfiguration
       }
       @Override
       public void onFail(FailureReason reason) {
-        Window.alert("fail! " + reason);
+        Window.alert("Gwt compile failure: " + reason);
       }
     });
   }

@@ -73,4 +73,8 @@ public class TerminalClientPlugin  implements ClientPlugin<TerminalPlace>, Termi
     };
   }
 
+  public void setRename(String from, String to) {
+    handler.setRename(from, to);
+  }
+
 }

@@ -31,7 +31,7 @@ CONFIG="{
   \"includes\": \"gwt\"
 }"
 
-export JAVA_OPTS="-Xmx2048M -XX:MaxPermSize=512M -XX:+CMSClassUnloadingEnabled -XX:-UseConcMarkSweepGC -XX:+PrintGCDetails -verbose:gc -Xloggc:/logs/gc.log"
+export JAVA_OPTS="$JAVA_OPTS -Xmx2048M -XX:MaxPermSize=512M -XX:+CMSClassUnloadingEnabled -XX:-UseConcMarkSweepGC -XX:+PrintGCDetails -verbose:gc -Xloggc:/logs/gc.log"
 
 # Make a temporary file and stash the config JSON
 TMP_FILE=$(mktemp /tmp/collide.XXXXXXXXXX) || { echo "Failed to create temp file"; exit 1; }

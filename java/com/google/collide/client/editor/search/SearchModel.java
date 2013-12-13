@@ -14,7 +14,6 @@
 
 package com.google.collide.client.editor.search;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.editor.EditorContext;
 import com.google.collide.client.editor.ViewportModel;
 import com.google.collide.client.editor.renderer.Renderer;

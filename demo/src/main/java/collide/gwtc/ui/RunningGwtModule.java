@@ -61,7 +61,11 @@ public class RunningGwtModule extends StringId implements TerminalLogHeader {
     case SERVING:
       view.updateStatus("Serving module "+status.getModule());
       if (view.gwtSettings.radioIframe.isChecked()){
-        view.getDelegate().openIframe(status.getModule(), status.getPort());
+        if (status.getStaticName() != null) {
+          view.setMessageKey(status.getModule(), status.getStaticName());
+        }
+        String key = status.getStaticName() == null ? status.getModule() : status.getStaticName();
+        view.getDelegate().openIframe(key, status.getPort());
       }else if (view.gwtSettings.radioSelf.isChecked()){
         Window.Location.reload();
       }else if (view.gwtSettings.radioWindow.isChecked()){

@@ -18,7 +18,6 @@ import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
 import collide.client.filetree.FileTreeNode;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.editor.Editor;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.dto.ConflictChunk;

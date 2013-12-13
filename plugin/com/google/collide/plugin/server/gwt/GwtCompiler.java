@@ -12,7 +12,6 @@ import org.vertx.java.core.eventbus.EventBus;
 
 import xapi.file.X_File;
 import xapi.gwtc.api.GwtManifest;
-import xapi.io.api.LineReader;
 import xapi.io.api.SimpleLineReader;
 import xapi.log.X_Log;
 import xapi.shell.X_Shell;
@@ -20,12 +19,11 @@ import xapi.shell.api.ShellSession;
 import xapi.util.X_Debug;
 
 import com.google.collide.dto.CodeModule;
-import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.client.DtoManifestUtil;
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
+import com.google.collide.server.shared.util.DtoManifestUtil;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
@@ -136,12 +134,24 @@ public class GwtCompiler {
   public void initialize(GwtRecompileImpl compileRequest, URL[] cp, EventBus eb, String address) {
     if (cl != null) {
       if (!Arrays.equals(cp, cl.getURLs())) {
+        X_Log.info(getClass(), "Resetting classloader as urls have changed");
         cl = null;
       }
     }
     if (cl == null) {
+      X_Log.info(getClass(), "Creating new classloader");
+      X_Log.trace(getClass(), "Classpath", cp);
       cl = new UrlAndSystemClassLoader(cp, log);
+      if (io != null) {
+        try {
+          io.destroy();
+        } catch (Exception e) {
+          X_Log.warn(getClass(), "Error destroying cross-thread communication channel", io, e);
+        }
+        io = null;
+      }
     } else {
+      X_Log.info(getClass(), "Setting classloader to allow system class loading");
       cl.setAllowSystem(true);
     }
     if (io == null) {
@@ -170,7 +180,8 @@ public class GwtCompiler {
       method.invoke(compiler, getClass().getClassLoader(), io);
       io.setChannel(null);
       ReflectionChannelTreeLogger logger = new ReflectionChannelTreeLogger(io);
-      logger.setModule(module);
+      String messageKey = compileRequest.getMessageKey() == null ? module : compileRequest.getMessageKey();
+      logger.setModule(messageKey);
       log = logger;
       log.log(Type.INFO, "Initialized GWT compiler for "+module);
       compileMethod = recompilerClass.getMethod("compile", String.class);

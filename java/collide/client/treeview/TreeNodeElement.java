@@ -15,11 +15,11 @@
 package collide.client.treeview;
 
 import collide.client.treeview.Tree.Css;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
 
 import com.google.collide.client.util.AnimationController;
 
-import collide.client.util.CssUtils;
-import collide.client.util.Elements;
 import elemental.css.CSSStyleDeclaration;
 import elemental.dom.Element;
 import elemental.html.DivElement;

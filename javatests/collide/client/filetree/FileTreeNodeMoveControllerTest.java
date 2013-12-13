@@ -12,14 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
+import collide.client.filetree.FileTreeNode;
+import collide.client.filetree.FileTreeNodeMoveController;
+
+import com.google.collide.client.workspace.TestUtils;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.FileInfo;
 import com.google.collide.dto.TreeNodeInfo;
 import com.google.collide.dto.client.DtoClientImpls.DirInfoImpl;
 import com.google.collide.dto.client.DtoClientImpls.FileInfoImpl;
-
 import com.google.collide.json.client.JsoArray;
 import com.google.gwt.junit.client.GWTTestCase;
 

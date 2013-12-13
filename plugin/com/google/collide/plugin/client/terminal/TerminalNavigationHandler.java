@@ -79,7 +79,9 @@ public class TerminalNavigationHandler extends
   }
 
   public void addLog(LogMessage log, TerminalLogHeader header) {
-    views.get(X_String.firstNotEmpty(log.getModule(),"global"), header).addLog(log);
+    String id = X_String.firstNotEmpty(log.getModule(),"global");
+    
+    views.get(id, header).addLog(log);
   }
 
   @Override
@@ -91,6 +93,11 @@ public class TerminalNavigationHandler extends
 
   public void setHeader(String module, TerminalLogHeader header) {
     views.get(module, header).setHeader(header);
+  }
+
+  public void setRename(String from, String to) {
+    TerminalLogView is = views.getValue(from);
+    views.setValue(to, is);
   }
 
 }

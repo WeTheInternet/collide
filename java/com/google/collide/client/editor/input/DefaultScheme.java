@@ -434,25 +434,6 @@ public class DefaultScheme extends InputScheme {
       }
     });
 
-    /**
-     * ACTION+ALT+V - Switch from Default to Vim Scheme
-     *
-     * TODO: Removed VIM keybinding access until we're ready to launch
-     * it
-     */
-    if (false) {
-      // Disabled due to prioritization
-      defaultMode
-          .addShortcut(new EventShortcut(ModifierKeys.ACTION | ModifierKeys.ALT, 'v') {
-            @Override
-            public boolean event(InputScheme scheme, SignalEvent event) {
-              getInputController().setActiveInputScheme(getInputController().vimScheme);
-              return true;
-            }
-          });
-    }
-
-
     if (ENABLE_DEBUG_SPACER_KEYS) {
       final SortedList<Spacer> spacers =
           new SortedList<Spacer>(new Spacer.Comparator());

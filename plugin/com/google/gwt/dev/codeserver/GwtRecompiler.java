@@ -64,13 +64,15 @@ public class GwtRecompiler implements IsCompileThread<GwtRecompile> {
       // prepare a response to let the user know we are working
       CompileResponseImpl response;
       response = CompileResponseImpl.make();
-      response.setModule(request.getModule());
       response.setCompilerStatus(CompilerState.RUNNING);
-
+ 
       Type logLevel = request.getLogLevel();
       if (logLevel != null)
         logger.setMaxDetail(logLevel);
-      logger.setModule(request.getModule());
+      String key = request.getMessageKey() == null ? request.getModule() : request.getMessageKey();
+      logger.setModule(key);
+      response.setModule(key);
+      response.setStaticName(module);
 
       io.send(response.toJson());
 

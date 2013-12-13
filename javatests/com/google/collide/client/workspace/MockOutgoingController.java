@@ -14,9 +14,12 @@
 
 package com.google.collide.client.workspace;
 
-import com.google.collide.client.util.PathUtil;
+import collide.client.filetree.FileTreeModel;
 import collide.client.filetree.FileTreeModel.NodeRequestCallback;
 import collide.client.filetree.FileTreeModelNetworkController.OutgoingController;
+import collide.client.filetree.FileTreeNode;
+
+import com.google.collide.client.util.PathUtil;
 
 /**
  * A no-op mock of {@link OutgoingController}.
@@ -27,12 +30,10 @@ public class MockOutgoingController extends OutgoingController {
     super(null);
   }
 
-  @Override
   void requestWorkspaceNode(
       FileTreeModel fileTreeModel, PathUtil path, NodeRequestCallback callback) {
   }
   
-  @Override
   void requestDirectoryChildren(
       FileTreeModel fileTreeModel, FileTreeNode node, NodeRequestCallback callback) {
   }

@@ -10,15 +10,25 @@ public interface GwtcResources extends
   @Source("Gwtc.css")
   GwtcCss panelHeaderCss();
   
+  @Source("gwt-logo-small.png")
+  ImageResource gwt();
   @Source("gear.png")
   ImageResource gear();
   @Source("green-radar-small.gif")
-  ImageResource radarGreenSmall();
+  ImageResource radarGreenAnim();
   @Source("red-radar-small.gif")
-  ImageResource radarRedSmall();
+  ImageResource radarRedAnim();
   @Source("yellow-radar-small.gif")
+  ImageResource radarYellowAnim();
+  @Source("green-radar-still.png")
+  ImageResource radarGreenSmall();
+  @Source("red-radar-still.png")
+  ImageResource radarRedSmall();
+  @Source("yellow-radar-still.png")
   ImageResource radarYellowSmall();
   @Source("reload.png")
   ImageResource reload();
+  @Source("close.png")
+  ImageResource close();
   
 }

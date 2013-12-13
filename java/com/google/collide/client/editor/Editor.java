@@ -19,10 +19,8 @@ import org.waveprotocol.wave.client.common.util.SignalEvent;
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.code.parenmatch.ParenMatchHighlighter;
 import com.google.collide.client.document.linedimensions.LineDimensionsCalculator;
-import com.google.collide.client.editor.Buffer.ScrollListener;
 import com.google.collide.client.editor.gutter.Gutter;
 import com.google.collide.client.editor.gutter.LeftGutterManager;
 import com.google.collide.client.editor.input.InputController;
@@ -360,22 +358,6 @@ public class Editor extends UiComponent<Editor.View> {
    * can be added and removed when scrolled.
    */
   private void addBoxShadowOnScrollHandler() {
-    if (true) {
-      // TODO: investigate why this kills performance
-      return;
-    }
-    
-    this.buffer.getScrollListenerRegistrar().add(new ScrollListener() {
-
-      @Override
-      public void onScroll(Buffer buffer, int scrollTop) {
-        if (scrollTop < 20) {
-          getElement().removeClassName(getView().css.scrolled());
-        } else {
-          getElement().addClassName(getView().css.scrolled());
-        }
-      }
-    });
   }
 
   public void addLineRenderer(LineRenderer lineRenderer) {

@@ -154,7 +154,7 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
     }
 
     elemental.html.PreElement el = Elements.createPreElement(clsName);
-    el.setInnerHTML(log.getMessage());
+    el.setInnerText(log.getMessage());
     //TODO: use a page list-view so we can avoid painting 6,000,000 elements at once
     enqueue(el);
   }

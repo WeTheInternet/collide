@@ -28,7 +28,6 @@ import collide.client.util.BrowserUtils;
 import collide.client.util.Elements;
 
 import com.google.collide.client.bootstrap.BootstrapSession;
-import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.communication.ResourceUriUtils;
 import com.google.collide.client.history.Place;
@@ -36,8 +35,8 @@ import com.google.collide.client.status.StatusMessage;
 import com.google.collide.client.status.StatusMessage.MessageType;
 import com.google.collide.client.testing.DebugAttributeSetter;
 import com.google.collide.client.ui.dropdown.DropdownController;
-import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.dropdown.DropdownController.DropdownPositionerBuilder;
+import com.google.collide.client.ui.dropdown.DropdownWidgets;
 import com.google.collide.client.ui.list.SimpleList.ListItemRenderer;
 import com.google.collide.client.ui.menu.PositionController;
 import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
@@ -121,7 +120,7 @@ public class FileTreeContextMenuController {
    */
   private static final String FILE_TREE_CUT_URL_PARAM = "fileTreeCutEnabled";
 
-  static final String DOWNLOAD_FRAME_ID = "download";
+  public static final String DOWNLOAD_FRAME_ID = "download";
 
   /**
    * Static factory method for obtaining an instance of FileTreeContextMenuController.

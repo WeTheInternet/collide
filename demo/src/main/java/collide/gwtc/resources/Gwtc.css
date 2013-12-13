@@ -18,28 +18,13 @@
 }
 
 .close{
-	border: solid 2px black;
-	text-align: center;
 	vertical-align: middle;
 	width: 15px;
-} 
-.close:hover {
-	border: solid 2px #ccd;
-	color: #ccd;
-	background-color: #334;
 	cursor: pointer;
-	text-align: center;
-	vertical-align: middle;
-	width: 15px;
 } 
-.close:active {
-	border: solid 2px black;
-	color: black;
-	background-color: white;
-	cursor: pointer;
-	text-align: center;
-	vertical-align: middle;
-	width: 15px;
+
+@sprite .close {
+	gwt-image: "close";
 } 
 
 .topHeader, .controls {
@@ -62,6 +47,10 @@
 .icons{
 }
 
+@sprite .gwt {
+  gwt-image: "gwt";
+}
+
 @sprite .reloadIcon {
   gwt-image: "reload";
 }
@@ -70,15 +59,26 @@
   gwt-image: "gear";
 }
 
-@sprite .radarGreen, .success {
+@sprite .radarGreen {
+  gwt-image: "radarGreenAnim";
+}
+
+@sprite .success {
   gwt-image: "radarGreenSmall";
 }
 
-@sprite .radarRed, .fail {
+@sprite .radarRed {
+  gwt-image: "radarRedAnim";
+}
+
+@sprite .fail {
   gwt-image: "radarRedSmall";
 }
 
-@sprite .radarYellow, .warn {
+@sprite .radarYellow {
+  gwt-image: "radarYellowAnim";
+}
+@sprite .warn {
   gwt-image: "radarYellowSmall";
 }
 

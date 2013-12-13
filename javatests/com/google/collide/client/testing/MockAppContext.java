@@ -15,12 +15,14 @@
 package com.google.collide.client.testing;
 
 import com.google.collide.client.AppContext;
+import com.google.collide.client.Resources;
+import com.google.collide.client.editor.EditorContext;
 
 /**
  * A variant of {@link AppContext} which provides mock stubs for server communication, to enable
  * standalone unit testing.
  */
-public class MockAppContext extends AppContext {
+public class MockAppContext extends AppContext implements EditorContext<Resources> {
   
   private MockFrontendApi mockFrontendApi = new MockFrontendApi();
 

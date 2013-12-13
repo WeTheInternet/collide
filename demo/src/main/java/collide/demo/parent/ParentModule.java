@@ -67,7 +67,9 @@ public class ParentModule implements EntryPoint{
             addGwtCompiler(context, body);
             addEditor(context, body, plugins);
             addTerminal(context, body);
+            setupAwesomeBox(context, body);
           }
+
         });
       }
       
@@ -76,6 +78,9 @@ public class ParentModule implements EntryPoint{
         warn(reason, "Loading Collide's AppContext ");
       }
     });
+  }
+  private void setupAwesomeBox(AppContext context, DemoView body) {
+    body.getAwesomeBoxComponentHost().show();
   }
 
   private void addTerminal(final AppContext context, DemoView body) {

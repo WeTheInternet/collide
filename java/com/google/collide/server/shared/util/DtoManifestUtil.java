@@ -1,4 +1,4 @@
-package com.google.collide.dto.client;
+package com.google.collide.server.shared.util;
 
 import static collide.shared.collect.Collections.asArray;
 

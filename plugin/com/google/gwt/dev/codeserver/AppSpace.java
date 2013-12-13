@@ -16,10 +16,10 @@
 
 package com.google.gwt.dev.codeserver;
 
-import com.google.gwt.dev.util.Util;
-
 import java.io.File;
 import java.io.IOException;
+
+import com.google.gwt.dev.util.Util;
 
 /**
  * The directory tree where Super Dev Mode keeps all the files for one GWT app.

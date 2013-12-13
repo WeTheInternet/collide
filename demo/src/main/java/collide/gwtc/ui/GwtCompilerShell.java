@@ -1,6 +1,7 @@
 package collide.gwtc.ui;
 
 import xapi.collect.impl.InitMapDefault;
+import xapi.log.X_Log;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
 import xapi.util.api.ReceivesValue;
@@ -12,6 +13,7 @@ import collide.client.util.Elements;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.PluginContent;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
+import com.google.collide.client.plugin.ClientPluginService;
 import com.google.collide.client.util.ResizeBounds;
 import com.google.collide.client.util.ResizeBounds.BoundsBuilder;
 import com.google.collide.client.util.logging.Log;
@@ -19,6 +21,7 @@ import com.google.collide.clientlibs.vertx.VertxBus.MessageHandler;
 import com.google.collide.clientlibs.vertx.VertxBus.ReplySender;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.CompileResponse.CompilerState;
+import com.google.collide.dto.GwtCompile;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.LogMessage;
@@ -32,10 +35,12 @@ import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.dto.client.DtoClientImpls.HasModuleImpl;
 import com.google.collide.dto.client.DtoClientImpls.LogMessageImpl;
 import com.google.collide.json.client.Jso;
+import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
 import com.google.collide.plugin.client.launcher.LauncherService;
+import com.google.collide.plugin.client.terminal.TerminalClientPlugin;
 import com.google.collide.plugin.client.terminal.TerminalService;
 import com.google.collide.shared.plugin.PublicServices;
 import com.google.collide.shared.util.DebugUtil;
@@ -150,6 +155,8 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     @UiField
     com.google.gwt.dom.client.AnchorElement compileButton;
     @UiField
+    com.google.gwt.dom.client.AnchorElement testButton;
+    @UiField
     com.google.gwt.dom.client.AnchorElement draftButton;
     @UiField
     com.google.gwt.dom.client.AnchorElement killButton;
@@ -177,6 +184,12 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         @Override
         public void handleEvent(Event evt) {
           getDelegate().onCompileButtonClicked();
+        }
+      });
+      ((AnchorElement)testButton).setOnclick(new EventListener() {
+        @Override
+        public void handleEvent(Event evt) {
+          getDelegate().onTestButtonClicked();
         }
       });
       ((AnchorElement)killButton).setOnclick(new EventListener() {
@@ -281,6 +294,10 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     public String getModule() {
       return gwtModule.getModule();
     }
+
+    public void setMessageKey(String module, String key) {
+      
+    }
   }
 
 
@@ -350,6 +367,32 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
       });
     }
+    
+    @Override
+    public void onTestButtonClicked() {
+      GwtCompileImpl value = getValue();
+      value.setIsRecompile(false);
+      context.getFrontendApi().TEST_GWT.send(value, new ApiCallback<GwtCompile>() {
+        @Override
+        public void onMessageReceived(GwtCompile message) {
+          if (message == null)
+            Log.error(getClass(), "Null gwt status message received");
+          else {
+            // Turbo hack :(
+            TerminalClientPlugin plugin = ClientPluginService.getPlugin(TerminalClientPlugin.class);
+            plugin.setRename(message.getMessageKey(), message.getModule());
+            X_Log.info(message);
+            setValue(message);
+//            CompileResponse status = new CompileResponseImpl();
+//            onStatusMessageReceived(status);
+          }
+        }
+        @Override
+        public void onFail(FailureReason reason) {
+          
+        }
+      });
+    }
   
     @Override
     public void onKillButtonClicked() {
@@ -407,7 +450,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     }
     
     private void openIframe() {
-      String module = getView().gwtModule.getModule();
+      String module = getMessageKey();
       int port = getView().gwtSettings.getPort();
       openIframe(module, port);
     }
@@ -416,6 +459,20 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
   public static GwtCompilerShell create(View view, AppContext context){
     return new GwtCompilerShell(view, context);
+  }
+
+  private JsoStringMap<String> keys = JsoStringMap.create();
+  
+  public void setMessageKey(String module, String key) {
+    if (key != null) {
+      keys.put(module, key);
+    }
+  }
+  
+  public String getMessageKey() {
+    String module = getView().gwtModule.getModule();
+    String key = keys.get(module);
+    return key == null ? module : key;
   }
 
   public void setValue(GwtRecompile existing) {

@@ -17,7 +17,6 @@ package collide.client.filetree;
 import collide.client.filetree.FileTreeModel.NodeRequestCallback;
 import collide.client.filetree.FileTreeModel.RootNodeRequestCallback;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.communication.MessageFilter;

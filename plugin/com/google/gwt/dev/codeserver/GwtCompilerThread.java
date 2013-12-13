@@ -11,13 +11,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.tools.ant.filters.StringInputStream;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.net.NetSocket;
 
 import xapi.log.X_Log;
-import xapi.util.impl.StringId;
+import xapi.time.X_Time;
 
 import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtRecompile;
@@ -40,7 +39,7 @@ implements IsCompileThread <GwtRecompile> {
   public GwtCompilerThread() {
   }
   public GwtCompilerThread(String module) {
-    this.module = module;
+    messageKey = this.module = module;
   }
   
   private final HashMap<String, CompiledDirectory> modules = new HashMap<>();
@@ -53,6 +52,7 @@ implements IsCompileThread <GwtRecompile> {
   }
   RecompileController controller;
   private String module;
+  private String messageKey;
   
   // these are native objects, created using reflection
   @Override
@@ -76,16 +76,16 @@ implements IsCompileThread <GwtRecompile> {
         working = true;
         GwtRecompile request = GwtRecompileImpl.fromJsonString(compileRequest);
         module = request.getModule();
+        messageKey = request.getMessageKey() == null ? module : request.getMessageKey();
         // prepare a response to let the user know we are working
-        CompileResponseImpl response;
-        response = CompileResponseImpl.make();
-        response.setModule(request.getModule());
+        final CompileResponseImpl response = CompileResponseImpl.make();
+        response.setModule(messageKey).setStaticName(module);
         response.setCompilerStatus(CompilerState.RUNNING);
 
         Type logLevel = request.getLogLevel();
         if (logLevel != null)
           logger.setMaxDetail(logLevel);
-        logger.setModule(request.getModule());
+        logger.setModule(messageKey);
 
         io.send(response.toJson());
 
@@ -93,19 +93,29 @@ implements IsCompileThread <GwtRecompile> {
         controller = SuperDevUtil.getOrMakeController(
             logger, request, server.getPort());
         CompiledDirectory dir = controller.recompile();
-        modules.put(request.getModule(), dir);
+        modules.put(messageKey, dir);
         // notify user we completed successfully
         response.setCompilerStatus(CompilerState.FINISHED);
-        io.send(response.toJson());
 
-        // also notify our frontend that the compiled output has changed
-        // start or update a proxy server to pull source files from this
-        // compile.
-        synchronized (getClass()) {
-          status = response;
-          startOrUpdateProxy(dir, controller);
+        try {
+          // also notify our frontend that the compiled output has changed
+          // start or update a proxy server to pull source files from this
+          // compile.
+          synchronized (getClass()) {
+            status = response;
+            startOrUpdateProxy(dir, controller);
+          }
+          initialize(server.get(), server.getPort());
+        } finally {
+          X_Time.runLater(new Runnable() {
+            @Override
+            public void run() {
+              X_Time.trySleep(500, 0);
+              io.send(response.toJson());
+            }
+          });
         }
-        initialize(server.get(), server.getPort());
+
 
         // This message is routed to WebFE
         io.send("_frontend.symlink_" + dir.toString());
@@ -128,7 +138,8 @@ implements IsCompileThread <GwtRecompile> {
         }
         if (status == null) {
           status = CompileResponseImpl.make();
-          status.setModule(module);
+          status.setModule(messageKey);
+          status.setStaticName(module);
         }
         status.setCompilerStatus(CompilerState.FAILED);
         io.send(status.toJson());

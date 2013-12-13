@@ -10,6 +10,8 @@
           class="{res.baseCss.button} {res.baseCss.buttonBlue}">Draft Compile</a>
     	 <a href="javascript:;" ui:field="compileButton"
           class="{res.baseCss.button} {res.baseCss.buttonBlue}">Full Compile</a>
+    	 <a href="javascript:;" ui:field="testButton"
+          class="{res.baseCss.button} {res.baseCss.buttonBlue}">Run Tests</a>
     	 <a href="javascript:;" ui:field="killButton"
           class="{res.baseCss.button} {res.baseCss.buttonBlue}">Kill Compiler</a>
     	</div>

@@ -14,9 +14,10 @@
 
 package com.google.collide.client.ui.popup;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.ui.popup.CenterPanel.Resources;
 import com.google.collide.client.ui.popup.CenterPanel.View;
-import com.google.collide.client.util.Elements;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

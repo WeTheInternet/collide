@@ -14,7 +14,6 @@
 
 package com.google.collide.client;
 
-import collide.client.common.CommonResources;
 import collide.client.common.CommonResources.BaseResources;
 
 import com.google.collide.client.status.StatusPresenter;

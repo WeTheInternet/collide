@@ -12,6 +12,7 @@ import com.google.gwt.core.ext.TreeLogger;
 @RoutingType(type=RoutingTypes.CODEMODULE)
 public interface CodeModule extends HasModule, ClientToServerDto, ServerToClientDto {
 
+  String getMessageKey();
   String getManifestFile();
   JsonArray<String> getExtraArgs();
   boolean isRecompile();

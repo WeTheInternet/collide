@@ -179,6 +179,9 @@ public class Header extends UiComponent<Header.View> {
 
     @Source("gear.png")
     ImageResource gearIcon();
+    
+    @Source("gwt.png")
+    ImageResource gwtIcon();
 
     @Source("terminal.png")
     ImageResource terminalIcon();
@@ -357,10 +360,17 @@ public class Header extends UiComponent<Header.View> {
 
       // Wire up event handlers.
       attachHandlers();
+      
+      CssUtils.setDisplayVisibility2(Elements.asJsElement(feedbackButton), false);
+      CssUtils.setDisplayVisibility2(Elements.asJsElement(shareButton), false);
     }
 
     public AwesomeBoxComponentHost.View getAwesomeBoxView() {
       return awesomeBoxComponentHostView;
+    }
+    
+    public DivElement getAwesomeBoxContainer() {
+      return awesomeBoxContainer;
     }
 
     public void createReadOnlyMessageTooltip(Workspace workspace) {
@@ -409,7 +419,6 @@ public class Header extends UiComponent<Header.View> {
           }
         }
       });
-
       getElement().setOnclick(new EventListener() {
         @Override
         public void handleEvent(Event evt) {
@@ -438,11 +447,11 @@ public class Header extends UiComponent<Header.View> {
       }
     }
 
-    void setShareButtonVisible(boolean isVisible) {
+    public void setShareButtonVisible(boolean isVisible) {
       CssUtils.setDisplayVisibility2(Elements.asJsElement(shareButton), isVisible);
     }
 
-    void setRunButtonVisible(boolean isVisible) {
+    public void setRunButtonVisible(boolean isVisible) {
       CssUtils.setDisplayVisibility2(Elements.asJsElement(runButton), isVisible);
       CssUtils.setDisplayVisibility2(Elements.asJsElement(runDropdownButton), isVisible);
     }
@@ -496,7 +505,7 @@ public class Header extends UiComponent<Header.View> {
 
     @Override
     public void onShareButtonClicked() {
-      // was show manage membership
+      
     }
 
     @Override

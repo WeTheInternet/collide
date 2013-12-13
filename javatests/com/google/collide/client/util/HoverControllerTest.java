@@ -14,14 +14,16 @@
 
 package com.google.collide.client.util;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.util.HoverController.HoverListener;
 import com.google.collide.client.util.HoverController.UnhoverListener;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.Timer;
 
-import elemental.events.MouseEvent;
 import elemental.dom.Document;
 import elemental.dom.Element;
+import elemental.events.MouseEvent;
 
 /**
  * Tests for {@link HoverController}.

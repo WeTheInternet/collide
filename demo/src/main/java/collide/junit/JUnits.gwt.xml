@@ -1,0 +1,4 @@
+<module>
+  <inherits name="com.google.gwt.core.Core" />
+  <set-property name="user.agent" value="safari" />
+</module>

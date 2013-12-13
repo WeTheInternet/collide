@@ -5,6 +5,7 @@ import com.google.gwt.resources.client.CssResource;
 // An interface of css classnames.  These must match .classNames in the .css file.
 public interface GwtcCss extends CssResource {
   String close();
+  String gwt();
   String gear();
   String headerContainer();
   String header();

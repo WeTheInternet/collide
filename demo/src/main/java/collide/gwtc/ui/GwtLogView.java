@@ -1,8 +1,8 @@
 package collide.gwtc.ui;
 
 import collide.client.common.CommonResources;
-
 import collide.client.util.Elements;
+
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.json.client.JsoArray;

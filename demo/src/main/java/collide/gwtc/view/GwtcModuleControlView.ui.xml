@@ -11,11 +11,11 @@
 			</h2>
 			<div ui:field="controls" class="{res.panelHeaderCss.controls}">
 			  <div>
-  			  <div ui:field="close" class="{res.panelHeaderCss.close}">X</div>
+  			  <div ui:field="close" class="{res.panelHeaderCss.close}"></div>
 			  </div>
 			</div>
 		</div>
-		<div class="{res.panelHeaderCss.bottomHeader}">
+		<div class="{res.panelHeaderCss.bottomHeader}" style="display:none">
       <div>Actions</div>
       <div>All Source</div>
       <div ui:field="generated"> </div>

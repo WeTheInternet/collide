@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,7 +36,7 @@ class SuperDevUtil {
         Class<?> cls = cl.loadClass(AppSpace.class.getName());
         Method method = cls.getDeclaredMethod("create", File.class, String.class);
         method.setAccessible(true);
-        app = (AppSpace) method.invoke(null, tmp , module);
+        app = (AppSpace) method.invoke(null, tmp , "Gwtc"+module);
       } catch (Exception e) {
         e.printStackTrace();
         app = AppSpace.create(tmp);
@@ -47,15 +46,25 @@ class SuperDevUtil {
       throw new Error("Unable to initialize gwt recompiler ",e1);
     }
     List<File> sourcePath = new ArrayList<File>();
-    for (String src : request.getDependencies().asIterable()){
+    for (String src : request.getSources().asIterable()){
       //TODO: sanitize this somehow?
       if (".".equals(src))src = new File("").getAbsolutePath();
       if (src.startsWith("file:"))src = src.substring(5);
       File dir = new File(src);
       if (!dir.exists()){
-        X_Log.error("Gwt source directory "+dir+" does not exist");
+        X_Log.error(SuperDevUtil.class,"Gwt source directory "+dir+" does not exist");
       }else
-        X_Log.trace("Adding to source: "+dir);
+        X_Log.trace(SuperDevUtil.class, "Adding to source: "+dir);
+      sourcePath.add(dir);
+    }
+    for (String src : request.getDependencies().asIterable()){
+      if (".".equals(src))src = new File("").getAbsolutePath();
+      if (src.startsWith("file:"))src = src.substring(5);
+      File dir = new File(src);
+      if (!dir.exists()){
+        X_Log.error(SuperDevUtil.class,"Gwt dependency directory "+dir+" does not exist");
+      }else
+        X_Log.trace(SuperDevUtil.class, "Adding to dependencies: "+dir);
       sourcePath.add(dir);
     }
       Recompiler compiler = new Recompiler(app, module.split("/")[0], sourcePath ,

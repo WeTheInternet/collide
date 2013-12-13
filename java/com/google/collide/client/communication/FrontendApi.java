@@ -39,8 +39,8 @@ import com.google.collide.dto.GetWorkspaceMetaDataResponse;
 import com.google.collide.dto.GetWorkspaceParticipants;
 import com.google.collide.dto.GetWorkspaceParticipantsResponse;
 import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtKill;
+import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.HasModule;
 import com.google.collide.dto.KeepAlive;
@@ -282,6 +282,9 @@ public class FrontendApi {
 //  public final RequestResponseApi<GetRunConfig,GwtStatus> COMPILE_GWT =
 //    makeApi("gwt.compile");
 
+  public final RequestResponseApi<GwtCompile,GwtCompile> TEST_GWT =
+      makeApi("gwt.test");
+  
   public final RequestResponseApi<GwtCompile,CompileResponse> COMPILE_GWT =
       makeApi("gwt.compile");
   

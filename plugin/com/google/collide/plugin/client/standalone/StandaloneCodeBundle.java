@@ -1,6 +1,5 @@
 package com.google.collide.plugin.client.standalone;
 
-import collide.client.filetree.AppContextFileTreeController;
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
 import collide.client.util.Elements;

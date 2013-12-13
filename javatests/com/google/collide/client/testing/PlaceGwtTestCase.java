@@ -14,9 +14,10 @@
 
 package com.google.collide.client.testing;
 
+import collide.client.util.Elements;
+
 import com.google.collide.client.AppContext;
 import com.google.collide.client.TestHelper;
-import com.google.collide.client.util.Elements;
 import com.google.collide.dto.ProjectInfo;
 import com.google.collide.dto.client.DtoClientImpls.ProjectInfoImpl;
 import com.google.collide.json.client.JsoArray;

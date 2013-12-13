@@ -12,10 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.client.workspace;
+package collide.client.filetree;
 
+import collide.client.common.CanRunApplication;
+import collide.client.filetree.AppContextFileTreeController;
+import collide.client.filetree.FileTreeContextMenuController;
+import collide.client.filetree.FileTreeController;
+import collide.client.filetree.FileTreeModel;
+import collide.client.filetree.FileTreeNode;
 import collide.client.filetree.FileTreeNodeDataAdapter;
 import collide.client.filetree.FileTreeNodeRenderer;
+import collide.client.filetree.FileTreeUiController;
+import collide.client.treeview.Tree;
+import collide.client.treeview.TreeNodeElement;
+import collide.client.treeview.TreeNodeLabelRenamer;
+import collide.client.util.Elements;
+
+import com.google.collide.client.Resources;
 import com.google.collide.client.code.debugging.DebuggingModel;
 import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.code.popup.EditorPopupController;
@@ -24,10 +37,8 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
 import com.google.collide.client.testing.CommunicationGwtTestCase;
 import com.google.collide.client.testing.StubWorkspaceInfo;
-import com.google.collide.client.ui.tree.Tree;
-import com.google.collide.client.ui.tree.TreeNodeElement;
-import com.google.collide.client.ui.tree.TreeNodeLabelRenamer;
-import com.google.collide.client.util.Elements;
+import com.google.collide.client.workspace.MockOutgoingController;
+import com.google.collide.client.workspace.TestUtils;
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.FileInfo;
 import com.google.collide.dto.GetWorkspace;
@@ -92,14 +103,15 @@ public class FileTreeContextMenuControllerTest extends CommunicationGwtTestCase 
     Editor editor = Editor.create(context);
     EditorPopupController editorPopupController =
         EditorPopupController.create(context.getResources(), editor);
-    DebuggingModelController debuggingModelController = DebuggingModelController.create(
-        place, context, debuggingModel, editor, editorPopupController, null);
+    DebuggingModelController<Resources> debuggingModelController = DebuggingModelController.create(
+        place, context.getResources(), debuggingModel, editor, editorPopupController, null);
 
     JsoStringMap<String> templates = JsoStringMap.create();
+    FileTreeController<?> ctrl = new AppContextFileTreeController(context);
     FileTreeUiController uiController = FileTreeUiController.create(place,
         fileTreeModel,
         tree,
-        context,
+        ctrl ,
         debuggingModelController);
     TreeNodeLabelRenamer<FileTreeNode> nodeRenamer =
         new TreeNodeLabelRenamer<FileTreeNode>(nodeRenderer, dataAdapter,
@@ -110,7 +122,7 @@ public class FileTreeContextMenuControllerTest extends CommunicationGwtTestCase 
         uiController,
         fileTreeModel,
         nodeRenamer,
-        context,
+        ctrl,
         debuggingModelController);
   }
 

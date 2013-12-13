@@ -17,7 +17,6 @@ package com.google.collide.client.code.debugging;
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
-import com.google.collide.client.AppContext;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.CallFrame;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.Location;
 import com.google.collide.client.code.debugging.DebuggerApiTypes.OnPausedResponse;

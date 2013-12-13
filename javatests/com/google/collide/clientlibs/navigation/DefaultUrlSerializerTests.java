@@ -14,12 +14,12 @@
 
 package com.google.collide.clientlibs.navigation;
 
+import junit.framework.TestCase;
+
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap.IterationCallback;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Equivalence;
-
-import junit.framework.TestCase;
 
 /**
  */

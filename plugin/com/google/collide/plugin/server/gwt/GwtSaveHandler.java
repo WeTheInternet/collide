@@ -14,8 +14,8 @@ import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 import collide.shared.manifest.CollideManifest;
 
-import com.google.collide.dto.client.DtoManifestUtil;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
+import com.google.collide.server.shared.util.DtoManifestUtil;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 

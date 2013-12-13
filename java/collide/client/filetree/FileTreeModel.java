@@ -20,16 +20,13 @@ import collide.client.filetree.FileTreeModelNetworkController.OutgoingController
 import collide.client.treeview.TreeNodeElement;
 
 import com.google.collide.client.bootstrap.BootstrapSession;
-import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.dto.DirInfo;
-import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.Mutation;
 import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.WorkspaceTreeUpdate;
 import com.google.collide.dto.client.DtoClientImpls.DirInfoImpl;
-import com.google.collide.dto.client.DtoClientImpls.GetDirectoryImpl;
 import com.google.collide.dto.client.DtoClientImpls.WorkspaceTreeUpdateImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.shared.JsonArray;

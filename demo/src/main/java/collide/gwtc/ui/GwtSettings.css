@@ -16,4 +16,6 @@ input:focus {
   border-radius: 3px;
   -moz-box-shadow: 0 0 3px 5px #28f;
   box-shadow: 0 0 3px 3px rgba(140, 190, 255, 255);
+  outline: rgba(50, 90, 164, 200);
+  border-color: rgba(50, 90, 164, 200);
 }

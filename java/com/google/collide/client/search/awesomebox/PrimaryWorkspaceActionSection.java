@@ -16,7 +16,6 @@ package com.google.collide.client.search.awesomebox;
 
 import com.google.collide.client.code.FileSelectionController.FileOpenedEvent;
 import com.google.collide.client.history.Place;
-import com.google.collide.client.search.SearchPlace;
 import com.google.collide.client.search.awesomebox.components.FindReplaceComponent.FindMode;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.util.input.ModifierKeys;
@@ -24,7 +23,6 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.collide.shared.util.ListenerManager;
 import com.google.collide.shared.util.ListenerManager.Dispatcher;
-import com.google.common.base.Preconditions;
 
 /**
  * Contains the primary actions for a workspace that are always shown and quickly accesible by a
@@ -123,32 +121,6 @@ public class PrimaryWorkspaceActionSection
         return ActionResult.DO_NOTHING;
       }
     });
-
-    if (false) {
-      // disabled since find in this branch is not ready for launch
-      allActions.add(new FilteredActionItem(res, "Find in this branch...") {
-        private String lastQuery = "";
-
-        @Override
-        public boolean onQueryChanged(String query) {
-          lastQuery = query;
-          return true;
-        }
-
-        @Override
-        public boolean onShowing() {
-          return true;
-        }
-
-        @Override
-        public ActionResult doAction(ActionSource source) {
-          Preconditions.checkNotNull(currentPlace, "Place cannot be null");
-          currentPlace.fireChildPlaceNavigation(SearchPlace.PLACE.createNavigationEvent(lastQuery));
-          return ActionResult.CLOSE;
-        }
-      });
-    }
-
     /**
      * This assert is just here as a handy reminder to update assumptions if the situation changes
      * and to prevent someone from pulling their hair out.

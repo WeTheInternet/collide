@@ -47,11 +47,13 @@ public final class PrintWriterTreeLogger extends AbstractTreeLogger {
     if (existing) {
       out.println();  // blank line to mark relaunch
     }
+    setMaxDetail(TRACE);
   }
 
   protected PrintWriterTreeLogger(PrintWriter out, String indent) {
     this.out = out;
     this.indent = indent;
+    setMaxDetail(TRACE);
   }
 
   @Override

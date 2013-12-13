@@ -7,11 +7,9 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
-import xapi.log.X_Log;
 import xapi.util.api.ReceivesValue;
 
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
-import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.server.shared.util.Dto;
 
 public class GwtCompileHandler implements Handler<Message<JsonObject>> {

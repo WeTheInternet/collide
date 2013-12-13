@@ -21,7 +21,6 @@ import collide.client.treeview.TreeNodeElement;
 import collide.client.treeview.TreeNodeLabelRenamer;
 
 import com.google.collide.client.code.FileSelectedPlace;
-import com.google.collide.client.code.debugging.DebuggingModelController;
 import com.google.collide.client.communication.ResourceUriUtils;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.ui.dropdown.DropdownWidgets;

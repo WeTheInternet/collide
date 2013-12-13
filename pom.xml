@@ -119,10 +119,6 @@
    <artifactId>gson</artifactId>
   </dependency>
   <dependency>
-   <groupId>com.google.wave</groupId>
-   <artifactId>waveinabox</artifactId>
-  </dependency>
-  <dependency>
    <groupId>com.google.gwt</groupId>
    <artifactId>gwt-user</artifactId>
   </dependency>
@@ -155,6 +151,12 @@
   <dependency>
    <groupId>com.google.guava</groupId>
    <artifactId>guava</artifactId>
+  </dependency>
+
+  <!-- Must come after guava in classpath -->
+  <dependency>
+   <groupId>com.google.wave</groupId>
+   <artifactId>waveinabox</artifactId>
   </dependency>
 
   <dependency>

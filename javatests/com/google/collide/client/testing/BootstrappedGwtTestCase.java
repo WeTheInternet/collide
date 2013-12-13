@@ -14,8 +14,9 @@
 
 package com.google.collide.client.testing;
 
-import com.google.collide.client.util.CssUtils;
-import com.google.collide.client.util.Elements;
+import collide.client.util.CssUtils;
+import collide.client.util.Elements;
+
 import com.google.collide.dto.Participant;
 import com.google.collide.dto.client.DtoClientImpls.ParticipantImpl;
 import com.google.gwt.junit.client.GWTTestCase;

@@ -25,8 +25,7 @@ public class ArrayOfStringIterable implements Iterable<String> {
     } else {
       try {
         array = GwtReflect.fieldGet(JreArrayOfString.class, "array", strings);
-      } catch (SecurityException | NoSuchFieldException | IllegalArgumentException
-          | IllegalAccessException e) {
+      } catch (Exception e) {
         X_Log.error("Could not get inner array field of "+strings.getClass(), e);
       }
     }

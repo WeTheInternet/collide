@@ -1,10 +1,9 @@
 package com.google.collide.plugin.server;
 
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -24,7 +23,6 @@ import xapi.util.X_String;
 import xapi.util.api.ReceivesValue;
 
 import com.google.collide.dto.CodeModule;
-import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.plugin.server.gwt.CrossThreadVertxChannel;
@@ -146,6 +144,15 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     
     return list ;
   }
+  
+  public File getWebRoot() {
+    return new File(webRoot);
+  }
+  
+  public File getLibRoot() {
+    return new File(libRoot);
+  }
+  
   protected List<URL> getServerClasspath(final CodeModule request, final CrossThreadVertxChannel io) {
     List<URL> list = new ArrayList<URL>(){
       private static final long serialVersionUID = 7809897000236224683L;
@@ -220,10 +227,10 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
       URL url = toUrl(libDir,cp);
       if (url != null && dedup.add(url.toExternalForm())) {
         if (cp.endsWith(".jar")){
-          X_Log.debug("Adding dependency jar",cp, url);
+          X_Log.debug(getClass(), "Adding dependency jar",cp, url);
           list.add(url);//needed for collide compile
         }else{
-          X_Log.debug("Adding dependency folder",cp, url);
+          X_Log.debug(getClass(), "Adding dependency folder",cp, url);
           list.add(url);//needed for collide compile
         }
       }
@@ -260,15 +267,24 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     //TODO: allow virtual filesystem uris, like ~/, /bin/, /lib/, /war/
 
     String path = cwd.getAbsolutePath();
-    File file = new File(path,jar);
+    File file = new File(jar);
+    try {
+      if (file.exists()) {
+          file = file.getCanonicalFile();
+      } else {
+        file = new File(path, jar).getCanonicalFile();
+      }
+    } catch (IOException e) {
+      X_Log.warn(getClass(), "Error resolving canonical file for",file);
+    }
+    X_Log.trace(getClass(), "Resolving ",jar," to ", file);
     if (file.exists()){
-      logger.trace("Classpath file exists: "+file);
+      logger.info("Classpath file exists: "+file);
     }else{
       logger.warn( "Classpath file does not exist! "+file);
       return null;
     }
-    path = "file:"+path+File.separator+jar;
-    URI uri = URI.create(path);
+    URI uri = URI.create("file:"+file.getAbsolutePath());
     try{
       return uri.toURL();
     }catch (Exception e) {

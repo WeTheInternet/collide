@@ -21,7 +21,6 @@ import com.google.collide.client.AppContext;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
 import com.google.collide.client.util.PathUtil;
 import com.google.collide.client.workspace.WorkspaceReadOnlyChangedEvent;
-import com.google.collide.client.workspace.WorkspaceReadOnlyChangedEvent.Handler;
 import com.google.collide.dto.EmptyMessage;
 import com.google.collide.dto.Mutation;
 import com.google.collide.dto.ServerError.FailureReason;

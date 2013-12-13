@@ -15,6 +15,7 @@
 package collide.client.treeview;
 
 import collide.client.util.Elements;
+
 import com.google.gwt.resources.client.CssResource;
 
 import elemental.dom.Element;

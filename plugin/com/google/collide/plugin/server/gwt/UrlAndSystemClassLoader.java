@@ -21,7 +21,7 @@ public class UrlAndSystemClassLoader extends URLClassLoader{
         //TODO: handle hot-swapping...
         return ClassLoader.getSystemClassLoader().loadClass(name);
       }catch (Exception e) {
-        log.log(Type.TRACE, "Couldn't load "+name+" from system classloader");
+        log.log(Type.DEBUG, "Couldn't load "+name+" from system classloader");
       }
     try{
       if (useParent) {

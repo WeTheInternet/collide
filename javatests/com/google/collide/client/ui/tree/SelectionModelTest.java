@@ -14,14 +14,19 @@
 
 package com.google.collide.client.ui.tree;
 
+import org.waveprotocol.wave.client.common.util.SignalEvent;
+
+import collide.client.filetree.FileTreeNode;
 import collide.client.filetree.FileTreeNodeDataAdapter;
 import collide.client.filetree.FileTreeNodeRenderer;
-import collide.client.filetree.FileTreeNode;
+import collide.client.treeview.NodeDataAdapter;
+import collide.client.treeview.NodeRenderer;
+import collide.client.treeview.SelectionModel;
+import collide.client.treeview.Tree;
+
 import com.google.collide.json.client.JsoArray;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-
-import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 
 /**

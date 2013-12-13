@@ -2,7 +2,6 @@ package collide.shared.manifest;
 
 import static xapi.util.X_String.join;
 import xapi.gwtc.api.GwtManifest;
-import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 import elemental.util.ArrayOf;
 import elemental.util.ArrayOfString;

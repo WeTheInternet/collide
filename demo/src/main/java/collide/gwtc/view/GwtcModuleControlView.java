@@ -29,8 +29,6 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.ui.dropdown.DropdownWidgets;
-import com.google.collide.client.ui.menu.PositionController.AnchorPositioner;
-import com.google.collide.client.ui.menu.PositionController.HorizontalAlign;
 import com.google.collide.client.ui.menu.PositionController.Position;
 import com.google.collide.client.ui.menu.PositionController.PositionerBuilder;
 import com.google.collide.client.ui.menu.PositionController.VerticalAlign;
