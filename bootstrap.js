@@ -56,11 +56,16 @@ var workspaceConfig = {
 }
 
 var pluginConfig = {
-	plugins: ['gwt', 'ant']
-	,'preserve-cwd': true
-	,includes: ['gwt', 'ant']
-	,webRoot: bootstrapConfig.webRoot
-	,staticFiles: bootstrapConfig.staticFiles
+  plugins: ['gwt', 'ant']
+  ,'preserve-cwd': true
+  ,includes: ['gwt', 'ant']
+  ,webRoot: bootstrapConfig.webRoot
+  ,staticFiles: bootstrapConfig.staticFiles
+}
+
+var filetreeConfig = {
+  webRoot: bootstrapConfig.webRoot
+  ,packages: ['java', 'demo/src/main/java','plugin','bin/gen', 'javatests', 'bin/test/gen']
 }
 
 // Start the FE server. Starting several instances to handle concurrent HTTP requests.
@@ -79,7 +84,7 @@ vertx.deployVerticle("com.google.collide.server.documents.EditSessions", null, 1
 });
 
 // Load the collaborative document sessions that manages OT and file content flushes to disk.
-vertx.deployVerticle("com.google.collide.server.filetree.FileTree", null, 1, function() {
+vertx.deployVerticle("com.google.collide.server.filetree.FileTree", filetreeConfig, 1, function() {
   // Server was started.
 });
 

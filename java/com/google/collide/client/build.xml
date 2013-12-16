@@ -109,6 +109,11 @@
         </fileset>
         <fileset dir="${dirs.demo}">
           <include name="collide/shared/**"/>
+          <include name="collide/client/**"/>
+        </fileset>
+        <fileset dir="${dirs.src}">
+          <include name="collide/shared/**"/>
+          <include name="collide/client/**"/>
         </fileset>
       </sources>
       <srcroots>
@@ -150,6 +155,14 @@
         <fileset dir="${dirs.plugin}/${dirs.toppkg}">
           <include name="plugin/client/**"/>
           <include name="emul/**"/>
+        </fileset>
+        <fileset dir="${dirs.demo}">
+          <include name="collide/shared/**"/>
+          <include name="collide/client/**"/>
+        </fileset>
+        <fileset dir="${dirs.src}">
+          <include name="collide/shared/**"/>
+          <include name="collide/client/**"/>
         </fileset>
       </sources>
       <srcroots>

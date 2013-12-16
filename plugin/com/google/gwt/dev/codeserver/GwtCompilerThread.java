@@ -107,11 +107,12 @@ implements IsCompileThread <GwtRecompile> {
           }
           initialize(server.get(), server.getPort());
         } finally {
+          final String status = response.toJson();
           X_Time.runLater(new Runnable() {
             @Override
             public void run() {
               X_Time.trySleep(500, 0);
-              io.send(response.toJson());
+              io.send(status);
             }
           });
         }

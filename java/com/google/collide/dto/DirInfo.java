@@ -33,4 +33,6 @@ public interface DirInfo extends TreeNodeInfo {
    *         starting at this node.
    */
   boolean isComplete();
+  
+  boolean isPackage();
 }

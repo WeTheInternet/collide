@@ -22,7 +22,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
@@ -40,6 +42,9 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+
+import xapi.log.X_Log;
+import collide.shared.collect.Collections;
 
 import com.google.collide.dto.DirInfo;
 import com.google.collide.dto.FileInfo;
@@ -106,6 +111,9 @@ public class FileTree extends BusModBase {
       NodeInfoExt prior = children.put(dir.getPath().getFileName().toString(), dir);
       assert prior == null;
       super.addSubDirectories(dir);
+      if (isPackage()) {
+        dir.setIsPackage(true);
+      }
     }
 
     public void addChild(FileInfoExt file) {
@@ -419,6 +427,9 @@ public class FileTree extends BusModBase {
       @Override
       public FileVisitResult preVisitDirectory(Path path, BasicFileAttributes attrs) {
         DirInfoExt dir = new DirInfoExt(path, resourceIdAllocator++);
+        if (packages.contains(path)) {
+          dir.setIsPackage(true);
+        }
         if (blacklist.contains(dir.getName()))
           return FileVisitResult.SKIP_SUBTREE;
         if (parents.isEmpty()) {
@@ -530,6 +541,8 @@ public class FileTree extends BusModBase {
   Thread watcherThread = null;
 
   HashSet<String> blacklist = new HashSet<>();
+
+  HashSet<Path> packages = new HashSet<>();
   
   @Override
   public void start() {
@@ -537,6 +550,16 @@ public class FileTree extends BusModBase {
     
     blacklist.add("classes");
     blacklist.add("eclipse");
+
+    String webRoot = getOptionalStringConfig("webRoot", "");
+    if (webRoot.length() > 0) {
+      JsonArray packages = getOptionalArrayConfig("packages", new JsonArray());
+      for (Object pkg : packages) {
+        this.packages.add(Paths.get(String.valueOf(pkg)));
+      }
+    } else {
+      X_Log.info(getClass(), "No webRoot property specified for FileTree");
+    }
     
     try {
       watchService = FileSystems.getDefault().newWatchService();
@@ -550,6 +573,7 @@ public class FileTree extends BusModBase {
     vertx.eventBus().registerHandler("tree.get", new FileTreeGetter());
     vertx.eventBus().registerHandler("tree.getCurrentPaths", new PathResolver());
     vertx.eventBus().registerHandler("tree.getResourceIds", new ResourceIdResolver());
+
 
     /*
      * This is not the one true vertx way... but it's easier for now! The watcher thread and the

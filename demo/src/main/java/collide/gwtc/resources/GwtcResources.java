@@ -5,7 +5,7 @@ import com.google.gwt.resources.client.ImageResource;
 
 // A resource bundle is a container for css, images and other media compiled into the app.
 public interface GwtcResources extends 
-  ClientBundle 
+  ClientBundle
   {
   @Source("Gwtc.css")
   GwtcCss panelHeaderCss();

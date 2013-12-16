@@ -531,10 +531,13 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       @Override
       public void onMessage(String message, ReplySender replySender) {
         Jso jso = Jso.deserialize(message);
-        if (jso.getIntField("_type")==RoutingTypes.LOGMESSAGE){
+        int type = jso.getIntField("_type");
+        if (type==RoutingTypes.LOGMESSAGE){
           addLog(jso.<LogMessageImpl>cast());
-        }else{
+        } else if (type == RoutingTypes.COMPILERESPONSE){
           updateStatus(jso.<CompileResponseImpl>cast());
+        } else {
+          Log.info(getClass(), "Unhandled response type "+type+"; from:\n"+message);
         }
       }
     });

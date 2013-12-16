@@ -199,8 +199,43 @@ public class Tree<D> extends UiComponent<Tree.View<D>> {
    * {@link Tree.Resources#treeCss()}.
    */
   public interface Resources extends ClientBundle {
+    
+    @Source("closed-folder-icon.png")
+    ImageResource closedFolderIcon();
+    
+    @Source("css-icon.png")
+    ImageResource cssIcon();
+    
+    @Source("empty-folder-icon.png")
+    ImageResource emptyFolderIcon();
+
     @Source("expansionIcon.png")
     ImageResource expansionIcon();
+    
+    @Source("html-icon.png")
+    ImageResource htmlIcon();
+    
+    @Source("jar-icon.png")
+    ImageResource jarIcon();
+    
+    @Source("java-icon.png")
+    ImageResource javaIcon();
+    
+    @Source("javascript-icon.png")
+    ImageResource javascriptIcon();
+    
+    @Source("open-folder-icon.png")
+    ImageResource openFolderIcon();
+    
+    @Source("package-icon.png")
+    ImageResource packageIcon();
+    
+    @Source("empty-package-icon.png")
+    ImageResource emptyPackageIcon();
+    
+    @Source("xml-icon.png")
+    ImageResource xmlIcon();
+    
 
     // Default Stylesheet.
     @Source({"collide/client/common/constants.css",

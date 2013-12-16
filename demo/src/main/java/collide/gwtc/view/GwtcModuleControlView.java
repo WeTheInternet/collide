@@ -121,9 +121,9 @@ public class GwtcModuleControlView {
     this.res = res == null ? resourceProvider.get() : res;
     // Calls into the generated ui binder, creating html elements and filling in our values.
     binder.createAndBindUi(this);
-    
+    map = FileTreeNodeRenderer.createFileTypeMap()
     Css css = GWT.<FileTreeNodeRenderer.Resources>create(FileTreeNodeRenderer.Resources.class).workspaceNavigationFileTreeNodeRendererCss();
-    SpanElement contents = FileTreeNodeRenderer.renderNodeContents(css, "Generated", false, new EventListener() {
+    SpanElement contents = FileTreeNodeRenderer.renderNodeContents(css, "Generated", false, true, new EventListener() {
       @Override
       public void handleEvent(Event evt) {
         FileTreeSection files = testFileTree();

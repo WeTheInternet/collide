@@ -23,13 +23,14 @@ import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
 import com.google.collide.client.workspace.WorkspaceUtils;
+import com.google.collide.dto.DirInfo;
+import com.google.collide.json.client.JsoStringMap;
 
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.events.MouseEvent;
 import elemental.html.AnchorElement;
-import elemental.html.DivElement;
 import elemental.html.SpanElement;
 
 /**
@@ -43,8 +44,26 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
 
   public interface Css extends TreeNodeMutator.Css {
     String file();
+    
+    String cssIcon();
+    
+    String emptyFolder();
+    
+    String emptyPackageIcon();
 
     String folder();
+    
+    String htmlIcon();
+    
+    String jarIcon();
+    
+    String javaIcon();
+    
+    String javascriptIcon();
+    
+    String xmlIcon();
+    
+    String packageIcon();
 
     String folderOpen();
 
@@ -67,17 +86,35 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
 
   /**
    * Renders the given information as a node.
+   * @param fileTypes 
+   * @param b 
    *
    * @param mouseDownListener an optional listener to be attached to the anchor. If not given, the
    *        label will not be an anchor.
    */
   public static SpanElement renderNodeContents(
-      Css css, String name, boolean isFile, EventListener mouseDownListener, boolean renderIcon) {
+      Css css, String name, boolean isFile, boolean isPackage, JsoStringMap<String> fileTypes, EventListener mouseDownListener, boolean renderIcon) {
 
     SpanElement root = Elements.createSpanElement(css.root());
     if (renderIcon) {
-      DivElement icon = Elements.createDivElement(css.icon());
-      icon.addClassName(isFile ? css.file() : css.folder());
+      SpanElement icon = Elements.createSpanElement(css.icon());
+      if (isFile) {
+        String clsName = css.file();
+        int ind = name.lastIndexOf('.');
+        if (ind > -1) {
+          String type = name.substring(ind+1);
+          if (fileTypes.containsKey(type)) {
+            clsName = fileTypes.get(type);
+          }
+        }
+        icon.addClassName(clsName);
+      } else {
+        if (isPackage) {
+          icon.addClassName(css.packageIcon());
+        } else {
+          icon.addClassName(css.folder());
+        }
+      }
       root.appendChild(icon);
     }
 
@@ -119,10 +156,23 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
   private final Css css;
 
   private final Resources res;
+  
+  private final JsoStringMap<String> fileTypes;
 
   private FileTreeNodeRenderer(Resources resources) {
     this.res = resources;
     this.css = res.workspaceNavigationFileTreeNodeRendererCss();
+    fileTypes = createFileTypeMap(css);
+  }
+
+  public static JsoStringMap<String> createFileTypeMap(Css css) {
+    JsoStringMap<String> fileTypes = JsoStringMap.create();
+    fileTypes.put("css", css.cssIcon());
+    fileTypes.put("html", css.htmlIcon());
+    fileTypes.put("jar", css.jarIcon());
+    fileTypes.put("java", css.javaIcon());
+    fileTypes.put("js", css.javascriptIcon());
+    return fileTypes;
   }
 
   @Override
@@ -132,7 +182,12 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
 
   @Override
   public SpanElement renderNodeContents(FileTreeNode data) {
-    return renderNodeContents(css, data.getName(), data.isFile(), mouseDownListener, true);
+    if (data.isDirectory()) {
+      DirInfo dir = (DirInfo) data;
+      return renderNodeContents(css, data.getName(), data.isFile(), dir.isPackage(), fileTypes, mouseDownListener, true);
+    } else {
+      return renderNodeContents(css, data.getName(), data.isFile(), false, fileTypes, mouseDownListener, true);
+    }
   }
 
   @Override
@@ -143,6 +198,8 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
       icon.setClassName(css.icon());
       if (treeNode.getData().isLoading()) {
         icon.addClassName(css.folderLoading());
+      } else if (((DirInfo)treeNode.getData()).isPackage()) {
+        icon.addClassName(css.packageIcon());
       } else if (treeNode.isOpen()) {
         icon.addClassName(css.folderOpen());
       } else {

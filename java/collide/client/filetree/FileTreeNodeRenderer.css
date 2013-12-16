@@ -1,13 +1,49 @@
+@sprite .emptyFolder {
+  gwt-image: "emptyFolderIcon";
+}
+
 @sprite .folder {
-  gwt-image: "folder";
+  gwt-image: "closedFolderIcon";
 }
 
 @sprite .folderOpen {
-  gwt-image: "folderOpen";
+  gwt-image: "openFolderIcon";
 }
 
 @sprite .folderLoading {
   gwt-image: "folderLoading";
+}
+
+@sprite .cssIcon {
+  gwt-image: 'cssIcon';
+}
+
+@sprite .htmlIcon {
+  gwt-image: 'htmlIcon';
+}
+
+@sprite .jarIcon {
+  gwt-image: 'jarIcon';
+}
+
+@sprite .javaIcon {
+  gwt-image: 'javaIcon';
+}
+
+@sprite .javascriptIcon {
+  gwt-image: 'javascriptIcon';
+}
+
+@sprite .packageIcon {
+  gwt-image: 'packageIcon';
+}
+
+@sprite .emptyPackageIcon {
+  gwt-image: 'emptyPackageIcon';
+}
+
+@sprite .xmlIcon {
+  gwt-image: 'xmlIcon';
 }
 
 @sprite .file {
@@ -37,6 +73,7 @@
 .label {
   padding: 0px 5px 0px 6px;
   cursor: default;
+  vertical-align: top;
 }
 
 .nodeNameInput {

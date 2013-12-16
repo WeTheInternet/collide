@@ -11,10 +11,13 @@ import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 
 import elemental.client.Browser;
 import elemental.dom.Node;
 import elemental.dom.NodeList;
+import elemental.dom.TimeoutHandler;
 
 public class GwtCompilePlace extends Place{
 
@@ -158,12 +161,21 @@ public class GwtCompilePlace extends Place{
   }
 
   private void fire(GwtRecompileImpl compile) {
-    PlaceNavigationEvent<?> child = WorkspacePlace.PLACE.getCurrentChildPlaceNavigation();
+    final PlaceNavigationEvent<?> child = WorkspacePlace.PLACE.getCurrentChildPlaceNavigation();
     WorkspacePlace.PLACE.disableHistorySnapshotting();
     setIsActive(true, WorkspacePlace.PLACE);
     WorkspacePlace.PLACE.fireChildPlaceNavigation(createNavigationEvent(compile));
-    WorkspacePlace.PLACE.fireChildPlaceNavigation(child);
     WorkspacePlace.PLACE.enableHistorySnapshotting();
+
+    Browser.getWindow().setTimeout(new TimeoutHandler() {
+      
+      @Override
+      public void onTimeoutHandler() {
+        WorkspacePlace.PLACE.disableHistorySnapshotting();
+        WorkspacePlace.PLACE.fireChildPlaceNavigation(child);
+        WorkspacePlace.PLACE.enableHistorySnapshotting();
+      }
+    }, 1);
   }
 
 

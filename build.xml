@@ -10,7 +10,8 @@
      file="${dirs.src}/${dirs.toppkg}/dtogen/build.xml"/>
   <include optional="false" as="src.json"
      file="${dirs.src}/${dirs.toppkg}/json/build.xml"/>
-  <include optional="false" as="src.shared"
+  <include optional="fals
+  e" as="src.shared"
      file="${dirs.src}/${dirs.toppkg}/shared/build.xml"/>
   <include optional="false" as="src.dto"
      file="${dirs.src}/${dirs.toppkg}/dto/build.xml"/>
@@ -40,8 +41,8 @@
   <target name="dist" description="Package up the distribution"
           depends="build">
     <!-- Copy the launch and bootstrap scripts to the dist folder. -->
-    <copy todir="${dirs.dist}">
-      <fileset dir="${dirs.bin}">
+    <copy todir="${dirs.bin}">
+      <fileset dir="${dirs.lib}">
         <include name="bootstrap.js" />
       </fileset>
       <fileset dir="${dirs.root}">

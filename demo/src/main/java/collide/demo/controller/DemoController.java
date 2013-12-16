@@ -231,6 +231,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
     }
     // If nothing hardcoded in page, ask the server for data
     appContext.getFrontendApi().GET_WORKSPACE_META_DATA.send(GetWorkspaceMetaDataImpl.make(), callback);
+    view.getAwesomeBoxComponentHost().show();
   }
 
   private final MapFromStringTo<elemental.html.Window> openWindows = Collections.mapFromStringTo();

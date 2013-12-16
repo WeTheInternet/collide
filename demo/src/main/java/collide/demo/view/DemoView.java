@@ -86,8 +86,8 @@ extends MultiPanel<PanelModel, ControllerView>
     Element el = getView().getElement();
     el.getStyle().setTop(58, "px");
     
-    verticalSplit.addChild(middleBar.getElement(), 0.95);
-    verticalSplit.addChild(bottomBar.getElement(), 0.05);
+    verticalSplit.addChild(middleBar.getElement(), 0.6);
+    verticalSplit.addChild(bottomBar.getElement(), 0.4);
     el.appendChild(verticalSplit.getElement());
     
     bar = new ShowableUiComponent<View<?>>() {
@@ -108,7 +108,7 @@ extends MultiPanel<PanelModel, ControllerView>
     editor.setId(StandaloneConstants.WORKSPACE_PANEL);
 
     compiler = Browser.getDocument().createDivElement();
-    middleBar.addChild(compiler, 650);
+    bottomBar.addChild(compiler, 650);
     
     attachHandlers();
     
@@ -138,8 +138,11 @@ extends MultiPanel<PanelModel, ControllerView>
   }
 
   private void append(Element element) {
-    bottomBar.addChild(wrapChild(element), 0.2);
-    maybeGrowBottom();
+    if (element.hasClassName("middle")) {
+      middleBar.addChild(wrapChild(element), 0.25);
+    } else {
+      bottomBar.addChild(wrapChild(element), 0.2);
+    }
   }
   public void append(UiComponent<?> element) {
     Element el = wrapChild(element.getView().getElement());
@@ -185,7 +188,6 @@ extends MultiPanel<PanelModel, ControllerView>
       editor.getFirstChildElement().getLastElementChild().appendChild(file.getContentElement());
     } else if (panelContent instanceof TerminalLogView) {
       bottomBar.addChild(panelContent.getContentElement(), 500, 0);
-      maybeGrowBottom();
     } else if (panelContent instanceof GwtCompilerShell){
 //      Element el = wrapChild(((UiComponent<?>)panelContent).getView().getElement());
 //      bottomBar.addChild(el, 0.3);
@@ -199,16 +201,6 @@ extends MultiPanel<PanelModel, ControllerView>
     panelContent.onContentDisplayed();
   }
   
-  private boolean once = true;
-  private void maybeGrowBottom() {
-    if (once) {
-      once = false;
-      verticalSplit.head.next.size = .75;
-      verticalSplit.tail.size = .25;
-      verticalSplit.refresh();
-    }
-  }
-
   public void minimizeFile(final PathUtil path) {
     DivElement el = Browser.getDocument().createDivElement();
   }
@@ -272,7 +264,7 @@ extends MultiPanel<PanelModel, ControllerView>
       gwtc.header.setHeader(id);
       wrapper.appendChild(sizer);
       wrapper.getStyle().setOverflow("hidden");
-      remover[0] = bottomBar.addChild(wrapper, 450, 0);
+      remover[0] = middleBar.addChild(wrapper, 450, 2);
     } else {
       iframe.setSrc("about:blank");
       iframe.setSrc(url);
@@ -334,7 +326,7 @@ extends MultiPanel<PanelModel, ControllerView>
       public void onGwtStatusUpdate(CompileResponse status) {
         GwtCompileState gwtc = getCompileState(status.getModule());
         CompilerState state = status.getCompilerStatus();
-        X_Log.info(getClass(), "State change",status.getModule(),state, new Exception());
+        X_Log.info(getClass(), "State change",status.getModule(),state);
         switch (state) {
           case FAILED:
             gwtc.status = GwtCompileStatus.Fail;
