@@ -1,5 +1,6 @@
 package collide.gwtc.ui;
 
+import xapi.gwtc.api.GwtManifest;
 import xapi.util.api.ReceivesValue;
 import xapi.util.api.RemovalHandler;
 
@@ -62,7 +63,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
   private MapFromStringTo<GwtRecompile> modules;
   private final ArrayOf<ReceivesValue<GwtRecompile>> listeners;
 
-  public GwtModuleView(Resources res, GwtCompileModel model) {
+  public GwtModuleView(Resources res, GwtManifest model) {
     listeners = Collections.arrayOf();
     modules = Collections.mapFromStringTo();
     binder.createAndBindUi(this);
@@ -76,7 +77,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
     //associate label to our input; this should be done in generator
     ((LabelElement)inputLabel).setHtmlFor(input.getId());
 
-    setModuleTextbox(model.getModule());
+    setModuleTextbox(model.getModuleName());
     list = (elemental.html.DataListElement)data;
     //TODO restore module from cookie
     EventListener ev = new EventListener() {
@@ -106,7 +107,7 @@ public class GwtModuleView extends CompositeView<GwtController>{
   }
 
   public static GwtModuleView create(DivElement moduleContainer, Resources res,
-      GwtCompileModel model) {
+      GwtManifest model) {
     GwtModuleView mod = new GwtModuleView(res, model);
     moduleContainer.appendChild((DivElement)mod.body);
     return mod;

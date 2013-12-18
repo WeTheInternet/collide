@@ -185,6 +185,7 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
               if (getView().getDelegate() != null) {
                 getView().getDelegate().onLogsFlushed();
               }
+              scrollDelta = 0;
               visible.addAll(pending);
               int size = visible.size();
               elemental.html.DivElement into = (elemental.html.DivElement)getView().logBody;
@@ -200,10 +201,12 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
                 into.setInnerHTML("");
                 for (elemental.dom.Element el : visible.asIterable()){
                   into.appendChild(el);
+                  scrollDelta += el.getClientHeight();
                 }
               } else {
                 for (elemental.dom.Element el : pending.asIterable()){
                   into.appendChild(el);
+                  scrollDelta += el.getClientHeight();
                 }
               }
               pending.clear();
@@ -213,10 +216,11 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
       );
     }
   }
+  int scrollDelta;
   private void updateScrolling() {
     elemental.html.DivElement body = (elemental.html.DivElement)getView().root;
     int sH = body.getScrollHeight(), sT = body.getScrollTop(), h = body.getClientHeight();
-    if (scrollHeight - h <= sT){//user was scrolled to the bottom last update,
+    if (scrollHeight - h - scrollDelta <= sT){//user was scrolled to the bottom last update,
       body.setScrollTop(sH);//force back to bottom
     }
     scrollHeight = sH;

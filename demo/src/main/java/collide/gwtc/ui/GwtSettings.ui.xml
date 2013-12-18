@@ -101,6 +101,11 @@
          /><label ui:field="labelLogAll" class="{res.gwtCompilerCss.radioLabel}" for="radioLogAll">All</label>
       
       </div>
+         <input 
+            type="checkbox"
+            name="draftMode" 
+            ui:field="checkDraftMode" 
+         /><label ui:field="labelDraftMode" class="{res.gwtCompilerCss.radioLabel}" for="checkDraftMode">Draft Mode</label>
       <!--
       <div ui:field="containerToOpen" class="{res.gwtSettingsCss.urlBoxContainer}" style="height:0px">
         <label ui:field="labelToOpen" class="{res.gwtCompilerCss.radioLabel}">Url to open:<br/></label>

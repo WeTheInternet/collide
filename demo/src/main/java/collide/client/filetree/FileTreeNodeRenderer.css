@@ -49,6 +49,12 @@
 @sprite .file {
   gwt-image: "file";
 }
+.javascriptIcon, .packageIcon, .emptyPackageIcon, .emptyFolder, .folder, .folderOpen,
+.folderLoading, .cssIcon, .htmlIcon, .jarIcon, .javaIcon, .xmlIcon, .file {
+  vertical-align: middle;
+  display: inline-block;
+  padding-right: 5px;
+}
 
 .root {
   display: inline-block;
@@ -57,9 +63,6 @@
 }
 
 .icon {
-  margin: 0px 0px -1px 5px;
-  display: inline-block;
-  background-position: center center;
 }
 
 .label, .nodeNameInput {
@@ -71,9 +74,8 @@
 }
 
 .label {
-  padding: 0px 5px 0px 6px;
   cursor: default;
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .nodeNameInput {

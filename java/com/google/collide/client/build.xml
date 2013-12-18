@@ -115,6 +115,8 @@
         <fileset dir="${dirs.src}">
           <include name="collide/shared/**"/>
           <include name="collide/client/**"/>
+          <include name="collide/demo/**"/>
+          <include name="collide/gwtc/**"/>
         </fileset>
       </sources>
       <srcroots>
@@ -160,6 +162,8 @@
         <fileset dir="${dirs.demo}">
           <include name="collide/shared/**"/>
           <include name="collide/client/**"/>
+          <include name="collide/demo/**"/>
+          <include name="collide/gwtc/**"/>
         </fileset>
         <fileset dir="${dirs.src}">
           <include name="collide/shared/**"/>

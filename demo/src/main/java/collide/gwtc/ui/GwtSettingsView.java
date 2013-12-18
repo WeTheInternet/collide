@@ -1,5 +1,6 @@
 package collide.gwtc.ui;
 
+import xapi.gwtc.api.GwtManifest;
 import xapi.gwtc.api.OpenAction;
 
 import com.google.collide.dto.GwtRecompile;
@@ -81,11 +82,14 @@ public class GwtSettingsView extends CompositeView<GwtController>{
   @UiField LabelElement labelLogWarn;
   @UiField InputElement radioLogError;
   @UiField LabelElement labelLogError;
+
+  @UiField InputElement checkDraftMode;
+  @UiField LabelElement labelDraftMode;
   
-  private final GwtCompileModel model;
+  private final GwtManifest model;
   
   
-  public GwtSettingsView(collide.gwtc.ui.GwtCompilerShell.Resources res, GwtCompileModel gwtModel) {
+  public GwtSettingsView(collide.gwtc.ui.GwtCompilerShell.Resources res, GwtManifest gwtModel) {
     this.res = res;
     binder.createAndBindUi(this);
     
@@ -101,6 +105,7 @@ public class GwtSettingsView extends CompositeView<GwtController>{
     setLabelFor(inputToOpen, labelToOpen);
     setLabelFor(inputAutoOpen, labelAutoOpen);
     
+    model.setUrlToOpen(inputToOpen.getValue());
     ((elemental.html.InputElement)inputToOpen).setOnchange(new EventListener() {
       @Override
       public void handleEvent(Event evt) {
@@ -180,7 +185,7 @@ public class GwtSettingsView extends CompositeView<GwtController>{
 
   }
 
-  protected void saveState(GwtCompileModel model) {
+  protected void saveState(GwtManifest model) {
     
   }
 
@@ -229,7 +234,7 @@ public class GwtSettingsView extends CompositeView<GwtController>{
   
   
   public static GwtSettingsView create(DivElement moduleContainer, collide.gwtc.ui.GwtCompilerShell.Resources res,
-      GwtCompileModel model) {
+      GwtManifest model) {
     GwtSettingsView mod = new GwtSettingsView(res, model);
     moduleContainer.appendChild((DivElement)mod.body);
     return mod;

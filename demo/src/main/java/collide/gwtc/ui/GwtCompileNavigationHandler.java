@@ -1,5 +1,8 @@
 package collide.gwtc.ui;
 
+import xapi.collect.X_Collect;
+import xapi.collect.api.IntTo;
+import xapi.gwtc.api.GwtManifest;
 import xapi.inject.impl.LazyPojo;
 import xapi.time.impl.RunOnce;
 import xapi.util.api.SuccessHandler;
@@ -33,7 +36,7 @@ implements GwtCompilerService
   private final AppContext context;
   private final MultiPanel<? extends PanelModel,?> contentArea;
   private final Place currentPlace;
-  private final GwtCompileModel model;
+  private final GwtManifest model;
   private final LazyPojo<GwtCompilerShell> gwtContainer;
   private final LazyPojo<Resources> gwtResources;
 
@@ -41,7 +44,7 @@ implements GwtCompilerService
     this.context = context;
     this.contentArea = masterPanel;
     this.currentPlace = currentPlace;
-    this.model = GWT.create(GwtCompileModel.class);
+    this.model = GWT.create(GwtManifest.class);
     //TODO load defaults from local storage
     
     //create our view lazily
@@ -84,17 +87,17 @@ implements GwtCompilerService
       contentArea.clearNavigator();
     }else {
       model.setModuleName(navigationEvent.getModule());
-      ArrayOfString all = Collections.arrayOfString();
+      IntTo<String> all = X_Collect.newList(String.class);
       for (String src : navigationEvent.getSourceDirectory().asIterable()) {
         all.push(src);
       }
       model.setSources(all);
       
-      all = Collections.arrayOfString();
+      all = X_Collect.newList(String.class);
       for (String src : navigationEvent.getLibsDirectory().asIterable()) {
         all.push(src);
       }
-      model.setSources(all);
+      model.setDependencies(all);
       
       gwtContainer.get().setPlace(navigationEvent);
       return;

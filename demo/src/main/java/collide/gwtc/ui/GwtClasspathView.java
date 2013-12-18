@@ -1,6 +1,8 @@
 package collide.gwtc.ui;
 
+import xapi.gwtc.api.GwtManifest;
 import xapi.util.X_String;
+import collide.client.filetree.FileTreeNodeRenderer;
 import collide.client.util.Elements;
 
 import com.google.collide.json.client.JsoArray;
@@ -32,9 +34,8 @@ public class GwtClasspathView extends CompositeView<GwtController>{
     String classpathInput();
   }
 
-  
   public interface Resources extends 
-    ClientBundle 
+    ClientBundle, FileTreeNodeRenderer.Resources
     {
     @Source("GwtClasspathView.css")
     Css gwtClasspathCss();
@@ -48,7 +49,7 @@ public class GwtClasspathView extends CompositeView<GwtController>{
   private JsoArray<String> srcs;
 
   
-  public GwtClasspathView(Resources res, GwtCompileModel model) {
+  public GwtClasspathView(Resources res, GwtManifest model) {
     this.res = res;
     binder.createAndBindUi(this);
     //hookup label; should be doing this in generator using ui:field...
@@ -62,13 +63,13 @@ public class GwtClasspathView extends CompositeView<GwtController>{
 
   
   public static GwtClasspathView create(DivElement moduleContainer, Resources res,
-      GwtCompileModel model) {
+      GwtManifest model) {
     GwtClasspathView mod = new GwtClasspathView(res, model);
     moduleContainer.appendChild((DivElement)mod.body);
     return mod;
   }
   
-  private void setClasspath(GwtCompileModel model) {
+  private void setClasspath(GwtManifest model) {
     UListElement form = (UListElement) classpath;
     form.setInnerHTML("");//clear
     JsoArray<String> sources = JsoArray.create();
@@ -128,11 +129,15 @@ public class GwtClasspathView extends CompositeView<GwtController>{
   }
   
   protected String jarIcon() {
-    return "";
+    return "<div class='"
+        + res.workspaceNavigationFileTreeNodeRendererCss().jarIcon()
+        + "'></div>";
   }
   
   protected String folderIcon() {
-    return "";
+    return "<div class='"
+        + res.workspaceNavigationFileTreeNodeRendererCss().folder()
+        + "'></div>";
   }
   
   protected String openJarLink(String source) {

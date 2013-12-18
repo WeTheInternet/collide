@@ -1,6 +1,7 @@
 package collide.gwtc.ui;
 
 import xapi.collect.impl.InitMapDefault;
+import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
@@ -135,7 +136,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     final Resources res;
 
     @UiField(provided = true)
-    final GwtCompileModel compileState;
+    final GwtManifest compileState;
 
 
     final Css css;
@@ -167,7 +168,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
 
 
-    public View(AppContext context, GwtCompileModel model, Resources res) {
+    public View(AppContext context, GwtManifest model, Resources res) {
       this.res = res;
       this.css = res.gwtCompilerCss();
       this.compileState = model;

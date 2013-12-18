@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
   <ui:with field="res" type="collide.gwtc.ui.GwtCompilerShell.Resources" />
-  <ui:with field="compileState" type="collide.gwtc.ui.GwtCompileModel"></ui:with>
+  <ui:with field="compileState" type="xapi.gwtc.api.GwtManifest"></ui:with>
     	<div class="{res.gwtCompilerCss.leftPanel}">
     	<div ui:field="status" class="{res.gwtCompilerCss.status} {res.gwtCompilerCss.statusHidden}"></div>
     	<div ui:field="moduleContainer" class="{res.gwtCompilerCss.moduleContainer}"></div>
