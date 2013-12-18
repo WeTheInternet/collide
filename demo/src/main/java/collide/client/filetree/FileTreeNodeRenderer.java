@@ -42,7 +42,7 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
     return new FileTreeNodeRenderer(res);
   }
 
-  public interface Css extends TreeNodeMutator.Css {
+  public static interface Css extends TreeNodeMutator.Css {
     String file();
     
     String cssIcon();
@@ -79,7 +79,7 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
     String nodeNameInput();
   }
 
-  public interface Resources extends CommonResources.BaseResources, Tree.Resources {
+  public static interface Resources extends CommonResources.BaseResources, Tree.Resources {
     @Source({"FileTreeNodeRenderer.css", "collide/client/common/constants.css"})
     Css workspaceNavigationFileTreeNodeRendererCss();
   }
@@ -172,6 +172,7 @@ public class FileTreeNodeRenderer implements NodeRenderer<FileTreeNode> {
     fileTypes.put("jar", css.jarIcon());
     fileTypes.put("java", css.javaIcon());
     fileTypes.put("js", css.javascriptIcon());
+    fileTypes.put("xml", css.xmlIcon());
     return fileTypes;
   }
 

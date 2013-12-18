@@ -40,7 +40,8 @@
 <!--  	<copy todir="${dirs.bin}">
       <fileset dir="${dirs.src}/collide" />
     </copy>-->
-    <do.javac srcdir="${dirs.src}" destdir="${dirs.bin}">
+    <do.javac srcdir="${dirs.src}; ${dirs.demo}" destdir="${dirs.bin}">
+      <include name="collide/client/**/*.java"/>
       <include name="collide/client/**/*.*"/>
       <include name="${dirs.toppkg}/client/util/**/*.java"/>
       <classpath refid="paths.client.build"/>

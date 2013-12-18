@@ -5,7 +5,12 @@ import xapi.collect.impl.AbstractMultiInitMap;
 import xapi.inject.impl.SingletonProvider;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
+import xapi.util.api.HasId;
 import xapi.util.api.Pair;
+import collide.client.util.Elements;
+import collide.demo.view.TabPanel;
+import collide.demo.view.TabPanel.TabView;
+import collide.demo.view.TabPanelResources;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
@@ -14,9 +19,13 @@ import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.dto.LogMessage;
+import com.google.collide.mvp.View;
 import com.google.collide.plugin.client.terminal.TerminalLogView.Resources;
 import com.google.collide.plugin.client.terminal.TerminalLogView.ViewEvents;
 import com.google.gwt.core.shared.GWT;
+
+import elemental.dom.Element;
+import elemental.html.DivElement;
 
 public class TerminalNavigationHandler extends
     PlaceNavigationHandler<TerminalPlace.NavigationEvent> 
@@ -28,9 +37,12 @@ public class TerminalNavigationHandler extends
   private final SingletonProvider<Resources> terminalResources;
 
   private final AbstractMultiInitMap<String, TerminalLogView, TerminalLogHeader> views;
+  private final TabPanel logTabs;
   
   public TerminalNavigationHandler(AppContext context, final MultiPanel<?,?> masterPanel, Place parentPlace) {
     this.context = context;
+    logTabs = TabPanel.create(getTabPanelResources());
+    masterPanel.setContent(logTabs);
     this.contentArea = masterPanel;
     this.parentPlace = parentPlace;
     views = new AbstractMultiInitMap<String, TerminalLogView, TerminalLogHeader>(AbstractInitMap.PASS_THRU, this);
@@ -46,15 +58,24 @@ public class TerminalNavigationHandler extends
     };
   }
 
+  protected TabPanelResources getTabPanelResources() {
+    return TabPanel.DEFAULT_RESOURCES.get();
+  }
+
   protected TerminalLogView initializeView(String from, MultiPanel<?,?> masterPanel) {
-    TerminalLogView logger = TerminalLogView.create(terminalResources.get(), new ViewEvents() {
+    final TabView[] tab = new TabView[1];
+    final TerminalLogView[] view = new TerminalLogView[1];
+    view[0] = TerminalLogView.create(from, terminalResources.get(), new ViewEvents() {
       @Override
-      public void run() {
-        
+      public void onLogsFlushed() {
+        if (logTabs.unhide(tab[0])) {
+          view[0].clear();
+        }
       }
     });
-    masterPanel.setContent(logger);
-    return logger;
+    tab[0] = logTabs.addContent(view[0].getView());
+    logTabs.select(tab[0]);
+    return view[0];
   }
 
   @Override

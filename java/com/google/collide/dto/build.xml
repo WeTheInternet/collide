@@ -14,7 +14,6 @@
       <sourcefiles>
         <fileset file="build.xml"/>
         <fileset dir="${dirs.src}/${dirs.toppkg}/dto"/>
-        <fileset dir="${dirs.demo}/collide/shared/api"/>
       </sourcefiles>
       <targetfiles path="${dirs.bin}/${dirs.toppkg}/dto/dto-interfaces.jar"/>
       <sequential>

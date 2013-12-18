@@ -20,9 +20,17 @@
 	color: red;
 }
 .logContainer{
-	height: 100%;
-	width: 100%;
-	overflow-y: auto;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	top: 0px;
+	overflow: auto;
+}
+.fullSize {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
 }
 .logPad{
 	padding-left: 15px;

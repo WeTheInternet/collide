@@ -1,5 +1,6 @@
 package com.google.collide.plugin.client.terminal;
 
+import xapi.util.api.HasId;
 import collide.client.common.CommonResources;
 import collide.client.util.Elements;
 
@@ -23,21 +24,19 @@ import com.google.gwt.uibinder.client.UiTemplate;
 
 import elemental.dom.Element;
 
-public class TerminalLogView extends UiComponent<TerminalLogView.View> implements PluginContent{
+public class TerminalLogView extends UiComponent<TerminalLogView.View> implements PluginContent {
 
   int scrollHeight = 0;
   private final BoundsBuilder bounds = ResizeBounds.withMaxSize(500, Integer.MAX_VALUE).minSize(350, 300);
 
-  protected TerminalLogView() {
-  }
   public TerminalLogView(View view, ViewEvents events) {
     super();
     setView(view);
     view.setDelegate(events);
   }
 
-  public static TerminalLogView create(Resources res, ViewEvents delegate){
-    View view = new View(res);
+  public static TerminalLogView create(String id, Resources res, ViewEvents delegate){
+    View view = new View(id, res);
     TerminalLogView log = new TerminalLogView(view, delegate);
     return log;
   }
@@ -83,10 +82,10 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
 
   public static interface ViewEvents{
 
-    void run();
+    void onLogsFlushed();
   }
 
-  public static class View extends CompositeView<ViewEvents>{
+  public static class View extends CompositeView<ViewEvents> implements HasId {
 
     @UiTemplate("TerminalLogView.ui.xml")
     interface MyBinder extends UiBinder<com.google.gwt.dom.client.DivElement, View> {
@@ -107,8 +106,11 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
     @UiField
     DivElement background;
 
-    public View(Resources res) {
+    private final String id;
+
+    public View(String id, Resources res) {
       this.res = res;
+      this.id = id;
       setElement(Elements.asJsElement(
         binder.createAndBindUi(this)));
       logBody.setInnerHTML("Logger ready");
@@ -118,6 +120,11 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
     public void setHeader(TerminalLogHeader el) {
       logHeader.setInnerHTML("");
       Elements.asJsElement(logHeader).appendChild(el.getElement());
+    }
+
+    @Override
+    public String getId() {
+      return id;
     }
 
   }
@@ -175,6 +182,9 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
             @Override
             public void execute() {
               cmd = null;
+              if (getView().getDelegate() != null) {
+                getView().getDelegate().onLogsFlushed();
+              }
               visible.addAll(pending);
               int size = visible.size();
               elemental.html.DivElement into = (elemental.html.DivElement)getView().logBody;
@@ -236,6 +246,13 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
   public void setHeader(TerminalLogHeader el) {
     header = el;
     getView().setHeader(el);
+  }
+
+  public void clear() {
+    cached.clear();
+    visible.clear();
+    pending.clear();
+    getView().logBody.setInnerHTML("");
   }
   
 }

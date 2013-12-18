@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
 	<ui:with field="res"
 		type="collide.gwtc.ui.GwtCompilerShell.Resources" />
-	<div ui:field="body" class="{res.gwtLogCss.logContainer}">
+	<div ui:field="body" class="{res.gwtLogCss.fullSize}">
  	 <label ui:field="inputLabel">Module: </label>
    <input ui:field="input" class="{res.gwtModuleCss.moduleInput}">
   		<datalist ui:field="data">

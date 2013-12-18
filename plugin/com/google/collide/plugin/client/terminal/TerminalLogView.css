@@ -20,8 +20,12 @@
 	color: red;
 }
 .logContainer{
-	height: 100%;
-	overflow-y: auto;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	overflow: auto;
 }
 .logContainer pre {
  margin: 1px;

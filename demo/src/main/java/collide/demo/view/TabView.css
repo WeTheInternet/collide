@@ -1,0 +1,53 @@
+.tabBar, .tabBody {
+	display: block;
+}
+
+.tabBody {
+	padding: 5px;
+}
+
+.selected {
+	background-color: lightgrey;
+}
+
+.tabHeader {
+	background-color: 0xeee;
+	height: 20px;
+	cursor: pointer;
+	padding-left: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.hidden {
+	display: none;
+}
+
+.tabHeader, .tabBody {
+	border: 1px solid black;
+}
+.tabBody{
+	position: absolute;
+	top: 21px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	box-sizing: border-box;
+}
+
+.tabPanel{}
+
+.tabHeader, .tabHeader > div{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+
+@sprite .closeIcon {
+	gwt-image: 'closeIcon';
+	display: inline-block;
+	cursor: pointer;
+	margin-left: 5px;
+	padding-right: 5px;
+}
+

@@ -2,10 +2,11 @@ package collide.gwtc.resources;
 
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
+import collide.client.filetree.FileTreeNodeRenderer;
 
 // A resource bundle is a container for css, images and other media compiled into the app.
 public interface GwtcResources extends 
-  ClientBundle
+  ClientBundle, FileTreeNodeRenderer.Resources
   {
   @Source("Gwtc.css")
   GwtcCss panelHeaderCss();

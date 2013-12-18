@@ -42,6 +42,8 @@ public class GwtLogView extends UiComponent<GwtLogView.View>{
 
   public interface Css extends CssResource {
     String bottomPlaceHolder();
+
+    String fullSize();
     
     String logAll();
     

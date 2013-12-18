@@ -10,6 +10,7 @@ import java.security.CodeSource;
 import java.security.ProtectionDomain;
 
 import xapi.annotation.reflect.KeepMethod;
+import xapi.annotation.reflect.KeepField;
 import xapi.log.X_Log;
 import xapi.util.X_Util;
 import collide.demo.shared.SharedClass;
@@ -17,7 +18,7 @@ import collide.demo.shared.SharedClass;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
 
-@ReflectionStrategy
+@ReflectionStrategy(debug=ReflectionStrategy.ALL)
 public class ChildModule implements EntryPoint {
 
   public static void main(String[] args) {
@@ -45,7 +46,7 @@ public class ChildModule implements EntryPoint {
       fail(e);
     }
   }
-
+  
   private final Method out;
 
   ChildModule() {

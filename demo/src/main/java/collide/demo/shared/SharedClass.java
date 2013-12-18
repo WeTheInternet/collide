@@ -15,7 +15,7 @@ import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
  * @author "James X. Nelson (james@wetheinter.net)"
  *
  */
-@ReflectionStrategy(keepEverything=true, keepCodeSource=true, annotationRetention=ReflectionStrategy.ALL)
+@ReflectionStrategy(keepEverything=true, keepCodeSource=true, annotationRetention=ReflectionStrategy.ALL, debug=ReflectionStrategy.ALL)
 public class SharedClass {
 
   public int sharedInt = 10;

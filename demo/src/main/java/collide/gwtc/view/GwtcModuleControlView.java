@@ -42,6 +42,7 @@ import com.google.collide.dto.GetDirectoryResponse;
 import com.google.collide.dto.GetFileContents;
 import com.google.collide.dto.GetFileContentsResponse;
 import com.google.collide.dto.WorkspaceTreeUpdate;
+import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -121,9 +122,9 @@ public class GwtcModuleControlView {
     this.res = res == null ? resourceProvider.get() : res;
     // Calls into the generated ui binder, creating html elements and filling in our values.
     binder.createAndBindUi(this);
-    map = FileTreeNodeRenderer.createFileTypeMap()
-    Css css = GWT.<FileTreeNodeRenderer.Resources>create(FileTreeNodeRenderer.Resources.class).workspaceNavigationFileTreeNodeRendererCss();
-    SpanElement contents = FileTreeNodeRenderer.renderNodeContents(css, "Generated", false, true, new EventListener() {
+    Css css = this.res.workspaceNavigationFileTreeNodeRendererCss();
+    JsoStringMap<String> map = FileTreeNodeRenderer.createFileTypeMap(css);
+    SpanElement contents = FileTreeNodeRenderer.renderNodeContents(css, "Generated", false, true, map, new EventListener() {
       @Override
       public void handleEvent(Event evt) {
         FileTreeSection files = testFileTree();

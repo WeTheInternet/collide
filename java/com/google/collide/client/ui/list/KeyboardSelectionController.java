@@ -28,14 +28,14 @@ import elemental.events.KeyboardEvent.KeyCode;
 public class KeyboardSelectionController {
 
   private final Element inputElement;
-  private final HasSelection list;
+  private final HasSelection<?> list;
   private boolean handlerEnabled = false;
 
   /**
    * Creates a new KeyboardSelectionController which proxies keyboard events
    * from inputElement to the supplied list.
    */
-  public KeyboardSelectionController(Element inputElement, HasSelection list) {
+  public KeyboardSelectionController(Element inputElement, HasSelection<?> list) {
     this.inputElement = inputElement;
     this.list = list;
 

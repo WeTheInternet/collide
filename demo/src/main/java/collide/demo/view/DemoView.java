@@ -141,7 +141,7 @@ extends MultiPanel<PanelModel, ControllerView>
     if (element.hasClassName("middle")) {
       middleBar.addChild(wrapChild(element), 0.25);
     } else {
-      bottomBar.addChild(wrapChild(element), 0.2);
+      bottomBar.addChild(wrapChild(element), -1);
     }
   }
   public void append(UiComponent<?> element) {
@@ -153,6 +153,8 @@ extends MultiPanel<PanelModel, ControllerView>
     } else if (element instanceof Header) {
       header = (Header)element;
       headerEl.appendChild(element.getView().getElement());
+    } else if (element instanceof TabPanel) {
+      append(((TabPanel) element).getContentElement());
     } else {
       X_Log.warn("Unknown element type",element);
       getView().getElement().appendChild(el);
@@ -187,7 +189,9 @@ extends MultiPanel<PanelModel, ControllerView>
       editor.getFirstChildElement().getLastElementChild().setInnerHTML("");
       editor.getFirstChildElement().getLastElementChild().appendChild(file.getContentElement());
     } else if (panelContent instanceof TerminalLogView) {
-      bottomBar.addChild(panelContent.getContentElement(), 500, 0);
+      // TODO use a tab panel wrapper for log viewers
+      
+      bottomBar.addChild(panelContent.getContentElement(), 500, 1);
     } else if (panelContent instanceof GwtCompilerShell){
 //      Element el = wrapChild(((UiComponent<?>)panelContent).getView().getElement());
 //      bottomBar.addChild(el, 0.3);
