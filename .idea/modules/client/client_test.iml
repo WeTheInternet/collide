@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":client:test" external.linked.project.path="$MODULE_DIR$/../../../client" external.root.project.path="$MODULE_DIR$/../../.." external.system.id="GRADLE" external.system.module.group="de.mocra.cy" external.system.module.type="sourceSet" external.system.module.version="0.6-SNAPSHOT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
+    <output-test url="file://$MODULE_DIR$/../../../client/build/classes/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../client/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../client/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../client/src/test/resources" type="java-test-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="client_main" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../deps/wave/waveinabox-import-0.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.2.1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../deps/wave/model-src.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../deps/wave/client-common-src.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../deps/wave/client-scheduler-src.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava-gwt:12.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:12.0" level="project" />
+    <orderEntry type="module" module-name="shared_main" />
+    <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.0.0.GA" level="project" />
+    <orderEntry type="library" name="Gradle: javax.validation:validation-api:sources:1.0.0.GA" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:1.3.9" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:5.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm-util:5.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm-commons:5.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm-tree:5.0.3" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/xapi-gwt/0.6-SNAPSHOT/xapi-gwt-0.6-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/xapi-dev/0.6-SNAPSHOT/xapi-dev-0.6-SNAPSHOT.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/gwt-user/2.8.0/gwt-user-2.8.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/gwt-elemental/2.8.0/gwt-elemental-2.8.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/gwt-codeserver/2.8.0/gwt-codeserver-2.8.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/net/wetheinter/gwt-dev/2.8.0/gwt-dev-2.8.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+  <component name="TestModuleProperties" production-module="client_main" />
+</module>

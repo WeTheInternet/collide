@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_main.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/client/client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/client/client_test.iml" group="client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/collide-core.iml" filepath="$PROJECT_DIR$/.idea/modules/collide-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/collide-core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/collide-core_main.iml" group="collide-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/collide-core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/collide-core_test.iml" group="collide-core" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server.iml" group="server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server_main.iml" group="server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/server/server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/server/server_test.iml" group="server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared.iml" group="shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_main.iml" group="shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" filepath="$PROJECT_DIR$/.idea/modules/shared/shared_test.iml" group="shared" />
+    </modules>
+  </component>
+</project>
