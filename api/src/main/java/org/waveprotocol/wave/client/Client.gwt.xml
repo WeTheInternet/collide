@@ -1,0 +1,19 @@
+<module>
+  <inherits name="com.google.gwt.user.User" />
+  <inherits name="com.google.common.base.Base" />
+  <inherits name="org.waveprotocol.wave.client.common.util.Util" />
+  <inherits name="org.waveprotocol.wave.client.scheduler.Scheduler" />
+  <inherits name="org.waveprotocol.wave.client.util.ClientFlags" />
+  <inherits name="org.waveprotocol.wave.model.Model" />
+  <source path=""/>
+
+<!-- Those comments beginning with the words "comment" or "Uncomment" have
+     special meaning to the PRESUBMIT.py script. -->
+<!-- To avoid name clashes with class names in client-generated and server-generated
+     CSS stylesheets, class names are scoped by prefix. -->
+<set-configuration-property name="CssResource.obfuscationPrefix" value="C-" />
+
+<source path="">
+  <exclude name="testing/**" />
+</source>
+</module>
