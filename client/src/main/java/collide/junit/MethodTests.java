@@ -4,13 +4,13 @@ import collide.junit.cases.ReflectionCaseNoMagic;
 import collide.junit.cases.ReflectionCaseSubclass;
 import collide.junit.cases.ReflectionCaseSuperclass;
 import org.junit.Test;
-import xapi.reflect.X_Reflect;
 
-import static xapi.reflect.X_Reflect.magicClass;
+import static com.google.gwt.reflect.shared.GwtReflect.magicClass;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.reflect.client.ConstPool.ArrayConsts;
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -87,7 +87,7 @@ public class MethodTests extends AbstractReflectionTest {
   public void testDeclaredMethodInjectly() throws Throwable {
     ReflectionCaseSuperclass superClass = new ReflectionCaseSuperclass();
     assertFalse(superClass.publicCall);
-    Method m = X_Reflect.getDeclaredMethod(SUPER_CLASS, PUBLIC_MEMBER);
+    Method m = GwtReflect.getDeclaredMethod(SUPER_CLASS, PUBLIC_MEMBER);
     assertNotNull(m);
     m.invoke(superClass);
     assertTrue(superClass.publicCall);
@@ -101,7 +101,7 @@ public class MethodTests extends AbstractReflectionTest {
   }
   @Test
   public void testGetPublicMethodInjectly() throws Throwable {
-    Method m = X_Reflect.getPublicMethod(NO_MAGIC, METHOD_EQUALS, CLASS_OBJECT);
+    Method m = GwtReflect.getPublicMethod(NO_MAGIC, METHOD_EQUALS, CLASS_OBJECT);
     assertNotNull(m);
     assertFalse((Boolean)m.invoke(new ReflectionCaseNoMagic(), new ReflectionCaseNoMagic()));
   }
@@ -112,11 +112,11 @@ public class MethodTests extends AbstractReflectionTest {
     assertFalse(inst.publicCall);
     assertFalse(inst.wasPrivateCalled());
 
-    X_Reflect.invoke(NO_MAGIC, PUBLIC_MEMBER, ArrayConsts.EMPTY_CLASSES, inst, ArrayConsts.EMPTY_OBJECTS);
+    GwtReflect.invoke(NO_MAGIC, PUBLIC_MEMBER, ArrayConsts.EMPTY_CLASSES, inst, ArrayConsts.EMPTY_OBJECTS);
     assertTrue(inst.publicCall);
     assertFalse(inst.wasPrivateCalled());
 
-    X_Reflect.invoke(NO_MAGIC, PRIVATE_MEMBER, ArrayConsts.EMPTY_CLASSES, inst, ArrayConsts.EMPTY_OBJECTS);
+    GwtReflect.invoke(NO_MAGIC, PRIVATE_MEMBER, ArrayConsts.EMPTY_CLASSES, inst, ArrayConsts.EMPTY_OBJECTS);
     assertTrue(inst.publicCall);
     assertTrue(inst.wasPrivateCalled());
 

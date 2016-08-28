@@ -113,7 +113,7 @@ public class Editor extends UiComponent<Editor.View> {
     String scrolled();
 
     String gutter();
-    
+
     String lineRendererError();
   }
 
@@ -166,7 +166,7 @@ public class Editor extends UiComponent<Editor.View> {
       ParenMatchHighlighter.Resources {
     @Source({"Editor.css", "constants.css"})
     Css workspaceEditorCss();
-    
+
     @Source("squiggle.gif")
     ImageResource squiggle();
   }
@@ -180,7 +180,7 @@ public class Editor extends UiComponent<Editor.View> {
      * Note: You should not mutate the document within this callback, as this is
      * not supported yet and can lead to other clients having stale position
      * information inside the {@code textChange}.
-     * 
+     *
      * Note: The {@link TextChange} contains a reference to the live
      * {@link Line} from the document model. If you hold on to a reference after
      * {@link #onBeforeTextChange} returns, beware that the contents of the
@@ -269,7 +269,7 @@ public class Editor extends UiComponent<Editor.View> {
         // getElement().removeClassName(css.animationEnabled());
       }
     }
-    
+
     public Resources getResources() {
       return res;
     }
@@ -277,7 +277,7 @@ public class Editor extends UiComponent<Editor.View> {
 
   public static final int ANIMATION_DURATION = 100;
   private static int idCounter = 0;
-  
+
   private final EditorContext<?> editorContext;
   private final Buffer buffer;
   private Document document;
@@ -597,12 +597,12 @@ public class Editor extends UiComponent<Editor.View> {
   public int getId() {
     return id;
   }
-  
+
   @VisibleForTesting
   public InputController getInput() {
     return input;
   }
-  
+
   public void setLeftGutterVisible(boolean visible) {
     Element gutterElement = leftGutterManager.getGutter().getGutterElement();
     if (visible) {

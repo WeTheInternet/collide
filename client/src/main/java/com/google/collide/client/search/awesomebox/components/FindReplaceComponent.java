@@ -153,7 +153,7 @@ public class FindReplaceComponent extends AbstractAwesomeBoxComponent implements
       searchModel.setQuery(query);
     }
   }
-  
+
   @Override
   public String getTooltipText() {
     return "Press Ctrl+F to quickly find text in the current file";

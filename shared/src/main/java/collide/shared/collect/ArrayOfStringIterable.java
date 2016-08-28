@@ -6,7 +6,8 @@ import elemental.util.ArrayOf;
 import elemental.util.ArrayOfString;
 import elemental.util.impl.JreArrayOfString;
 import xapi.log.X_Log;
-import xapi.reflect.X_Reflect;
+
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.util.Iterator;
 
@@ -22,7 +23,7 @@ public class ArrayOfStringIterable implements Iterable<String> {
       array = ((JsArrayOfString) strings).<JsArrayOf<String>>cast();
     } else {
       try {
-        array = X_Reflect.fieldGet(JreArrayOfString.class, "array", strings);
+        array = GwtReflect.fieldGet(JreArrayOfString.class, "array", strings);
       } catch (Exception e) {
         X_Log.error("Could not get inner array field of "+strings.getClass(), e);
       }

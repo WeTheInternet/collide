@@ -449,7 +449,7 @@ public class SelectionModel implements Buffer.MouseDragListener {
       case UP:
         column = preferredCursorColumn;
         if (lineInfo.line() == document.getFirstLine() && (isShiftHeld || UserAgent.isMac())) {
-          /* 
+          /*
            * Pressing up on the first line should:
            * - On Mac, always go to first column, or
            * - On all platforms, shift+up should select to first column

@@ -106,9 +106,9 @@ class FileConcurrencyController {
   }
 
   private static class OutOfOrderDocOpTimeoutRecoveringCallback implements TimeoutCallback {
-    private final StatusManager statusManager;    
+    private final StatusManager statusManager;
     private DocOpRecoverer recoverer;
-    
+
     private final ErrorCallback errorCallback = new ErrorCallback() {
       @Override
       public void onError() {
@@ -118,8 +118,8 @@ class FileConcurrencyController {
         fatal.setDismissable(false);
         fatal.fire();
       }
-    }; 
-    
+    };
+
     OutOfOrderDocOpTimeoutRecoveringCallback(StatusManager statusManager) {
       this.statusManager = statusManager;
     }
@@ -128,8 +128,8 @@ class FileConcurrencyController {
     public void onTimeout(int lastVersionDispatched) {
       recoverer.recover(errorCallback);
     }
-  } 
-  
+  }
+
   private static final TransformQueue.Transformer<DocOp> transformer =
       new TransformQueue.Transformer<DocOp>() {
         @Override
@@ -140,7 +140,7 @@ class FileConcurrencyController {
 
         @Override
         public org.waveprotocol.wave.model.operation.OperationPair<DocOp> transform(DocOp clientOp,
-            DocOp serverOp) {
+                                                                                    DocOp serverOp) {
           try {
             OperationPair operationPair =
                 Transformer.transform(ClientDocOpFactory.INSTANCE, clientOp, serverOp);
@@ -165,7 +165,7 @@ class FileConcurrencyController {
 
     ListenerManager<DocOpListener> docOpListenerManager = ListenerManager.create();
     docOpListenerManager.add(docOpListener);
-    
+
     OutOfOrderDocOpTimeoutRecoveringCallback timeoutCallback =
         new OutOfOrderDocOpTimeoutRecoveringCallback(appContext.getStatusManager());
     DocOpReceiver receiver = new DocOpReceiver(
@@ -177,19 +177,19 @@ class FileConcurrencyController {
         docOpListenerManager,
         docOpRecoveryInitiator);
     ChannelListener listener = new ChannelListener(docOpListenerManager, sender);
-    
+
     // TODO: implement the Logger interface using our logging utils
     GenericOperationChannel<DocOp> channel = new GenericOperationChannel<DocOp>(
         SchedulerInstance.getMediumPriorityTimer(), transformer, receiver, sender, listener);
     receiver.setRevisionProvider(channel);
-    
+
     DocOpRecoverer recoverer = new DocOpRecoverer(fileEditSessionKey,
         appContext.getFrontendApi().RECOVER_FROM_MISSED_DOC_OPS,
         receiver,
         sender,
         channel);
     timeoutCallback.recoverer = recoverer;
-    
+
     FileConcurrencyController fileConcurrencyController = new FileConcurrencyController(channel,
         receiver,
         sender,
@@ -237,7 +237,7 @@ class FileConcurrencyController {
   ListenerRegistrar<DocOpListener> getDocOpListenerRegistrar() {
     return docOpListenerManager;
   }
-  
+
   int getQueuedClientOpCount() {
     return ccChannel.getQueuedClientOpCount();
   }
@@ -245,7 +245,7 @@ class FileConcurrencyController {
   int getUnackedClientOpCount() {
     return ccChannel.getUnacknowledgedClientOpCount();
   }
-  
+
   void start(int ccRevision) {
     ccChannel.connect(ccRevision, BootstrapSession.getBootstrapSession().getActiveClientId());
   }
@@ -261,7 +261,7 @@ class FileConcurrencyController {
   void recover(ErrorCallback errorCallback) {
     recoverer.recover(errorCallback);
   }
-  
+
   private void onRemoteOp(List<DocOp> pretransformedUnackedClientOps,
       List<DocOp> pretransformedQueuedClientOps) {
 

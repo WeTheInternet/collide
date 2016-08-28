@@ -21,7 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
 // TODO: Replace with CharCodeWithModifiers.
 /**
  * Immutable holder of essential properties of
- * {@link org.waveprotocol.wave.client.common.util.SignalEvent}
+ * {@link SignalEvent}
  */
 public class SignalEventEssence {
   public final int keyCode;

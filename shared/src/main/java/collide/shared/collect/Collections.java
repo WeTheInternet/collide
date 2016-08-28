@@ -10,8 +10,9 @@ import elemental.util.impl.JreArrayOfString;
 import xapi.collect.X_Collect;
 import xapi.collect.api.IntTo;
 import xapi.gwt.collect.IntToListGwt;
-import xapi.reflect.X_Reflect;
 import xapi.util.X_Debug;
+
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Collections {
     // Always make a new copy
     if (array instanceof JreArrayOfString) {
       try {
-        return asList(X_Reflect.<ArrayOf<String>>fieldGet(JreArrayOfString.class, "array", array));
+        return asList(GwtReflect.<ArrayOf<String>>fieldGet(JreArrayOfString.class, "array", array));
       } catch (Throwable e) {
         throw X_Debug.rethrow(e);
       }
@@ -47,7 +48,7 @@ public class Collections {
     List<T> ret = new ArrayList<T>();
     if (array instanceof JreArrayOf) {
       try {
-        ret.addAll(X_Reflect.<List<T>>fieldGet(JreArrayOf.class, "array", array));
+        ret.addAll(GwtReflect.<List<T>>fieldGet(JreArrayOf.class, "array", array));
       } catch (Throwable e) {
         throw X_Debug.rethrow(e);
       }

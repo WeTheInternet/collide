@@ -81,9 +81,9 @@ public class DefaultScheme extends InputScheme {
       registerMovementKey(ModifierKeys.ACTION, KeyCodeMap.ARROW_RIGHT, MoveAction.LINE_END);
       registerMovementKey(ModifierKeys.NONE, KeyCodeMap.HOME, MoveAction.TEXT_START);
       registerMovementKey(ModifierKeys.NONE, KeyCodeMap.END, MoveAction.TEXT_END);
-      
+
       /*
-       * Add Emacs-style bindings on Mac (note that these will not conflict 
+       * Add Emacs-style bindings on Mac (note that these will not conflict
        * with any Collide shortcuts since these chord with CTRL, and Collide
        * shortcuts chord with CMD)
        */
@@ -93,7 +93,7 @@ public class DefaultScheme extends InputScheme {
       registerMovementKey(ModifierKeys.CTRL, 'n', MoveAction.DOWN);
       registerMovementKey(ModifierKeys.CTRL, 'f', MoveAction.RIGHT);
       registerMovementKey(ModifierKeys.CTRL, 'b', MoveAction.LEFT);
-      
+
     } else {
       registerMovementKey(ModifierKeys.ACTION, KeyCodeMap.ARROW_LEFT, MoveAction.WORD_LEFT);
       registerMovementKey(ModifierKeys.ACTION, KeyCodeMap.ARROW_RIGHT, MoveAction.WORD_RIGHT);
@@ -405,7 +405,7 @@ public class DefaultScheme extends InputScheme {
         return true;
       }
     });
-    
+
     /**
      * Clone line up (ACTION+ALT+Up)
      */
@@ -419,7 +419,7 @@ public class DefaultScheme extends InputScheme {
         return true;
       }
     });
-    
+
     /**
      * Clone line down (ACTION+ALT+Down)
      */

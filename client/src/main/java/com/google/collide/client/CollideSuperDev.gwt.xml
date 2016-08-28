@@ -6,76 +6,7 @@
   <inherits name="com.google.gwt.user.User"/>
   <!-- <inherits name="com.google.gwt.dev.codeserver.hook" /> -->
 
-  <inherits name="elemental.Elemental" />
-
-  <inherits name="xapi.X_Inherit" />
-
-  <inherits name="com.google.common.base.Base" />
-  <inherits name="com.google.common.collect.Collect" />
-  <inherits name="com.google.common.annotations.Annotations" />
-
-  <inherits name="org.waveprotocol.wave.client.Client"/>
-  <inherits name="org.waveprotocol.wave.client.common.util.Util"/>
-  <inherits name="org.waveprotocol.wave.model.Model"/>
-
-  <inherits name="com.google.collide.clientlibs.ClientLibs"/>
-  <inherits name="com.google.collide.codemirror2.CodeMirror2"/>
-  <inherits name="com.google.collide.dto.Dto"/>
-  <inherits name="com.google.collide.dtogen.Dtogen"/>
-  <inherits name="com.google.collide.json.Json"/>
-  <inherits name="com.google.collide.mvp.Mvp"/>
-  <inherits name="com.google.collide.shared.Shared"/>
-
-  <!-- Debugging API permutations -->
-  <define-property name="webide.debuggingApi" values="chrome,none"/>
-  <property-provider name="webide.debuggingApi"><![CDATA[
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf("chrome") != -1) {
-      return "chrome";
-    } else {
-      return "none";
-    }
-  ]]></property-provider>
-
-  <!-- replace-with rules for debug API go here -->
-  <replace-with
-      class="com.google.collide.client.code.debugging.NoDebuggerApi">
-    <when-type-is
-       class="com.google.collide.client.code.debugging.DebuggerApi" />
-  </replace-with>
-  <replace-with class=
-      "com.google.collide.client.code.debugging.DebuggerChromeApi">
-    <when-type-is
-       class="com.google.collide.client.code.debugging.DebuggerApi" />
-    <when-property-is name="webide.debuggingApi" value="chrome" />
-  </replace-with>
-
-
-  <!-- This provides deferred binding for the client windowing system.
-       This can be used to make labels for "native" accelerators, etc. -->
-  <define-property name="webide.clientOs" values="macintosh,windows,x11,other"/> 
-  <property-provider name="webide.clientOs"><![CDATA[
-    var ua = navigator.userAgent.toLowerCase();
-    if (ua.indexOf("(macintosh;") != -1) {
-      return "macintosh";
-    } else if (ua.indexOf("(windows;") != -1) {
-      return "windows";
-    } else if (ua.indexOf("(x11;") != -1) {
-      return "x11";
-    } else {
-      return "other";
-    }
-  ]]></property-provider>
-
-  <!-- replace-with rules for client environment. -->
-  <replace-with class="com.google.collide.client.ClientOsOther">
-    <when-type-is class="com.google.collide.client.ClientOs" />
-  </replace-with>
-  <replace-with class="com.google.collide.client.ClientOsMacintosh">
-    <when-type-is class="com.google.collide.client.ClientOs" />
-    <when-property-is name="webide.clientOs" value="macintosh" />
-  </replace-with>
-
+  <inherits name="com.google.collide.client.Imports" />
 
   <!--
     Release Mode is either "debug" or "release", and will be so by a
@@ -100,30 +31,30 @@
   <extend-property name="locale" values="en_US"/>
   <set-property name="locale" value="en_US"/>
   <set-property-fallback name="locale" value="en_US"/>
- 
-  
+
+
   <!--
-   The below settings are optimizations for development.  
+   The below settings are optimizations for development.
    Currently hardcoded to chrome+x11 (linux).
-   
-   Change to your preferred os and browser.  
+
+   Change to your preferred os and browser.
    Make sure to disable webide.debuggingMode=none if not using chrome
    -->
-  
+
   <!-- Restrict the build to Chrome for development. -->
 <!--   <set-property name="user.agent" value="safari,gecko1_8" /> -->
   <set-property name="user.agent" value="safari" />
- 
+
   <!-- Set development os to x11 (linux).  other choices: macintosh, windows or other -->
   <set-property name="webide.clientOs" value="x11" />
 
   <!-- Prefer web debugging mode -->
   <set-property name="webide.debuggingApi" value="chrome" />
-  
+
   <!-- This is a wavey thing we don't particularly want... yet. -->
   <set-property name="mobile.user.agent" value="not_mobile" />
 
-  
+
   <replace-with
      class="collide.client.util.BrowserUtils.Chrome">
     <when-type-is

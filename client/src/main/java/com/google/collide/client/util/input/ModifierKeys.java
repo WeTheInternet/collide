@@ -53,13 +53,13 @@ public final class ModifierKeys {
   public static int computeModifiers(SignalEvent event) {
     int modifiers =
         computeModifiersExceptShift(event.getMetaKey(), event.getCtrlKey(), event.getAltKey());
-    
+
     // Only add shift if it isn't changing the charCode (lower to upper case).
     int keyCode = KeyCodeMap.getKeyFromEvent(event);
     if (event.getShiftKey() && !KeyCodeMap.needsShift(keyCode)) {
       modifiers |= SHIFT;
     }
-    
+
     return modifiers;
   }
 
@@ -76,28 +76,28 @@ public final class ModifierKeys {
     if (event.isShiftKey()) {
       modifiers |= SHIFT;
     }
-    
+
     return modifiers;
   }
-  
+
   private static int computeModifiersExceptShift(boolean hasMeta, boolean hasCtrl, boolean hasAlt) {
     int modifiers = 0;
-  
+
     if (hasAlt) {
       modifiers |= ALT;
     }
-    
+
     if (UserAgent.isMac() && hasCtrl) {
       modifiers |= CTRL;
     }
-  
+
     if (hasAction(hasCtrl, hasMeta)) {
       modifiers |= ACTION;
     }
-  
+
     return modifiers;
   }
-  
+
   private static boolean hasAction(boolean hasCtrl, boolean hasMeta) {
     return UserAgent.isMac() ? hasMeta : hasCtrl;
   }

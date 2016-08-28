@@ -24,14 +24,14 @@ import elemental.js.util.JsArrayOfInt;
 /**
  * Provides a consistent map from developer-defined strings and web browser
  * event.keyCode values to an internal representation.
- * 
+ *
  * The internal representation is to map key codes to 7-bit ascii where
  * possible, and map non-ascii keys like page up to the Unicode Private Use Area
  * U+E000...U+F8FF
- * 
+ *
  * NOTE: a...z are returned as uppercase A...Z, and only unshifted versions of
  * symbols are returned from the keyboard.
- * 
+ *
  */
 public class KeyCodeMap {
 
@@ -85,7 +85,7 @@ public class KeyCodeMap {
   public static final int F1 = UNICODE_PRIVATE_START + 11;
   public static final int F4 = F1 + 3;
   public static final int F12 = F1 + 11;
-  
+
   /**
    * Bind browser field events
    */
@@ -155,7 +155,7 @@ public class KeyCodeMap {
 
   /**
    * Map from event.keyCode to internal representation (ascii+special keys)
-   * 
+   *
    * NOTE(wetherbeei): SignalEvent tends to return correct ascii values from
    * keyPress events where possible, then keyCodes when they aren't available
    */
@@ -173,12 +173,12 @@ public class KeyCodeMap {
       if (KeyCode.F1 <= ascii && ascii <= KeyCode.F12) {
         ascii = (ascii - KeyCode.F1) + F1;
       }
-      
+
       if (keyCodeToAscii.isSet(ascii)) {
         ascii = keyCodeToAscii.get(ascii);
       }
     }
-    
+
     // map enter \r (0x0D) to \n (0x0A)
     if (ascii == 0x0D) {
       ascii = 0x0A;
@@ -186,11 +186,11 @@ public class KeyCodeMap {
 
     /*
      * Platform/browser specific modifications
-     * 
+     *
      * Firefox captures combos using keyPress, which returns the correct case of
      * the pressed key in ascii. Other browsers are captured on keyDown and only
      * return the keyCode value (upper case or 0-9) of the pressed key
-     * 
+     *
      * TODO: test on other browsers.
      */
     if (UserAgent.isFirefox() && event.getType().equals("keypress")) {

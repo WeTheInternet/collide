@@ -13,6 +13,8 @@ dependencies {
     compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.0.0'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
+    compile group: 'com.google.code.gson', name: 'gson', version:'2.2.1'
+
 }
 
 mainClassName = 'collide.server.StartServer'

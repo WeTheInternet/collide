@@ -17,20 +17,10 @@ jar {
     from sourceSets.main.allSource
 }
 dependencies {
-    compile group: 'net.wetheinter', name: 'xapi-gwt', version:versionXapi
-    compile group: 'net.wetheinter', name: 'xapi-dev', version:versionXapi
-    compile group: 'com.google.code.gson', name: 'gson', version:'2.7'
-    compile group: 'net.wetheinter', name: 'gwt-user', version:versionGwt
-    compile group: 'net.wetheinter', name: 'gwt-elemental', version:'2.8.0'
-    compile group: 'net.wetheinter', name: 'gwt-dev', version:'2.8.0', transitive: true
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.1.1'
+    compile group: 'net.wetheinter', name: 'gwt-elemental', version:versionGwt
+    compile group: 'net.wetheinter', name: 'xapi-gwt', version:versionXapi, changing: true
     compile group: 'io.vertx', name: 'vertx-core', version:versionVertx
     compile project(':api')
-
-    compile files('../deps/wave/waveinabox-import-0.3.jar')
-    compile files('../deps/wave/model-src.jar')
-    compile files('../deps/wave/client-common-src.jar')
-    compile files('../deps/wave/client-scheduler-src.jar')
 
 }
 

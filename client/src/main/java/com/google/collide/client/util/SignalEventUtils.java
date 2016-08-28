@@ -28,7 +28,7 @@ public class SignalEventUtils {
   public static SignalEvent create(Event rawEvent) {
     return SignalEventImpl.create((com.google.gwt.user.client.Event) rawEvent, true);
   }
-  
+
   public static SignalEvent create(Event rawEvent, boolean cancelBubbleIfNullified) {
     return SignalEventImpl.create(
         (com.google.gwt.user.client.Event) rawEvent, cancelBubbleIfNullified);

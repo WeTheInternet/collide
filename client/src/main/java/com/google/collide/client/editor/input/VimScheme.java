@@ -1098,7 +1098,7 @@ public class VimScheme extends InputScheme {
     if (StringUtils.isNullOrEmpty(model.getQuery())) {
       return;
     }
-    
+
     if (searchNext) {
       model.getMatchManager().selectNextMatch();
     } else {

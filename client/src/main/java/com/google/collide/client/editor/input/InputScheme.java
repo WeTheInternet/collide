@@ -22,13 +22,13 @@ import elemental.js.util.JsMapFromIntTo;
  * Controller around a group of {@link InputMode}s to direct text/modifier
  * key input to the active mode. Provides access to the current {@link InputController}
  * to the active mode for performing shortcut actions.
- * 
+ *
  * Each scheme can contain additional state that needs to be shared between modes,
  * such as a vi line-mode search "/class", and additional command-mode next match
  * "n" commands
- * 
+ *
  * Tied to the lifetime of an editor instance
- * 
+ *
  *
  */
 public abstract class InputScheme {
@@ -36,34 +36,34 @@ public abstract class InputScheme {
    * Store a reference to the editor's input controller to pass to active mode
    */
   private InputController inputController;
-  
+
   private InputMode activeMode = null;
-  
+
   /**
    * Map from mode number to mode object. Mode numbers should be constants
    * defined for each scheme.
    */
   private JsMapFromIntTo<InputMode> modes;
-  
+
   public InputScheme() {
     this.inputController = null;
     this.modes = JsMapFromIntTo.create();
   }
-  
+
   public InputScheme(InputController input) {
     this.inputController = input;
     this.modes = JsMapFromIntTo.create();
   }
-  
+
   /**
    * Add all Scheme modes and setup the default {@link InputMode} by calling
-   * switchMode. Optionally make any scheme-specific document changes 
+   * switchMode. Optionally make any scheme-specific document changes
    * (add status bar, etc)
    */
   public abstract void setup();
-  
+
   /**
-   * Called when switching editor modes, this should undo all document 
+   * Called when switching editor modes, this should undo all document
    * changes made in {@link InputScheme#setup()}
    */
   public void teardown() {
@@ -71,7 +71,7 @@ public abstract class InputScheme {
       activeMode.teardown();
     }
   }
-  
+
   /**
    * Add a new mode to this scheme
    */
@@ -79,15 +79,15 @@ public abstract class InputScheme {
     mode.setScheme(this);
     modes.put(modeNumber, mode);
   }
-  
+
   public InputController getInputController() {
     return inputController;
   }
-  
+
   public InputMode getMode() {
     return activeMode;
   }
-  
+
   /**
    * Switch to the new mode:
    *    call teardown() on active mode (if there is one)
@@ -102,7 +102,7 @@ public abstract class InputScheme {
       activeMode.setup();
     }
   }
-  
+
   /**
    * Called from the event handler, dispatch this event to the active mode
    */
@@ -113,7 +113,7 @@ public abstract class InputScheme {
       return false;
     }
   }
-  
+
   /**
    * This is called after a shortcut has been dispatched.
    */

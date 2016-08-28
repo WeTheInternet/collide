@@ -2,9 +2,10 @@ package collide.junit;
 
 import collide.junit.cases.ReflectionCaseNoMagic;
 import org.junit.Test;
-import xapi.reflect.X_Reflect;
 
-import static xapi.reflect.X_Reflect.magicClass;
+import static com.google.gwt.reflect.shared.GwtReflect.magicClass;
+
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.lang.reflect.Constructor;
 
@@ -93,11 +94,11 @@ public class ConstructorTests extends AbstractReflectionTest {
   @Test
   public void testMagicSuperCase() throws Throwable {
     SuperCase inst;
-    inst = X_Reflect.construct(CLS_SUPER_CASE, CLS_LONG, 1L);
+    inst = GwtReflect.construct(CLS_SUPER_CASE, CLS_LONG, 1L);
     assertNotNull(inst);
     assertEquals(1L, inst.value);
 
-    inst = X_Reflect.construct(CLS_SUPER_CASE, CLS_STRING, "1");
+    inst = GwtReflect.construct(CLS_SUPER_CASE, CLS_STRING, "1");
     assertNotNull(inst);
     assertEquals("1", inst.value);
   }
@@ -122,11 +123,11 @@ public class ConstructorTests extends AbstractReflectionTest {
   @Test
   public void testDirectConstruction_SubCase() throws Throwable {
     SuperCase inst;
-    inst = X_Reflect.construct(CLS_SUB_CASE, CLS_LONG, 1L);
+    inst = GwtReflect.construct(CLS_SUB_CASE, CLS_LONG, 1L);
     assertNotNull(inst);
     assertEquals(2L, inst.value);
 
-    inst = X_Reflect.construct(CLS_SUB_CASE, CLS_STRING, "1");
+    inst = GwtReflect.construct(CLS_SUB_CASE, CLS_STRING, "1");
     assertNotNull(inst);
     assertEquals("11", inst.value);
   }

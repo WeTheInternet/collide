@@ -1,8 +1,7 @@
 package collide.junit.cases;
 
-import xapi.reflect.X_Reflect;
-
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -292,7 +291,7 @@ public abstract class AbstractAnnotation extends SourceVisitor{
       b.append(" }");
       return b.toString();
     case String:
-      return "\"" + X_Reflect.escape(this.<String>getValue(key)) + "\"";
+      return "\"" + GwtReflect.escape(this.<String>getValue(key)) + "\"";
     case Annotation:
     default:
       return String.valueOf(getValue(key));

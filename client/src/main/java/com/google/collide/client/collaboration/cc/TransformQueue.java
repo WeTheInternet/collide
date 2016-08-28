@@ -168,7 +168,7 @@ public class TransformQueue<M> {
   public boolean hasUnacknowledgedClientOps() {
     return !unackedClientOps.isEmpty();
   }
-  
+
   public int getUnacknowledgedClientOpCount() {
     return unackedClientOps.size();
   }
@@ -176,7 +176,7 @@ public class TransformQueue<M> {
   public boolean hasQueuedClientOps() {
     return !queuedClientOps.isEmpty();
   }
-  
+
   public int getQueuedClientOpCount() {
     return queuedClientOps.size();
   }

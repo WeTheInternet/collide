@@ -1,9 +1,9 @@
 package collide.junit;
 
 import org.junit.Test;
-import xapi.reflect.X_Reflect;
 
 import com.google.gwt.reflect.client.strategy.ReflectionStrategy;
+import com.google.gwt.reflect.shared.GwtReflect;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -119,7 +119,7 @@ public class ArrayTests extends AbstractReflectionTest {
 
   @Test
   public void testComplexDims() {
-    long[][][][] longs = X_Reflect.newArray(long[][].class, 2, 3);
+    long[][][][] longs = GwtReflect.newArray(long[][].class, 2, 3);
     long[][] one = new long[0][], two = new long[1][], three = new long[2][];
 
   }
