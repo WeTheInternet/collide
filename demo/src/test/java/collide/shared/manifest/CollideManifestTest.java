@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.TreeLogger.Type;
 
 public class CollideManifestTest {
 
-  private static final String gwtFormat = "gwt\tcollide.demo.Parent\tdemo/src/main/java;demo/src/main/resources;java;bin/gen;plugin;deps/guava-12.0/guava-gwt-12.0.jar;deps/guava-12.0/guava-12.0.jar\tgson-2.2.1.jar;waveinabox-import-0.3.jar;collide-source.jar;elemental.jar;gwt-dev.jar;gwt-user.jar;elemental.jar;client-src.jar;client-common-src.jar;client-scheduler-src.jar;common-src.jar;concurrencycontrol-src.jar;model-src.jar;media-src.jar;jsr305.jar;validation-api-1.0.0.GA-sources.jar;validation-api-1.0.0.GA.jar";
+  private static final String gwtFormat = "gwt\tcollide.demo.Parent\tdemo/src/main/java;demo/src/main/resources;java;bin/gen;plugin;deps/guava-12.0/guava-gwt-12.0.jar;deps/guava-12.0/guava-12.0.jar\tgson-2.7.jar;waveinabox-import-0.3.jar;collide-source.jar;elemental.jar;gwt-dev.jar;gwt-user.jar;elemental.jar;client-src.jar;client-common-src.jar;client-scheduler-src.jar;common-src.jar;concurrencycontrol-src.jar;model-src.jar;media-src.jar;jsr305.jar;validation-api-1.0.0.GA-sources.jar;validation-api-1.0.0.GA.jar";
   private static final String gwtcFormat = "\ngwtc:\n"
       + " module: collide.demo.Parent\n"
       + " src:\n"
@@ -24,7 +24,7 @@ public class CollideManifestTest {
       + " - deps/guava-12.0/guava-gwt-12.0.jar\n"
       + " - deps/guava-12.0/guava-12.0.jar\n"
       + " dependencies:\n"
-      + " - gson-2.2.1.jar\n"
+      + " - gson-2.7.jar\n"
       + " - waveinabox-import-0.3.jar\n"
       + " - collide-source.jar\n"
       + " - elemental.jar\n"
@@ -41,13 +41,13 @@ public class CollideManifestTest {
       + " - jsr305.jar\n"
       + " - validation-api-1.0.0.GA-sources.jar\n"
       + " - validation-api-1.0.0.GA.jar";
-  
+
   @Test
   public void testGwt() {
     CollideManifest manifest = new CollideManifest(gwtFormat);
     assertEquals(1, manifest.getGwtEntries().length());
   }
-  
+
   @Test
   public void testGwtc() {
     YamlLineEater eater = new YamlLineEater();
@@ -56,7 +56,7 @@ public class CollideManifestTest {
     }
     System.out.println(eater);
   }
-  
+
   @Test
   public void testGwtManifest() {
     GwtManifest gwtc = new GwtManifest("module")
@@ -97,5 +97,5 @@ public class CollideManifestTest {
     System.out.println(gwtc.toString());
     System.out.println(eater.toString());
   }
-  
+
 }

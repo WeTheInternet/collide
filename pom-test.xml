@@ -4,9 +4,9 @@
  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <modelVersion>4.0.0</modelVersion>
  <parent>
-  <groupId>com.google.collide</groupId>
+  <groupId>de.mocra.cy</groupId>
   <artifactId>collide-parent</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.6-SNAPSHOT</version>
   <relativePath>parent/pom.xml</relativePath>
  </parent>
  <artifactId>collide-test</artifactId>
@@ -114,12 +114,12 @@
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.collide</groupId>
+   <groupId>de.mocra.cy</groupId>
    <artifactId>collide-core</artifactId>
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.collide</groupId>
+   <groupId>de.mocra.cy</groupId>
    <artifactId>collide-plugin</artifactId>
    <scope>provided</scope>
   </dependency>
@@ -129,22 +129,22 @@
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-user</artifactId>
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-elemental</artifactId>
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-codeserver</artifactId>
    <scope>provided</scope>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-dev</artifactId>
    <scope>provided</scope>
   </dependency>

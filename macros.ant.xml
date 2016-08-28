@@ -1,4 +1,5 @@
 <project name="macros">
+
   <!-- Ensure dirs.root has been set by the actual build.xml file -->
   <fail message="project build.xml must set property dirs.root!"
 	unless="dirs.root"/>
@@ -29,19 +30,19 @@
   <!-- Classpaths for various contexts -->
   <path id="paths.shared">
     <pathelement location="${dirs.demo}/collide"/>
-    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-gwt-${libs.xapi}.jar"/>
+    <pathelement location="${dirs.lib}/xapi/xapi-gwt.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-gwt-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/gson-${libs.gson}/gson-${libs.gson}.jar"/>
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-${libs.guava}.jar"/>
     <pathelement location="${dirs.lib}/jsr-305/jsr305.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/waveinabox-import-0.3.jar"/>
-    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-dev-${libs.xapi}.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
+    <pathelement location="${dirs.lib}/wave/waveinabox-import-0.3.jar"/>
+    <pathelement location="${dirs.lib}/xapi/xapi-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-user.jar"/>
     <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/validation-api-1.0.0.GA-sources.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/validation-api-1.0.0.GA.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt/validation-api-1.0.0.GA-sources.jar"/>
+    <pathelement location="${dirs.lib}/gwt/validation-api-1.0.0.GA.jar"/>
   </path>
 
   <!-- Classpaths for plugins -->
@@ -61,29 +62,29 @@
 
   <path id="plugins.server">
     <pathelement location="${dirs.lib}/guava-${libs.guava}/guava-${libs.guava}.jar"/>
-    <pathelement location="${dirs.lib}/xapi-${libs.xapi}/xapi-dev-${libs.xapi}.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-codeserver.jar"/>
+    <pathelement location="${dirs.lib}/xapi/xapi-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-codeserver.jar"/>
     <pathelement location="${dirs.lib}/jgit-${libs.jgit}/org.eclipse.jgit-${libs.jgit}.jar"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-dev.jar"/>
     <pathelement location="${dirs.lib}/elemental/elemental.jar"/>
   </path>
 
   <path id="paths.client.build">
     <path refid="paths.shared"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-user.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/client-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/client-common-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/client-scheduler-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/common-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/concurrencycontrol-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/model-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/media-src.jar"/>
-    <pathelement location="${dirs.lib}/wave-${libs.wave}/util-src.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-user.jar"/>
+    <pathelement location="${dirs.lib}/wave/client-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/client-common-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/client-scheduler-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/common-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/concurrencycontrol-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/model-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/media-src.jar"/>
+    <pathelement location="${dirs.lib}/wave/util-src.jar"/>
   </path>
 
   <path id="paths.client.runtime">
     <path refid="paths.client.build"/>
-    <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+    <pathelement location="${dirs.lib}/gwt/gwt-dev.jar"/>
   </path>
 
   <path id="paths.server.build">
@@ -158,7 +159,7 @@
           <pathelement path="${dirs.src}"/>
           <pathelement path="${dirs.test}"/>
           <pathelement path="@{extracp}"/>
-          
+
         </classpath>
         <formatter type="plain"/>
         <formatter type="xml"/>
@@ -186,8 +187,8 @@
         description="Permutation compiler threads"/>
     <attribute name="loglevel" default="INFO"
         description="The gwt compile log level."/>
-    <attribute name="maxmem" default="512M" description="Max JVM memory size"/>
-    <attribute name="maxstack" default="512K"
+    <attribute name="maxmem" default="2G" description="Max JVM memory size"/>
+    <attribute name="maxstack" default="4M"
         description="Max JVM thread stack size"/>
     <attribute name="module"
         description="GWT module to compile, as full-qualified class name"/>
@@ -211,7 +212,7 @@
           <fileset dir="@{outdir}/@{renamed}" erroronmissingdir="false">
             <include name="*.nocache.js"/>
           </fileset>
-        </targetfiles> 
+        </targetfiles>
         <sequential>
           <echo message="Recompiling gwt because the following files have changed (or because @{renamed}/*.nocache.js do not exist): ${@{renamed}.sources.path}" level="info" />
           <delete dir="@{outdir}/@{renamed}"/>
@@ -228,7 +229,8 @@
               <pathelement location="${dirs.bin}"/>
               <path refid="paths.client.build"/>
               <libs/>
-              <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+              <pathelement location="${dirs.lib}/gwt/gwt-dev.jar"/>
+              <pathelement location="${dirs.lib}/gwt/asm.jar"/>
             </classpath>
             <sysproperty key="gwt.usearchives" value="false"/>
             <jvmarg value="-Xmx@{maxmem}"/>
@@ -285,7 +287,7 @@
           <pathelement location="${dirs.bin}"/>
           <path refid="paths.client.build"/>
           <libs/>
-          <pathelement location="${dirs.lib}/gwt-${libs.gwt}/gwt-dev.jar"/>
+          <pathelement location="${dirs.lib}/gwt/gwt-dev.jar"/>
         </classpath>
         <jvmarg value="-Xmx@{maxmem}"/>
         <jvmarg value="-Xss@{maxstack}"/>

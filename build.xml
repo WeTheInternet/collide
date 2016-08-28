@@ -1,6 +1,6 @@
 <project name="collide" default="build">
 
-  <property name="dirs.root" location="."/>
+  <property name="dirs.root" location="/opt/collide"/>
   <!-- Import common properties and macros -->
   <import optional="false" file="${dirs.root}/macros.ant.xml"/>
 
@@ -48,7 +48,7 @@
       <fileset dir="${dirs.root}">
         <include name="collide" />
     	</fileset>
-    	
+
     </copy>
 
     <!-- Copy the GWT client. -->
@@ -100,7 +100,7 @@
   <target name="build" description="Build the whole Collide executable"
       depends="src.shared.build, src.dto.build, src.client.build-java">
     <!-- Parallelize build; we don't need to be waiting on gwt to compile. -->
-   <sequential> 
+   <sequential>
    <if>
       <not><equals arg1="${nogwt}" arg2="true" /></not>
       <then>
@@ -118,7 +118,7 @@
   </target>
 
   <target name="gwtdev" description="Run Collide gwt devmode" depends="src.client.dev-gwt">
-	
+
   </target>
 
   <target name="client" description="Build the whole Collide executable"

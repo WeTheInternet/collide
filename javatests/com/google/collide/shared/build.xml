@@ -16,7 +16,7 @@
         <pathelement path="${dirs.bin}"/>
         <path refid="paths.shared"/>
         <path refid="paths.test"/>
-        <pathelement location="${dirs.lib}/wave-${libs.wave}/model.jar"/>
+        <pathelement location="${dirs.lib}/wave/model.jar"/>
       </classpath>
     </do.javac>
   </target>
@@ -33,7 +33,7 @@
       <libraries>
         <!-- Shared tests need server path for vertx.JsonObject &co. -->
         <path refid="paths.server.build"/>
-        <pathelement location="${dirs.lib}/wave-${libs.wave}/model.jar"/>
+        <pathelement location="${dirs.lib}/wave/model.jar"/>
       </libraries>
     </do.junit>
   </target>

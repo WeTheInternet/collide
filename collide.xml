@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project id="collide"><!-- we use id here because we want global id's to be unique -->
 	 <properties>
-	<!-- 
+	<!--
 	Some supplied vars you can use:
 	${BASE} - The deploy directory where collide is launched from
 	. - Shorthand for ${BASE}
@@ -92,8 +92,8 @@ vertx.deployVerticle("com.google.collide.server.workspace.WorkspaceState", works
 	</module>
 	<module id="gwt" type="plugin" inherits="main">
 		<classpath inherits="super">
-			<jar>${LIB}/xapi-gwt-0.3.jar</jar>
-			<jar>${LIB}/xapi-dev-0.3.jar</jar>
+			<jar>${LIB}/xapi-gwt.jar</jar>
+			<jar>${LIB}/xapi-dev.jar</jar>
 			<jar>${LIB}/gwt-dev.jar</jar>
 			<jar>${LIB}/gwt-codeserver.jar</jar>
 		</classpath>
@@ -109,7 +109,7 @@ vertx.deployVerticle("com.google.collide.server.maven.MavenController", workspac
 vertx.deployVerticle("com.google.collide.plugin.server.PluginManager", workspaceConfig, 1, function() {
 });
 
-		
+
 		</bootstrap>
 		<main>com.google.collide.plugin.server.gwt.GwtServerPlugin</main>
 	</module>

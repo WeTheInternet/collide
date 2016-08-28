@@ -5,25 +5,26 @@
   <parent>
     <groupId>net.wetheinter</groupId>
     <artifactId>xapi</artifactId>
-    <version>0.4-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
+    <version>0.6-SNAPSHOT</version>
+    <relativePath>../../xapi/pom.xml</relativePath>
   </parent>
-  <groupId>com.google.collide</groupId>
+  <groupId>de.mocra.cy</groupId>
   <artifactId>collide-parent</artifactId>
   <packaging>pom</packaging>
   <name>XApi - CollIDE aggregator and configuration</name>
   <url>http://collide.googlecode.com</url>
   <properties>
+    <xapi.version>0.6-SNAPSHOT</xapi.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <gwt.version>2.5.1</gwt.version>
-    <xapi.version>0.4-SNAPSHOT</xapi.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <gwt.groupId>net.wetheinter</gwt.groupId>
+    <gwt.version>2.8.0</gwt.version>
     <guava.version>12.0</guava.version>
     <collide.home>${project.basedir}/..</collide.home>
     <collide.lib>${collide.home}/deps</collide.lib>
-    <collide.wave>${collide.lib}/wave-r1342740</collide.wave>
-    
+    <collide.wave>${collide.lib}/wave</collide.wave>
+
     <!--  We run our tests w/ ant using a dedicated maven module -->
     <maven.test.skip>true</maven.test.skip>
   </properties>
@@ -36,43 +37,43 @@
     <dependencies>
 
       <dependency>
-        <groupId>com.google.collide</groupId>
+        <groupId>de.mocra.cy</groupId>
         <artifactId>collide-dto</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.collide</groupId>
+        <groupId>de.mocra.cy</groupId>
         <artifactId>collide-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.collide</groupId>
+        <groupId>de.mocra.cy</groupId>
         <artifactId>collide-plugin</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.collide</groupId>
+        <groupId>de.mocra.cy</groupId>
         <artifactId>collide-test</artifactId>
         <version>${project.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>${gwt.groupId}</groupId>
         <artifactId>gwt-user</artifactId>
         <version>${gwt.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>${gwt.groupId}</groupId>
         <artifactId>gwt-dev</artifactId>
         <version>${gwt.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>${gwt.groupId}</groupId>
         <artifactId>gwt-codeserver</artifactId>
         <version>${gwt.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.gwt</groupId>
+        <groupId>${gwt.groupId}</groupId>
         <artifactId>gwt-elemental</artifactId>
         <version>${gwt.version}</version>
       </dependency>
@@ -133,13 +134,13 @@
         <artifactId>junit</artifactId>
         <version>4.11</version>
       </dependency>
-      
+
       <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>3.1</version>
     </dependency>
-      
+
     </dependencies>
   </dependencyManagement>
 
@@ -159,14 +160,14 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
+            <source>1.8</source>
+            <target>1.8</target>
           </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.7</version>
+          <version>1.9.1</version>
           <executions>
             <execution>
               <id>add-source</id>

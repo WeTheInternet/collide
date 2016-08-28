@@ -3,9 +3,9 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
  <modelVersion>4.0.0</modelVersion>
  <parent>
-  <groupId>com.google.collide</groupId>
+  <groupId>de.mocra.cy</groupId>
   <artifactId>collide-parent</artifactId>
-  <version>0.4-SNAPSHOT</version>
+  <version>0.6-SNAPSHOT</version>
   <relativePath>parent/pom.xml</relativePath>
  </parent>
  <artifactId>collide-core</artifactId>
@@ -14,7 +14,8 @@
  <url>http://collide.googlecode.com</url>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <gwt.version>2.5.1</gwt.version>
+  <gwt.version>2.8.0</gwt.version>
+  <xapi.version>${project.version}</xapi.version>
   <collide.home>${project.basedir}</collide.home>
  </properties>
 
@@ -55,8 +56,8 @@
         </ant>
        </target>
       </configuration>
-      <!-- if="The name of the property that must be set in order for this 
-       task" unless="The name of the property that must NOT be set in order for 
+      <!-- if="The name of the property that must be set in order for this
+       task" unless="The name of the property that must NOT be set in order for
        this task" -->
       <goals>
        <goal>run</goal>
@@ -67,36 +68,6 @@
 
   </plugins>
   <defaultGoal>antrun:run</defaultGoal>
-  <pluginManagement>
-   <plugins>
-    <!--This plugin's configuration is used to store Eclipse m2e settings 
-     only. It has no influence on the Maven build itself. -->
-    <plugin>
-     <groupId>org.eclipse.m2e</groupId>
-     <artifactId>lifecycle-mapping</artifactId>
-     <version>1.0.0</version>
-     <configuration>
-      <lifecycleMappingMetadata>
-       <pluginExecutions>
-        <pluginExecution>
-         <pluginExecutionFilter>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <versionRange>[1.7,)</versionRange>
-          <goals>
-           <goal>run</goal>
-          </goals>
-         </pluginExecutionFilter>
-         <action>
-          <ignore></ignore>
-         </action>
-        </pluginExecution>
-       </pluginExecutions>
-      </lifecycleMappingMetadata>
-     </configuration>
-    </plugin>
-   </plugins>
-  </pluginManagement>
  </build>
 
  <dependencies>
@@ -119,19 +90,19 @@
    <artifactId>gson</artifactId>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-user</artifactId>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-elemental</artifactId>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-codeserver</artifactId>
   </dependency>
   <dependency>
-   <groupId>com.google.gwt</groupId>
+   <groupId>${gwt.groupId}</groupId>
    <artifactId>gwt-dev</artifactId>
    <scope>provided</scope>
   </dependency>
@@ -169,11 +140,6 @@
    <artifactId>easymock</artifactId>
   </dependency>
 
-
-  <dependency>
-   <groupId>com.google.wave</groupId>
-   <artifactId>waveinabox</artifactId>
-  </dependency>
   <dependency>
    <groupId>com.google.wave</groupId>
    <artifactId>waveinabox-model</artifactId>

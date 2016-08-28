@@ -16,8 +16,8 @@
       </fileset>
     </copy>
 
-    <!-- To preserve executable file permissions on script. -->
-    <chmod dir="${api_tests.out}" perm="ugo+rx"  includes="run_api_test"/>
+      <!-- To preserve executable file permissions on script. -->
+      <chmod dir="${api_tests.out}" perm="ugo+rx"  includes="run_api_test"/>
   </target>
 
   <!-- WARNING: Note that currently vertx does not exit the process after running these

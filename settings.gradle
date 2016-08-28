@@ -1,0 +1,2 @@
+rootProject.name = 'collide-core'
+include 'api', 'shared', 'client', 'server'

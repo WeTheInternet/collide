@@ -61,20 +61,20 @@ public class GwtPluginTest extends TestCase {
     String libFolder = location.getCanonicalPath();
     map.put("staticFiles", libFolder);
 
-    
+
     JsonObject jsonConfig = new JsonObject(map );
-    
+
     ClassLoader cl = getClass().getClassLoader();
     ArrayList<URL> urlList = new ArrayList<>();
     while (cl != null) {
       if (cl instanceof URLClassLoader) {
         URLClassLoader urls = (URLClassLoader)cl;
-        for (URL url : urls.getURLs()){ 
+        for (URL url : urls.getURLs()){
           urlList.add(url);
         }
       }
     }
-    
+
     libFolder = "file:"+libFolder;
     System.out.println(urlList);
     URL[] urls = urlList.toArray(new URL[urlList.size()]);
@@ -104,7 +104,7 @@ public class GwtPluginTest extends TestCase {
     final JsonObject req =
         Dto.wrap("{"
             + "module : 'collide.demo.Foreign'"
-            + ",src : ['demo/src/main/java','demo/src/main/resources','xapi-gwt-0.3.jar']"
+            + ",src : ['demo/src/main/java','demo/src/main/resources','xapi-gwt.jar']"
             + ",deps : ['elemental.jar', 'gwt-dev.jar', 'gwt-user.jar']" +
             "}");
     for (Map.Entry<String, Handler<Message<JsonObject>>> handles : plugin.getHandlers().entrySet()) {

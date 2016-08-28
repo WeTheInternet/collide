@@ -1,19 +1,18 @@
 #!/bin/sh
-if [ -z $V ]; then export V="0.4-SNAPSHOT"; fi
-if [ -z $V2 ]; then export V2="0.3"; fi
+if [ -z $V ]; then export V="0.6-SNAPSHOT"; fi
 if [ -z $COLLIDE ]; then export COLLIDE="/opt/collide"; fi
 
-mkdir -p $COLLIDE/deps/xapi-$V2
-cd $COLLIDE/deps/xapi-$V2/
-rm -f xapi-gwt-$V2.jar
-rm -f xapi-dev-$V2.jar
-if [ -f $COLLIDE/deps/xapi-$V2/xapi-gwt-$V2.jar ]; then echo $COLLIDE/deps/xapi-$V2/xapi-gwt-$V2.jar; fi
+mkdir -p $COLLIDE/deps/xapi
+cd $COLLIDE/deps/xapi/
+rm -f xapi-gwt.jar
+rm -f xapi-dev.jar
+if [ -f $COLLIDE/deps/xapi/xapi-gwt.jar ]; then echo $COLLIDE/deps/xapi/xapi-gwt.jar; fi
 
 cd /repo/net/wetheinter/ 
-cp xapi-gwt/$V/xapi-gwt-$V.jar $COLLIDE/deps/xapi-$V2/
-cp xapi-dev/$V/xapi-dev-$V.jar $COLLIDE/deps/xapi-$V2/
+cp xapi-gwt/$V/xapi-gwt-$V.jar $COLLIDE/deps/xapi/
+cp xapi-dev/$V/xapi-dev-$V.jar $COLLIDE/deps/xapi/
 
-cd $COLLIDE/deps/xapi-$V2/
-mv xapi-gwt-$V.jar xapi-gwt-$V2.jar
-mv xapi-dev-$V.jar xapi-dev-$V2.jar
+cd $COLLIDE/deps/xapi/
+mv xapi-gwt-$V.jar xapi-gwt.jar
+mv xapi-dev-$V.jar xapi-dev.jar
 
