@@ -1,0 +1,84 @@
+@sprite .emptyFolder {
+  gwt-image: "emptyFolderIcon";
+}
+
+@sprite .folder {
+  gwt-image: "closedFolderIcon";
+}
+
+@sprite .folderOpen {
+  gwt-image: "openFolderIcon";
+}
+
+@sprite .folderLoading {
+  gwt-image: "folderLoading";
+}
+
+@sprite .cssIcon {
+  gwt-image: 'cssIcon';
+}
+
+@sprite .htmlIcon {
+  gwt-image: 'htmlIcon';
+}
+
+@sprite .jarIcon {
+  gwt-image: 'jarIcon';
+}
+
+@sprite .javaIcon {
+  gwt-image: 'javaIcon';
+}
+
+@sprite .javascriptIcon {
+  gwt-image: 'javascriptIcon';
+}
+
+@sprite .packageIcon {
+  gwt-image: 'packageIcon';
+}
+
+@sprite .emptyPackageIcon {
+  gwt-image: 'emptyPackageIcon';
+}
+
+@sprite .xmlIcon {
+  gwt-image: 'xmlIcon';
+}
+
+@sprite .file {
+  gwt-image: "file";
+}
+.javascriptIcon, .packageIcon, .emptyPackageIcon, .emptyFolder, .folder, .folderOpen,
+.folderLoading, .cssIcon, .htmlIcon, .jarIcon, .javaIcon, .xmlIcon, .file {
+  vertical-align: middle;
+  display: inline-block;
+  padding-right: 5px;
+}
+
+.root {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.icon {
+}
+
+.label, .nodeNameInput {
+  font-family: fileTreeFontFamily;
+  font-size: secondaryTextFontSize;
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.label {
+  cursor: default;
+  vertical-align: middle;
+}
+
+.nodeNameInput {
+  border: 1px solid #D9D9D9;
+  border-top: 1px solid #C0C0C0;
+}
