@@ -1,14 +1,12 @@
 package collide.demo.parent;
 
-import xapi.log.X_Log;
-import xapi.util.api.SuccessHandler;
 import collide.client.util.Elements;
 import collide.demo.controller.DemoController;
 import collide.demo.view.DemoView;
 import collide.gwtc.ui.GwtCompilerService;
 import collide.gwtc.ui.GwtCompilerShell;
 import collide.gwtc.ui.GwtCompilerShell.Resources;
-
+import collide.plugin.client.terminal.TerminalService;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideBootstrap;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
@@ -20,8 +18,12 @@ import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
-import com.google.collide.plugin.client.terminal.TerminalService;
 import com.google.collide.shared.plugin.PublicServices;
+import elemental.client.Browser;
+import elemental.html.ScriptElement;
+import xapi.log.X_Log;
+import xapi.util.api.SuccessHandler;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
@@ -30,23 +32,20 @@ import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
-import elemental.client.Browser;
-import elemental.html.ScriptElement;
-
 /**
  * This demo class shows how to use gwt reflection to send
  * dtos across different compilations of gwt,
  * as if the objects were merely loaded by a different classloader.
- * 
+ *
  * @author "James X. Nelson (james@wetheinter.net)"
  *
  */
 public class ParentModule implements EntryPoint{
 
-  
+
   @Override
   public void onModuleLoad() {
-    
+
     // First, let's setup a callback for child modules to talk to us
     setupNatives();
 
@@ -71,7 +70,7 @@ public class ParentModule implements EntryPoint{
 
         });
       }
-      
+
       @Override
       public void onFailure(Throwable reason) {
         warn(reason, "Loading Collide's AppContext ");
@@ -83,9 +82,9 @@ public class ParentModule implements EntryPoint{
     GWT.runAsync(TerminalService.class, new RunAsyncCallback() {
       @Override
       public void onSuccess() {
-        
+
       }
-      
+
       @Override
       public void onFailure(Throwable reason) {
         warn(reason, "Loading Collide logger ");
@@ -99,7 +98,7 @@ public class ParentModule implements EntryPoint{
       public void onSuccess() {
         new DemoController(context).initialize(body, plugins);
       }
-      
+
       @Override
       public void onFailure(Throwable reason) {
         warn(reason, "Loading Collide workspace ");
@@ -117,14 +116,14 @@ public class ParentModule implements EntryPoint{
         res.gwtLogCss().ensureInjected();
         res.gwtClasspathCss().ensureInjected();
         res.gwtModuleCss().ensureInjected();
-        
+
         // Prepare view
         GwtCompilerService gwtCompiler = PublicServices.getService(GwtCompilerService.class);
-        
+
         final GwtCompilerShell gwt = gwtCompiler.getShell();
         // Attach compiler
         body.initGwt(gwt);
-        
+
         ResizeHandler handler = new ResizeHandler() {
           @Override
           public void onResize(ResizeEvent event) {
@@ -133,10 +132,10 @@ public class ParentModule implements EntryPoint{
           }
         };
         Elements.getBody().getStyle().setPosition("absolue");
-        
+
         Window.addResizeHandler(handler);
         handler.onResize(null);
-        
+
         // Request module configs
         context.getFrontendApi().GWT_SETTINGS.request(
           new ApiCallback<GwtSettings>() {
@@ -155,7 +154,7 @@ public class ParentModule implements EntryPoint{
           }
         );
       }
-      
+
       @Override
       public void onFailure(Throwable reason) {
         warn(reason, "Loading GWT compiler ");
@@ -173,7 +172,7 @@ public class ParentModule implements EntryPoint{
   public static void receiveForeign(Object cls, Object obj) {
     X_Log.info("Received foreign object",cls, obj);
   }
-  
+
   private void injectForeignModulue(String src) {
     ScriptElement script = Browser.getDocument().createScriptElement();
     script.setSrc(src);
@@ -188,5 +187,5 @@ public class ParentModule implements EntryPoint{
     new StatusMessage(manager, StatusMessage.MessageType.ERROR,
         warning+" failed in 3 attempts.  Try again later.").fire();
   }
-  
+
 }

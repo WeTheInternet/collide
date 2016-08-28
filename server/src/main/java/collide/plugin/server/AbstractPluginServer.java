@@ -1,4 +1,21 @@
-package com.google.collide.plugin.server;
+package collide.plugin.server;
+
+import collide.plugin.server.gwt.CrossThreadVertxChannel;
+import com.google.collide.dto.CodeModule;
+import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
+import com.google.collide.json.shared.JsonArray;
+import com.google.collide.server.shared.BusModBase;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
+import xapi.log.X_Log;
+import xapi.util.X_Debug;
+import xapi.util.X_String;
+import xapi.util.api.ReceivesValue;
+
+import com.google.gwt.core.ext.TreeLogger.Type;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,24 +26,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.eventbus.EventBus;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
-import xapi.log.X_Log;
-import xapi.util.X_Debug;
-import xapi.util.X_String;
-import xapi.util.api.ReceivesValue;
-
-import com.google.collide.dto.CodeModule;
-import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
-import com.google.collide.json.shared.JsonArray;
-import com.google.collide.plugin.server.gwt.CrossThreadVertxChannel;
-import com.google.gwt.core.ext.TreeLogger.Type;
 
 public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> extends BusModBase implements ServerPlugin {
 
@@ -51,7 +50,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     this.eb = vertx.eventBus();
     String pluginBase = getAddressBase();
     for (Map.Entry<String, Handler<Message<JsonObject>>> handle : getHandlers().entrySet()){
-      vertx.eventBus().registerHandler(pluginBase+"."+handle.getKey(), handle.getValue());
+      vertx.eventBus().consumer(pluginBase+"."+handle.getKey(), handle.getValue());
     }
   }
 

@@ -1,11 +1,11 @@
-package com.google.collide.plugin.server.gwt;
+package collide.plugin.server.gwt;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 
 import xapi.util.api.ReceivesValue;
 
@@ -14,7 +14,7 @@ import com.google.collide.server.shared.util.Dto;
 
 public class GwtRecompileHandler implements Handler<Message<JsonObject>> {
   /**
-   * 
+   *
    */
   private final GwtServerPlugin gwtServerPlugin;
 

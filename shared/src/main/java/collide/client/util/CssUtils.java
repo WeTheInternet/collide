@@ -14,10 +14,10 @@
 
 package collide.client.util;
 
-import com.google.gwt.dom.client.Style.Unit;
-
 import elemental.css.CSSStyleDeclaration;
 import elemental.dom.Element;
+
+import com.google.gwt.dom.client.Style.Unit;
 
 /**
  * Utility methods for dealing with CSS.
@@ -42,15 +42,102 @@ public class CssUtils {
     return element;
   }
 
-  public static boolean containsClassName(Element element, String className) {
-    return element.hasClassName(className);
+  public static final void addClassName(Element e, String className) {
+    assert (className != null) : "Unexpectedly null class name";
+
+    className = className.trim();
+    assert (className.length() != 0) : "Unexpectedly empty class name";
+
+    // Get the current style string.
+    String oldClassName = e.getClassName();
+    int idx = oldClassName.indexOf(className);
+
+    // Calculate matching index.
+    while (idx != -1) {
+      if (idx == 0 || oldClassName.charAt(idx - 1) == ' ') {
+        int last = idx + className.length();
+        int lastPos = oldClassName.length();
+        if ((last == lastPos)
+            || ((last < lastPos) && (oldClassName.charAt(last) == ' '))) {
+          break;
+        }
+      }
+      idx = oldClassName.indexOf(className, idx + 1);
+    }
+
+    // Only add the style if it's not already present.
+    if (idx == -1) {
+      if (oldClassName.length() > 0) {
+        oldClassName += " ";
+      }
+      e.setClassName(oldClassName + className);
+    }
+  }
+
+  public static void removeClassName(Element e, String className) {
+    assert (className != null) : "Unexpectedly null class name";
+
+    className = className.trim();
+    assert (className.length() != 0) : "Unexpectedly empty class name";
+
+    // Get the current style string.
+    String oldStyle = e.getClassName();
+    int idx = oldStyle.indexOf(className);
+
+    // Calculate matching index.
+    while (idx != -1) {
+      if (idx == 0 || oldStyle.charAt(idx - 1) == ' ') {
+        int last = idx + className.length();
+        int lastPos = oldStyle.length();
+        if ((last == lastPos)
+            || ((last < lastPos) && (oldStyle.charAt(last) == ' '))) {
+          break;
+        }
+      }
+      idx = oldStyle.indexOf(className, idx + 1);
+    }
+
+    // Don't try to remove the style if it's not there.
+    if (idx != -1) {
+      // Get the leading and trailing parts, without the removed name.
+      String begin = oldStyle.substring(0, idx).trim();
+      String end = oldStyle.substring(idx + className.length()).trim();
+
+      // Some contortions to make sure we don't leave extra spaces.
+      String newClassName;
+      if (begin.length() == 0) {
+        newClassName = end;
+      } else if (end.length() == 0) {
+        newClassName = begin;
+      } else {
+        newClassName = begin + " " + end;
+      }
+
+      e.setClassName(newClassName);
+    }
+  }
+
+  public static void replaceClassName(Element e, String oldClassName, String newClassName) {
+    removeClassName(e, oldClassName);
+    addClassName(e, newClassName);
+  }
+
+
+  public static boolean containsClassName(Element e, String className) {
+    assert className != null : "Unexpected null class name";
+    String currentClassName = e.getClassName();
+    return (currentClassName != null) &&
+        (currentClassName.equals(className)
+            || currentClassName.startsWith(className + " ")
+            || currentClassName.endsWith(" " + className)
+            || currentClassName.indexOf(" " + className + " ") != -1);
   }
 
   public static void setClassNameEnabled(Element element, String className, boolean enable) {
     if (enable) {
-      element.addClassName(className);
+      addClassName(element, className);
     } else {
-      element.removeClassName(className);
+      removeClassName(element, className);
     }
   }
 
@@ -117,7 +204,7 @@ public class CssUtils {
   /**
    * Sets the visibility of an element via the {@code display} CSS property.
    * This should not be used if the default CSS keeps the element 'display: none'.
-   * 
+   *
    * When hidden, the display property on the element style will be set to none,
    * when visible the display property will be removed.
    */
@@ -147,11 +234,11 @@ public class CssUtils {
   public static boolean isPixels(String value) {
     return value.toLowerCase().endsWith(CSSStyleDeclaration.Unit.PX);
   }
-  
+
   public static native CSSStyleDeclaration getComputedStyle(Element element) /*-{
     return window.getComputedStyle(element);
   }-*/;
-  
+
   /**
    * Sets a CSS property on an element as the new value, returning the
    * previously set value.
@@ -161,7 +248,7 @@ public class CssUtils {
     element.getStyle().setProperty(propertyName, value);
     return savedValue;
   }
-  
+
   public static void setTop(Element element, int value, Unit unit) {
     String topValue = Integer.toString(value) + unit;
     element.getStyle().setTop(topValue);

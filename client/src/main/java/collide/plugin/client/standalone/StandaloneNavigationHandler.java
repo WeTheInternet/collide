@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.collide.plugin.client.standalone;
+package collide.plugin.client.standalone;
 
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;

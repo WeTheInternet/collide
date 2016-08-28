@@ -1,12 +1,10 @@
-package com.google.collide.plugin.server.gwt;
+package collide.plugin.server.gwt;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
+import collide.plugin.server.AbstractPluginServer;
+import com.google.common.collect.ImmutableMap;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 import xapi.collect.api.InitMap;
 import xapi.collect.impl.InitMapString;
 import xapi.inject.impl.LazyPojo;
@@ -14,9 +12,10 @@ import xapi.log.X_Log;
 import xapi.util.X_Namespace;
 import xapi.util.api.ConvertsValue;
 
-import com.google.collide.plugin.server.AbstractPluginServer;
-import com.google.common.collect.ImmutableMap;
 import com.google.gwt.dev.codeserver.GwtCompilerThread;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread> {
 

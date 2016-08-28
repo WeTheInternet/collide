@@ -14,15 +14,6 @@
 
 package com.google.collide.server.documents;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
-import org.vertx.java.core.logging.Logger;
-
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
 import com.google.collide.server.documents.VersionedDocument.DocumentOperationException;
@@ -41,13 +32,20 @@ import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.protobuf.ByteString;
+import io.vertx.core.logging.Logger;
+
+import javax.annotation.Nullable;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 /**
  * Default implementation of {@link FileEditSession}.
- * 
+ *
  * <p>
  * This class is thread-safe.
- * 
+ *
  */
 final class FileEditSessionImpl implements FileEditSession {
 
@@ -174,7 +172,7 @@ final class FileEditSessionImpl implements FileEditSession {
 
   /**
    * Constructs a {@link FileEditSessionImpl} for a file.
-   * 
+   *
    * @param resourceId the identifier for the resource we are editing.
    * @param initialContents the initial contents of the file
    * @param mergeResult if non-null the merge info related to the out of date
@@ -287,14 +285,14 @@ final class FileEditSessionImpl implements FileEditSession {
 
   @Override
   public String getContents() {
-    checkNotClosed();   
+    checkNotClosed();
     return getText();
   }
 
   public int getCcRevision() {
     return lastMutationCcRevision;
   }
-  
+
   @Override
   public int getSize() {
     checkNotClosed();
@@ -378,13 +376,13 @@ final class FileEditSessionImpl implements FileEditSession {
      * TODO: what we really should do is track lastModified. Then we can lock,
      * check the lastModified, and merge in any local FS changes that happened
      * since we last saved.
-     * 
+     *
      * We should also listen on "documents.fileSystemEvents" for to get
      * notified instantly when the FS version changes, so we can eagerly apply
-     * the delta and push to clients. 
+     * the delta and push to clients.
      */
     logger.debug(String.format("Saving file [%s]", path));
-    
+
     File file = new File(path);
     Files.write(text, file, Charsets.UTF_8);
   }
@@ -426,7 +424,7 @@ final class FileEditSessionImpl implements FileEditSession {
 
     /*
      * Immediately save the file.
-     * 
+     *
      * TODO: how to store chunk resolution?
      */
     // TODO: Resolve path prior to calling save.

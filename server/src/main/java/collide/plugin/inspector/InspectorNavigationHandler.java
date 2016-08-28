@@ -1,5 +1,7 @@
 package collide.plugin.inspector;
 
+import collide.plugin.client.inspector.InspectorPlace;
+import collide.plugin.client.inspector.InspectorPlace.NavigationEvent;
 import xapi.inject.impl.LazyPojo;
 import collide.gwtc.ui.GwtCompilerShell.Resources;
 
@@ -8,8 +10,6 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationHandler;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.ui.panel.PanelModel;
-import com.google.collide.plugin.client.inspector.InspectorPlace;
-import com.google.collide.plugin.client.inspector.InspectorPlace.NavigationEvent;
 import com.google.gwt.core.shared.GWT;
 
 public class InspectorNavigationHandler extends
@@ -49,13 +49,13 @@ public class InspectorNavigationHandler extends
       boolean hasNewState) {
     super.reEnterPlace(navigationEvent, hasNewState);
   }
-  
+
   @Override
   protected void enterPlace(InspectorPlace.NavigationEvent navigationEvent) {
     contentArea.clearNavigator();
 
     contentArea.setHeaderVisibility(false);
-    
+
 //    String module = navigationEvent.getModule();
 //    PanelContent panelContent = views.get(module, null);
 //    contentArea.setContent(panelContent,

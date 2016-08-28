@@ -1,15 +1,13 @@
 package collide.demo.controller;
 
-import xapi.log.X_Log;
-import xapi.util.X_String;
-import xapi.util.api.RemovalHandler;
 import collide.client.filetree.AppContextFileTreeController;
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
 import collide.client.filetree.FileTreeModelNetworkController;
 import collide.client.util.Elements;
 import collide.demo.view.DemoView;
-
+import collide.plugin.client.launcher.LauncherService;
+import collide.plugin.client.standalone.StandaloneCodeBundle;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideSettings;
 import com.google.collide.client.Resources;
@@ -41,15 +39,11 @@ import com.google.collide.dto.ServerError.FailureReason;
 import com.google.collide.dto.client.DtoClientImpls.GetWorkspaceMetaDataImpl;
 import com.google.collide.dto.client.DtoClientImpls.GetWorkspaceMetaDataResponseImpl;
 import com.google.collide.json.client.JsoArray;
-import com.google.collide.plugin.client.launcher.LauncherService;
-import com.google.collide.plugin.client.standalone.StandaloneCodeBundle;
 import com.google.collide.shared.document.Document;
 import com.google.collide.shared.plugin.PublicService;
 import com.google.collide.shared.plugin.PublicServices;
 import com.google.collide.shared.util.ListenerRegistrar.Remover;
 import com.google.collide.shared.util.ListenerRegistrar.RemoverManager;
-import com.google.gwt.resources.client.ImageResource;
-
 import elemental.client.Browser;
 import elemental.events.Event;
 import elemental.events.EventListener;
@@ -58,8 +52,13 @@ import elemental.events.KeyboardEvent;
 import elemental.events.KeyboardEvent.KeyCode;
 import elemental.util.Collections;
 import elemental.util.MapFromStringTo;
+import xapi.log.X_Log;
+import xapi.util.X_String;
+import xapi.util.api.RemovalHandler;
 
-public class DemoController 
+import com.google.gwt.resources.client.ImageResource;
+
+public class DemoController
 implements ClientPlugin<WorkspacePlace>, LauncherService
 {
 
@@ -78,11 +77,11 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
     this.appContext = context;
     this.keyListenerRemoverManager = new RemoverManager();
     this.searchIndex = TreeWalkFileNameSearchImpl.create();
-    PublicServices.registerService(LauncherService.class, 
+    PublicServices.registerService(LauncherService.class,
         new PublicService.DefaultServiceProvider<LauncherService>(LauncherService.class, this)
         );
   }
-  
+
 
   public void initialize(DemoView view, final ClientPluginService plugins) {
     this.view = view;
@@ -143,7 +142,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
         return plugins;
       }
     };
-    
+
     codePanelBundle.attach(true);
     codePanelBundle.setMasterPanel(view);
 
@@ -154,40 +153,40 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
     workspacePlace.fireEvent(new NavigationAreaExpansionEvent(false));
 
     documentManager.getLifecycleListenerRegistrar().add(new LifecycleListener() {
-      
+
       @Override
       public void onDocumentUnlinkingFromFile(Document document) {
         X_Log.info("unlinked from file",document);
       }
-      
+
       @Override
       public void onDocumentOpened(Document document, Editor editor) {
         X_Log.info("opened",document);
       }
-      
+
       @Override
       public void onDocumentLinkedToFile(Document document,
           FileContents fileContents) {
-        
+
       }
-      
+
       @Override
       public void onDocumentGarbageCollected(Document document) {
         X_Log.info("gc'd",document);
-        
+
       }
-      
+
       @Override
       public void onDocumentCreated(Document document) {
-        
+
       }
-      
+
       @Override
       public void onDocumentClosed(Document document, Editor editor) {
         X_Log.info("closed",document);
       }
     });
-    
+
     final GetWorkspaceMetaDataResponseImpl localRequest = GetWorkspaceMetaDataResponseImpl.make();
     final ApiCallback<GetWorkspaceMetaDataResponse> callback = new ApiCallback<GetWorkspaceMetaDataResponse>() {
       boolean once = true;
@@ -201,7 +200,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
           // Start the keep-alive timer at 5 second intervals.
           keepAliveTimer = new KeepAliveTimer(appContext, 5000);
           keepAliveTimer.start();
-    
+
           codePanelBundle.enterWorkspace(true, workspacePlace, message);
         }
       }
@@ -219,7 +218,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
         }
       }
     };
-    
+
     CollideSettings settings = CollideSettings.get();
     String file = settings.getOpenFile();
     if (!X_String.isEmptyTrimmed(file)) {
@@ -279,7 +278,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
 
   @Override
   public void onClicked(ImageButton button) {
-    
+
   }
 
 

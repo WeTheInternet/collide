@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.terminal;
+package collide.plugin.client.terminal;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
@@ -60,7 +60,7 @@ public class TerminalClientPlugin  implements ClientPlugin<TerminalPlace>, Termi
   public void addLog(LogMessage log, TerminalLogHeader header) {
     handler.addLog(log, header);
   }
-  
+
   @Override
   public void setHeader(String module, TerminalLogHeader header) {
     handler.setHeader(module, header);

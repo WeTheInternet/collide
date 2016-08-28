@@ -3,8 +3,8 @@
 <module rename-to="Demo">
   <source path="" />
   <inherits name="collide.Gwtc"/>
-  
-  <inherits name="com.google.collide.plugin.Plugin" />
+
+  <inherits name="collide.plugin.Plugin" />
   <inherits name="com.google.collide.client.Imports" />
   <entry-point class="collide.demo.parent.ParentModule"/>
 </module>

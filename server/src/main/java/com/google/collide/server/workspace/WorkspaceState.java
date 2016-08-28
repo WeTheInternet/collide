@@ -14,20 +14,17 @@
 
 package com.google.collide.server.workspace;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-
-import xapi.log.X_Log;
-
 import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceMetaDataResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.RunTargetImpl;
+import com.google.collide.server.shared.BusModBase;
 import com.google.collide.server.shared.util.Dto;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import xapi.log.X_Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Persistent workspace state.
@@ -41,49 +38,36 @@ public class WorkspaceState extends BusModBase {
   @Override
   public void start() {
     super.start();
-    this.addressBase = getOptionalStringConfig("address", "documents");
+    this.addressBase = getOptionalStringConfig("address", "workspace");
     this.webRoot = getMandatoryStringConfig("webRoot");
 
     vertx.eventBus()
-        .registerHandler(addressBase + ".getMetaData", new Handler<Message<JsonObject>>() {
-            @Override
-          public void handle(final Message<JsonObject> requestEvent) {
+        .consumer(addressBase + ".getMetaData", requestEvent -> {
             final GetWorkspaceMetaDataResponseImpl metaData =
                 GetWorkspaceMetaDataResponseImpl.make()
                     .setRunTarget(runTarget).setWorkspaceName(webRoot);
-            X_Log.error(lastOpenedFileId);
+            X_Log.error(getClass(), "Last opened file: ", lastOpenedFileId);
             if (lastOpenedFileId != null) {
               // Resolve file to a path.
-              vertx.eventBus().send("tree.getCurrentPaths", new JsonObject().putArray(
-                  "resourceIds", new JsonArray().addString(lastOpenedFileId)),
-                  new Handler<Message<JsonObject>>() {
-                      @Override
-                    public void handle(Message<JsonObject> event) {
+              vertx.eventBus().<JsonObject>send("tree.getCurrentPaths", new JsonObject().put(
+                  "resourceIds", new JsonArray().add(lastOpenedFileId)),
+                  async -> {
+                      Message<JsonObject> event = async.result();
                       List<String> openFiles = new ArrayList<String>();
-                      openFiles.add((String) event.body.getArray("paths").toArray()[0]);
+                      openFiles.addAll(event.body().getJsonArray("paths").getList());
                       metaData.setLastOpenFiles(openFiles);
                       requestEvent.reply(Dto.wrap(metaData));
-                    }
                   });
             }
-          }
         });
 
     vertx.eventBus()
-        .registerHandler(addressBase + ".setLastOpenedFile", new Handler<Message<JsonObject>>() {
-            @Override
-          public void handle(Message<JsonObject> event) {
-            lastOpenedFileId = event.body.getString("resourceId");
-          }
-        });
+        .<JsonObject>consumer(addressBase + ".setLastOpenedFile", event->lastOpenedFileId = event.body().getString("resourceId"));
 
     vertx.eventBus()
-        .registerHandler(addressBase + ".updateRunTarget", new Handler<Message<JsonObject>>() {
-            @Override
-          public void handle(Message<JsonObject> event) {
+        .<JsonObject>consumer(addressBase + ".updateRunTarget",event-> {
             RunTargetImpl runTarget = RunTargetImpl.fromJsonString(Dto.get(event));
             WorkspaceState.this.runTarget = runTarget;
-          }
         });
   }
 }

@@ -1,7 +1,0 @@
-<!-- GWT Module for the json library -->
-<module>
-  <!-- TODO: This "should" exclude server/**, but doesn't because
-       client/util/JsonCollections.java references the PureJavaImplementation.
-       We may want a super-source emulation for the client build? -->
-  <source path=""/>
-</module>

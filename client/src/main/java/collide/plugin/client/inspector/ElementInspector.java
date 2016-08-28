@@ -1,12 +1,6 @@
-package com.google.collide.plugin.client.inspector;
-
-import xapi.inject.impl.SingletonProvider;
-import xapi.util.api.ReceivesValue;
-import xapi.util.api.RemovalHandler;
+package collide.plugin.client.inspector;
 
 import com.google.collide.json.client.JsoArray;
-import com.google.gwt.core.client.JavaScriptObject;
-
 import elemental.client.Browser;
 import elemental.dom.Attr;
 import elemental.dom.Node;
@@ -14,12 +8,17 @@ import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.js.dom.JsNode;
 import elemental.js.events.JsMouseEvent;
+import xapi.inject.impl.SingletonProvider;
+import xapi.util.api.ReceivesValue;
+import xapi.util.api.RemovalHandler;
+
+import com.google.gwt.core.client.JavaScriptObject;
 
 public class ElementInspector extends JavaScriptObject{
 
   protected ElementInspector() {}
-  
-  private static SingletonProvider<ElementInspector> singleton = 
+
+  private static SingletonProvider<ElementInspector> singleton =
   new SingletonProvider<ElementInspector>(){
     protected ElementInspector initialValue() {
       Browser.getWindow().addEventListener("click", new EventListener() {
@@ -41,22 +40,22 @@ public class ElementInspector extends JavaScriptObject{
       }, false);
       return create();
     }
-    
+
     private native ElementInspector create()
       /*-{ return {}; }-*/;
   };
-  
+
   public static ElementInspector get() {
     return singleton.get();
   }
-  
+
   public final native void monitorInspection(ReceivesValue<JsoArray<Node>> receiver)
   /*-{
      if (!this.monitors)
        this.monitors = [];
      this.monitors.push(receiver);
    }-*/;
-  
+
   public final native void fireEvent(JsoArray<Node> withData)
   /*-{
      if (this.monitors) {
@@ -64,7 +63,7 @@ public class ElementInspector extends JavaScriptObject{
          this.monitors[i].@xapi.util.api.ReceivesValue::set(*)(withData);
      }
    }-*/;
-  
+
   private static int cnt;
   private static String uuid() {
     StringBuilder b = new StringBuilder("x_");
@@ -76,7 +75,7 @@ public class ElementInspector extends JavaScriptObject{
     }
     return b.toString();
   }
-  
+
   private final String getDebugId(Node node) {
     Node debug = node.getAttributes().getNamedItem("xapi.debug");
     if (debug == null) {
@@ -86,7 +85,7 @@ public class ElementInspector extends JavaScriptObject{
     }
     return debug.getNodeValue();
   }
-  
+
   public final RemovalHandler makeInspectable(Node node, final Object data) {
     final String id = getDebugId(node);
     remember(id, data);
@@ -98,24 +97,24 @@ public class ElementInspector extends JavaScriptObject{
     };
   }
 
-  
+
   public final void forget(Node node, Object data) {
     forget(getDebugId(node), data);
   }
-  
+
   public final JsoArray<Object> recall(Node node) {
     return recall(getDebugId(node));
   }
-  
+
   public final boolean hasData(Node node) {
     return hasData(getDebugId(node));
   }
-  
+
   public final void remember(Node node, Object data) {
     remember(getDebugId(node), data);
   }
-  
-  
+
+
 
   private final native void forget(String nodeId, Object data)
   /*-{
@@ -138,7 +137,7 @@ public class ElementInspector extends JavaScriptObject{
   /*-{
     return this[id] && this[id].length > 0;
   }-*/;
-  
+
   private final native JsoArray<Object> recall(String id)
   /*-{
     // Return a mutable array, for convenience
@@ -151,5 +150,5 @@ public class ElementInspector extends JavaScriptObject{
     if (!this[id]) this[id] = [];
     this[id].push(data);
   }-*/;
-  
+
 }

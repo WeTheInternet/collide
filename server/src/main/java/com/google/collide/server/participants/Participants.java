@@ -14,6 +14,15 @@
 
 package com.google.collide.server.participants;
 
+import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceParticipantsResponseImpl;
+import com.google.collide.dto.server.DtoServerImpls.ParticipantImpl;
+import com.google.collide.dto.server.DtoServerImpls.ParticipantUserDetailsImpl;
+import com.google.collide.dto.server.DtoServerImpls.UserDetailsImpl;
+import com.google.collide.server.shared.BusModBase;
+import com.google.collide.server.shared.util.Dto;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,21 +31,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
-import com.google.collide.dto.server.DtoServerImpls.GetWorkspaceParticipantsResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.ParticipantImpl;
-import com.google.collide.dto.server.DtoServerImpls.ParticipantUserDetailsImpl;
-import com.google.collide.dto.server.DtoServerImpls.UserDetailsImpl;
-import com.google.collide.server.shared.util.Dto;
-
 /**
  * Acts as the authentication provider, with a compatible API subset with the bundled default
  * AuthManager that comes with Vertx.
- * 
+ *
  * This one however is in-memory, and also has affordances for broadcasting to joined participants.
  * Also, this implementation allows for a single username to be logged in as multiple different
  * sessions.
@@ -59,12 +57,12 @@ public class Participants extends BusModBase {
    * A single Collide tab for a logged in user that is connected to the eventbus.
    */
   private static final class ConnectedTab {
-    final LoggedInUser loginInfo;    
+    final LoggedInUser loginInfo;
     long timerId;
 
     ConnectedTab(LoggedInUser loginInfo, long tabDisconnectTimerId) {
       this.loginInfo = loginInfo;
-      this.timerId = tabDisconnectTimerId;      
+      this.timerId = tabDisconnectTimerId;
     }
   }
 
@@ -73,12 +71,12 @@ public class Participants extends BusModBase {
    */
   private static final class LoggedInUser {
     final String username;
-    
+
     /** Stable user ID for the lifetime of the server. */
     final String userId;
     long timerId;
 
-    private LoggedInUser(String username) {      
+    private LoggedInUser(String username) {
       this.username = username;
       this.userId = getStableUserId(username);
     }
@@ -89,7 +87,7 @@ public class Participants extends BusModBase {
       String stableId = usernameToStableIdMap.get(username);
       if (stableId == null) {
         stableId = UUID.randomUUID().toString();
-        usernameToStableIdMap.put(username, stableId);       
+        usernameToStableIdMap.put(username, stableId);
       }
       return stableId;
     }
@@ -108,99 +106,56 @@ public class Participants extends BusModBase {
   @Override
   public void start() {
     super.start();
- 
+
     this.password = getOptionalStringConfig("password", "");
-    this.loginSessionTimeout = getOptionalLong("session_timeout", DEFAULT_LOGIN_TIMEOUT);
-    this.tabKeepAliveTimeout = getOptionalLong("keep_alive_timeout", DEFAULT_KEEP_ALIVE_TIMEOUT);
-    String addressBase = getOptionalStringConfig("address", "participants");   
+    this.loginSessionTimeout = getOptionalLongConfig("session_timeout", DEFAULT_LOGIN_TIMEOUT);
+    this.tabKeepAliveTimeout = getOptionalLongConfig("keep_alive_timeout", DEFAULT_KEEP_ALIVE_TIMEOUT);
+    String addressBase = getOptionalStringConfig("address", "participants");
 
-    eb.registerHandler(addressBase + ".login", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> message) {
-        doLogin(message);
-      }
-    });
+    eb.consumer(addressBase + ".login", this::doLogin);
 
-    eb.registerHandler(addressBase + ".logout", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> message) {
-        doLogout(message);
-      }
-    });
+    eb.consumer(addressBase + ".logout", this::doLogout);
 
-    eb.registerHandler(addressBase + ".authorise", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> message) {
-        doAuthorise(message);
-      }
-    });
+    eb.consumer(addressBase + ".authorise", this::doAuthorise);
 
-    eb.registerHandler(addressBase + ".keepAlive", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> event) {
-        doKeepAlive(event);
-      }      
-    });
+    eb.consumer(addressBase + ".keepAlive", this::doKeepAlive);
 
-    eb.registerHandler(addressBase + ".getParticipants", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> event) {
-        doGetParticipants(event);
-      }      
-    });
+    eb.consumer(addressBase + ".getParticipants", this::doGetParticipants);
 
-    eb.registerHandler(addressBase + ".broadcast", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> event) {
-        doBroadcast(event);
-      }   
-    });
+    eb.consumer(addressBase + ".broadcast", this::doBroadcast);
 
-    eb.registerHandler(addressBase + ".sendTo", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> event) {
-        doSendTo(event);
-      }
-    });
-  }
-
-  private long getOptionalLong(String fieldName, long defaultVal) {
-    Number val = config.getNumber(fieldName);
-    if (val == null) {
-      return defaultVal;
-    }
-    return val instanceof Integer ? (Integer) val : (Long) val;    
+    eb.consumer(addressBase + ".sendTo", this::doSendTo);
   }
 
   void doBroadcast(Message<JsonObject> event) {
-    String payload = event.body.getString(PAYLOAD_TAG);
-    String senderActiveClientId = event.body.getString(OMIT_SENDER_TAG);
+    String payload = event.body().getString(PAYLOAD_TAG);
+    String senderActiveClientId = event.body().getString(OMIT_SENDER_TAG);
     Set<Entry<String, ConnectedTab>> entries = connectedTabs.entrySet();
     for (Entry<String, ConnectedTab> entry : entries) {
       String activeClientId = entry.getKey();
       String address = CLIENT_ADDRESS_PREFX + "." + activeClientId;
 
       // Send to everyone except the optionally specified sender that we wish to ignore.
-      if (!activeClientId.equals(senderActiveClientId)) {        
+      if (!activeClientId.equals(senderActiveClientId)) {
         vertx.eventBus().send(address, Dto.wrap(payload));
       }
     }
   }
 
   void doSendTo(Message<JsonObject> event) {
-    String payload = event.body.getString(PAYLOAD_TAG);
+    String payload = event.body().getString(PAYLOAD_TAG);
 
     List<String> clientsToMessage = new ArrayList<String>();
-    String activeClientId = event.body.getString(TARGET_SPECIFIC_CLIENT_TAG);
+    String activeClientId = event.body().getString(TARGET_SPECIFIC_CLIENT_TAG);
     if (activeClientId != null) {
 
       // Send to a specific tab.
       ConnectedTab tab = connectedTabs.get(activeClientId);
-      if (tab != null) {        
+      if (tab != null) {
         clientsToMessage.add(activeClientId);
       }
     } else {
-      String username = event.body.getString(TARGET_USERS_TABS_TAG);
+      String username = event.body().getString(TARGET_USERS_TABS_TAG);
       if (username != null) {
 
         // Collect the ids of all this user's open tabs.
@@ -238,39 +193,36 @@ public class Participants extends BusModBase {
           .setGivenName(username);
 
       participantDetails.setParticipant(participant);
-      participantDetails.setUserDetails(userDetails);      
+      participantDetails.setUserDetails(userDetails);
       collaboratorsArr.add(participantDetails);
     }
 
-    resp.setParticipants(collaboratorsArr);        
+    resp.setParticipants(collaboratorsArr);
     event.reply(Dto.wrap(resp));
   }
 
   void doKeepAlive(Message<JsonObject> event) {
-    final String activeClientId = event.body.getString("activeClient");
+    final String activeClientId = event.body().getString("activeClient");
     if (activeClientId != null) {
       ConnectedTab loginInfo = connectedTabs.get(activeClientId);
       if (loginInfo != null) {
         vertx.cancelTimer(loginInfo.timerId);
-        loginInfo.timerId = vertx.setTimer(tabKeepAliveTimeout, new Handler<Long>() {
-          @Override
-          public void handle(Long timerID) {
-            connectedTabs.remove(activeClientId);                
-          }
-        });
+        loginInfo.timerId = vertx.setTimer(tabKeepAliveTimeout,
+            id-> connectedTabs.remove(activeClientId));
       }
     }
   }
 
   void doLogin(final Message<JsonObject> message) {
-    final String username = message.body.getString("username", null);
+    System.out.println("Doing login: " + message.body());
+    final String username = message.body().getString("username", null);
     if (username == null) {
       sendStatus("denied", message);
       return;
     }
-    String password = message.body.getString("password", null);
-    if (password == null && !"".equals(this.password)) {      
-      sendStatus("denied", message, new JsonObject().putString("reason", "needs-pass"));
+    String password = message.body().getString("password", null);
+    if (password == null && !"".equals(this.password)) {
+      sendStatus("denied", message, new JsonObject().put("reason", "needs-pass"));
       return;
     }
 
@@ -286,17 +238,12 @@ public class Participants extends BusModBase {
       vertx.cancelTimer(existing.timerId);
     }
 
-    final LoggedInUser user = new LoggedInUser(username);    
+    final LoggedInUser user = new LoggedInUser(username);
     loggedInUsers.put(user.userId, user);
-    user.timerId = vertx.setTimer(loginSessionTimeout, new Handler<Long>() {
-      @Override
-      public void handle(Long event) {
-        logout(user.userId);
-      }
-    });
+    user.timerId = vertx.setTimer(loginSessionTimeout, e->logout(user.userId));
 
     // The spelling "sessionID" is needed to work with the vertx eventbus bridge whitelist.
-    JsonObject jsonReply = new JsonObject().putString("sessionID", user.userId);
+    JsonObject jsonReply = new JsonObject().put("sessionID", user.userId);
     sendOK(message, jsonReply);
   }
 
@@ -307,15 +254,10 @@ public class Participants extends BusModBase {
   private boolean alreadyLoggedIn(String username) {
     return loggedInUsers.get(LoggedInUser.getStableUserId(username)) != null;
   }
-  
+
   private String createActiveTab(LoggedInUser user) {
     final String activeClient = UUID.randomUUID().toString();
-    long timerId = vertx.setTimer(tabKeepAliveTimeout, new Handler<Long>() {
-      @Override
-       public void handle(Long timerId) {
-         connectedTabs.remove(activeClient);        
-       }
-     });
+    long timerId = vertx.setTimer(tabKeepAliveTimeout, id-> connectedTabs.remove(activeClient));
     connectedTabs.put(activeClient, new ConnectedTab(user, timerId));
     return activeClient;
   }
@@ -365,19 +307,19 @@ public class Participants extends BusModBase {
 
     LoggedInUser user = loggedInUsers.get(userId);
     if (user != null || "".equals(password)) {
-      String username = message.body.getString("username", "anonymous");
+      String username = message.body().getString("username", "anonymous");
       if (user != null) {
         username = user.username;
       } else {
-        user = new LoggedInUser(username);        
+        user = new LoggedInUser(username);
       }
-      JsonObject reply = new JsonObject().putString("username", username);
-      if (message.body.getBoolean("createClient", false)) {
+      JsonObject reply = new JsonObject().put("username", username);
+      if (message.body().getBoolean("createClient", false)) {
         String activeClient = createActiveTab(user);
-        reply.putString("activeClient", activeClient);
+        reply.put("activeClient", activeClient);
       }
       sendOK(message, reply);
-    } else {      
+    } else {
       sendStatus("denied", message);
     }
   }

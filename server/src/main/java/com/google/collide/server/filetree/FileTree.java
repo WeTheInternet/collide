@@ -14,21 +14,30 @@
 
 package com.google.collide.server.filetree;
 
+import com.google.collide.dto.DirInfo;
+import com.google.collide.dto.FileInfo;
+import com.google.collide.dto.Mutation;
+import com.google.collide.dto.ServerError.FailureReason;
+import com.google.collide.dto.TreeNodeInfo;
+import com.google.collide.dto.WorkspaceTreeUpdate;
+import com.google.collide.dto.server.DtoServerImpls.*;
+import com.google.collide.json.server.JsonArrayListAdapter;
+import com.google.collide.server.participants.Participants;
+import com.google.collide.server.shared.BusModBase;
+import com.google.collide.server.shared.util.Dto;
+import com.google.collide.shared.util.PathUtils;
+import com.google.collide.shared.util.PathUtils.PathVisitor;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import xapi.log.X_Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
-import java.nio.file.WatchKey;
-import java.nio.file.WatchService;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,36 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-
-import xapi.log.X_Log;
-
-import com.google.collide.dto.DirInfo;
-import com.google.collide.dto.FileInfo;
-import com.google.collide.dto.Mutation;
-import com.google.collide.dto.ServerError.FailureReason;
-import com.google.collide.dto.TreeNodeInfo;
-import com.google.collide.dto.WorkspaceTreeUpdate;
-import com.google.collide.dto.server.DtoServerImpls.DirInfoImpl;
-import com.google.collide.dto.server.DtoServerImpls.EmptyMessageImpl;
-import com.google.collide.dto.server.DtoServerImpls.FileInfoImpl;
-import com.google.collide.dto.server.DtoServerImpls.GetDirectoryImpl;
-import com.google.collide.dto.server.DtoServerImpls.GetDirectoryResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.MutationImpl;
-import com.google.collide.dto.server.DtoServerImpls.ServerErrorImpl;
-import com.google.collide.dto.server.DtoServerImpls.TreeNodeInfoImpl;
-import com.google.collide.dto.server.DtoServerImpls.WorkspaceTreeUpdateBroadcastImpl;
-import com.google.collide.dto.server.DtoServerImpls.WorkspaceTreeUpdateImpl;
-import com.google.collide.json.server.JsonArrayListAdapter;
-import com.google.collide.server.participants.Participants;
-import com.google.collide.server.shared.util.Dto;
-import com.google.collide.shared.util.PathUtils;
-import com.google.collide.shared.util.PathUtils.PathVisitor;
 
 /**
  * Backend service that manages the representation of "files and folders" in the workspace
@@ -352,18 +331,18 @@ public class FileTree extends BusModBase {
   class PathResolver implements Handler<Message<JsonObject>> {
     @Override
     public void handle(Message<JsonObject> message) {
-      JsonArray resourceIds = message.body.getArray("resourceIds");
+      JsonArray resourceIds = message.body().getJsonArray("resourceIds");
       JsonObject result = new JsonObject();
       JsonArray paths = new JsonArray();
-      result.putArray("paths", paths);
+      result.put("paths", paths);
       synchronized (FileTree.this.lock) {
         for (Object id : resourceIds) {
           assert id instanceof String;
           NodeInfoExt node = resourceIdToNode.get(id);
           if (node == null) {
-            paths.addString(null);
+            paths.addNull();
           } else {
-            paths.addString('/' + node.getPath().toString());
+            paths.add('/' + node.getPath().toString());
           }
         }
       }
@@ -379,14 +358,18 @@ public class FileTree extends BusModBase {
   class ResourceIdResolver implements Handler<Message<JsonObject>> {
     @Override
     public void handle(Message<JsonObject> message) {
-      JsonArray paths = message.body.getArray("paths");
+      JsonArray paths = message.body().getJsonArray("paths");
       JsonObject result = new JsonObject();
       JsonArray resourceIds = new JsonArray();
-      result.putArray("resourceIds", resourceIds);
+      result.put("resourceIds", resourceIds);
       synchronized (FileTree.this.lock) {
         for (Object path : paths) {
           NodeInfoExt found = findResource(stripSlashes((String) path));
-          resourceIds.addString(found == null ? null : found.getFileEditSessionKey());
+          if (found == null) {
+            resourceIds.addNull();
+          } else {
+            resourceIds.add(found.getFileEditSessionKey());
+          }
         }
       }
       message.reply(result);
@@ -568,10 +551,10 @@ public class FileTree extends BusModBase {
       throw new RuntimeException(e);
     }
 
-    vertx.eventBus().registerHandler("tree.mutate", new FileTreeMutationHandler());
-    vertx.eventBus().registerHandler("tree.get", new FileTreeGetter());
-    vertx.eventBus().registerHandler("tree.getCurrentPaths", new PathResolver());
-    vertx.eventBus().registerHandler("tree.getResourceIds", new ResourceIdResolver());
+    vertx.eventBus().consumer("tree.mutate", new FileTreeMutationHandler());
+    vertx.eventBus().consumer("tree.get", new FileTreeGetter());
+    vertx.eventBus().consumer("tree.getCurrentPaths", new PathResolver());
+    vertx.eventBus().consumer("tree.getResourceIds", new ResourceIdResolver());
 
 
     /*
@@ -718,8 +701,8 @@ public class FileTree extends BusModBase {
     JsonObject message = new JsonObject();
     JsonArray messageDelete = new JsonArray();
     JsonArray messageModify = new JsonArray();
-    message.putArray("delete", messageDelete);
-    message.putArray("modify", messageModify);
+    message.put("delete", messageDelete);
+    message.put("modify", messageModify);
 
     // Broadcast a tree mutation to all clients.
     WorkspaceTreeUpdateBroadcastImpl broadcast = WorkspaceTreeUpdateBroadcastImpl.make();
@@ -740,7 +723,7 @@ public class FileTree extends BusModBase {
     for (NodeInfoExt node : removes) {
       System.out.println("del: " + pathString(node));
       // Edit session wants deletes.
-      messageDelete.addString(node.getFileEditSessionKey());
+      messageDelete.add(node.getFileEditSessionKey());
       // Broadcast to clients.
       MutationImpl mutation =
           MutationImpl.make().setMutationType(Mutation.Type.DELETE).setOldPath(pathString(node));
@@ -760,13 +743,13 @@ public class FileTree extends BusModBase {
     for (NodeInfoExt node : modifies) {
       System.out.println("mod: " + pathString(node));
       // Edit session wants modifies.
-      messageModify.addString(node.getFileEditSessionKey());
+      messageModify.add(node.getFileEditSessionKey());
       // No broadcast, edit session will handle.
     }
     vertx.eventBus().send("documents.fileSystemEvents", message);
     if (treeDirty) {
       broadcast.setNewTreeVersion(Long.toString(treeVersion));
-      vertx.eventBus().send("participants.broadcast", new JsonObject().putString(
+      vertx.eventBus().send("participants.broadcast", new JsonObject().put(
           Participants.PAYLOAD_TAG, broadcast.toJson()));
     }
   }

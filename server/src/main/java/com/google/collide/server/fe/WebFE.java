@@ -14,33 +14,41 @@
 
 package com.google.collide.server.fe;
 
+import com.google.collide.dto.shared.JsonFieldConstants;
+import com.google.collide.plugin.shared.CompiledDirectory;
+import com.google.collide.server.maven.MavenResources;
+import com.google.collide.server.shared.BusModBase;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import io.vertx.core.Handler;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.net.JksOptions;
+import io.vertx.core.net.NetSocket;
+import io.vertx.core.shareddata.LocalMap;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.sockjs.BridgeOptions;
+import io.vertx.ext.web.handler.sockjs.PermittedOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
+import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
+import org.apache.http.HttpStatus;
+import xapi.log.X_Log;
+import xapi.util.api.Pointer;
+
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Collectors;
 
-import org.apache.commons.httpclient.HttpStatus;
-import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.http.HttpServer;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.http.HttpServerResponse;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-import org.vertx.java.core.net.NetSocket;
-import org.vertx.java.core.sockjs.SockJSServer;
-
-import xapi.log.X_Log;
-import xapi.util.api.Pointer;
-
-import com.google.collide.dto.shared.JsonFieldConstants;
-import com.google.collide.plugin.shared.CompiledDirectory;
-import com.google.collide.server.maven.MavenResources;
+//import org.apache.commons.httpclient.HttpStatus;
+//import org.jboss.netty.handler.codec.http.QueryStringDecoder;
 //import com.google.collide.plugin.server.gwt.GwtCompiledDirectory;
 
 /**
@@ -59,6 +67,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   private static final String BUNDLED_STATIC_FILES_PATH = "/static/";
   private static final String AUTH_PATH = "/_auth";
   private static final String CODESERVER_FRAGMENT = "/code/";
+  private static final String EVENTBUS_FRAGMENT = "/eventbus";
   private static final String SOURCEMAP_PATH = "/sourcemaps/";
 
   private static final String AUTH_COOKIE_NAME = "_COLLIDE_SESSIONID";
@@ -97,34 +106,52 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
    * Your project / maven configuration file.
    */
   private MavenResources config;
+  private SockJSHandler sjsServer;
+  private Router router;
 
   @Override
   public void start() {
     super.start();
 
-    HttpServer server = vertx.createHttpServer();
-    server.requestHandler(this);
+    final HttpServerOptions opts = new HttpServerOptions();
 
     // Configure SSL.
     if (getOptionalBooleanConfig("ssl", false)) {
-      server.setSSL(true)
-          .setKeyStorePassword(getOptionalStringConfig("keyStorePassword", "password"))
-          .setKeyStorePath(getOptionalStringConfig("keyStorePath", "server-keystore.jks"));
+      opts.setSsl(true)
+          .setLogActivity(true)
+          .setKeyStoreOptions(new JksOptions()
+            .setPassword(getOptionalStringConfig("keyStorePassword", "password"))
+            .setPath(getOptionalStringConfig("keyStorePath", "server-keystore.jks"))
+          );
     }
+
 
     // Configure the event bus bridge.
     boolean bridge = getOptionalBooleanConfig("bridge", false);
     if (bridge) {
-      SockJSServer sjsServer = vertx.createSockJSServer(server);
+
+      final SockJSHandlerOptions sockOpts = new SockJSHandlerOptions()
+//            .setLibraryURL(getOptionalStringConfig("suffix", "") + "/eventbus")
+          ;
       JsonArray inboundPermitted = getOptionalArrayConfig("in_permitted", new JsonArray());
       JsonArray outboundPermitted = getOptionalArrayConfig("out_permitted", new JsonArray());
-      sjsServer.bridge(
-          getOptionalObjectConfig("sjs_config", new JsonObject().putString("prefix",
-            getOptionalStringConfig("suffix", "")+
-            "/eventbus")),
-          inboundPermitted, outboundPermitted, getOptionalLongConfig("auth_timeout", 5 * 60 * 1000),
-          getOptionalStringConfig("auth_address", "participants.authorise"));
+      final BridgeOptions bridgeOpts = new BridgeOptions();
+      bridgeOpts.setInboundPermitted(toOpts(inboundPermitted));
+      bridgeOpts.setOutboundPermitted(toOpts(outboundPermitted));
+
+      sjsServer = SockJSHandler.create(vertx, sockOpts);
+      sjsServer.bridge(bridgeOpts);
+
+      router = Router.router(vertx);
+//
+      router.route("/eventbus/*").handler(sjsServer);
+
+
+//          getOptionalStringConfig("auth_address", "participants.authorise"));
     }
+
+    HttpServer server = vertx.createHttpServer(opts);
+    server.requestHandler(this);
 
     String bundledStaticFiles = getMandatoryStringConfig("staticFiles");
     String webRoot = getMandatoryStringConfig("webRoot");
@@ -142,22 +169,26 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     System.out.println("Connecting to "+host+":"+port);
     server.listen(port, host);
 
-    vertx.eventBus().registerHandler("frontend.symlink", new Handler<Message<JsonObject>>() {
-      @Override
-      public void handle(Message<JsonObject> event) {
+    vertx.eventBus().<JsonObject>consumer("frontend.symlink", event -> {
         //TODO: require these messages to be signed by code private to the server
         try{
-        String dto = event.body.getString("dto");
+        String dto = event.body().getString("dto");
         X_Log.trace("Symlinking",dto);
         CompiledDirectory dir = CompiledDirectory.fromString(dto);
-        vertx.sharedData().getMap("symlinks").put(
+        vertx.sharedData().getLocalMap("symlinks").put(
             dir.getUri()
             , dir);
         }catch (Exception e) {
           e.printStackTrace();
         }
-      }
     });
+  }
+
+  private List<PermittedOptions> toOpts(JsonArray inboundPermitted) {
+    return ((List<?>)inboundPermitted.getList())
+        .stream()
+        .map(name->new PermittedOptions().setAddressRegex(String.valueOf(name)))
+        .collect(Collectors.toList());
   }
 
   private class SymlinkRequest{
@@ -173,15 +204,19 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
   @Override
   public void handle(HttpServerRequest req) {
-    if (req.path.equals("/") || req.path.equals("/demo/")) {
+    if (req.path().equals("/") || req.path().equals("/demo/")) {
       //send login page
       authAndWriteHostPage(req);
       return;
     }
-    String path = req.path.replace("/demo/", "/");
+    String path = req.path().replace("/demo/", "/");
     if (path.contains("..")) {
       //sanitize hack attempts
       sendStatusCode(req, 404);
+    } else if (path.startsWith(EVENTBUS_FRAGMENT)) {
+      System.out.println("Sending to event bus: " + router.get(req.path()));
+      router.accept(req);
+//      req.upgrade()
     } else if (path.startsWith(CODESERVER_FRAGMENT)) {
       sendToCodeServer(req);//listen on http so we can send compile requests without sockets hooked up.
     } else{
@@ -196,7 +231,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         SymlinkRequest request = new SymlinkRequest();
         request.urlFragment = path.substring(WEBROOT_PATH.length());
         request.defaultTarget = webRootPrefix;
-        request.response = req.response;
+        request.response = req.response();
         SymlinkResponse response = processSymlink(request);
         if (response.handled)
           return;
@@ -208,7 +243,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         // dump headers in case we can pull in the permutation here...
         request.userAgent = req.headers().get("User-Agent");
         request.defaultTarget = webRootPrefix;
-        request.response = req.response;
+        request.response = req.response();
         SymlinkResponse response = processSymlink(request);
         if (response.handled)
           return;
@@ -219,7 +254,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         SymlinkRequest request = new SymlinkRequest();
         request.urlFragment = file.get();
         request.defaultTarget = bundledStaticFilesPrefix;
-        request.response = req.response;
+        request.response = req.response();
         SymlinkResponse response = processSymlink(request);
         if (response.handled)
           return;
@@ -236,7 +271,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     SymlinkResponse response = new SymlinkResponse();
 
 
-    ConcurrentMap<String, Object> map = vertx.sharedData().getMap("symlinks");
+    LocalMap<String, Object> map = vertx.sharedData().getLocalMap("symlinks");
     Set<String> keys= map.keySet();
     String uri = request.urlFragment;
 //    System.out.println("Dereferencing request uri: "+uri+" against "+keys);
@@ -261,43 +296,35 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
                   (int) link.getClass().getMethod("getPort").invoke(link);
               final String cls = uri;
               final Pointer<Boolean> success = new Pointer<Boolean>(false);
-              vertx.createNetClient().connect(port, "localhost", new Handler<NetSocket>() {
-                public void handle(NetSocket event) {
-                  if (cls.endsWith("json")) {
-                    // requesting sourcemap file
-                    request.response.headers().put("Content-Type","application/json");
-                    event.write(cls+"\n" + "User-Agent: "+request.userAgent);
-                  } else {
-                    // requesting source file
-                    // chop off the module name from cls
-                    event.write(cls.substring(1+cls.indexOf('/',SOURCEMAP_PATH.length())));
-                    request.response.headers().put("Content-Type","text/plain");
-                  }
+              vertx.createNetClient().connect(port, "localhost",
+                  async -> {
+                  final NetSocket event = async.result();
+                    if (cls.endsWith("json")) {
+                      // requesting sourcemap file
+                      request.response.headers().set("Content-Type","application/json");
+                      event.write(cls+"\n" + "User-Agent: "+request.userAgent);
+                    } else {
+                      // requesting source file
+                      // chop off the module name from cls
+                      event.write(cls.substring(1+cls.indexOf('/',SOURCEMAP_PATH.length())));
+                      request.response.headers().set("Content-Type","text/plain");
+                    }
 
-                  final Buffer buf = new Buffer(4096);
-                  event.dataHandler(new Handler<Buffer>() {
-                    @Override
-                    public void handle(Buffer event) {
-                      buf.appendBuffer(event);
-                    }
-                  });
-                  event.closedHandler(new Handler<Void>() {
-                    @Override
-                    public void handle(Void event) {
-                      int len = buf.length();
-                      if (len > 0) {
-                        success.set(true);
-                        request.response.putHeader("Content-Length", buf.length());
-                        request.response.putHeader("Content-Type",
-                          cls.endsWith("json") ? "application/json" : "text/plain");
-                        request.response.end(buf);
-                        synchronized (success) {
-                          success.notify();
+                    final Buffer buf = Buffer.buffer(4096);
+                    event.handler(buf::appendBuffer);
+                    event.closeHandler(ev-> {
+                        int len = buf.length();
+                        if (len > 0) {
+                          success.set(true);
+                          request.response.putHeader("Content-Length", Integer.toString(buf.length()));
+                          request.response.putHeader("Content-Type",
+                            cls.endsWith("json") ? "application/json" : "text/plain");
+                          request.response.end(buf);
+                          synchronized (success) {
+                            success.notify();
+                          }
                         }
-                      }
-                    }
-                  });
-                };
+                    });
               });
               synchronized (success) {
                 success.wait(5000);
@@ -423,7 +450,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
    * Writes cookies for the session ID that is posted to it.
    */
   private void writeSessionCookie(final HttpServerRequest req) {
-    if (!"POST".equals(req.method)) {
+    if (!"POST".equals(req.method().name())) {
       sendStatusCode(req, HttpStatus.SC_METHOD_NOT_ALLOWED);
       return;
     }
@@ -435,7 +462,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         String contentType = req.headers().get("Content-Type");
         if (String.valueOf(contentType).startsWith("application/x-www-form-urlencoded")) {
           QueryStringDecoder qsd = new QueryStringDecoder(buff.toString(), false);
-          Map<String, List<String>> params = qsd.getParameters();
+          Map<String, List<String>> params = qsd.parameters();
 
           List<String> loginSessionIdList = params.get(JsonFieldConstants.SESSION_USER_ID);
           List<String> usernameList = params.get(JsonFieldConstants.SESSION_USERNAME);
@@ -449,21 +476,20 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
           final String sessionId = loginSessionIdList.get(0);
           final String username = usernameList.get(0);
           X_Log.info("Writing session cookie; ",username," / ",sessionId);
-          vertx.eventBus().send("participants.authorise",
-              new JsonObject().putString("sessionID", sessionId).putString("username", username),
-              new Handler<Message<JsonObject>>() {
-                  @Override
-                public void handle(Message<JsonObject> event) {
-                  X_Log.trace("Writing session cookie; ",event.body);
-                  if ("ok".equals(event.body.getString("status"))) {
-                    req.response.headers().put("Set-Cookie",
-                        AUTH_COOKIE_NAME + "=" + sessionId + "__" + username + "; HttpOnly");
-                    sendStatusCode(req, HttpStatus.SC_OK);
-                  } else {
-                    sendStatusCode(req, HttpStatus.SC_FORBIDDEN);
-                  }
-                }
-              });
+          vertx.eventBus().<JsonObject>send("participants.authorise",
+              new JsonObject().put("sessionID", sessionId).put("username", username),
+              async -> {
+                final Message<JsonObject> event = async.result();
+              X_Log.trace("Writing session cookie; ",event.body());
+              if ("ok".equals(event.body().getString("status"))) {
+                req.response().headers().set("Set-Cookie",
+                    AUTH_COOKIE_NAME + "=" + sessionId + "__" + username + "; HttpOnly");
+                sendStatusCode(req, HttpStatus.SC_OK);
+              } else {
+                sendStatusCode(req, HttpStatus.SC_FORBIDDEN);
+              }
+            }
+          );
         } else {
           sendRedirect(req, "/static/login.html");
         }
@@ -480,38 +506,36 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
     final String sessionId = cookieParts[0];
     String username = cookieParts[1];
-    final HttpServerResponse response = req.response;
-    vertx.eventBus().send("participants.authorise", new JsonObject().putString(
-        "sessionID", sessionId).putString("username", username).putBoolean("createClient", true),
-        new Handler<Message<JsonObject>>() {
-            @Override
-          public void handle(Message<JsonObject> event) {
-            if ("ok".equals(event.body.getString("status"))) {
-              File hostPageBodyFile = new File(bundledStaticFilesPrefix + "HostPage.html.body");
-              String activeClientId = event.body.getString("activeClient");
-              String username = event.body.getString("username");
-              if (activeClientId == null || username == null) {
-                sendStatusCode(req, HttpStatus.SC_INTERNAL_SERVER_ERROR);
-                return;
-              }
-              String path = req.path;
-              String module = "Collide";
-              
-              if (path.endsWith("demo/")) {
-                path = path.replace("/demo", "");
-                module = "Demo";
-              }
-              String responseText = getHostPage(path, module, sessionId, username, activeClientId);
-              response.statusCode = HttpStatus.SC_OK;
-              byte[] page = responseText.getBytes(Charset.forName("UTF-8"));
-              response.putHeader("Content-Length", page.length);
-              response.putHeader("Content-Type", "text/html");
-              response.end(new Buffer(page));
-            } else {
-              sendRedirect(req, "/static/login.html");
-            }
+    final HttpServerResponse response = req.response();
+    vertx.eventBus().<JsonObject>send("participants.authorise", new JsonObject().put(
+        "sessionID", sessionId).put("username", username).put("createClient", true),
+        async -> {
+          final Message<JsonObject> event = async.result();
+        if ("ok".equals(event.body().getString("status"))) {
+          String activeClientId = event.body().getString("activeClient");
+          String username1 = event.body().getString("username");
+          if (activeClientId == null || username1 == null) {
+            sendStatusCode(req, HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return;
           }
-        });
+          String path = req.path();
+          String module = "Collide";
+
+          if (path.endsWith("demo/")) {
+            path = path.replace("/demo", "");
+            module = "Demo";
+          }
+          String responseText = getHostPage(path, module, sessionId, username1, activeClientId);
+          response.setStatusCode(HttpStatus.SC_OK);
+          byte[] page = responseText.getBytes(Charset.forName("UTF-8"));
+          response.putHeader("Content-Length", Integer.toString(page.length));
+          response.putHeader("Content-Type", "text/html");
+          response.end(Buffer.buffer(page));
+        } else {
+          sendRedirect(req, "/static/login.html");
+        }
+      }
+    );
   }
 
   /**
@@ -526,14 +550,14 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     sb.append("<title>CollIDE - Collaborative Development</title>\n");
     if (path.endsWith("/"))
       path = path.substring(0, path.length()-1);
-    if (module.indexOf('/') == -1)
-      module = module + '/' + module;
+//    if (module.indexOf('/') == -1)
+//      module = module + '/' + module;
     sb.append("<script src=\"" + path +"/static/sockjs-0.2.1.min.js\"></script>\n");
     sb.append("<script src=\"" + path+"/static/vertxbus.js\"></script>\n");
     sb.append("<script src=\"" +path+"/static/" + module + "." +
     		"nocache.js\"></script>\n");
-    
-    
+
+
     // Embed the bootstrap session object.
     emitBootstrapJson(sb, userId, username, activeClientId);
     emitDefaultStyles(sb);
@@ -559,7 +583,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         .append(JsonFieldConstants.SESSION_ACTIVE_ID).append(": \"").append(activeClientId)
         .append("\",\n").append(JsonFieldConstants.SESSION_USERNAME).append(": \"")
         .append(username).append("\"\n};\n")
-        
+
         .append("window['collide'] = {\n")
         .append("name: 'Guest', module: 'collide.demo.Child', open: '/demo/src/main/java" +
         		"/collide/demo/child/ChildModule.java' };")
@@ -567,18 +591,18 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   }
 
   private void sendRedirect(HttpServerRequest req, String url) {
-    if (req.path.startsWith("/collide")) {
+    if (req.path().startsWith("/collide")) {
       url = "/collide" + url;
       url = url.replace("login.html", "login_collide.html");
-      System.out.println("Got it"+req.path);
+      System.out.println("Got it"+req.path());
     }
-    System.out.println(req.path);
-    req.response.putHeader("Location", url);
+    System.out.println(req.path());
+    req.response().putHeader("Location", url);
     sendStatusCode(req, HttpStatus.SC_MOVED_TEMPORARILY);
   }
 
   private void sendStatusCode(HttpServerRequest req, int statusCode) {
-    req.response.statusCode = statusCode;
-    req.response.end();
+    req.response().setStatusCode(statusCode);
+    req.response().end();
   }
 }

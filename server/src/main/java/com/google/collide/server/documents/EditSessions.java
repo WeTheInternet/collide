@@ -14,6 +14,30 @@
 
 package com.google.collide.server.documents;
 
+import com.google.collide.dto.DocOp;
+import com.google.collide.dto.DocumentSelection;
+import com.google.collide.dto.FileContents;
+import com.google.collide.dto.FileContents.ContentType;
+import com.google.collide.dto.server.DtoServerImpls.*;
+import com.google.collide.json.server.JsonArrayListAdapter;
+import com.google.collide.server.documents.VersionedDocument.AppliedDocOp;
+import com.google.collide.server.documents.VersionedDocument.DocumentOperationException;
+import com.google.collide.server.participants.Participants;
+import com.google.collide.server.shared.BusModBase;
+import com.google.collide.server.shared.util.Dto;
+import com.google.collide.shared.MimeTypes;
+import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,47 +49,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonArray;
-import org.vertx.java.core.json.JsonObject;
-
-import com.google.collide.dto.DocOp;
-import com.google.collide.dto.DocumentSelection;
-import com.google.collide.dto.FileContents;
-import com.google.collide.dto.FileContents.ContentType;
-import com.google.collide.dto.server.DtoServerImpls.ClientToServerDocOpImpl;
-import com.google.collide.dto.server.DtoServerImpls.DocOpComponentImpl;
-import com.google.collide.dto.server.DtoServerImpls.DocOpImpl;
-import com.google.collide.dto.server.DtoServerImpls.DocumentSelectionImpl;
-import com.google.collide.dto.server.DtoServerImpls.FileContentsImpl;
-import com.google.collide.dto.server.DtoServerImpls.GetFileContentsImpl;
-import com.google.collide.dto.server.DtoServerImpls.GetFileContentsResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.RecoverFromMissedDocOpsImpl;
-import com.google.collide.dto.server.DtoServerImpls.RecoverFromMissedDocOpsResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.ServerToClientDocOpImpl;
-import com.google.collide.dto.server.DtoServerImpls.ServerToClientDocOpsImpl;
-import com.google.collide.json.server.JsonArrayListAdapter;
-import com.google.collide.server.documents.VersionedDocument.AppliedDocOp;
-import com.google.collide.server.documents.VersionedDocument.DocumentOperationException;
-import com.google.collide.server.participants.Participants;
-import com.google.collide.server.shared.util.Dto;
-import com.google.collide.shared.MimeTypes;
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 /**
  * Backend service that maintains in-memory edit sessions for documents that are being
  * collaboratively edited.
- * 
+ *
  * All text mutations and document related changes are handled by this service.
- * 
+ *
  */
 public class EditSessions extends BusModBase {
   private static final Gson gson = new GsonBuilder().registerTypeAdapter(
@@ -73,7 +62,7 @@ public class EditSessions extends BusModBase {
 
   /**
    * Receives Document operations and applies them to the corresponding FileEditSession.
-   * 
+   *
    *  If there is no associated FileEditSession, we need log an error since that probably means we
    * have a stale client.
    */
@@ -100,7 +89,7 @@ public class EditSessions extends BusModBase {
     }
 
     private List<DocOp> deserializeDocOps(List<String> serializedDocOps) {
-      List<DocOp> docOps = new ArrayList<DocOp>();     
+      List<DocOp> docOps = new ArrayList<DocOp>();
       for (String serializedDocOp : serializedDocOps) {
         docOps.add(gson.fromJson(serializedDocOp, DocOpImpl.class));
       }
@@ -139,8 +128,8 @@ public class EditSessions extends BusModBase {
         // Broadcast the applied DocOp all the participants, ignoring the sender.
         ServerToClientDocOpsImpl broadcastedDocOps =
             ServerToClientDocOpsImpl.make().setDocOps(appliedDocOpsList);
-        vertx.eventBus().send("participants.broadcast", new JsonObject().putString(
-            Participants.OMIT_SENDER_TAG, authorId).putString(
+        vertx.eventBus().send("participants.broadcast", new JsonObject().put(
+            Participants.OMIT_SENDER_TAG, authorId).put(
             "payload", broadcastedDocOps.toJson()));
         return broadcastedDocOps;
       } catch (DocumentOperationException e) {
@@ -225,20 +214,18 @@ public class EditSessions extends BusModBase {
       final GetFileContentsImpl request = GetFileContentsImpl.fromJsonString(Dto.get(message));
 
       // Resolve the resource IDs from the requested path.
-      vertx.eventBus().send("tree.getResourceIds",
-          new JsonObject().putArray("paths", new JsonArray().addString(request.getPath())),
-          new Handler<Message<JsonObject>>() {
-
+      vertx.eventBus().<JsonObject>send("tree.getResourceIds",
+          new JsonObject().put("paths", new JsonArray().add(request.getPath())),
+          async -> {
             /**
              * Sends the contents of a file to the requester. The files will be served out of the
              * FileEditSession if the contents are being edited, otherwise they will simply be
              * served from disk.
              */
-              @Override
-            public void handle(Message<JsonObject> event) {
-              JsonArray resourceIdArr = event.body.getArray("resourceIds");
-              Object[] resourceIds = resourceIdArr.toArray();
-              String resourceId = (String) resourceIds[0];
+              Message<JsonObject> event = async.result();
+              JsonArray resourceIdArr = event.body().getJsonArray("resourceIds");
+              List<String> resourceIds = resourceIdArr.getList();
+              String resourceId = resourceIds.get(0);
 
               String currentPath = stripLeadingSlash(request.getPath());
               FileEditSession editSession = editSessions.get(resourceId);
@@ -269,11 +256,11 @@ public class EditSessions extends BusModBase {
                   // Provision a new edit session and fall through.
                   editSession =
                       new FileEditSessionImpl(resourceId, currentPath, text, null, logger);
-                  editSessions.put(resourceId, editSession);                
+                  editSessions.put(resourceId, editSession);
 
                   // Update the last opened file.
                   vertx.eventBus().send("workspace.setLastOpenedFile",
-                      new JsonObject().putString("resourceId", resourceId));
+                      new JsonObject().put("resourceId", resourceId));
                 } else {
 
                   // Just send the contents as they were read from disk and return.
@@ -284,7 +271,7 @@ public class EditSessions extends BusModBase {
                   sendContent(message, currentPath, fileContentsDto, true);
                   return;
                 }
-              }              
+              }
 
               // Populate file contents response Dto with information from the edit session.
               fileContentsDto.setFileEditSessionKey(resourceId)
@@ -293,8 +280,7 @@ public class EditSessions extends BusModBase {
 
               // Extract the contents from the edit session before sending.
               sendContent(message, currentPath, fileContentsDto, true);
-            }
-          });
+           });
     }
   }
 
@@ -323,43 +309,42 @@ public class EditSessions extends BusModBase {
         String resourceId = entry.getKey();
         FileEditSession editSession = entry.getValue();
         if (editSession.hasChanges()) {
-          resourceIds.addString(resourceId);
+          resourceIds.add(resourceId);
         }
       }
 
       // Resolve the current paths of opened files in case they have been moved.
-      eb.send("tree.getCurrentPaths", new JsonObject().putArray("resourceIds", resourceIds),
-          new Handler<Message<JsonObject>>() {
-              @Override
-            public void handle(Message<JsonObject> event) {
-              JsonArray currentPaths = event.body.getArray("paths");
-              Iterator<Object> pathIter = currentPaths.iterator();
-              Iterator<Object> resourceIter = resourceIds.iterator();
+      eb.<JsonObject>send("tree.getCurrentPaths", new JsonObject().put("resourceIds", resourceIds),
+          message -> {
+          final Message<JsonObject> event = message.result();
+          JsonArray currentPaths = event.body().getJsonArray("paths");
+          Iterator<Object> pathIter = currentPaths.iterator();
+          Iterator<Object> resourceIter = resourceIds.iterator();
 
-              if (currentPaths.size() != resourceIds.size()) {
-                logger.error(String.format(
-                    "Received [%d] paths in response to a request specifying [%d] resourceIds",
-                    currentPaths.size(), resourceIds.size()));
-              }
+          if (currentPaths.size() != resourceIds.size()) {
+            logger.error(String.format(
+                "Received [%d] paths in response to a request specifying [%d] resourceIds",
+                currentPaths.size(), resourceIds.size()));
+          }
 
-              // Iterate through all the resolved paths and save the files to disk.
-              while (pathIter.hasNext()) {
-                String path = (String) pathIter.next();
-                String resourceId = (String) resourceIter.next();
+          // Iterate through all the resolved paths and save the files to disk.
+          while (pathIter.hasNext()) {
+            String path = (String) pathIter.next();
+            String resourceId = (String) resourceIter.next();
 
-                if (path != null) {
-                  FileEditSession editSession = editSessions.get(resourceId);
-                  if (editSession != null) {
-                    try {
-                      editSession.save(stripLeadingSlash(path));
-                    } catch (IOException e) {
-                      logger.error(String.format("Failed to save file [%s]", path), e);
-                    }
-                  }
+            if (path != null) {
+              FileEditSession editSession = editSessions.get(resourceId);
+              if (editSession != null) {
+                try {
+                  editSession.save(stripLeadingSlash(path));
+                } catch (IOException e) {
+                  logger.error(String.format("Failed to save file [%s]", path), e);
                 }
               }
             }
-          });
+          }
+        }
+      );
     }
   }
 
@@ -369,7 +354,7 @@ public class EditSessions extends BusModBase {
   class EditSessionRemover implements Handler<Message<JsonObject>> {
     @Override
     public void handle(Message<JsonObject> message) {
-      String resourceId = message.body.getString("resourceId");
+      String resourceId = message.body().getString("resourceId");
       if (resourceId != null) {
         editSessions.remove(resourceId);
       }
@@ -386,14 +371,14 @@ public class EditSessions extends BusModBase {
   public void start() {
     super.start();
     this.addressBase = getOptionalStringConfig("address", "documents");
-    vertx.eventBus().registerHandler(addressBase + ".mutate", documentMutator);
-    vertx.eventBus().registerHandler(
+    vertx.eventBus().consumer(addressBase + ".mutate", documentMutator);
+    vertx.eventBus().consumer(
         addressBase + ".createEditSession", new EditSessionCreator(true));
-    vertx.eventBus().registerHandler(
+    vertx.eventBus().consumer(
         addressBase + ".getFileContents", new EditSessionCreator(false));
-    vertx.eventBus().registerHandler(addressBase + ".saveAll", fileSaver);
-    vertx.eventBus().registerHandler(addressBase + ".removeEditSession", new EditSessionRemover());
-    vertx.eventBus().registerHandler(addressBase + ".recoverMissedDocop", new DocOpRecoverer());
+    vertx.eventBus().consumer(addressBase + ".saveAll", fileSaver);
+    vertx.eventBus().consumer(addressBase + ".removeEditSession", new EditSessionRemover());
+    vertx.eventBus().consumer(addressBase + ".recoverMissedDocop", new DocOpRecoverer());
 
     // TODO: Handle content changes on disk and synthesize a docop to apply to the in-memory edit
     // session, and broadcast to all clients.
@@ -413,7 +398,7 @@ public class EditSessions extends BusModBase {
    * assume that all paths are relative to what our local view of '.' is on the file system. We
    * simply strip the leading slash.
    */
-  private String stripLeadingSlash(String relative) {
+  private static String stripLeadingSlash(String relative) {
     if (relative == null) {
       return null;
     } else {

@@ -1,7 +1,5 @@
 package collide.demo.view;
 
-import xapi.log.X_Log;
-import xapi.util.api.RemovalHandler;
 import collide.client.util.Elements;
 import collide.gwtc.GwtCompileStatus;
 import collide.gwtc.GwtcController;
@@ -9,7 +7,8 @@ import collide.gwtc.ui.GwtCompilePlace;
 import collide.gwtc.ui.GwtCompilerShell;
 import collide.gwtc.ui.GwtStatusListener;
 import collide.gwtc.view.GwtcModuleControlView;
-
+import collide.plugin.client.standalone.StandaloneConstants;
+import collide.plugin.client.terminal.TerminalLogView;
 import com.google.collide.client.code.FileContent;
 import com.google.collide.client.search.awesomebox.host.AwesomeBoxComponentHost;
 import com.google.collide.client.ui.panel.MultiPanel;
@@ -24,13 +23,6 @@ import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.client.DtoClientImpls.GwtRecompileImpl;
 import com.google.collide.mvp.ShowableUiComponent;
 import com.google.collide.mvp.UiComponent;
-import com.google.collide.plugin.client.standalone.StandaloneConstants;
-import com.google.collide.plugin.client.terminal.TerminalLogView;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Window;
-
 import elemental.client.Browser;
 import elemental.dom.Document;
 import elemental.dom.Element;
@@ -38,6 +30,13 @@ import elemental.html.DivElement;
 import elemental.html.IFrameElement;
 import elemental.util.Collections;
 import elemental.util.MapFromStringTo;
+import xapi.log.X_Log;
+import xapi.util.api.RemovalHandler;
+
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 
 class ControllerView extends com.google.collide.client.ui.panel.MultiPanel.View<PanelModel>
 {
@@ -61,35 +60,35 @@ class ControllerView extends com.google.collide.client.ui.panel.MultiPanel.View<
   }
 }
 
-public class DemoView 
+public class DemoView
 extends MultiPanel<PanelModel, ControllerView>
 {
 
-  
+
   private Element browser, editor, compiler, headerEl;
   private ShowableUiComponent<?> bar;
   private final SplitPanel middleBar;
   private final SplitPanel bottomBar;
   private final SplitPanel verticalSplit;
   private Header header;
-  
+
   public DemoView() {
     super(new ControllerView(findBody(), true));
-    
+
     middleBar = new SplitPanel(false);
     bottomBar = new SplitPanel(false);
     verticalSplit = new SplitPanel(true);
-    
+
     headerEl = Browser.getDocument().createDivElement();
     headerEl.getStyle().setHeight(58, "px");
     Browser.getDocument().getBody().appendChild(headerEl);
     Element el = getView().getElement();
     el.getStyle().setTop(58, "px");
-    
+
     verticalSplit.addChild(middleBar.getElement(), 0.6);
     verticalSplit.addChild(bottomBar.getElement(), 0.4);
     el.appendChild(verticalSplit.getElement());
-    
+
     bar = new ShowableUiComponent<View<?>>() {
       // We aren't using the toolbar just yet.
       @Override
@@ -99,21 +98,21 @@ extends MultiPanel<PanelModel, ControllerView>
       public void show() {
       }
     };
-    
-    
+
+
     browser = createElement(-1, 350);
     browser.setId(StandaloneConstants.FILES_PANEL);
-    
+
     editor = createElement(-1, -1);
     editor.setId(StandaloneConstants.WORKSPACE_PANEL);
 
     compiler = Browser.getDocument().createDivElement();
     bottomBar.addChild(compiler, 650);
-    
+
     attachHandlers();
-    
+
   }
-  
+
   protected void attachHandlers() {
     Window.addResizeHandler(new ResizeHandler() {
       @Override
@@ -166,12 +165,12 @@ extends MultiPanel<PanelModel, ControllerView>
   }
 
   FileContent file;
-  
+
   @Override
   public void setContent(PanelContent panelContent) {
     setContent(panelContent, null);
   }
-  
+
   @Override
   public void setContent(PanelContent panelContent, PanelModel settings) {
     X_Log.info("PanelController content set",panelContent);
@@ -184,13 +183,13 @@ extends MultiPanel<PanelModel, ControllerView>
           file.onContentDestroyed();
       }
       file = (FileContent)panelContent;
-      
+
       // Ideally, we would reuse our uibinder instead of just clearing this
       editor.getFirstChildElement().getLastElementChild().setInnerHTML("");
       editor.getFirstChildElement().getLastElementChild().appendChild(file.getContentElement());
     } else if (panelContent instanceof TerminalLogView) {
       // TODO use a tab panel wrapper for log viewers
-      
+
       bottomBar.addChild(panelContent.getContentElement(), 500, 1);
     } else if (panelContent instanceof GwtCompilerShell){
 //      Element el = wrapChild(((UiComponent<?>)panelContent).getView().getElement());
@@ -204,7 +203,7 @@ extends MultiPanel<PanelModel, ControllerView>
     }
     panelContent.onContentDisplayed();
   }
-  
+
   public void minimizeFile(final PathUtil path) {
     DivElement el = Browser.getDocument().createDivElement();
   }
@@ -220,12 +219,12 @@ extends MultiPanel<PanelModel, ControllerView>
     Type logLevel = Type.ALL;
     public GwtcModuleControlView header;
   }
-  
+
   private final MapFromStringTo<GwtCompileState> compileStates = Collections.mapFromStringTo();
   private GwtCompilerShell gwt;
-  
+
   public RemovalHandler openIframe(final String id, final String url) {
-    
+
     final GwtCompileState gwtc = getCompileState(id);
     IFrameElement iframe = gwtc.el;
     if (iframe == null) {
@@ -243,7 +242,7 @@ extends MultiPanel<PanelModel, ControllerView>
       iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
       iframe.setSrc(url);
       sizer.appendChild(iframe);
-      
+
       final RemovalHandler[] remover = new RemovalHandler[1];
       gwtc.header = GwtcModuleControlView.create(new GwtcController() {
         @Override
@@ -263,7 +262,7 @@ extends MultiPanel<PanelModel, ControllerView>
           gwtc.el.setSrc(url);
         }
       });
-      
+
       Element wrapper = gwtc.header.getElement();
       gwtc.header.setHeader(id);
       wrapper.appendChild(sizer);
@@ -304,7 +303,7 @@ extends MultiPanel<PanelModel, ControllerView>
     this.gwt = gwt;
 
     gwt.addCompileStateListener(new GwtStatusListener() {
-      
+
       @Override
       @SuppressWarnings("incomplete-switch")
       public void onLogLevelChange(String module, Type level) {
@@ -325,7 +324,7 @@ extends MultiPanel<PanelModel, ControllerView>
             break;
         }
       }
-      
+
       @Override
       public void onGwtStatusUpdate(CompileResponse status) {
         GwtCompileState gwtc = getCompileState(status.getModule());

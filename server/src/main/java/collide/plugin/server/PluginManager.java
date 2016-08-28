@@ -1,11 +1,11 @@
-package com.google.collide.plugin.server;
+package collide.plugin.server;
+
+import com.google.collide.server.shared.BusModBase;
+import io.vertx.core.json.JsonArray;
 
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.vertx.java.busmods.BusModBase;
-import org.vertx.java.core.json.JsonArray;
 
 public class PluginManager extends BusModBase{
 
@@ -16,7 +16,7 @@ public class PluginManager extends BusModBase{
   @Override
   public void start() {
     super.start();
-    
+
     //now register all requested plugins
     this.plugins = getOptionalArrayConfig("plugins", new JsonArray());
     Iterator<Object> iter = plugins.iterator();

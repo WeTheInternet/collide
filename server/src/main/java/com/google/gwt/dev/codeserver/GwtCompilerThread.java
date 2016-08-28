@@ -1,5 +1,25 @@
 package com.google.gwt.dev.codeserver;
 
+import collide.plugin.server.AbstractCompileThread;
+import collide.plugin.server.IsCompileThread;
+import collide.plugin.server.ReflectionChannelTreeLogger;
+import collide.plugin.server.gwt.CompilerBusyException;
+import com.google.collide.dto.CompileResponse.CompilerState;
+import com.google.collide.dto.GwtRecompile;
+import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
+import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
+import com.google.collide.plugin.shared.CompiledDirectory;
+import com.google.collide.server.shared.util.ReflectionChannel;
+import com.google.collide.shared.util.DebugUtil;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.net.NetSocket;
+import xapi.log.X_Log;
+import xapi.time.X_Time;
+
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,37 +31,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.net.NetSocket;
-
-import xapi.log.X_Log;
-import xapi.time.X_Time;
-
-import com.google.collide.dto.CompileResponse.CompilerState;
-import com.google.collide.dto.GwtRecompile;
-import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
-import com.google.collide.plugin.server.AbstractCompileThread;
-import com.google.collide.plugin.server.IsCompileThread;
-import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
-import com.google.collide.plugin.server.gwt.CompilerBusyException;
-import com.google.collide.plugin.shared.CompiledDirectory;
-import com.google.collide.server.shared.util.ReflectionChannel;
-import com.google.collide.shared.util.DebugUtil;
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
-
 public final class GwtCompilerThread extends AbstractCompileThread<GwtRecompile>
-implements IsCompileThread <GwtRecompile> {
+implements IsCompileThread<GwtRecompile> {
 
   public GwtCompilerThread() {
   }
   public GwtCompilerThread(String module) {
     messageKey = this.module = module;
   }
-  
+
   private final HashMap<String, CompiledDirectory> modules = new HashMap<>();
   ReflectionChannelTreeLogger logger;
   private boolean started, recompile;
@@ -53,7 +51,7 @@ implements IsCompileThread <GwtRecompile> {
   RecompileController controller;
   private String module;
   private String messageKey;
-  
+
   // these are native objects, created using reflection
   @Override
   public void run() {
@@ -126,11 +124,11 @@ implements IsCompileThread <GwtRecompile> {
 
         // reset interrupted flag so we loop back to the beginning
         Thread.interrupted();
-        
+
       } catch (Throwable e) {
         System.out.println("Exception caught...");
         logger.log(Type.ERROR, "Error encountered during compile : " + e);
-        
+
         Throwable cause = e;
         while (cause != null) {
           for (StackTraceElement trace : cause.getStackTrace())
@@ -324,10 +322,10 @@ implements IsCompileThread <GwtRecompile> {
   private void print(final NetSocket event, String out) throws IOException {
     stream(event, new ByteArrayInputStream(out.getBytes()));
   }
-  
+
   private void stream(final NetSocket event, InputStream in) throws IOException {
     byte[] buff;
-    Buffer b = new Buffer();
+    Buffer b = Buffer.buffer();
     try {
       while (true) {
         buff = new byte[in.available() + 4096];
@@ -342,13 +340,9 @@ implements IsCompileThread <GwtRecompile> {
       }
     } finally {
       in.close();
-      buff = null;
-      event.write(b, new Handler<Void>() {
-        @Override
-        public void handle(Void ev) {
-          event.close();
-        }
-      });
+      event.write(b);
+      event.close();
+
     }
   }
 

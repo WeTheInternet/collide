@@ -1,16 +1,10 @@
 package collide.gwtc.ui;
 
-import xapi.collect.impl.InitMapDefault;
-import xapi.gwtc.api.GwtManifest;
-import xapi.log.X_Log;
-import xapi.util.X_String;
-import xapi.util.api.ConvertsValue;
-import xapi.util.api.ReceivesValue;
-import xapi.util.api.RemovalHandler;
-import xapi.util.api.SuccessHandler;
 import collide.client.common.CommonResources;
 import collide.client.util.Elements;
-
+import collide.plugin.client.launcher.LauncherService;
+import collide.plugin.client.terminal.TerminalClientPlugin;
+import collide.plugin.client.terminal.TerminalService;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.code.PluginContent;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
@@ -40,11 +34,24 @@ import com.google.collide.json.client.JsoStringMap;
 import com.google.collide.json.shared.JsonArray;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
-import com.google.collide.plugin.client.launcher.LauncherService;
-import com.google.collide.plugin.client.terminal.TerminalClientPlugin;
-import com.google.collide.plugin.client.terminal.TerminalService;
 import com.google.collide.shared.plugin.PublicServices;
 import com.google.collide.shared.util.DebugUtil;
+import elemental.dom.Element;
+import elemental.events.Event;
+import elemental.events.EventListener;
+import elemental.html.AnchorElement;
+import elemental.util.ArrayOf;
+import elemental.util.Collections;
+import elemental.util.MapFromStringTo;
+import xapi.collect.impl.InitMapDefault;
+import xapi.gwtc.api.GwtManifest;
+import xapi.log.X_Log;
+import xapi.util.X_String;
+import xapi.util.api.ConvertsValue;
+import xapi.util.api.ReceivesValue;
+import xapi.util.api.RemovalHandler;
+import xapi.util.api.SuccessHandler;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.dom.client.DivElement;
@@ -58,15 +65,7 @@ import com.google.gwt.uibinder.client.UiTemplate;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
-import elemental.dom.Element;
-import elemental.events.Event;
-import elemental.events.EventListener;
-import elemental.html.AnchorElement;
-import elemental.util.ArrayOf;
-import elemental.util.Collections;
-import elemental.util.MapFromStringTo;
-
-public class GwtCompilerShell extends UiComponent<GwtCompilerShell.View> 
+public class GwtCompilerShell extends UiComponent<GwtCompilerShell.View>
 implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
   public interface Css extends CssResource {
@@ -79,7 +78,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     String next();
 
     String options();
-    
+
     String otherpage();
 
     String pager();
@@ -105,7 +104,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     String thispage();
 
     String title();
-    
+
   }
 
   public interface Resources extends
@@ -172,7 +171,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       this.res = res;
       this.css = res.gwtCompilerCss();
       this.compileState = model;
-      
+
       setElement(Elements.asJsElement(binder.createAndBindUi(this)));
 
       ((AnchorElement)draftButton).setOnclick(new EventListener() {
@@ -226,7 +225,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       gwtSrc.setDelegate(delegate);
       gwtSettings.setDelegate(delegate);
     }
-    
+
 
     protected void addListeners() {
 
@@ -239,13 +238,13 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     });
     }
 
-    
+
     public void clear() {
       gwtSettings.refreshDom();
     }
 
     private Timer clear;
-    
+
     public void updateStatus(String string) {
       if (clear != null){
         clear.cancel();
@@ -279,7 +278,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       compile.setLogLevel(gwtSettings.getLogLevel());
       compile.setSources(gwtSrc.getSources());
       compile.setDependencies(gwtSrc.getDependencies());
-      
+
       return compile;
     }
 
@@ -297,7 +296,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     }
 
     public void setMessageKey(String module, String key) {
-      
+
     }
   }
 
@@ -317,7 +316,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
         @Override
         public void onFail(FailureReason reason) {
-  
+
         }
       });
     }
@@ -334,7 +333,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
         @Override
         public void onFail(FailureReason reason) {
-          
+
         }
       });
     }
@@ -342,14 +341,14 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     public void onSaveButtonClicked() {
       context.getFrontendApi().GWT_SAVE.send(getValue());
     }
-    
+
     @Override
     public void setAutoOpen(boolean auto) {
       if (auto) {
         openIframe();
       }
     }
-    
+
     @Override
     public void onCompileButtonClicked() {
       GwtCompileImpl value = getValue();
@@ -364,11 +363,11 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
         @Override
         public void onFail(FailureReason reason) {
-          
+
         }
       });
     }
-    
+
     @Override
     public void onTestButtonClicked() {
       GwtCompileImpl value = getValue();
@@ -390,11 +389,11 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
         @Override
         public void onFail(FailureReason reason) {
-          
+
         }
       });
     }
-  
+
     @Override
     public void onKillButtonClicked() {
       GwtKillImpl kill = GwtKillImpl.make();
@@ -415,12 +414,12 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
         }
       });
     }
-  
+
     @Override
     public void onStatusMessageReceived(CompileResponse status) {
       updateStatus(status);
     }
-  
+
     @Override
     public void openIframe(String module, int port) {
       LauncherService service = PublicServices.getService(LauncherService.class);
@@ -430,26 +429,26 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       url = url.replace("$module", module);
       service.openInIframe(module, url);
     }
-    
+
     @Override
     public void openWindow(String module, int port) {
       LauncherService service = PublicServices.getService(LauncherService.class);
       service.openInNewWindow(module, "");
     }
-    
+
     @Override
     public void setLogLevel(Type type) {
       assert type != null : "Sent null loglevel from "+DebugUtil.getCaller();
       level = type;
       getView().compileState.setLogLevel(type);
     }
-    
+
     @Override
     public void recompile(GwtRecompile existing) {
       setValue(existing);
       onDraftButtonClicked();
     }
-    
+
     private void openIframe() {
       String module = getMessageKey();
       int port = getView().gwtSettings.getPort();
@@ -463,13 +462,13 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   }
 
   private JsoStringMap<String> keys = JsoStringMap.create();
-  
+
   public void setMessageKey(String module, String key) {
     if (key != null) {
       keys.put(module, key);
     }
   }
-  
+
   public String getMessageKey() {
     String module = getView().gwtModule.getModule();
     String key = keys.get(module);
@@ -496,7 +495,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       }
     }
   }
-  
+
   private void notifyLogLevel(String id, Type level) {
     for (int i = 0, m = listeners.length(); i < m; i++) {
       listeners.get(i).onLogLevelChange(id, level);
@@ -509,7 +508,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       listeners.get(i).onGwtStatusUpdate(status);
     }
   }
-  
+
   public void addCompileStateListener(GwtStatusListener listener) {
     assert !listeners.contains(listener) : "Don't add the same GwtStatusListener twice: "+listener;
     listeners.push(listener);
@@ -520,9 +519,9 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       super(PASS_THRU, factory);
     }
   }
-  
+
   private LoggerMap loggers;
-  
+
   public GwtCompilerShell(View view, AppContext context) {
     super(view);
     this.context = context;
@@ -547,7 +546,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   public String getModule() {
     return getView().getModule();
   }
-  
+
   public GwtCompileImpl getValue() {
     return getView().getValue();
   }
@@ -556,8 +555,8 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     return context.getResources();
   }
 
-  
-  
+
+
   protected void addLog(LogMessage log) {
     RunningGwtModule logger = loggers.get(log.getModule());
     PublicServices.getService(TerminalService.class).addLog(log, logger);
@@ -567,9 +566,9 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
       notifyLogLevel(log.getModule(), type);
     }
     if (type == Type.WARN) {
-      
+
     } else if (type == Type.ERROR) {
-      
+
     }
   }
 
@@ -600,8 +599,6 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   /**
    * Updates the view to displays results and appropriate pager widgetry.
    *
-   * @param page the page of "this" result page, one-based
-   * @param pageCount the total number of pages
    * @param jsonArray the {@link SearchResult} items on this page.
    */
   protected void showResultsImpl(JsonArray<GwtRecompile> jsonArray) {
@@ -623,7 +620,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   public BoundsBuilder getBounds() {
     return bounds;
   }
-  
+
   @Override
   public String getNamespace() {
     return "Gwt Compiler";
@@ -636,7 +633,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
 
   public void compile(GwtRecompile module,
       SuccessHandler<CompileResponse> response) {
-    
+
   }
 
   public void recompile(String module, SuccessHandler<CompileResponse> response) {
@@ -648,7 +645,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   }
 
   public void kill(String module) {
-    
+
   }
   public boolean isAutoOpen() {
     return getView().isAutoOpen();

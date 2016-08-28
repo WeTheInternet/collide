@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.terminal;
+package collide.plugin.client.terminal;
 
 import xapi.util.api.HasId;
 import collide.client.common.CommonResources;
@@ -171,7 +171,7 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
   private final JsoArray<elemental.dom.Element> pending = JsoArray.create();
   private ScheduledCommand cmd;
   private Type logLevel = Type.INFO;
-  
+
   TerminalLogHeader header;
 
   private void enqueue(elemental.dom.Element el) {
@@ -246,7 +246,7 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
   public BoundsBuilder getBounds() {
     return bounds;
   }
-  
+
   public void setHeader(TerminalLogHeader el) {
     header = el;
     getView().setHeader(el);
@@ -258,5 +258,5 @@ public class TerminalLogView extends UiComponent<TerminalLogView.View> implement
     pending.clear();
     getView().logBody.setInnerHTML("");
   }
-  
+
 }

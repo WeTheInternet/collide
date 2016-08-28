@@ -1,25 +1,24 @@
-package com.google.collide.plugin.server;
+package collide.plugin.server;
 
-import java.io.IOException;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.buffer.Buffer;
-import org.vertx.java.core.net.NetServer;
-import org.vertx.java.core.net.NetSocket;
-
+import collide.plugin.server.gwt.CompilerBusyException;
+import collide.plugin.server.gwt.CompilerRunner;
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.plugin.server.gwt.CompilerBusyException;
-import com.google.collide.plugin.server.gwt.CompilerRunner;
 import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.plugin.shared.IsRecompiler;
 import com.google.collide.server.shared.launcher.VertxLauncher;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetSocket;
+
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
+
+import java.io.IOException;
 
 public abstract class AbstractCompileThread
 <CompileType extends CodeModule>
@@ -70,12 +69,9 @@ implements CompilerRunner
     this.controller = compiler;
     System.out.println("Starting plugin thread "+getClass());
     server.get()//performs actual initialization in the LazyPojo class
-    .setTimer(1000, new Handler<Long>() {
-      @Override
-      public void handle(Long event) {
+    .setTimer(1000, e-> {
         //keep heap clean; the generated gwt classes will fill permgen quickly if they survive;
         System.gc();
-      }
     });
 
     logger().log(Type.INFO, "Started plugin thread on port "+server.getPort());

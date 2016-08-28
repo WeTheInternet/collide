@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.terminal;
+package collide.plugin.client.terminal;
 
 import xapi.collect.impl.AbstractInitMap;
 import xapi.collect.impl.AbstractMultiInitMap;
@@ -20,15 +20,15 @@ import com.google.collide.client.ui.panel.PanelContent;
 import com.google.collide.client.ui.panel.PanelModel;
 import com.google.collide.dto.LogMessage;
 import com.google.collide.mvp.View;
-import com.google.collide.plugin.client.terminal.TerminalLogView.Resources;
-import com.google.collide.plugin.client.terminal.TerminalLogView.ViewEvents;
+import collide.plugin.client.terminal.TerminalLogView.Resources;
+import collide.plugin.client.terminal.TerminalLogView.ViewEvents;
 import com.google.gwt.core.shared.GWT;
 
 import elemental.dom.Element;
 import elemental.html.DivElement;
 
 public class TerminalNavigationHandler extends
-    PlaceNavigationHandler<TerminalPlace.NavigationEvent> 
+    PlaceNavigationHandler<TerminalPlace.NavigationEvent>
     implements ConvertsValue<Pair<String, TerminalLogHeader>, TerminalLogView> {
 
   private final AppContext context;
@@ -38,7 +38,7 @@ public class TerminalNavigationHandler extends
 
   private final AbstractMultiInitMap<String, TerminalLogView, TerminalLogHeader> views;
   private final TabPanel logTabs;
-  
+
   public TerminalNavigationHandler(AppContext context, final MultiPanel<?,?> masterPanel, Place parentPlace) {
     this.context = context;
     logTabs = TabPanel.create(getTabPanelResources());
@@ -101,7 +101,7 @@ public class TerminalNavigationHandler extends
 
   public void addLog(LogMessage log, TerminalLogHeader header) {
     String id = X_String.firstNotEmpty(log.getModule(),"global");
-    
+
     views.get(id, header).addLog(log);
   }
 

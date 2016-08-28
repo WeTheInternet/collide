@@ -1,10 +1,10 @@
 package com.google.collide.plugin.shared;
 
+import io.vertx.core.shareddata.Shareable;
+
 import java.util.Map;
 
-
-
-public class CompiledDirectory implements java.io.Serializable, org.vertx.java.core.shareddata.Shareable {
+public class CompiledDirectory implements java.io.Serializable, Shareable {
 
 private static final long serialVersionUID = 24353247L;
 

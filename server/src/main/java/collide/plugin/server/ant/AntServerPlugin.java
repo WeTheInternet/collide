@@ -1,17 +1,16 @@
-package com.google.collide.plugin.server.ant;
+package collide.plugin.server.ant;
+
+import collide.plugin.server.AbstractPluginServer;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
+import xapi.log.X_Log;
+
+import com.google.gwt.dev.codeserver.GwtCompilerThread;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
-import xapi.log.X_Log;
-
-import com.google.collide.plugin.server.AbstractPluginServer;
-import com.google.gwt.dev.codeserver.GwtCompilerThread;
 
 @SuppressWarnings("rawtypes")
 public class AntServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
@@ -20,7 +19,7 @@ public class AntServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
     @Override
     public void handle(Message<JsonObject> event) {
       logger.info(event);
-      logger.info(event.body);
+      logger.info(event.body());
       X_Log.info(event);
     }
   }
@@ -29,7 +28,7 @@ public class AntServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
   protected Class<GwtCompilerThread> compilerClass() {
     return GwtCompilerThread.class;
   }
-  
+
   @Override
   public String getAddressBase() {
     return "ant";

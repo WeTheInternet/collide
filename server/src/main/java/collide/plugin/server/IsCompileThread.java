@@ -1,6 +1,6 @@
-package com.google.collide.plugin.server;
+package collide.plugin.server;
 
-import com.google.collide.plugin.server.gwt.CompilerBusyException;
+import collide.plugin.server.gwt.CompilerBusyException;
 
 public interface IsCompileThread <Model> {
 
@@ -11,5 +11,5 @@ public interface IsCompileThread <Model> {
   void compile(String request) throws CompilerBusyException;
   void setContextClassLoader(ClassLoader cl);
   void setChannel(ClassLoader cl, Object io);
-  
+
 }

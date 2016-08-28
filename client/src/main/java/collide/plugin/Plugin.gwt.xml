@@ -4,4 +4,6 @@
 <super-source path="emul" />
 <inherits name="xapi.X_Inherit" />
 <inherits name="collide.client.FileTree" />
+  <!-- TODO try to get rid of this using a thin module -->
+<inherits name="com.google.collide.client.Imports" />
 </module>

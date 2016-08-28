@@ -22,7 +22,7 @@ import com.google.protobuf.ByteString;
  */
 public class FileHasher {
   public static ByteString getSha1(String contents) {
-    ByteString sha1 = ByteString.copyFrom(Hashing.sha1().hashString(contents).asBytes());
+    ByteString sha1 = ByteString.copyFrom(Hashing.sha1().hashUnencodedChars(contents).asBytes());
     return sha1;
   }
 }

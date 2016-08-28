@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.standalone;
+package collide.plugin.client.standalone;
 
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
@@ -28,7 +28,7 @@ public class StandaloneCodeBundle extends CodePanelBundle {
     super(appContext, shell, fileTreeController, fileTreeModel,
         searchIndex, documentManager, participantModel, docOpReceiver, place);
   }
-  
+
   @Override
   protected void attachShellToDom(final WorkspaceShell shell, final View codePerspectiveView) {
     Elements.replaceContents(StandaloneConstants.WORKSPACE_PANEL, codePerspectiveView.detach());

@@ -7,4 +7,6 @@
   <inherits name="xapi.X_Inherit"/>
   <inherits name="elemental.Elemental"/>
   <inherits name="collide.client.FileTree"/>
+
+  <inherits name="com.google.collide.client.Imports"/>
 </module>

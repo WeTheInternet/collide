@@ -1,11 +1,11 @@
-package com.google.collide.plugin.server.gwt;
+package collide.plugin.server.gwt;
 
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
 import com.google.collide.server.shared.util.Dto;
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 import xapi.bytecode.ClassFile;
 import xapi.dev.gwtc.impl.GwtcServiceImpl;
 import xapi.dev.scanner.X_Scanner;

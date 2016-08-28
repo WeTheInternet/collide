@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client;
+package collide.plugin.client;
 
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceNavigationEvent;

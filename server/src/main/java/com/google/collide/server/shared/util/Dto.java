@@ -14,28 +14,27 @@
 
 package com.google.collide.server.shared.util;
 
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
 import com.google.collide.dtogen.server.JsonSerializable;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 
 /**
  * Utility for wrapping and unwrapping serialized Dtos.
  */
 public class Dto {
   public static String get(Message<JsonObject> vertxMsg) {
-    String serializedDto = vertxMsg.body.getString("dto", null);
+    String serializedDto = vertxMsg.body().getString("dto", null);
     if (serializedDto == null) {
       throw new IllegalArgumentException("Missing dto field on vertx message!");
     }
     return serializedDto;
   }
-  
+
   public static <T extends JsonSerializable> JsonObject wrap(T dto) {
     return wrap(dto.toJson());
   }
 
   public static JsonObject wrap(String serializedDto) {
-    return new JsonObject().putString("dto", serializedDto);
+    return new JsonObject().put("dto", serializedDto);
   }
 }

@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.inspector;
+package collide.plugin.client.inspector;
 
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
@@ -9,9 +9,10 @@ import com.google.collide.client.ui.button.ImageButton;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.client.workspace.Header.Resources;
 import com.google.collide.shared.plugin.PublicService;
+
 import com.google.gwt.resources.client.ImageResource;
 
-public class InspectorPlugin 
+public class InspectorPlugin
 implements ClientPlugin<InspectorPlace>
 {
 
@@ -33,7 +34,7 @@ implements ClientPlugin<InspectorPlace>
   @Override
   public void onClicked(ImageButton button) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override

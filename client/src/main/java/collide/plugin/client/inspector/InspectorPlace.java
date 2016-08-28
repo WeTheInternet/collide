@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.inspector;
+package collide.plugin.client.inspector;
 
 import xapi.inject.impl.LazyPojo;
 import xapi.util.X_String;

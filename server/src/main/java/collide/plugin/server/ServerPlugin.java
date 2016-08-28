@@ -1,11 +1,11 @@
-package com.google.collide.plugin.server;
+package collide.plugin.server;
+
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
 
 import java.util.Map;
-
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.Vertx;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
 
 public interface ServerPlugin {
 

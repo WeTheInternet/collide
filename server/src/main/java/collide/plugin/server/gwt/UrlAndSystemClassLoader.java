@@ -1,10 +1,10 @@
-package com.google.collide.plugin.server.gwt;
-
-import java.net.URL;
-import java.net.URLClassLoader;
+package collide.plugin.server.gwt;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
+
+import java.net.URL;
+import java.net.URLClassLoader;
 
 public class UrlAndSystemClassLoader extends URLClassLoader{
   boolean allowSystem = true;

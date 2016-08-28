@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.terminal;
+package collide.plugin.client.terminal;
 
 import xapi.inject.impl.LazyPojo;
 

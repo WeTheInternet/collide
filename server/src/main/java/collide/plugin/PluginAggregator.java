@@ -1,11 +1,10 @@
 package collide.plugin;
 
-import xapi.annotation.inject.SingletonDefault;
 import collide.gwtc.ui.GwtClientPlugin;
-
+import collide.plugin.client.terminal.TerminalClientPlugin;
 import com.google.collide.client.plugin.ClientPlugin;
 import com.google.collide.client.plugin.ClientPluginService;
-import com.google.collide.plugin.client.terminal.TerminalClientPlugin;
+import xapi.annotation.inject.SingletonDefault;
 
 @SingletonDefault(implFor=ClientPluginService.class)
 public class PluginAggregator extends ClientPluginService{

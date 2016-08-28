@@ -14,13 +14,6 @@
 
 package com.google.collide.server.documents;
 
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.vertx.java.core.logging.Logger;
-
 import com.google.collide.dto.ClientToServerDocOp;
 import com.google.collide.dto.DocOp;
 import com.google.collide.dto.DocumentSelection;
@@ -42,6 +35,12 @@ import com.google.collide.shared.ot.Transformer;
 import com.google.collide.shared.ot.Transformer.TransformException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import io.vertx.core.logging.Logger;
+
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 
 /**
@@ -116,7 +115,7 @@ public class VersionedDocument {
    */
   public static class DocumentOperationException extends Exception {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -7596186181810388015L;
 
@@ -129,7 +128,7 @@ public class VersionedDocument {
     }
   }
 
-  /** Revision number of the document */  
+  /** Revision number of the document */
   private int ccRevision;
 
   /** Backing document */
@@ -319,7 +318,7 @@ public class VersionedDocument {
       int bridgeBeginIndex,
       int bridgeEndIndexInclusive,
       List<? extends DocOp> clientDocOps) {
-    
+
     StringBuilder msg = new StringBuilder(customMessage).append('\n');
 
     msg.append("ccRevision: ").append(ccRevision).append('\n');
@@ -335,7 +334,7 @@ public class VersionedDocument {
     msg.append("Client doc ops:\n")
         .append(DocOpUtils.toString(clientDocOps, 0, clientDocOps.size() - 1, true)).append("\n");
     msg.append("Recent doc ops from server history:\n").append(docOpHistoryToString());
-    
+
     return new DocumentOperationException(msg.toString(), e);
   }
 
@@ -355,7 +354,7 @@ public class VersionedDocument {
   }
 
   public VersionedText asText() {
-    return new VersionedText(ccRevision, contents.asText());    
+    return new VersionedText(ccRevision, contents.asText());
   }
 
   /**
@@ -365,7 +364,7 @@ public class VersionedDocument {
   public Anchor addAnchor(AnchorType type, int lineNumber, int column) {
     LineInfo lineInfo = contents.getLineFinder().findLine(lineNumber);
     return contents.getAnchorManager()
-        .createAnchor(type, lineInfo.line(), lineInfo.number(), column);    
+        .createAnchor(type, lineInfo.line(), lineInfo.number(), column);
   }
 
   /**
@@ -374,11 +373,11 @@ public class VersionedDocument {
    */
   public void moveAnchor(Anchor anchor, int lineNumber, int column) {
     LineInfo lineInfo = contents.getLineFinder().findLine(lineNumber);
-    contents.getAnchorManager().moveAnchor(anchor, lineInfo.line(), lineInfo.number(), column);    
+    contents.getAnchorManager().moveAnchor(anchor, lineInfo.line(), lineInfo.number(), column);
   }
-  
+
   public void removeAnchor(Anchor anchor) {
-    contents.getAnchorManager().removeAnchor(anchor);    
+    contents.getAnchorManager().removeAnchor(anchor);
   }
 
   private String docOpHistoryToString() {

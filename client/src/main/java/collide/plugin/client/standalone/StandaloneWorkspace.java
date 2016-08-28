@@ -1,8 +1,7 @@
-package com.google.collide.plugin.client.standalone;
+package collide.plugin.client.standalone;
 
-import xapi.log.X_Log;
 import collide.client.util.Elements;
-
+import collide.plugin.client.common.ZIndexService;
 import com.google.collide.client.CollideSettings;
 import com.google.collide.client.Resources;
 import com.google.collide.client.code.FileContent;
@@ -25,16 +24,16 @@ import com.google.collide.client.util.ResizeController.ElementInfo;
 import com.google.collide.client.util.logging.Log;
 import com.google.collide.json.client.JsoArray;
 import com.google.collide.mvp.ShowableUiComponent;
-import com.google.collide.plugin.client.common.ZIndexService;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-
 import elemental.dom.Element;
 import elemental.events.Event;
 import elemental.events.EventListener;
 import elemental.html.DivElement;
 import elemental.util.ArrayOf;
 import elemental.util.Collections;
+import xapi.log.X_Log;
+
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,StandaloneWorkspace.View> {
 
@@ -217,7 +216,7 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
             public void startDragging(ElementInfo ... elementInfos) {
               zIndexer.setNextZindex(panel.getView().getElement());
             }
-    
+
             @Override
             public void whileDragging(float deltaW, float deltaH, float deltaX, float deltaY) {
               // Notify the positioner of resizes.
@@ -229,7 +228,7 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
               }
               // TODO periodically run a z-index check and adapt as needed
             }
-    
+
             @Override
             public void doneDragging(float deltaX, float deltaY, float origX, float origY) {
               // if this panel currently covers another one completely, we should raise the concealed panels
@@ -372,7 +371,7 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
   }
 
   public static boolean shouldHide(String id) {
-    return StandaloneConstants.WORKSPACE_PANEL.equals(id) && 
+    return StandaloneConstants.WORKSPACE_PANEL.equals(id) &&
         !HistoryUtils.getHistoryString().contains(PlaceConstants.WORKSPACE_PLACE_NAME);
   }
 
@@ -419,5 +418,5 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
   public com.google.collide.client.ui.panel.PanelModel.Builder<Model> newBuilder() {
     return new Model.Builder();
   }
-  
+
 }

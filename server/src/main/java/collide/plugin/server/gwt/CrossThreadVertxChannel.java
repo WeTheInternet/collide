@@ -1,12 +1,11 @@
-package com.google.collide.plugin.server.gwt;
-
-import java.util.Stack;
-
-import org.vertx.java.core.eventbus.EventBus;
+package collide.plugin.server.gwt;
 
 import com.google.collide.dtogen.server.JsonSerializable;
 import com.google.collide.server.shared.util.Dto;
 import com.google.collide.server.shared.util.ReflectionChannel;
+import io.vertx.core.eventbus.EventBus;
+
+import java.util.Stack;
 
 public class CrossThreadVertxChannel extends ReflectionChannel{
 
@@ -22,7 +21,7 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
    * @return a json string to ease communication between threads with different classloaders.
    * The only time in() is called is to get the gwt compile input json,
    * which is an instance of @GwtRecompile
-   * 
+   *
    */
     @Override
     public String receive() {
@@ -30,13 +29,13 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
         return null;
       return jsonString.pop();
     }
-    
+
     public void setOutput(String next){
       jsonString.push(next);
     }
-    
+
     /**
-     * @param String msg - A json encoded message to send to client.
+     * @param msg - A json encoded message to send to client.
      * If the request message had a replyAddress,
      * we pipe first output as a json reply to that message.
      * All subsequent messages to gwt.log (this.address)
@@ -59,5 +58,5 @@ public class CrossThreadVertxChannel extends ReflectionChannel{
       String encoded = message.toJson();
       return "_"+address+"_"+encoded;
     }
-  
+
 }

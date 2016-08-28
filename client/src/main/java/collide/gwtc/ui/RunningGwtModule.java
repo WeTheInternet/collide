@@ -1,17 +1,16 @@
 package collide.gwtc.ui;
 
-import xapi.util.impl.StringId;
 import collide.gwtc.ui.GwtCompilerShell.View;
-
+import collide.plugin.client.terminal.TerminalLogHeader;
 import com.google.collide.dto.CompileResponse;
 import com.google.collide.dto.LogMessage;
-import com.google.collide.plugin.client.terminal.TerminalLogHeader;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.user.client.Window;
-
 import elemental.client.Browser;
 import elemental.dom.Element;
 import elemental.html.DivElement;
+import xapi.util.impl.StringId;
+
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.user.client.Window;
 
 public class RunningGwtModule extends StringId implements TerminalLogHeader {
 
@@ -23,10 +22,10 @@ public class RunningGwtModule extends StringId implements TerminalLogHeader {
     el = Browser.getDocument().createDivElement();
     el.setInnerHTML("Compiling "+module);
   }
-  
+
   @Override
   public void viewLog(LogMessage log) {
-    
+
   }
 
   @Override
@@ -77,5 +76,5 @@ public class RunningGwtModule extends StringId implements TerminalLogHeader {
       view.updateStatus("Finished compiling "+status.getModule());
   }
   }
-  
+
 }

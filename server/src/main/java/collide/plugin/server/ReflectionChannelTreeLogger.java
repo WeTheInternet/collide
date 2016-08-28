@@ -1,11 +1,12 @@
-package com.google.collide.plugin.server;
-
-import java.io.Serializable;
+package collide.plugin.server;
 
 import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
+
 import com.google.gwt.dev.util.log.AbstractTreeLogger;
+
+import java.io.Serializable;
 
 public final class ReflectionChannelTreeLogger extends AbstractTreeLogger implements Serializable{
 
@@ -27,8 +28,8 @@ public final class ReflectionChannelTreeLogger extends AbstractTreeLogger implem
     this.indent = indent;
     setMaxDetail(logLevel);
   }
-  
-  
+
+
   @Override
   protected AbstractTreeLogger doBranch() {
     ReflectionChannelTreeLogger branch = new ReflectionChannelTreeLogger(io,indent+spacer, getMaxDetail());

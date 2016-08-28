@@ -311,7 +311,7 @@ public class Elements {
   public static void addClassesToElement(Element e, String... classNames) {
     for (String className : classNames) {
       if (!StringUtils.isNullOrEmpty(className)) {
-        e.addClassName(className);
+        CssUtils.addClassName(e, className);
       }
     }
   }

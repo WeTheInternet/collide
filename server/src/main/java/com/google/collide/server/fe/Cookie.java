@@ -14,7 +14,7 @@
 
 package com.google.collide.server.fe;
 
-import org.vertx.java.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerRequest;
 
 /**
  * Super simple class for extracting and handling Cookies. Should probably replace with an existing

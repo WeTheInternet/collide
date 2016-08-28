@@ -1,4 +1,4 @@
-package com.google.collide.plugin.server.gwt;
+package collide.plugin.server.gwt;
 
 public class CompilerBusyException extends Throwable{
   private static final long serialVersionUID = -7998731646049544430L;
@@ -6,11 +6,11 @@ public class CompilerBusyException extends Throwable{
 
   public CompilerBusyException() {
   }
-  
+
   public CompilerBusyException(String module) {
     this.module = module;
   }
-  
+
   /**
    * @return the module
    */

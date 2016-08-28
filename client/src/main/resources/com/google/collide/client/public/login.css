@@ -1,0 +1,14 @@
+.inputBubble {
+}
+
+.showing {
+  visibility: visible;
+}
+
+.toTheLeft {
+  visibility: hidden;
+}
+
+.toTheRight {
+  visibility: hidden;
+}

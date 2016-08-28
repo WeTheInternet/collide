@@ -1,14 +1,15 @@
 package com.google.gwt.dev.codeserver;
 
+import collide.plugin.server.IsCompileThread;
+import collide.plugin.server.ReflectionChannelTreeLogger;
+import collide.plugin.server.gwt.CompilerBusyException;
 import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
-import com.google.collide.plugin.server.IsCompileThread;
-import com.google.collide.plugin.server.ReflectionChannelTreeLogger;
-import com.google.collide.plugin.server.gwt.CompilerBusyException;
 import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.server.shared.util.ReflectionChannel;
+
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -65,7 +66,7 @@ public class GwtRecompiler implements IsCompileThread<GwtRecompile> {
       CompileResponseImpl response;
       response = CompileResponseImpl.make();
       response.setCompilerStatus(CompilerState.RUNNING);
- 
+
       Type logLevel = request.getLogLevel();
       if (logLevel != null)
         logger.setMaxDetail(logLevel);

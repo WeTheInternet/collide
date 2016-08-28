@@ -1,4 +1,4 @@
-package com.google.collide.plugin.client.standalone;
+package collide.plugin.client.standalone;
 
 public class StandaloneConstants {
 

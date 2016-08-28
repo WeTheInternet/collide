@@ -1,5 +1,4 @@
-package com.google.collide.plugin.server.gwt;
-
+package collide.plugin.server.gwt;
 
 public interface CompilerRunner extends Runnable{
 

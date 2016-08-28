@@ -34,49 +34,11 @@ dependencies {
 
 }
 
-//
-//task compileGwt (dependsOn: classes, type: JavaExec) {
-//    ext.buildDir = "${project.buildDir}/gwt"
-//    ext.extraDir = "${project.buildDir}/extra"
-//
-//    inputs.source sourceSets.main.java.srcDirs
-//    inputs.dir sourceSets.main.output.resourcesDir
-//    outputs.dir buildDir
-//
-////    // Workaround for incremental build (GRADLE-1483)
-////    outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
-//
-//    doFirst {
-//        file(buildDir).mkdirs()
-//        //classpath.each { println it.name}
-//    }
-//
-//    main = 'com.google.gwt.dev.Compiler'
-//
-//    classpath {
-//        [
-//                sourceSets.main.java.srcDirs,           // Java source
-//                sourceSets.main.output.resourcesDir,    // Generated resources
-//                sourceSets.main.output.classesDir,      // Generated classes
-//                sourceSets.main.compileClasspath,       // Deps
-//        ]
-//    }
-//
-//    args =
-//            [
-//                    'com.google.collide.client.Collide', // Your GWT module
-//                    '-war', buildDir,
-//                    '-logLevel', 'INFO',
-//                    '-localWorkers', '6',
-//                    '-compileReport',
-//                    '-extra', extraDir,
-//                    // '-draftCompile' // Speeds up compile with 25%
-//            ]
-//
-//    maxHeapSize = '256M'
-//}
 gwt {
     logLevel    = 'TRACE'
+    compiler {
+        style       = 'PRETTY'
+    }
     src       += files(project(':api').sourceSets.main.allJava.srcDirs) + files(project(':api').sourceSets.main.output.resourcesDir)
     src       += files(project(':shared').sourceSets.main.allJava.srcDirs) + files(project(':shared').sourceSets.main.output.resourcesDir)
     src       += files('../deps/codemirror2')
@@ -84,7 +46,6 @@ gwt {
     maxHeapSize = '2G'
 }
 compileGwt {
-
     modules     = ['com.google.collide.client.Collide']
 
 }

@@ -1,20 +1,18 @@
-package com.google.collide.plugin.server.gwt;
+package collide.plugin.server.gwt;
+
+import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import com.google.collide.server.shared.util.Dto;
+import io.vertx.core.Handler;
+import io.vertx.core.eventbus.Message;
+import io.vertx.core.json.JsonObject;
+import xapi.util.api.ReceivesValue;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.vertx.java.core.Handler;
-import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.json.JsonObject;
-
-import xapi.util.api.ReceivesValue;
-
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
-import com.google.collide.server.shared.util.Dto;
-
 public class GwtCompileHandler implements Handler<Message<JsonObject>> {
   /**
-   * 
+   *
    */
   private final GwtServerPlugin gwtServerPlugin;
 
@@ -45,7 +43,7 @@ public class GwtCompileHandler implements Handler<Message<JsonObject>> {
       }).toArray(new URL[0]);
       compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log");
     }
-    
+
     compiler.compile(compileRequest);
     for (String item : logMessages) {
       compiler.log(item);

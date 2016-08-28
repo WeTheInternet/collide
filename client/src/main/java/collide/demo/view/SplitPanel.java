@@ -1,17 +1,9 @@
 package collide.demo.view;
 
-import java.util.Comparator;
-import java.util.TreeMap;
-
-import xapi.log.X_Log;
-import xapi.util.api.RemovalHandler;
 import collide.client.util.CssUtils;
 import collide.demo.resources.DemoResources;
-
+import collide.plugin.client.inspector.ElementInspector;
 import com.google.collide.json.client.JsoArray;
-import com.google.collide.plugin.client.inspector.ElementInspector;
-import com.google.gwt.resources.client.CssResource;
-
 import elemental.client.Browser;
 import elemental.dom.Document;
 import elemental.dom.Element;
@@ -20,6 +12,13 @@ import elemental.events.EventListener;
 import elemental.events.EventRemover;
 import elemental.events.MouseEvent;
 import elemental.util.Timer;
+import xapi.log.X_Log;
+import xapi.util.api.RemovalHandler;
+
+import com.google.gwt.resources.client.CssResource;
+
+import java.util.Comparator;
+import java.util.TreeMap;
 
 public class SplitPanel {
 
@@ -36,20 +35,20 @@ public class SplitPanel {
     String tail();
     String topSplit();
   }
-  
+
   class PanelNode {
     Element el;
     PanelNode next;
     double size;
   }
-  
+
   final PanelNode head;
   PanelNode tail;
   int size;
   private boolean vertical;
   private Timer refresh;
   private Css css;
-  
+
   public SplitPanel(boolean vertical) {
     this.vertical = vertical;
     css = createCss();
@@ -58,7 +57,7 @@ public class SplitPanel {
     head.el.addClassName(css.splitPanel());
     head.el.addClassName(vertical ? css.verticalSplit() : css.horizontalSplit());
   }
-  
+
   public Element getElement() {
     return head.el;
   }
@@ -66,7 +65,7 @@ public class SplitPanel {
   public RemovalHandler addChild(Element child, double width) {
     return addChild(child, width, -1);
   }
-  
+
   public RemovalHandler addChild(final Element child, double width, int index) {
     if (exists(child)) {
       // TODO adjust index
@@ -84,7 +83,7 @@ public class SplitPanel {
 
     };
     size ++;
-    if (index < 0) { 
+    if (index < 0) {
       // Negative index = add-to-end, the simplest and fastest case.
       tail.next = node;
       tail.el.removeClassName(css.tail());
@@ -133,7 +132,7 @@ public class SplitPanel {
     }
     return remover;
   }
-  
+
   public void remove(Element el) {
     PanelNode node = head;
     while (node != null) {
@@ -179,7 +178,7 @@ public class SplitPanel {
       target = target.next;
     }
   }
-  
+
   private void giveSpace(double size) {
     PanelNode search = head.next;
     while (search != null) {
@@ -189,7 +188,7 @@ public class SplitPanel {
       }
       search = search.next;
     }
-    
+
   }
 
   private boolean exists(Element child) {
@@ -257,11 +256,11 @@ public class SplitPanel {
             // We have an effin' mess! Just scroll everything off the end
           fillSize = max * .25; // Fills get 25% screen size
           scale = 1; // Everything else gets what it asked for
-          size = max; 
+          size = max;
         } else {
           // There's enough to give everyone what they want, and give the rest to fills.
           fillSize = Math.max(350, (max - size) / numFills);
-          
+
         }
         node = head; // We have to iterate all nodes
         while (node.next != null) {
@@ -309,10 +308,10 @@ public class SplitPanel {
     float sizeStart;
     float mouseStart;
     PanelNode node;
-    PanelPosition next; 
+    PanelPosition next;
   }
-  
-  private void createSlider(final Element wrapper, final Element child, 
+
+  private void createSlider(final Element wrapper, final Element child,
       final PanelNode node, final boolean first) {
     final Element sliderEl = Browser.getDocument().createSpanElement();
     final String cls;
@@ -337,7 +336,7 @@ public class SplitPanel {
     wrapper.appendChild(sliderEl);
     final PanelPosition self = new PanelPosition();
     self.node = node;
-    
+
     sliderEl.setOnmousedown(new EventListener() {
       @Override
       public void handleEvent(Event evt) {
@@ -373,7 +372,7 @@ public class SplitPanel {
             affected.sizeStart = CssUtils.parsePixels(sibling.getStyle().getWidth());
           }
         }
-        
+
         final EventRemover[] remover = new EventRemover[2];
         // TODO put these event listeners over an empty iframe, to cover up any iframes on page.
         remover[0] = Browser.getWindow().addEventListener("mouseup", new EventListener() {
@@ -402,7 +401,7 @@ public class SplitPanel {
                 wrapper.getStyle().setTop((int)(self.posStart+ delta),"px");
                 wrapper.getStyle().setHeight((int)(self.sizeStart - delta),"px");
                 if (el != null) {
-                  // TODO implement max/min/pref values, and iterate through the 
+                  // TODO implement max/min/pref values, and iterate through the
                   // nodes to push delta off on any neighbors
                   el.getStyle().setHeight((int)(self.next.sizeStart + delta),"px");
                 }
@@ -432,12 +431,12 @@ public class SplitPanel {
             }
           }
         }, true);
-        
-        
+
+
       }
     });
   }
-  
+
   private void onResizeFinished(PanelNode siblingNode, PanelPosition self) {
     if (self.node.size < 1) {
       if (self.node.size > 0) {
@@ -447,7 +446,7 @@ public class SplitPanel {
         current = size / max,
         is = self.node.size,
         delta = is - current;
-        
+
         X_Log.info("Resize done; was ",self.node.size, " is ",current);
         self.node.size = current;
         stealSize(self.node, delta);
@@ -505,7 +504,7 @@ public class SplitPanel {
       }
       pos ++;
     }
-    
+
   }
 
   protected boolean isElastic(PanelNode search) {
@@ -557,5 +556,5 @@ public class SplitPanel {
     }
     return x+w;
   }
-  
+
 }
