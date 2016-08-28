@@ -6,6 +6,8 @@ version = '0.6-SNAPSHOT'
 
 description = "CollIDE API"
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 sourceSets {
     main {

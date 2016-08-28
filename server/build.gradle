@@ -8,6 +8,9 @@ group = 'de.mocra.cy'
 version = '0.6-SNAPSHOT'
 description = "CollIDE Server Code"
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
     compile project(':client')
     compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
