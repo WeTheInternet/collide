@@ -1,6 +1,10 @@
-/bin/
+bin/
+build/
 *~
-/deps/elemental/elemental.new.jar
-/deployCollide
-/bin
-/target
+deployCollide/
+target/
+.gradle
+.idea
+.project
+.classpath
+*.iml
