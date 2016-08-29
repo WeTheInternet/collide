@@ -14,8 +14,6 @@
 
 package com.google.collide.client.codeunderstanding;
 
-import static com.google.collide.shared.util.StringUtils.isNullOrEmpty;
-
 import com.google.collide.client.communication.FrontendApi;
 import com.google.collide.client.util.DeferredCommandExecutor;
 import com.google.collide.client.util.logging.Log;
@@ -33,6 +31,8 @@ import com.google.collide.dto.client.DtoClientImpls.CodeGraphRequestImpl;
 import com.google.collide.dto.client.DtoClientImpls.CodeReferencesImpl;
 import com.google.collide.json.client.Jso;
 import com.google.common.base.Preconditions;
+
+import static com.google.collide.shared.util.StringUtils.isNullOrEmpty;
 
 /**
  * An object that holds the current state of communication with Cube-service.
@@ -174,7 +174,7 @@ public class CubeState implements FrontendApi.ApiCallback<CodeGraphResponse> {
    * schedule retry if required.
    *
    * <p>This method must be called after network response or
-   * failure is processed to schedule next network activity.   
+   * failure is processed to schedule next network activity.
    */
   private void processDeferredActions() {
     requestedFilePath = null;
@@ -272,6 +272,12 @@ public class CubeState implements FrontendApi.ApiCallback<CodeGraphResponse> {
 
     CodeGraphFreshnessImpl merged = CodeGraphFreshnessImpl.make();
     CodeGraphFreshness serverFreshness = message.getFreshness();
+
+    if (serverFreshness == null) {
+      // temporary hack: the code from google had no implementation for this endpoint,
+      // so we no-op by just returning an empty object. :-/
+      return;
+    }
 
     CodeGraph libsSubgraph = data.getLibsSubgraph();
     merged.setLibsSubgraph(this.freshness.getLibsSubgraph());

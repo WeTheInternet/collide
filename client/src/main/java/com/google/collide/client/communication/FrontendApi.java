@@ -195,7 +195,7 @@ public class FrontendApi {
     }
   }
 
-  
+
 
   // ///////////////////////////////
   // BEGIN AVAILABLE FRONTEND APIS
@@ -230,7 +230,7 @@ public class FrontendApi {
   /**
    * Get the revisions for a file to enable reversioning.
    */
-  public final RequestResponseApi<GetFileRevisions, GetFileRevisionsResponse> GET_FILE_REVISIONS = 
+  public final RequestResponseApi<GetFileRevisions, GetFileRevisionsResponse> GET_FILE_REVISIONS =
       makeApi("documents.getRevisions");
 
   /**
@@ -284,10 +284,10 @@ public class FrontendApi {
 
   public final RequestResponseApi<GwtCompile,GwtCompile> TEST_GWT =
       makeApi("gwt.test");
-  
+
   public final RequestResponseApi<GwtCompile,CompileResponse> COMPILE_GWT =
       makeApi("gwt.compile");
-  
+
   public final RequestResponseApi<GwtRecompile,CompileResponse> RE_COMPILE_GWT =
       makeApi("gwt.recompile");
 
@@ -299,7 +299,7 @@ public class FrontendApi {
 
   public final SendApi<GwtRecompile> GWT_SAVE =
       makeApi("gwt.save");
-  
+
   public final RequestResponseApi<HasModule, GwtRecompile> GWT_LOAD =
       makeApi("gwt.load");
 
@@ -307,7 +307,7 @@ public class FrontendApi {
    * Retrieves code parsing results.
    */
   public final RequestResponseApi<CodeGraphRequest, CodeGraphResponse> GET_CODE_GRAPH =
-      makeApi("todo.implementMe");
+      makeApi("codegraph.get");
   /**
    * Log an exception to the server and potentially receive an unobfuscated response.
    */

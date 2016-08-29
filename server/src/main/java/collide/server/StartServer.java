@@ -2,6 +2,7 @@ package collide.server;
 
 import collide.plugin.server.ant.AntServerPlugin;
 import collide.plugin.server.gwt.GwtServerPlugin;
+import collide.server.codegraph.CodeGraphMonitor;
 import com.google.collide.server.documents.EditSessions;
 import com.google.collide.server.fe.WebFE;
 import com.google.collide.server.filetree.FileTree;
@@ -81,6 +82,7 @@ public class StartServer {
             .setInstances(10));
 
         deploy(vertx, Participants.class, participantsConfig);
+        deploy(vertx, CodeGraphMonitor.class);
         deploy(vertx, EditSessions.class);
         deploy(vertx, FileTree.class, filetreeConfig);
         deploy(vertx, WorkspaceState.class, workspaceConfig);
