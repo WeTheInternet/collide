@@ -318,7 +318,7 @@ public class SignalEventImpl implements SignalEvent {
   }-*/;
 
   public static native String getKeyIdentifier(Event event) /*-{
-    return event.keyIdentifier
+    return event.key || event.keyIdentifier
   }-*/;
 
   /**
