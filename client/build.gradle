@@ -18,14 +18,14 @@ repositories {
 dependencies {
     compile group: 'net.wetheinter', name: 'xapi-dev', version:'0.6-SNAPSHOT', changing: true
     compile project(':shared')
-
-
 }
 
 gwt {
     logLevel    = 'INFO'
     compiler {
-        style       = 'PRETTY'
+        style            = 'PRETTY'
+        saveSource       = true
+        saveSourceOutput = file(tasks.compileGwt.war.absolutePath + "/../sourcemaps")
     }
     src       += files(project(':api').sourceSets.main.allJava.srcDirs) + files(project(':api').sourceSets.main.output.resourcesDir)
     src       += files(project(':shared').sourceSets.main.allJava.srcDirs) + files(project(':shared').sourceSets.main.output.resourcesDir)

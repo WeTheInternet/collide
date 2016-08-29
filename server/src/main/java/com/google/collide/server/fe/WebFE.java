@@ -47,10 +47,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-//import org.apache.commons.httpclient.HttpStatus;
-//import org.jboss.netty.handler.codec.http.QueryStringDecoder;
-//import com.google.collide.plugin.server.gwt.GwtCompiledDirectory;
-
 /**
  * A simple web server module that can serve static files bundled with the webserver, as well as
  * serve files from the directory that the webserver was launched in via simple URL path prefixes.
@@ -236,7 +232,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         if (response.handled)
           return;
       }
-      else if (path.startsWith(SOURCEMAP_PATH)){
+      else if (path.contains(SOURCEMAP_PATH)){
         //forward sourcemap paths to appropriate internal server
         SymlinkRequest request = new SymlinkRequest();
         request.urlFragment = path;
@@ -373,8 +369,24 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       }
     }
     response.handled=true;
-    response.resolved = request.defaultTarget+request.urlFragment;
-    applySourceMapHeader(request.response, response.resolved);
+    if (request.urlFragment.contains(SOURCEMAP_PATH)) {
+      // This is for statically compiled gwt source (built through gradle),
+      // which will have a different structure than our dynamic superdev compiles;
+      String[] bits = request.urlFragment.split("/");
+      String moduleName = bits[2];
+      if (request.urlFragment.endsWith(".json")) {
+        // we are save to assume _sourceMap0 since there will never be more than 1 iteration on a full compile
+        String mapFile = bits[4].replace(".json", "_sourceMap0.json");
+        response.resolved = bundledStaticFilesPrefix.replace("out/"+moduleName, "extra") + moduleName+ "/symbolMaps/" + mapFile;
+      } else {
+        String sourceFolder = bundledStaticFilesPrefix.replace("out/"+moduleName, "sourcemaps") + moduleName+ "/src/";
+        response.resolved = sourceFolder + request.urlFragment.split(SOURCEMAP_PATH)[1];
+
+      }
+    } else {
+      response.resolved = request.defaultTarget+request.urlFragment;
+      applySourceMapHeader(request.response, response.resolved);
+    }
     request.response.sendFile(response.resolved);
     return response ;
   }
@@ -552,7 +564,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       path = path.substring(0, path.length()-1);
 //    if (module.indexOf('/') == -1)
 //      module = module + '/' + module;
-    sb.append("<script src=\"" + path +"/static/sockjs-0.2.1.min.js\"></script>\n");
+    sb.append("<script src=\"" + path +"/static/sockjs.js\"></script>\n");
     sb.append("<script src=\"" + path+"/static/vertxbus.js\"></script>\n");
     sb.append("<script src=\"" +path+"/static/" + module + "." +
     		"nocache.js\"></script>\n");

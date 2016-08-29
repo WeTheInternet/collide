@@ -4,4 +4,5 @@
   <public path="public" />
   <inherits name="com.google.collide.client.Imports" />
   <entry-point class="com.google.collide.client.Collide" />
+  <set-property name="compiler.useSourceMaps" value="true" />
 </module>
