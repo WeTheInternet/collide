@@ -127,11 +127,15 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     if (bridge) {
 
       final SockJSHandlerOptions sockOpts = new SockJSHandlerOptions()
+          .setHeartbeatInterval(2_000)
+          .setSessionTimeout(15_000)
 //            .setLibraryURL(getOptionalStringConfig("suffix", "") + "/eventbus")
           ;
       JsonArray inboundPermitted = getOptionalArrayConfig("in_permitted", new JsonArray());
       JsonArray outboundPermitted = getOptionalArrayConfig("out_permitted", new JsonArray());
-      final BridgeOptions bridgeOpts = new BridgeOptions();
+      final BridgeOptions bridgeOpts = new BridgeOptions()
+          .setReplyTimeout(15_000)
+          .setPingTimeout(15_000);
       bridgeOpts.setInboundPermitted(toOpts(inboundPermitted));
       bridgeOpts.setOutboundPermitted(toOpts(outboundPermitted));
 
