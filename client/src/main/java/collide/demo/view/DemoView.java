@@ -33,6 +33,7 @@ import elemental.util.MapFromStringTo;
 import xapi.log.X_Log;
 import xapi.util.api.RemovalHandler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -239,7 +240,7 @@ extends MultiPanel<PanelModel, ControllerView>
       iframe.getStyle().setWidth("100%");
       iframe.getStyle().setHeight("100%");
 
-      iframe.setAttribute("sandbox", "allow-same-origin allow-scripts");
+      iframe.setAttribute("sandbox", "allow-same-origin allow-scripts allow-top-navigation");
       iframe.setSrc(url);
       sizer.appendChild(iframe);
 
