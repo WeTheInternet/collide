@@ -7,22 +7,24 @@ version = '0.6-SNAPSHOT'
 
 description = """CollIDE main package"""
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
 
 allprojects {
+
     repositories {
-        mavenCentral()
         mavenLocal()
+        mavenCentral()
     }
 
     buildscript {
         repositories {
-//        jcenter()
-            maven {
-                url 'http://dl.bintray.com/steffenschaefer/maven'
-            }
+            mavenLocal()
+            jcenter()
         }
         dependencies {
-            classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+            classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.5.0-SNAPSHOT'
         }
     }
 }

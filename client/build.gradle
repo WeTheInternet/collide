@@ -1,7 +1,5 @@
 apply plugin: 'java'
-
-
-apply plugin: 'gwt'
+apply plugin: 'fr.putnami.gwt'
 
 group = 'de.mocra.cy'
 version = '0.6-SNAPSHOT'
@@ -11,29 +9,32 @@ description = "CollIDE Client Code"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     compile group: 'net.wetheinter', name: 'xapi-dev', version:'0.6-SNAPSHOT', changing: true
     compile project(':shared')
+    compileOnly files(project(':api').sourceSets.main.allJava.srcDirs)
+    compileOnly files(project(':api').sourceSets.main.output.resourcesDir)
+    compileOnly files(project(':shared').sourceSets.main.allJava.srcDirs)
+    compileOnly files(project(':shared').sourceSets.main.output.resourcesDir)
+    compileOnly files('../deps/codemirror2')
 }
+putnami {
 
-gwt {
-    logLevel    = 'INFO'
-    compiler {
+    buildDir         = 'out'
+    gwtVersion = '2.8.0'
+    module     = ['collide.demo.Parent']
+    compile {
+        logLevel         = 'INFO'
         style            = 'PRETTY'
         saveSource       = true
-        saveSourceOutput = file(tasks.compileGwt.war.absolutePath + "/../sourcemaps")
-    }
-    src       += files(project(':api').sourceSets.main.allJava.srcDirs) + files(project(':api').sourceSets.main.output.resourcesDir)
-    src       += files(project(':shared').sourceSets.main.allJava.srcDirs) + files(project(':shared').sourceSets.main.output.resourcesDir)
-    src       += files('../deps/codemirror2')
-    minHeapSize = '1G'
-    maxHeapSize = '2G'
-}
-compileGwt {
-    modules     = ['com.google.collide.client.Collide']
+        extra            = file(war.absolutePath + "/../extra")
+        saveSourceOutput = file(war.absolutePath + "/../sourcemaps")
+        javaArgs         = [ '-ea' ]
+        checkAssertions  = true
+        maxHeapSize      = '2G'
+        extraArgs        = [
 
+        ]
+
+    }
 }

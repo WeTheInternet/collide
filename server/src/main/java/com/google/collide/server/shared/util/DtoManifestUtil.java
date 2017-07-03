@@ -1,17 +1,16 @@
 package com.google.collide.server.shared.util;
 
-import static collide.shared.collect.Collections.asArray;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.collide.dto.GwtCompile;
+import com.google.collide.dto.GwtRecompile;
+import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import xapi.collect.api.IntTo;
 import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 
-import com.google.collide.dto.GwtCompile;
-import com.google.collide.dto.GwtRecompile;
-import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
+import static collide.shared.collect.Collections.asArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DtoManifestUtil {
 
@@ -45,10 +44,10 @@ public class DtoManifestUtil {
     manifest.setUnitCacheDir(compile.getUnitCacheDir());
     manifest.setWorkDir(compile.getWorkDir());
     manifest.setWarDir(compile.getWarDir());
-    
+
     return manifest;
   }
-  
+
   public static GwtManifest loadRecompile(GwtManifest manifest, GwtRecompile compile) {
     manifest.setModuleName(compile.getModule());
     manifest.setAutoOpen(compile.getAutoOpen());
@@ -79,7 +78,7 @@ public class DtoManifestUtil {
   public static GwtManifest newGwtManifest(GwtRecompile compileRequest) {
     return loadRecompile(new GwtManifest(), compileRequest);
   }
-  
+
 
   public GwtCompileImpl toDto(GwtManifest m) {
     GwtCompileImpl gwtc = GwtCompileImpl.make();
@@ -90,8 +89,10 @@ public class DtoManifestUtil {
     gwtc.setOpenAction(m.getOpenAction());
     gwtc.setPort(m.getPort());
     gwtc.setSources(asList(m.getSources()));
-    gwtc.setDependencies(asList(m.getDependencies()));
-    
+    List<String> deps = new ArrayList<>();
+    m.getDependencies().forEach(deps::add);
+    gwtc.setDependencies(deps);
+
     gwtc.setDeployDir(m.getDeployDir());
     gwtc.setExtraArgs(asList(m.getExtraArgs()));
     gwtc.setExtrasDir(m.getExtrasDir());
@@ -117,7 +118,7 @@ public class DtoManifestUtil {
     gwtc.setPort(m.getPort());
     gwtc.setSystemProperties(asList(m.getSystemProperties()));
     gwtc.setUnitCacheDir(m.getUnitCacheDir());
-    
+
     return gwtc;
   }
 

@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'gwt-base'
 
 group = 'de.mocra.cy'
 version = '0.6-SNAPSHOT'
@@ -23,8 +22,7 @@ jar {
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version:'19.0'
     compile group: 'com.google.guava', name: 'guava-gwt', version:'19.0'
+    compile group: 'net.wetheinter', name: 'xapi-gwtc-api', version:versionXapi, changing: true, transitive: true
     compile group: 'net.wetheinter', name: 'gwt-user', version:versionGwt, changing: true
     compile group: 'net.wetheinter', name: 'gwt-dev', version:versionGwt, changing: true, transitive: true
 }
-
-gwt { }

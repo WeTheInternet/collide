@@ -32,6 +32,7 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
+import xapi.reflect.X_Reflect;
 
 /**
  * Simple source generator that takes in a jar of interface definitions and
@@ -62,6 +63,28 @@ public class DtoGenerator {
    * @param args
    */
   public static void main(String[] args) {
+
+    // First, calculate defaults.
+
+    String myBase = X_Reflect.getFileLoc(DtoGenerator.class);
+    if (File.separatorChar != '/') {
+      myBase = myBase.replace(File.separatorChar, '/');
+    }
+    String buildDir = "api" + File.separator + "build" + File.separator;
+    myBase = myBase
+        // first, replace the path when running from compiled classes (via IDE)
+        .replace(buildDir + "classes" + File.separator + "main" + File.separator, "")
+        // then, if running from compiled jar;
+        // if you are creating another executable jar somewhere else,
+        // then you will need to supply command line argument overrides.
+        .replaceFirst(buildDir + "libs" + File.separator + ".*[.]jar", "")
+    ;
+    dto_jar = myBase + "shared/build/libs/shared-0.6-SNAPSHOT.jar";
+    gen_file_name = myBase + "client/src/main/java/com/google/collide/dto/client/DtoClientImpls.java";
+    impl = "client";
+    package_base = "java";
+
+    // Now, check for cli overrides
     for (String arg : args) {
       if (arg.startsWith("--dto_jar=")) {
         dto_jar = arg.substring("--dto_jar=".length());
@@ -85,7 +108,7 @@ public class DtoGenerator {
     int packageEnd = outputFilePath.lastIndexOf('/');
     String fileName = outputFilePath.substring(packageEnd + 1);
     String className = fileName.substring(0, fileName.indexOf(".java"));
-    String packageName = outputFilePath.substring(packageStart, packageEnd).replace('/', '.');
+    String packageName = outputFilePath.substring(packageStart + 1, packageEnd).replace('/', '.');
 
     File outFile = new File(outputFilePath);
     File interfaceJar = new File(dto_jar);
@@ -102,7 +125,7 @@ public class DtoGenerator {
         Enumeration<JarEntry> entries = jarFile.entries();
         while (entries.hasMoreElements()) {
           String entryFilePath = entries.nextElement().getName();
-          if (entryFilePath.endsWith(".class")) {
+          if (isValidClassFile(entryFilePath)) {
             classFilePaths.add(entryFilePath);
           }
         }
@@ -147,6 +170,10 @@ public class DtoGenerator {
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     }
+  }
+
+  private static boolean isValidClassFile(String file) {
+    return file.endsWith(".class") && file.contains("dto");
   }
 
   private static String getApiHash(File interfaceJar) throws IOException {

@@ -8,22 +8,38 @@ group = 'de.mocra.cy'
 version = '0.6-SNAPSHOT'
 description = "CollIDE Server Code"
 
+versionVertx = "3.3.3"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
     compile project(':client')
+    compile group: 'net.wetheinter', name: 'xapi-server-vertx', version: versionXapi
+
     compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
+    compile group: 'io.vertx', name: 'vertx-hazelcast', version: versionVertx
+    compile group: 'de.mocra.cy', name: 'wti-server', version: '0.1-SNAPSHOT'
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.0.0'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
     compile group: 'com.google.code.gson', name: 'gson', version:'2.2.1'
 
+    compile 'xerces:xercesImpl:2.8.1'
+}
+
+sourceSets {
+    main {
+        output.resourcesDir = "build/classes/main"
+    }
+    test {
+        output.resourcesDir = "build/classes/test"
+    }
 }
 
 mainClassName = 'collide.server.StartServer'
 
 shadowJar {
     classifier = 'fat'
+    zip64 = true
     mergeServiceFiles {
         include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
     }

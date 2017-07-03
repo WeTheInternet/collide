@@ -18,12 +18,12 @@ package com.google.collide.dtogen.shared;
  *
  */
 public interface RoutableDto {
-  public static final int NON_ROUTABLE_TYPE = -2;
-  public static final String TYPE_FIELD = "_type";
-  
+  int NON_ROUTABLE_TYPE = -2;
+  String TYPE_FIELD = "_type";
+
   /**
    * Every DTO needs to report a type for the purposes of routing messages on
    * the client.
    */
-  public int getType();
+  int getType();
 }

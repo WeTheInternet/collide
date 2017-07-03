@@ -7,4 +7,5 @@
   <inherits name="collide.plugin.Plugin" />
   <inherits name="com.google.collide.client.Imports" />
   <entry-point class="collide.demo.parent.ParentModule"/>
+  <set-property name="compiler.useSourceMaps" value="true" />
 </module>

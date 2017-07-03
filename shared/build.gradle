@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: 'gwt-base'
 
 group = 'de.mocra.cy'
 version = '0.6-SNAPSHOT'
@@ -25,5 +24,3 @@ dependencies {
     compile project(':api')
 
 }
-
-gwt { }
