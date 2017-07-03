@@ -317,6 +317,11 @@ public class EditSessions extends BusModBase {
       eb.<JsonObject>send("tree.getCurrentPaths", new JsonObject().put("resourceIds", resourceIds),
           message -> {
           final Message<JsonObject> event = message.result();
+
+          if (message.failed()) {
+            logger.error("Message failed calling tree.getCurrentPaths for resourceIds " + resourceIds, message.cause());
+            return;
+          }
           JsonArray currentPaths = event.body().getJsonArray("paths");
           Iterator<Object> pathIter = currentPaths.iterator();
           Iterator<Object> resourceIter = resourceIds.iterator();

@@ -31,11 +31,12 @@ import com.google.collide.json.shared.JsonArray;
 import com.google.collide.json.shared.JsonStringMap;
 import com.google.collide.shared.util.JsonCollections;
 import com.google.common.base.Preconditions;
+import xapi.log.X_Log;
 
 /**
  * Controller responsible for loading documents (and uneditable files) from the
  * server.
- * 
+ *
  * This class accepts multiple calls to
  * {@link #load(PathUtil, GetDocumentCallback)} for the same path and intelligently
  * batches together the callbacks so only one network request will occur.
@@ -59,7 +60,7 @@ class DocumentManagerNetworkController {
     if (loadingMessage != null) {
       cancelLoadingMessage();
     }
-    
+
     fileTreeController.getMessageFilter().removeMessageRecipient(RoutingTypes.GETFILECONTENTSRESPONSE);
   }
 
@@ -87,15 +88,18 @@ class DocumentManagerNetworkController {
 
   private void requestFile(final PathUtil path) {
     delayLoadingMessage(path);
-    
+
     // Fetch the file's contents
     GetFileContentsImpl getFileContents = GetFileContentsImpl.make().setPath(path.getPathString());
-    fileTreeController.getFileContents(getFileContents, 
+    fileTreeController.getFileContents(getFileContents,
         new ApiCallback<GetFileContentsResponse>() {
 
           @Override
           public void onMessageReceived(GetFileContentsResponse response) {
-              handleFileReceived(response);
+              if (!handleFileReceived(response)) {
+                X_Log.warn(DocumentManagerNetworkController.class,
+                    "Tried to load a missing file", path, "\nresulted in:", response);
+              }
           }
 
           @Override
@@ -110,7 +114,11 @@ class DocumentManagerNetworkController {
    * handling mechanism depending on whether or not the file content type is text, an image, or some
    * other binarySuffix file.
    */
-  private void handleFileReceived(GetFileContentsResponse response) {
+  private boolean handleFileReceived(GetFileContentsResponse response) {
+    if (response.getFileContents() == null) {
+      // Woops!  Asked to load a missing file...
+      return false;
+    }
     boolean isUneditable =
         (response.getFileContents().getContentType() == ContentType.UNKNOWN_BINARY)
         || (response.getFileContents().getContentType() == ContentType.IMAGE);
@@ -134,6 +142,7 @@ class DocumentManagerNetworkController {
     } else {
       documentManager.handleEditableFileReceived(response.getFileContents(), callbacks);
     }
+    return true;
   }
 
   private void delayLoadingMessage(PathUtil path) {

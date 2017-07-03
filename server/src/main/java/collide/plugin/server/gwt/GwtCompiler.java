@@ -1,27 +1,26 @@
 package collide.plugin.server.gwt;
 
+import collide.plugin.server.ReflectionChannelTreeLogger;
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.server.DtoServerImpls.GwtCompileImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.json.shared.JsonArray;
-import collide.plugin.server.ReflectionChannelTreeLogger;
 import com.google.collide.server.shared.util.DtoManifestUtil;
 import com.google.collide.shared.util.JsonCollections;
 import io.vertx.core.eventbus.EventBus;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import org.apache.xerces.parsers.SAXParser;
+import org.apache.xerces.parsers.XIncludeParserConfiguration;
+import org.apache.xerces.xni.parser.XMLParserConfiguration;
 import xapi.file.X_File;
+import xapi.fu.Do;
 import xapi.gwtc.api.GwtManifest;
 import xapi.io.api.SimpleLineReader;
 import xapi.log.X_Log;
 import xapi.shell.X_Shell;
 import xapi.shell.api.ShellSession;
 import xapi.util.X_Debug;
-
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.TreeLogger.Type;
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.dev.Compiler;
-import com.google.gwt.dev.codeserver.GwtCompilerThread;
-import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +29,12 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+
+import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.TreeLogger.Type;
+import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.dev.Compiler;
+import com.google.gwt.dev.util.log.PrintWriterTreeLogger;
 
 public class GwtCompiler {
 
@@ -130,7 +135,7 @@ public class GwtCompiler {
     }
   }
 
-  public void initialize(GwtRecompileImpl compileRequest, URL[] cp, EventBus eb, String address) {
+  public void initialize(GwtRecompileImpl compileRequest, URL[] cp, EventBus eb, String address, Do onDone) {
     if (cl != null) {
       if (!Arrays.equals(cp, cl.getURLs())) {
         X_Log.info(getClass(), "Resetting classloader as urls have changed");
@@ -149,9 +154,6 @@ public class GwtCompiler {
         }
         io = null;
       }
-    } else {
-      X_Log.info(getClass(), "Setting classloader to allow system class loading");
-      cl.setAllowSystem(true);
     }
     if (io == null) {
       io = new CrossThreadVertxChannel(cl, eb, address) {
@@ -163,31 +165,48 @@ public class GwtCompiler {
         }
       };
     }
-    try {
-      Class<?> recompilerClass = cl.loadClass(GwtCompilerThread.class.getName());
-      Class<?> stringClass = cl.loadClass(String.class.getName());
-      Class<?> classLoaderClass = cl.loadClass(ClassLoader.class.getName());
-      Class<?> objectClass = cl.loadClass(Object.class.getName());
-      Constructor<?> ctor = recompilerClass.getConstructor(stringClass);
-      compiler = ctor.newInstance(module);
-      Method method = recompilerClass.getMethod("setContextClassLoader", classLoaderClass);
-      method.invoke(compiler, cl);
 
-      method = recompilerClass.getMethod("setDaemon", boolean.class);
-      method.invoke(compiler, true);
-      method = recompilerClass.getMethod("setChannel", classLoaderClass, objectClass);
-      method.invoke(compiler, getClass().getClassLoader(), io);
-      io.setChannel(null);
-      ReflectionChannelTreeLogger logger = new ReflectionChannelTreeLogger(io);
-      String messageKey = compileRequest.getMessageKey() == null ? module : compileRequest.getMessageKey();
-      logger.setModule(messageKey);
-      log = logger;
-      log.log(Type.INFO, "Initialized GWT compiler for "+module);
-      compileMethod = recompilerClass.getMethod("compile", String.class);
-      cl.setAllowSystem(false);
-    } catch (Exception e) {
-      log.log(Type.ERROR, "Unable to start the GWT compiler", e);
-    }
+    //Thread launchThread = new Thread(()->{
+    //
+      try {
+    cl.setAllowSystem(true);
+    //cl.setAllowSystem(false);
+        Class<?> launcher = cl.loadClass("com.google.collide.server.shared.launcher.VertxLauncher");
+        //assert launcher.getClassLoader() == cl;
+        Class<?> recompilerClass = cl.loadClass("com.google.gwt.dev.codeserver.GwtCompilerThread");
+        //cl.setAllowSystem(true);
+        Class<?> stringClass = cl.loadClass(String.class.getName());
+        Class<?> classLoaderClass = cl.loadClass(ClassLoader.class.getName());
+        Class<?> objectClass = cl.loadClass(Object.class.getName());
+        Constructor<?> ctor = recompilerClass.getConstructor(stringClass);
+        compiler = ctor.newInstance(module);
+        Method method = recompilerClass.getMethod("setContextClassLoader", classLoaderClass);
+        method.invoke(compiler, cl);
+
+        method = recompilerClass.getMethod("setDaemon", boolean.class);
+        method.invoke(compiler, true);
+        method = recompilerClass.getMethod("setChannel", classLoaderClass, objectClass);
+        method.invoke(compiler, getClass().getClassLoader(), io);
+        io.setChannel(null);
+        ReflectionChannelTreeLogger logger = new ReflectionChannelTreeLogger(io);
+        String messageKey = compileRequest.getMessageKey() == null ? module : compileRequest.getMessageKey();
+        logger.setModule(messageKey);
+        log = logger;
+        log.log(Type.INFO, "Initialized GWT compiler for "+module);
+        compileMethod = recompilerClass.getMethod("compile", String.class);
+
+        //cl.setAllowSystem(false);
+        cl.loadClass(XIncludeParserConfiguration.class.getName());
+        cl.loadClass(XMLParserConfiguration.class.getName());
+        cl.loadClass(SAXParser.class.getName());
+        onDone.getClass().getMethod("done").invoke(onDone);
+      } catch (Exception e) {
+        log.log(Type.ERROR, "Unable to start the GWT compiler", e);
+      }
+
+    //});
+    //launchThread.setContextClassLoader(cl);
+    //launchThread.start();
   }
 
   public CrossThreadVertxChannel getIO() {

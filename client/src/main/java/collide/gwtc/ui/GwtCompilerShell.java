@@ -514,7 +514,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
     listeners.push(listener);
   }
 
-  private static class LoggerMap extends InitMapDefault<String, RunningGwtModule> {
+  public static class LoggerMap extends InitMapDefault<String, RunningGwtModule> {
     public LoggerMap(ConvertsValue<String, RunningGwtModule> factory) {
       super(PASS_THRU, factory);
     }

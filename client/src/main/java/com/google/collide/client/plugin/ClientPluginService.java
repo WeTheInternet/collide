@@ -1,14 +1,13 @@
 package com.google.collide.client.plugin;
 
-import javax.inject.Provider;
-
-import xapi.inject.X_Inject;
-
 import com.google.collide.client.AppContext;
 import com.google.collide.client.history.Place;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.shared.plugin.PublicService;
 import com.google.collide.shared.plugin.PublicServices;
+import xapi.inject.X_Inject;
+
+import javax.inject.Provider;
 
 public class ClientPluginService {
 
@@ -44,7 +43,7 @@ public class ClientPluginService {
   }
   @SuppressWarnings("unchecked")
   public static <T extends ClientPlugin<?>> T getPlugin(Class<T> cls) {
-    for (ClientPlugin<?> plugin : SINGLETON.get().plugins()) {
+    for (ClientPlugin<?> plugin : getPlugins()) {
       if (cls.isAssignableFrom(plugin.getClass())) {
         return (T)plugin;
       }

@@ -5,8 +5,6 @@ import collide.plugin.server.gwt.CompilerRunner;
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
-import com.google.collide.plugin.shared.CompiledDirectory;
-import com.google.collide.plugin.shared.IsRecompiler;
 import com.google.collide.server.shared.launcher.VertxLauncher;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
@@ -14,6 +12,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetSocket;
+import xapi.gwtc.api.CompiledDirectory;
+import xapi.gwtc.api.IsRecompiler;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
@@ -27,27 +27,40 @@ implements CompilerRunner
 
 {
 
+  private static class CompileLauncher<CompileType extends CodeModule> extends VertxLauncher {
+    private AbstractCompileThread<CompileType> thread;
+
+    public CompileLauncher(
+        AbstractCompileThread<CompileType> thread) {
+      this.thread = thread;
+    }
+
+    @Override
+    protected NetServer initialize(Vertx vertx, int port) {
+      thread.port = port;
+      return super.initialize(vertx, port);
+    }
+
+    @Override
+    protected void handleBuffer(NetSocket event, Buffer buffer) throws IOException {
+      thread.handleBuffer(event, buffer);
+    }
+  }
+
   protected ReflectionChannel io;
   protected boolean working = false;
   protected int port;
 
   protected IsRecompiler controller;
 
-  protected final VertxLauncher server = new VertxLauncher() {
-    @Override
-    protected NetServer initialize(Vertx vertx, int port) {
-      AbstractCompileThread.this.port = port;
-      return super.initialize(vertx, port);
-    }
-    @Override
-    protected void handleBuffer(NetSocket event, Buffer buffer) throws IOException {
-      AbstractCompileThread.this.handleBuffer(event, buffer);
-    };
+  protected final VertxLauncher server;
 
-  };
   protected CompiledDirectory compileRequest;
   protected CompileResponseImpl status;
 
+  protected AbstractCompileThread() {
+    server = new CompileLauncher(this);
+  }
 
   protected boolean isFatal(Exception e) {
     return true;

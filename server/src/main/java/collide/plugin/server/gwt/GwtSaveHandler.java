@@ -1,6 +1,13 @@
 package collide.plugin.server.gwt;
 
 import collide.shared.manifest.CollideManifest;
+import com.github.javaparser.ASTHelper;
+import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseException;
+import com.github.javaparser.ast.exception.NotFoundException;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.JsonContainerExpr;
+import com.github.javaparser.ast.expr.JsonPairExpr;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
 import com.google.collide.server.shared.util.DtoManifestUtil;
 import com.google.common.base.Charsets;
@@ -9,13 +16,14 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import xapi.gwtc.api.GwtManifest;
+import xapi.io.X_IO;
 import xapi.log.X_Log;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
 
 public class GwtSaveHandler implements Handler<Message<JsonObject>>{
 
@@ -27,17 +35,47 @@ public class GwtSaveHandler implements Handler<Message<JsonObject>>{
 
     // Check for META-INF/collide.settings
     URL collideSettings = GwtSettingsHandler.class.getResource("/META-INF/collide.settings");
+    JsonContainerExpr settings;
+    final JsonContainerExpr expr;
     if (collideSettings != null) {
       CollideManifest manifest = new CollideManifest("");
+      boolean found = false;
       try (
-      BufferedReader reader = new BufferedReader(new InputStreamReader(collideSettings.openStream()));
-          ){
-        String line;
-        while ((line = reader.readLine()) != null)
-          manifest.addEntry(line);
-      } catch (IOException e) {
-        X_Log.info(getClass(), "IOException reading collide.settings", e);
+          InputStream in = collideSettings.openStream();
+          ) {
+        String source = X_IO.toStringUtf8(in);
+        expr = JavaParser.parseJsonContainer(source);
+        assert expr.isArray();
+        for (Iterator<JsonPairExpr> itr = expr.getPairs().iterator(); itr.hasNext(); ) {
+          final JsonPairExpr pair = itr.next();
+          settings = (JsonContainerExpr) pair.getValueExpr();
+          Expression module = settings.getNode("module");
+          if (module instanceof JsonContainerExpr) {
+            for (JsonPairExpr mod : ((JsonContainerExpr)module).getPairs()) {
+              if (impl.getModule().equals(ASTHelper.extractStringValue(mod.getValueExpr()))) {
+                itr.remove();
+                found = true;
+                break;
+              }
+            }
+          } else {
+            if (impl.getModule().equals(ASTHelper.extractStringValue(module))) {
+              itr.remove();
+              found = true;
+              break;
+            }
+          }
+        }
+        if (!found) {
+          throw new NotFoundException(impl.getModule());
+        }
+      } catch (ParseException | IOException e) {
+        X_Log.info(getClass(), "Exception reading/parsing collide.settings", e);
+        throw new RuntimeException(e);
       }
+
+      // TODO: save the manifest into the settings file.
+
       // Now put the settings back
       manifest.addGwtc(gwtc);
       try {

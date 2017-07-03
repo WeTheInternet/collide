@@ -104,7 +104,7 @@ public class GwtPluginTest extends TestCase {
     final JsonObject req =
         Dto.wrap("{"
             + "module : 'collide.demo.Foreign'"
-            + ",src : ['demo/src/main/java','demo/src/main/resources','xapi-gwt.jar']"
+            + ",src : ['api/src/main/java', 'shared/src/main/java','client/src/main/java','client/src/main/resources','xapi-gwt.jar']"
             + ",deps : ['elemental.jar', 'gwt-dev.jar', 'gwt-user.jar']" +
             "}");
     for (Map.Entry<String, Handler<Message<JsonObject>>> handles : plugin.getHandlers().entrySet()) {

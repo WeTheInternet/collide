@@ -67,7 +67,11 @@ public class VertxBusImpl extends JavaScriptObject implements VertxBus {
     var replyHandlerWrapper;
     if(replyHandler) {
       replyHandlerWrapper = function(reply) {
-        replyHandler.@com.google.collide.clientlibs.vertx.VertxBus.ReplyHandler::onReply(Ljava/lang/String;)(reply.dto)
+        if (reply) {
+          replyHandler.@com.google.collide.clientlibs.vertx.VertxBus.ReplyHandler::onReply(Ljava/lang/String;)(reply.dto)
+        } else {
+          console.trace("Received null reply from ", address, " sent message: ", message);
+        }
       }
     }
 

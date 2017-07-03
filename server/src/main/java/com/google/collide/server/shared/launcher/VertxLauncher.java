@@ -18,17 +18,14 @@ public class VertxLauncher extends LazyPojo<Vertx> {
 
   @Override
   protected Vertx initialValue() {
-    Vertx vertx = null;
-
-    while (vertx == null) {
+    while (true) {
       synchronized (unusedPort) {
-        int port = unusedPort.getAndAdd(1 + ((int)Math.random() * 20));
+        int port = unusedPort.getAndAdd(1 + (int)(Math.random() * 20));
         try {
-          vertx = Vertx.vertx();
+          Vertx vertx = Vertx.vertx();
           initialize(vertx, port);
           return vertx;
         } catch (Exception e) {
-          vertx = null;
           e.printStackTrace();
           if (port > 15000) {
             synchronized (unusedPort) {
@@ -39,7 +36,6 @@ public class VertxLauncher extends LazyPojo<Vertx> {
         }
       }
     }
-    return null;
   }
 
   protected NetServer initialize(Vertx vertx, int port) {
@@ -58,7 +54,7 @@ public class VertxLauncher extends LazyPojo<Vertx> {
             try{
               handleBuffer(event, buffer);
             }catch (Exception e) {
-              e.printStackTrace();
+              X_Log.error(getClass(), "Error handling buffer", e);
             }
         });
         event.endHandler(e->X_Log.debug("Ending"));

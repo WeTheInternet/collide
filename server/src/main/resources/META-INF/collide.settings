@@ -1,6 +1,82 @@
-gwt	collide.demo.Parent	demo/src/main/java;demo/src/main/resources;java;bin/gen;plugin;deps/guava-12.0/guava-gwt-12.0.jar;deps/guava-12.0/guava-12.0.jar	gson-2.2.1.jar;waveinabox-import-0.3.jar;collide-source.jar;elemental.jar;gwt-dev.jar;gwt-user.jar;elemental.jar;client-src.jar;client-common-src.jar;client-scheduler-src.jar;common-src.jar;concurrencycontrol-src.jar;model-src.jar;media-src.jar;jsr305.jar;validation-api-1.0.0.GA-sources.jar;validation-api-1.0.0.GA.jar
-gwt	collide.demo.Child	demo/src/main/java;demo/src/main/resources;java;plugin;bin/gen	elemental.jar;xapi-gwt-0.3.jar;guava-gwt-12.0.jar
-gwt	collide.junit	demo/src/main/java;demo/src/main/resources;java;javatests;plugin;bin/gen;bin/classes;demo/target	elemental.jar;xapi-gwt-0.3.jar;xapi-dev-0.3.jar;guava-gwt-12.0.jar
-gwt	com.google.collide.plugin.StandalonePlugin	java;bin/gen;plugin;deps/xapi-0.3/xapi-gwt-0.3.jar;deps/guava-12.0/guava-gwt-12.0.jar;deps/guava-12.0/guava-12.0.jar	elemental.jar;gwt-dev.jar;gwt-user.jar;gson-2.2.1.jar;elemental.jar;client-src.jar;client-common-src.jar;client-scheduler-src.jar;common-src.jar;concurrencycontrol-src.jar;model-src.jar;media-src.jar;waveinabox-import-0.3.jar;jsr305.jar
-gwt	com.google.collide.client.Collide	java;bin/gen;plugin;deps/xapi-0.3/xapi-gwt-0.3.jar;deps/guava-12.0/guava-gwt-12.0.jar;deps/guava-12.0/guava-12.0.jar	elemental.jar;gwt-dev.jar;gwt-user.jar;gson-2.2.1.jar;elemental.jar;client-src.jar;client-common-src.jar;client-scheduler-src.jar;common-src.jar;concurrencycontrol-src.jar;model-src.jar;media-src.jar;waveinabox-import-0.3.jar;jsr305.jar
-java	*	java;bin/gen;plugin;demo/src/main/java	xapi-dev-0.3.jar
+[
+  {
+    type: "gwt",
+    module: "collide.demo.Parent",
+    sources : [ "api/src/main/java",
+      "shared/src/main/java",
+      "client/src/main/java",
+      "deps/codemirror2"
+    ],
+    classpath : [
+      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:gwt-elemental:2.8.0"),
+      maven("net.wetheinter:gwt-user:2.8.0"),
+      maven("net.wetheinter:gwt-dev:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:sources:jar:2.8.0"),
+      maven("com.google.guava:guava:19.0"),
+      maven("com.google.guava:guava-gwt:19.0")
+    ]
+  },
+  {
+    type: "gwt",
+    module: "collide.demo.Child",
+    sources : [
+      "api/src/main/java",
+      "shared/src/main/java",
+      "client/src/main/java"
+    ],
+    classpath : [
+      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:gwt-elemental:2.8.0"),
+      maven("net.wetheinter:gwt-user:2.8.0"),
+      maven("net.wetheinter:gwt-dev:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:sources:jar:2.8.0"),
+      maven("com.google.guava:guava:19.0"),
+      maven("com.google.guava:guava-gwt:19.0")
+    ]
+  },
+  {
+    type: "gwt",
+    module: "collide.plugin.StandalonePlugin",
+    sources : [
+      "api/src/main/java",
+      "shared/src/main/java",
+      "client/src/main/java"
+    ],
+    classpath : [
+      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:gwt-elemental:2.8.0"),
+      maven("net.wetheinter:gwt-user:2.8.0"),
+      maven("net.wetheinter:gwt-dev:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:sources:jar:2.8.0"),
+      maven("com.google.guava:guava:19.0"),
+      maven("com.google.guava:guava-gwt:19.0")
+    ]
+  },
+  {
+    type: "gwt",
+    module: "collide.client.Collide",
+    sources : [
+      "api/src/main/java",
+      "shared/src/main/java",
+      "client/src/main/java"
+    ],
+    classpath : [
+      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:gwt-elemental:2.8.0"),
+      maven("net.wetheinter:gwt-user:2.8.0"),
+      maven("net.wetheinter:gwt-dev:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:2.8.0"),
+      maven("net.wetheinter:jsinterop-annotations:sources:jar:2.8.0"),
+      maven("com.google.guava:guava:19.0"),
+      maven("com.google.guava:guava-gwt:19.0")
+    ]
+  }
+]

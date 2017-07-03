@@ -14,8 +14,8 @@
 
 package com.google.collide.server.fe;
 
+import collide.server.XapiServer;
 import com.google.collide.dto.shared.JsonFieldConstants;
-import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.server.maven.MavenResources;
 import com.google.collide.server.shared.BusModBase;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -31,13 +31,16 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.shareddata.LocalMap;
+import io.vertx.core.shareddata.Shareable;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 import org.apache.http.HttpStatus;
+import xapi.gwtc.api.CompiledDirectory;
 import xapi.log.X_Log;
+import xapi.reflect.X_Reflect;
 import xapi.util.api.Pointer;
 
 import java.io.File;
@@ -104,6 +107,8 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   private MavenResources config;
   private SockJSHandler sjsServer;
   private Router router;
+  private String collideHome;
+  private XapiServer xapiServer;
 
   @Override
   public void start() {
@@ -156,6 +161,9 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     String bundledStaticFiles = getMandatoryStringConfig("staticFiles");
     String webRoot = getMandatoryStringConfig("webRoot");
     String workDirectory = getOptionalStringConfig("workDir", "/tmp");
+    String collide = getOptionalStringConfig("collideHome",
+        X_Reflect.getFileLoc(WebFE.class).replace(
+            "/server/build/classes/main/".replace('/', File.separatorChar) , ""));
     String warDirectory = getOptionalStringConfig("warDir", webRoot + File.separator + "war");
 
 
@@ -163,7 +171,8 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     webRootPrefix = webRoot + File.separator;
     workDir = workDirectory + File.separator;
     warDir = warDirectory + File.separator;
-
+    collideHome = collide + File.separator;
+    xapiServer = new XapiServer(bundledStaticFilesPrefix, webRootPrefix, workDir, warDir, collideHome);
     int port = getOptionalIntConfig("port", 8080);
     String host = getOptionalStringConfig("host", "127.0.0.1");
     System.out.println("Connecting to "+host+":"+port);
@@ -174,7 +183,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         try{
         String dto = event.body().getString("dto");
         X_Log.trace("Symlinking",dto);
-        CompiledDirectory dir = CompiledDirectory.fromString(dto);
+        CompiledDirectory dir = CompiledDirectory.fromString(dto, ShareableCompileDirectory::new);
         vertx.sharedData().getLocalMap("symlinks").put(
             dir.getUri()
             , dir);
@@ -183,6 +192,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         }
     });
   }
+  public static class ShareableCompileDirectory extends CompiledDirectory implements Shareable{}
 
   private List<PermittedOptions> toOpts(JsonArray inboundPermitted) {
     return ((List<?>)inboundPermitted.getList())
@@ -204,7 +214,11 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
   @Override
   public void handle(HttpServerRequest req) {
-    if (req.path().equals("/") || req.path().equals("/demo/")) {
+    //if (req.path().equals("/")) {
+    //  handleXapi(req);
+    //  return;
+    //}
+    if (req.path().equals("/") || req.path().equals("/demo")) {
       //send login page
       authAndWriteHostPage(req);
       return;
@@ -263,6 +277,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       doFail(req);
     }
   }
+
   private void doFail(HttpServerRequest req) {
     //TODO: add a pluggable proxy here.
     sendStatusCode(req, HttpStatus.SC_NOT_FOUND);
@@ -379,9 +394,22 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       String[] bits = request.urlFragment.split("/");
       String moduleName = bits[2];
       if (request.urlFragment.endsWith(".json")) {
-        // we are save to assume _sourceMap0 since there will never be more than 1 iteration on a full compile
-        String mapFile = bits[4].replace(".json", "_sourceMap0.json");
-        response.resolved = bundledStaticFilesPrefix.replace("out/"+moduleName, "extra") + moduleName+ "/symbolMaps/" + mapFile;
+        // we are safe to assume _sourceMap0 since there will never be more than 1 iteration on a full compile
+        String extras = bundledStaticFilesPrefix.replace("out/"+moduleName, "extra/"+moduleName);
+        if (bits[4].contains("sourceMap0.json")) {
+          // super dev mode...
+          String mapFile = bits[4].replaceAll("(_sourcemap)?[.]json", "_sourceMap0.json");
+          response.resolved = extras + "/symbolMaps/" + mapFile;
+        } else {
+          // full compile; source maps are stored per split point, in a different structure...
+
+          String mapFile = bits[4].replaceAll("([A-F0-9]+)[.]json", "$1");
+          if (mapFile.matches("^[0-9]+$")) {
+            response.resolved = extras + "symbolMaps/" + moduleName + "_sourceMap" + mapFile + ".json";
+          } else {
+            response.resolved = extras + "symbolMaps/" + mapFile + "_sourceMap0.json";
+          }
+        }
       } else {
         String sourceFolder = bundledStaticFilesPrefix.replace("out/"+moduleName, "sourcemaps") + moduleName+ "/src/";
         response.resolved = sourceFolder + request.urlFragment.split(SOURCEMAP_PATH)[1];
@@ -535,7 +563,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
             return;
           }
           String path = req.path();
-          String module = "Collide";
+          String module = "Demo";
 
           if (path.endsWith("demo/")) {
             path = path.replace("/demo", "");
@@ -601,8 +629,11 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         .append(username).append("\"\n};\n")
 
         .append("window['collide'] = {\n")
-        .append("name: 'Guest', module: 'collide.demo.Child', open: '/demo/src/main/java" +
-        		"/collide/demo/child/ChildModule.java' };")
+        .append("name: 'Guest', module: 'collide.demo.Child', open: '" +
+                //"/core/fu/src/main/xapi" +
+        		//"/xapi/fu/In.xapi"
+                "/test.wti"
+            + "' };")
         .append("</script>");
   }
 
@@ -621,4 +652,12 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     req.response().setStatusCode(statusCode);
     req.response().end();
   }
+
+  private void handleXapi(HttpServerRequest req) {
+    if (xapiServer.serve(req)) {
+      return;
+    }
+    authAndWriteHostPage(req);
+  }
+
 }

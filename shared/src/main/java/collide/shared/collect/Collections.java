@@ -62,7 +62,7 @@ public class Collections {
 
   public static IntTo<String> asArray(JsonArray<String> array) {
     if (array instanceof JsoArray) {
-      return ((JsoArray<String>)array).<IntToListGwt<String>>cast();
+      return IntToListGwt.createFrom((JsoArray<String>)array);
     } else {
       IntTo<String> ret = X_Collect.newList(String.class);
       for (String value : array.asIterable()) {
@@ -74,7 +74,7 @@ public class Collections {
 
   public static ArrayOfString asArray(IntTo<String> array) {
     if (array instanceof IntToListGwt) {
-      return ((IntToListGwt<String>)array).<JsArrayOfString>cast();
+      return ((IntToListGwt<String>)array).rawArray().<JsArrayOfString>cast();
     } else {
       ArrayOfString ret = elemental.util.Collections.arrayOfString();
       for (String value : array.forEach()) {

@@ -7,13 +7,11 @@ import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import xapi.log.X_Log;
 
-import com.google.gwt.dev.codeserver.GwtCompilerThread;
-
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-public class AntServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
+public class AntServerPlugin extends AbstractPluginServer{
 
   public class AntRunner implements Handler<Message<JsonObject>> {
     @Override
@@ -22,11 +20,6 @@ public class AntServerPlugin extends AbstractPluginServer<GwtCompilerThread>{
       logger.info(event.body());
       X_Log.info(event);
     }
-  }
-
-  @Override
-  protected Class<GwtCompilerThread> compilerClass() {
-    return GwtCompilerThread.class;
   }
 
   @Override

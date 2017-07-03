@@ -110,7 +110,7 @@ public class FileTree extends BusModBase {
 
     public NodeInfoExt removeChild(String name) {
       NodeInfoExt removed = children.remove(name);
-      assert removed != null;
+      assert removed != null : "Cannot remove non-existent child " + name;
       if (removed.getNodeType() == TreeNodeInfo.FILE_TYPE) {
         JsonArrayListAdapter<FileInfo> list = (JsonArrayListAdapter<FileInfo>) super.getFiles();
         super.clearFiles();
@@ -473,11 +473,10 @@ public class FileTree extends BusModBase {
      * @param root the path to start scanning from
      */
     public void walkFromRoot(Path root) throws IOException {
-      assert root == null;
+      assert root != null;
       assert parents.isEmpty();
       Files.walkFileTree(root, visitor);
       assert parents.isEmpty();
-      assert root != null;
     }
   }
 
@@ -532,6 +531,8 @@ public class FileTree extends BusModBase {
 
     blacklist.add("classes");
     blacklist.add("eclipse");
+    blacklist.add(".git");
+    blacklist.add(".idea");
 
     String webRoot = getOptionalStringConfig("webRoot", "");
     if (webRoot.length() > 0) {
@@ -741,6 +742,9 @@ public class FileTree extends BusModBase {
       broadcast.getMutations().add(mutation);
     }
     for (NodeInfoExt node : modifies) {
+      if (node == null) {
+        continue;
+      }
       System.out.println("mod: " + pathString(node));
       // Edit session wants modifies.
       messageModify.add(node.getFileEditSessionKey());

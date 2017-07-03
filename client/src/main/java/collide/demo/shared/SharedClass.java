@@ -1,5 +1,6 @@
 package collide.demo.shared;
 
+import xapi.annotation.compile.MagicMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Runtime;
 
@@ -34,13 +35,11 @@ public class SharedClass {
     $doc.body.contentEditable=true;
   }-*/;
 
+  @MagicMethod(doNotVisit = true)
   private void doJavaStuff() throws Exception{
-    // java.io.File is emulated in gwt, but w/ a private constructor.
-    // It is only present to allow source-level compatibility (being seen in files),
-    // so if we want to create a new file, we just do it through reflection.
     X_Log.info("Running in "+
-      File.class.getMethod("getCanonicalPath").invoke(
-        File.class.getConstructor(String.class).newInstance(".")
+      Class.forName("java.io.File").getMethod("getCanonicalPath").invoke(
+          Class.forName("java.io.File").getConstructor(String.class).newInstance(".")
       )
     );
   }

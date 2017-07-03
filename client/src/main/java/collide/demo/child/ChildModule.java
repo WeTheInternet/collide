@@ -5,7 +5,7 @@ import xapi.annotation.reflect.KeepMethod;
 import xapi.log.X_Log;
 import xapi.util.X_Util;
 
-import static xapi.reflect.X_Reflect.magicClass;
+import static com.google.gwt.reflect.shared.GwtReflect.magicClass;
 import static xapi.util.X_Runtime.isJava;
 
 import com.google.gwt.core.client.EntryPoint;

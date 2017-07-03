@@ -46,7 +46,7 @@ public class WorkspaceState extends BusModBase {
             final GetWorkspaceMetaDataResponseImpl metaData =
                 GetWorkspaceMetaDataResponseImpl.make()
                     .setRunTarget(runTarget).setWorkspaceName(webRoot);
-            X_Log.error(getClass(), "Last opened file: ", lastOpenedFileId);
+            X_Log.trace(getClass(), "Last opened file: ", lastOpenedFileId);
             if (lastOpenedFileId != null) {
               // Resolve file to a path.
               vertx.eventBus().<JsonObject>send("tree.getCurrentPaths", new JsonObject().put(

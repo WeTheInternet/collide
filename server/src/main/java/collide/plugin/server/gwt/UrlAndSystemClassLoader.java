@@ -2,7 +2,6 @@ package collide.plugin.server.gwt;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
-
 import java.net.URL;
 import java.net.URLClassLoader;
 

@@ -7,8 +7,8 @@ import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
-import com.google.collide.plugin.shared.CompiledDirectory;
 import com.google.collide.server.shared.util.ReflectionChannel;
+import xapi.gwtc.api.CompiledDirectory;
 
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;

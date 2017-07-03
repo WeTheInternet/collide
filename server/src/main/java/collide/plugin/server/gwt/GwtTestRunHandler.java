@@ -165,16 +165,16 @@ public class GwtTestRunHandler  implements Handler<Message<JsonObject>> {
       cp = paths.toArray(new URL[paths.size()]);
     }
     synchronized (this.gwtServerPlugin) {
-      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log");
+      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log", ()->{
+        log(module, "Compiling test module");
+        message.reply(Dto.wrap(compileRequest.toString()));
+        X_Log.info(getClass(), "Recompiling test class:",compileRequest);
+        compiler.recompile(compileRequest.toString());
+        for (String item : logMessages) {
+          compiler.log(item);
+        }
+      });
       X_Log.trace(getClass(), "Classpath: ", cp);
-    }
-
-    log(module, "Compiling test module");
-    message.reply(Dto.wrap(compileRequest.toString()));
-    X_Log.info(getClass(), "Recompiling test class:",compileRequest);
-    compiler.recompile(compileRequest.toString());
-    for (String item : logMessages) {
-      compiler.log(item);
     }
   }
 

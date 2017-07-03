@@ -90,7 +90,7 @@ public class FrontendApi {
    * EventBus API that documents the message types sent to the frontend. This API is fire and
    * forget, since it does not expect a response.
    *
-   * @param <REQ> The outgoing message type.
+   * @param <RESP> The outgoing message type.
    */
   public static interface ReceiveApi<RESP extends ServerToClientDto> {
     public void request(final ApiCallback<RESP> msg);

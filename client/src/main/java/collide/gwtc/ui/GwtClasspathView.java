@@ -28,19 +28,19 @@ public class GwtClasspathView extends CompositeView<GwtController>{
   interface MyBinder extends UiBinder<com.google.gwt.dom.client.DivElement, GwtClasspathView> {}
 
   static MyBinder binder = GWT.create(MyBinder.class);
-  
+
   public interface Css extends CssResource {
     String classpathContainer();
     String classpathInput();
   }
 
-  public interface Resources extends 
+  public interface Resources extends
     ClientBundle, FileTreeNodeRenderer.Resources
     {
     @Source("GwtClasspathView.css")
     Css gwtClasspathCss();
   }
-  
+
   @UiField com.google.gwt.dom.client.UListElement classpath;
   @UiField com.google.gwt.dom.client.DivElement body;
   @UiField com.google.gwt.dom.client.LabelElement classpathLabel;
@@ -48,27 +48,27 @@ public class GwtClasspathView extends CompositeView<GwtController>{
   private JsoArray<String> deps;
   private JsoArray<String> srcs;
 
-  
+
   public GwtClasspathView(Resources res, GwtManifest model) {
     this.res = res;
     binder.createAndBindUi(this);
     //hookup label; should be doing this in generator using ui:field...
     classpath.setId(DOM.createUniqueId());
     ((LabelElement)classpathLabel).setHtmlFor(classpath.getId());
-    
+
     setClasspath(model);
-    
+
     res.gwtClasspathCss().ensureInjected();
   }
 
-  
+
   public static GwtClasspathView create(DivElement moduleContainer, Resources res,
       GwtManifest model) {
     GwtClasspathView mod = new GwtClasspathView(res, model);
     moduleContainer.appendChild((DivElement)mod.body);
     return mod;
   }
-  
+
   private void setClasspath(GwtManifest model) {
     UListElement form = (UListElement) classpath;
     form.setInnerHTML("");//clear
@@ -127,23 +127,23 @@ public class GwtClasspathView extends CompositeView<GwtController>{
         openFileLink(source)+
         "\">"+source+"</a>");
   }
-  
+
   protected String jarIcon() {
     return "<div class='"
         + res.workspaceNavigationFileTreeNodeRendererCss().jarIcon()
         + "'></div>";
   }
-  
+
   protected String folderIcon() {
     return "<div class='"
         + res.workspaceNavigationFileTreeNodeRendererCss().folder()
         + "'></div>";
   }
-  
+
   protected String openJarLink(String source) {
     return "#!jar:"+source;
   }
-  
+
   protected String openFileLink(String source) {
     return "#!file:"+source;
   }

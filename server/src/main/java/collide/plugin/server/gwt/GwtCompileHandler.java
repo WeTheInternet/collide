@@ -41,12 +41,14 @@ public class GwtCompileHandler implements Handler<Message<JsonObject>> {
           logMessages.add(log);
         }
       }).toArray(new URL[0]);
-      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log");
+      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log",
+          ()->{
+            compiler.compile(compileRequest);
+            for (String item : logMessages) {
+              compiler.log(item);
+            }
+      });
     }
 
-    compiler.compile(compileRequest);
-    for (String item : logMessages) {
-      compiler.log(item);
-    }
   }
 }

@@ -12,12 +12,11 @@ import xapi.log.X_Log;
 import xapi.util.X_Namespace;
 import xapi.util.api.ConvertsValue;
 
-import com.google.gwt.dev.codeserver.GwtCompilerThread;
-
 import java.util.HashMap;
 import java.util.Map;
 
-public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread> {
+public class GwtServerPlugin extends AbstractPluginServer //<GwtCompilerThread>
+{
 
   public GwtServerPlugin() {
     if (null == System.getProperty(X_Namespace.PROPERTY_MULTITHREADED)) {
@@ -25,11 +24,6 @@ public class GwtServerPlugin extends AbstractPluginServer<GwtCompilerThread> {
       X_Log.trace(getClass(), "Setting max threads to "+max);
       System.setProperty(X_Namespace.PROPERTY_MULTITHREADED, Integer.toString(max));
     }
-  }
-
-  @Override
-  protected Class<GwtCompilerThread> compilerClass() {
-    return GwtCompilerThread.class;
   }
 
   @Override

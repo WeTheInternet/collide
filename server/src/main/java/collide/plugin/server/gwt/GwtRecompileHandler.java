@@ -52,11 +52,12 @@ public class GwtRecompileHandler implements Handler<Message<JsonObject>> {
           logMessages.add(log);
         }
       }).toArray(new URL[0]);
-      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log");
-    }
-    compiler.recompile(compileRequest.toString());
-    for (String item : logMessages) {
-      compiler.log(item);
+      compiler.initialize(compileRequest, cp, this.gwtServerPlugin.getEventBus(), this.gwtServerPlugin.getAddressBase() + ".log", ()->{
+        compiler.recompile(compileRequest.toString());
+        for (String item : logMessages) {
+          compiler.log(item);
+        }
+      });
     }
   }
 }

@@ -1,6 +1,5 @@
 package collide.plugin.server;
 
-import collide.plugin.server.gwt.CrossThreadVertxChannel;
 import com.google.collide.dto.CodeModule;
 import com.google.collide.dto.server.DtoServerImpls.LogMessageImpl;
 import com.google.collide.json.shared.JsonArray;
@@ -10,8 +9,13 @@ import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
+import org.eclipse.aether.resolution.ArtifactResult;
+import xapi.fu.Lazy;
+import xapi.fu.X_Fu;
 import xapi.log.X_Log;
+import xapi.mvn.X_Maven;
 import xapi.util.X_Debug;
+import xapi.util.X_Namespace;
 import xapi.util.X_String;
 import xapi.util.api.ReceivesValue;
 
@@ -19,22 +23,73 @@ import com.google.gwt.core.ext.TreeLogger.Type;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> extends BusModBase implements ServerPlugin {
-
-
-  protected abstract Class<C> compilerClass();
+public abstract class AbstractPluginServer // <C extends AbstractCompileThread<?>>
+    extends BusModBase implements ServerPlugin {
 
   protected String libRoot;
 
   protected String webRoot;
+
+  protected Lazy<List<String>> vertxJars = Lazy.deferred1(()->{
+      // TODO: load vertx version from gradle.properties...
+      ArtifactResult artifact = X_Maven.loadArtifact("io.vertx", "vertx-core", "3.3.2");
+      List<String> cp = X_Maven.loadCompileDependencies(artifact.getArtifact());
+//      artifact = X_Maven.loadArtifact("xerces", "xercesImpl", "2.11.0");
+//      cp = X_Maven.loadCompileDependencies(artifact.getArtifact());
+      return Collections.unmodifiableList(cp);
+  });
+
+  protected Lazy<List<String>> gwtJars = Lazy.deferred1(()->{
+      ArtifactResult artifact = X_Maven.loadArtifact("net.wetheinter", "gwt-dev", X_Namespace.GWT_VERSION);
+      Set<String> cp = new LinkedHashSet<>();
+      cp.addAll(X_Maven.loadCompileDependencies(artifact.getArtifact()));
+      artifact = X_Maven.loadArtifact("net.wetheinter", "gwt-user", X_Namespace.GWT_VERSION);
+      cp.addAll(X_Maven.loadCompileDependencies(artifact.getArtifact()));
+      artifact = X_Maven.loadArtifact("net.wetheinter", "gwt-codeserver", X_Namespace.GWT_VERSION);
+      cp.addAll(X_Maven.loadCompileDependencies(artifact.getArtifact()));
+      return Collections.unmodifiableList(new ArrayList<>(cp));
+  });
+
+  protected Lazy<List<String>> xapiGwtJar = Lazy.deferred1(()->{
+      ArtifactResult artifact = X_Maven.loadArtifact("net.wetheinter", "xapi-gwt", X_Namespace.XAPI_VERSION);
+      List<String> cp = X_Maven.loadCompileDependencies(artifact.getArtifact());
+      return Collections.unmodifiableList(cp);
+  });
+
+  protected Lazy<String> serverJar = Lazy.deferred1(()->{
+    ProtectionDomain domain = AbstractPluginServer.class.getProtectionDomain();
+    if (domain != null) {
+      CodeSource source = domain.getCodeSource();
+      if (source != null) {
+        URL location = source.getLocation();
+        if (location != null) {
+          return location.getPath().replace("-fat", "");
+        }
+      }
+    }
+    List<String> args = ManagementFactory.getRuntimeMXBean().getInputArguments();
+    for (Iterator<String> itr = args.iterator(); itr.hasNext();) {
+      if ("-jar".equals(itr.next())) {
+        return itr.next().replace("-fat", "");
+      }
+    }
+    throw new IllegalStateException("Unable to find server jar from runtime arguments: " + args);
+  });
 
   protected static final String AUTH_COOKIE_NAME = "_COLLIDE_SESSIONID";
 
@@ -75,6 +130,11 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
 
     Set<String> dedup = new LinkedHashSet<>();//we want duplicate removal and deterministic ordering.
 
+    boolean hadGwt = false;
+    boolean hadXapi = false;
+
+    // TODO add the jar containing the compiler class, if it exists on the classpath
+
     //add super-sources first (todo: implement)
 
     //add source folders
@@ -87,21 +147,17 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
         }
       }
     }
-    //required to run vertx threads
-
-    list.add(toUrl(libDir,"vertx/lib/vertx-core-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/vertx-platform-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/vertx-lang-java-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/jackson-core-asl-1.9.4.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/jackson-mapper-asl-1.9.4.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/netty-3.5.9.Final.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/hazelcast-2.4.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"collide-server.jar"));//required to run vertx threads
 
     //now, add all the jars listed as source
     for (String cp : request.getSources().asIterable()){
 
       if (cp.endsWith(".jar")) {
+        if (cp.contains("xapi")) {
+          hadXapi= true;
+        }
+        if (cp.contains("gwt-dev")) {
+          hadGwt = true;
+        }
         URL url = toUrl(webDir,cp);
         if (url != null && dedup.add(url.toExternalForm())){
           X_Log.debug("Adding src jar",cp, url);
@@ -110,39 +166,77 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
       }
     }
 
-
-    String xapiVersion = System.getProperty("xapi.version", "0.3");//Hardcode X_Namespace.XAPI_VERSION for now
-    if (!X_String.isEmpty(xapiVersion)) {
-      list.add(toUrl(libDir,"xapi-gwt-"+xapiVersion+".jar"));//needs to be before gwt-dev.
+    String xapiVersion = System.getProperty("xapi.version", X_Namespace.XAPI_VERSION);//Hardcode X_Namespace.XAPI_VERSION for now
+    if (!X_String.isEmpty(xapiVersion) && !hadXapi) {
+      // only adds the uber jar if you did not depend on any xapi jars directly.
+      // for smaller classpaths, you can specify a smaller subset of xapi dependencies;
+      // the minimum recommended artifact to take is xapi-gwt-api.
+      list.addAll(toUrl(dedup, xapiGwtJar.out1()));
     }
 
-    list.add(toUrl(libDir,"gwt-user.jar"));//required by compiler
-    list.add(toUrl(libDir,"gwt-dev.jar"));//required by compiler
-    list.add(toUrl(libDir,"gwt-codeserver.jar"));//required by compiler
-    list.add(toUrl(libDir,"asm.jar"));//required by compiler
+    if (!hadGwt) {
+      list.addAll(toUrl(dedup, gwtJars.out1()));
+    }
 
     JsonArray<String> deps = request.getDependencies();
-    if (deps != null)
-    for (String cp : deps.asIterable()){
-      URL url = toUrl(libDir,cp);
-      if (url != null && dedup.add(url.toExternalForm())) {
-        if (cp.endsWith(".jar")){
-          X_Log.debug("Adding dependency jar",cp, url);
-          list.add(url);//needed for collide compile
-        }else{
-          X_Log.debug("Adding dependency folder",cp, url);
-          list.add(url);//needed for collide compile
+    if (deps != null) {
+      for (String cp : deps.asIterable()){
+        URL url = toUrl(libDir,cp);
+        if (url != null && dedup.add(url.toExternalForm())) {
+          if (cp.endsWith(".jar")){
+            X_Log.debug("Adding dependency jar",cp, url);
+            list.add(url);//needed for collide compile
+          }else{
+            X_Log.debug("Adding dependency folder",cp, url);
+            list.add(url);//needed for collide compile
+          }
         }
+      }
+
+      try {
+        list.add(new File(serverJar.out1()).toURI().toURL());
+      } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+      }
+
+
+      //required to run vertx threads
+      for (String dep : vertxJars.out1()) {
+        try {
+          list.add(new File(dep).toURI().toURL());
+        } catch (MalformedURLException e) {
+          throw new RuntimeException(e);
+        }
+      }
+
+      //clear our deps and put our entire resolved classpath back
+      deps.clear();
+      for (URL url : list){
+        deps.add(url.toExternalForm().replace("file:", ""));
       }
     }
 
-    //clear our deps and put our entire resolved classpath back
-    deps.clear();
-    for (URL url : list){
-      deps.add(url.toExternalForm().replace("file:", ""));
-    }
+    X_Log.warn(getClass(), list);
 
-    return list ;
+    return list;
+  }
+
+  protected List<URL> toUrl(Set<String> dedup, List<String> strings) {
+    return strings
+        .stream()
+        .map(s -> s.indexOf(":") == -1 ? "file:" + s : s )
+        .map(s -> {
+          if (!dedup.add(s)) {
+            return null;
+          }
+          try {
+            return new URL(s);
+          } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+          }
+        })
+        .filter(X_Fu::notNull)
+        .collect(Collectors.toList());
   }
 
   public File getWebRoot() {
@@ -152,99 +246,6 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
   public File getLibRoot() {
     return new File(libRoot);
   }
-
-  protected List<URL> getServerClasspath(final CodeModule request, final CrossThreadVertxChannel io) {
-    List<URL> list = new ArrayList<URL>(){
-      private static final long serialVersionUID = 7809897000236224683L;
-      @Override
-      public boolean add(URL e) {
-        if (e==null)return false;
-        io.send(
-            LogMessageImpl.make()
-            .setLogLevel(Type.TRACE)
-            .setMessage("Adding "+e.toExternalForm()+" to classpath")
-            .setModule(request.getModule())
-        .toJson());
-        return super.add(e);
-      }
-    };
-
-    File webDir = new File(webRoot);
-    File libDir = new File(libRoot);
-
-    Set<String> dedup = new LinkedHashSet<>();//we want duplicate removal and deterministic ordering.
-
-    //add super-sources first (todo: implement)
-
-    //add source folders
-    for (String cp : request.getSources().asIterable()){
-      if (!cp.endsWith(".jar")){
-        URL url = toUrl(webDir,cp);
-        if (url != null && dedup.add(url.toExternalForm())){
-          X_Log.debug("Adding src folder",cp, url);
-          list.add(url);
-        }
-      }
-    }
-
-    // next, before we add the rest of the compiler jars, throw in the vertx libs
-    // These jars will be removed from gwt-compiler classpath
-
-    list.add(toUrl(libDir,"vertx/lib/vertx-core-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/vertx-platform-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/vertx-lang-java-1.3.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/jackson-core-asl-1.9.4.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/jackson-mapper-asl-1.9.4.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/netty-3.5.9.Final.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"vertx/lib/hazelcast-2.4.1.jar"));//required to run vertx threads
-    list.add(toUrl(libDir,"collide-server.jar"));//required to run vertx threads
-
-    //now, add all the jars listed as source
-    for (String cp : request.getSources().asIterable()){
-
-      if (cp.endsWith(".jar")) {
-        URL url = toUrl(webDir,cp);
-        if (url != null && dedup.add(url.toExternalForm())){
-          X_Log.debug("Adding src jar",cp, url);
-          list.add(url);//needed for collide compile
-        }
-      }
-    }
-
-
-    String xapiVersion = System.getProperty("xapi.version", "0.3");//Hardcode X_Namespace.XAPI_VERSION for now
-    if (!X_String.isEmpty(xapiVersion)) {
-      list.add(toUrl(libDir,"xapi-gwt-"+xapiVersion+".jar"));//needs to be before gwt-dev.
-    }
-
-    list.add(toUrl(libDir,"gwt-user.jar"));//required by compiler
-    list.add(toUrl(libDir,"gwt-dev.jar"));//required by compiler
-    list.add(toUrl(libDir,"gwt-codeserver.jar"));//required by compiler
-
-    JsonArray<String> deps = request.getDependencies();
-    if (deps != null)
-    for (String cp : deps.asIterable()){
-      URL url = toUrl(libDir,cp);
-      if (url != null && dedup.add(url.toExternalForm())) {
-        if (cp.endsWith(".jar")){
-          X_Log.debug(getClass(), "Adding dependency jar",cp, url);
-          list.add(url);//needed for collide compile
-        }else{
-          X_Log.debug(getClass(), "Adding dependency folder",cp, url);
-          list.add(url);//needed for collide compile
-        }
-      }
-    }
-
-    //clear our deps and put our entire resolved classpath back
-    deps.clear();
-    for (URL url : list){
-      deps.add(url.toExternalForm());
-    }
-
-    return list ;
-  }
-
 
   @Override
   public void start() {
@@ -264,7 +265,7 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
 
   protected URL toUrl(File cwd, String jar) {
     //TODO: allow certain whitelisted absolute uris
-    //TODO: allow virtual filesystem uris, like ~/, /bin/, /lib/, /war/
+    //TODO: allow "virtual" filesystem uris, like ~/, /bin/, /lib/, /war/
 
     String path = cwd.getAbsolutePath();
     File file = new File(jar);
@@ -279,9 +280,9 @@ public abstract class AbstractPluginServer <C extends AbstractCompileThread<?>> 
     }
     X_Log.trace(getClass(), "Resolving ",jar," to ", file);
     if (file.exists()){
-      logger.info("Classpath file exists: "+file);
+      logger.info(getClass(), "Classpath file exists: "+file);
     }else{
-      logger.warn( "Classpath file does not exist! "+file);
+      logger.warn(getClass(), "Classpath file does not exist! "+file);
       return null;
     }
     URI uri = URI.create("file:"+file.getAbsolutePath());

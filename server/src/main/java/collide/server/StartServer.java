@@ -3,6 +3,9 @@ package collide.server;
 import collide.plugin.server.ant.AntServerPlugin;
 import collide.plugin.server.gwt.GwtServerPlugin;
 import collide.server.codegraph.CodeGraphMonitor;
+import collide.server.configuration.CollideOpts;
+import collide.vertx.VertxService;
+import collide.vertx.VertxServiceImpl;
 import com.google.collide.server.documents.EditSessions;
 import com.google.collide.server.fe.WebFE;
 import com.google.collide.server.filetree.FileTree;
@@ -12,29 +15,45 @@ import com.google.collide.server.workspace.WorkspaceState;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.core.metrics.MetricsOptions;
+
+import java.util.Arrays;
 
 /**
  * Created by James X. Nelson (james @wetheinter.net) on 8/28/16.
  */
 public class StartServer {
 
+    static {
+        // We're going to do some nefarious things with classloaders...
+        System.setProperty("jdk.net.URLClassPath.disableRestrictedPermissions", "true");
+    }
+
+    private static final String ASYNC_CLUSTERING_PROPERTY = "vertx.hazelcast.async-api";
+
     public static void main(String[] args) {
-        // Create an HTTP server which simply returns "Hello World!" to each request.
-        final Vertx vertx = Vertx.vertx(
 
-            new VertxOptions().setMetricsOptions(new MetricsOptions().setEnabled(true))
+        final CollideOpts opts = CollideOpts.getOpts();
+        if (!opts.processArgs(args)) {
+            System.err.println("Unable to start server from arguments " + Arrays.asList(args));
+            return;
+        }
 
-        );
+        if (System.getProperty(ASYNC_CLUSTERING_PROPERTY) == null) {
+            System.setProperty(ASYNC_CLUSTERING_PROPERTY, "true");
+        }
 
-        String webRoot = "/opt/collide";
-        String staticFiles = "/opt/collide/client/build/gwt/out/Collide";
+        VertxServiceImpl.service(opts, StartServer::startNode);
+
+    }
+
+    private static void startNode(VertxService service) {
+        String webRoot = "/opt/xapi";
+        String staticFiles = "/opt/collide/client/build/putnami/out/Demo";
 
         final JsonObject webConfig = new JsonObject()
-            .put("port", 13337)
+            .put("port", 1337)
             .put("host", "0.0.0.0")
             .put("bridge", true)
             .put("webRoot", webRoot)
@@ -45,17 +64,17 @@ public class StartServer {
             .put("out_permitted", new JsonArray()
                 .add(".*")
             )
-        ;
+            ;
 
         final JsonObject participantsConfig = new JsonObject()
             .put("usernames", new JsonArray().add("James"))
-        ;
+            ;
 
         final JsonObject workspaceConfig = new JsonObject()
             .put("plugins", new JsonArray()
                 .add("gwt").add("ant"))
             .put("webRoot", webRoot)
-        ;
+            ;
 
         final JsonObject pluginConfig = new JsonObject()
             .put("usernames", webRoot)
@@ -66,7 +85,7 @@ public class StartServer {
             .put("preserve-cwd", true)
             .put("webRoot", webRoot)
             .put("staticFiles", staticFiles)
-        ;
+            ;
 
         final JsonObject filetreeConfig = new JsonObject()
             .put("webRoot", webRoot)
@@ -76,8 +95,9 @@ public class StartServer {
                 .add("client/src/main/java")
                 .add("server/src/main/java")
             )
-        ;
+            ;
 
+        final Vertx vertx = service.vertx();
         vertx.deployVerticle(WebFE.class.getCanonicalName(), opts(webConfig)
             .setInstances(10));
 

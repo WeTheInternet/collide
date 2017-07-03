@@ -15,15 +15,14 @@
 package com.google.collide.client.workspace;
 
 import collide.client.util.Elements;
-
 import com.google.collide.client.code.CodePerspective;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.resources.client.CssResource;
-
 import elemental.dom.Element;
 import elemental.html.DivElement;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
 
 /**
  * Presenter for the top-level shell of the workspace. Nothing more than a
@@ -73,7 +72,7 @@ public class WorkspaceShell extends UiComponent<WorkspaceShell.View> {
       this.headerView = new Header.View(res, detached);
       this.headerView.getElement().addClassName(res.workspaceShellCss().header());
       this.perspectivePanel = Elements.createDivElement(res.workspaceShellCss().perspectivePanel());
-      if (GWT.getModuleName().equals("Collie")) {
+      if (GWT.getModuleName().equals("Collide")) {
         this.perspectivePanel.getStyle().setTop("57px");
       }
       Element elem = getElement();
