@@ -17,7 +17,6 @@ package com.google.collide.client.workspace;
 import collide.client.filetree.FileTreeModel;
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
-
 import com.google.collide.client.AppContext;
 import com.google.collide.client.bootstrap.BootstrapSession;
 import com.google.collide.client.history.Place;
@@ -40,6 +39,10 @@ import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.UserDetails;
 import com.google.collide.mvp.CompositeView;
 import com.google.collide.mvp.UiComponent;
+import elemental.events.Event;
+import elemental.events.EventListener;
+import elemental.html.ImageElement;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.DivElement;
@@ -49,10 +52,6 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiTemplate;
-
-import elemental.events.Event;
-import elemental.events.EventListener;
-import elemental.html.ImageElement;
 
 /**
  * The Header for the workspace Shell.
@@ -179,9 +178,12 @@ public class Header extends UiComponent<Header.View> {
 
     @Source("gear.png")
     ImageResource gearIcon();
-    
+
     @Source("gwt.png")
     ImageResource gwtIcon();
+
+    @Source("xapi.png")
+    ImageResource xapiIcon();
 
     @Source("terminal.png")
     ImageResource terminalIcon();
@@ -304,12 +306,9 @@ public class Header extends UiComponent<Header.View> {
         .setElement((elemental.html.AnchorElement) link).build();
         buttons[i] = button;
         button.getView().getImageElement().addClassName(res.workspaceHeaderCss().pluginIcon());
-        button.setListener(new ImageButton.Listener() {
-          @Override
-          public void onClick() {
+        button.setListener(() -> {
             if (getDelegate() != null) {
               getDelegate().onPluginButtonClicked(plugin, button);
-            }
           }
         });
       }
@@ -360,7 +359,7 @@ public class Header extends UiComponent<Header.View> {
 
       // Wire up event handlers.
       attachHandlers();
-      
+
       CssUtils.setDisplayVisibility2(Elements.asJsElement(feedbackButton), false);
       CssUtils.setDisplayVisibility2(Elements.asJsElement(shareButton), false);
     }
@@ -368,7 +367,7 @@ public class Header extends UiComponent<Header.View> {
     public AwesomeBoxComponentHost.View getAwesomeBoxView() {
       return awesomeBoxComponentHostView;
     }
-    
+
     public DivElement getAwesomeBoxContainer() {
       return awesomeBoxContainer;
     }
@@ -505,7 +504,7 @@ public class Header extends UiComponent<Header.View> {
 
     @Override
     public void onShareButtonClicked() {
-      
+
     }
 
     @Override

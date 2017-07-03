@@ -30,6 +30,7 @@ public class PlaceConstants {
   public static final String DEBUG_PLACE_NAME = "debug";
   public static final String HOME_PLACE_NAME = "home";
   public static final String GWT_PLACE_NAME = "gwt";
+  public static final String XAPI_PLACE_NAME = "xapi";
   public static final String INSPECTOR_PLACE_NAME = "open";
   public static final String TERMINAL_PLACE_NAME = "sh";
   public static final String ANT_PLACE_NAME = "ant";

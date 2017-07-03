@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.5.1//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
+<module>
+  <source path="xapi" />
+  <source path="shared" />
+  <source path="plugin" />
+  <inherits name="xapi.X_Inherit"/>
+  <inherits name="elemental.Elemental"/>
+
+  <inherits name="com.google.collide.client.Imports"/>
+</module>
