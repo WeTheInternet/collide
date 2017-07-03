@@ -1,0 +1,70 @@
+<web-app
+  classpaths = {
+    collide : [
+      $maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
+      $maven("net.wetheinter:gwt-elemental:2.8.0"),
+      $maven("net.wetheinter:gwt-user:2.8.0"),
+      $maven("net.wetheinter:gwt-dev:2.8.0"),
+      $maven("com.google.guava:guava:19.0"),
+      $maven("com.google.guava:guava-gwt:19.0")
+    ]
+  }
+  gwt = [
+    <gwtc
+      name = "Collide"
+      module = "collide.demo.Parent"
+      classpath = $collide
+      source = [
+        "api/src/main/java",
+        "shared/src/main/java",
+        "client/src/main/java",
+        "deps/codemirror2"
+      ]
+    />
+  ]
+  templates = [
+    <template name="session">
+        <page
+          script = `$static/sockjs.js`
+          script = `$static/vertxbus.js`
+          script = {
+            __session: {
+              sessionID : $user.id,
+              activeClient : $user.pageId,
+              name : $user.name
+            }
+          }
+        /page>
+    </template>
+  ]
+  routes = [
+    <route
+      path = "/"
+      method = "GET"
+      secure = true
+      title = "CollIDE - Collaborative Development"
+      response =
+        <page
+          template = "session"
+          script = $gwt("Collide")
+          script = {
+            collide : {
+              name : $user.name,
+              module : ($user.module || "collide.demo.Child"),
+              open : ($user.open || "/test.wti")
+            }
+          }
+          style = .{
+            #gwt_root {
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: 0;
+              right: 0;
+            }
+          }
+          dom = <div id="gwt_root" />
+        /page>
+    /route>
+  ]
+  /web-app>
