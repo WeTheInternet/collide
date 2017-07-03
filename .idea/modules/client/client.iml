@@ -4,7 +4,7 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../client">
       <excludeFolder url="file://$MODULE_DIR$/../../../client/.gradle" />
-      <excludeFolder url="file://$MODULE_DIR$/../../../client/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../client/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
