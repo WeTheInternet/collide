@@ -6,19 +6,29 @@ import collide.demo.view.DemoView;
 import collide.gwtc.ui.GwtCompilerService;
 import collide.gwtc.ui.GwtCompilerShell;
 import collide.gwtc.ui.GwtCompilerShell.Resources;
+import collide.plugin.client.launcher.LauncherService;
 import collide.plugin.client.terminal.TerminalService;
 import com.google.collide.client.AppContext;
 import com.google.collide.client.CollideBootstrap;
 import com.google.collide.client.communication.FrontendApi.ApiCallback;
+import com.google.collide.client.history.Place;
+import com.google.collide.client.plugin.ClientPlugin;
 import com.google.collide.client.plugin.ClientPluginService;
+import com.google.collide.client.plugin.FileAssociation;
+import com.google.collide.client.plugin.RunConfiguration;
 import com.google.collide.client.status.StatusManager;
 import com.google.collide.client.status.StatusMessage;
+import com.google.collide.client.ui.button.ImageButton;
+import com.google.collide.client.ui.panel.MultiPanel;
+import com.google.collide.client.workspace.Header;
 import com.google.collide.client.workspace.WorkspacePlace;
 import com.google.collide.clientlibs.model.Workspace;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.GwtSettings;
 import com.google.collide.dto.ServerError.FailureReason;
+import com.google.collide.shared.plugin.PublicService;
 import com.google.collide.shared.plugin.PublicServices;
+import com.google.gwt.resources.client.ImageResource;
 import elemental.client.Browser;
 import elemental.html.ScriptElement;
 import xapi.log.X_Log;
@@ -27,9 +37,7 @@ import xapi.util.api.SuccessHandler;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -79,37 +87,37 @@ public class ParentModule implements EntryPoint{
   }
 
   private void addTerminal(final AppContext context, DemoView body) {
-    GWT.runAsync(TerminalService.class, new RunAsyncCallback() {
-      @Override
-      public void onSuccess() {
-
-      }
-
-      @Override
-      public void onFailure(Throwable reason) {
-        warn(reason, "Loading Collide logger ");
-      }
-    });
+    //GWT.runAsync(TerminalService.class, new RunAsyncCallback() {
+    //  @Override
+    //  public void onSuccess() {
+    //
+    //  }
+    //
+    //  @Override
+    //  public void onFailure(Throwable reason) {
+    //    warn(reason, "Loading Collide logger ");
+    //  }
+    //});
   }
 
   private void addEditor(final AppContext context, final DemoView body, final ClientPluginService plugins) {
-    GWT.runAsync(Workspace.class, new RunAsyncCallback() {
-      @Override
-      public void onSuccess() {
+    //GWT.runAsync(DemoController.class, new RunAsyncCallback() {
+    //  @Override
+    //  public void onSuccess() {
         new DemoController(context).initialize(body, plugins);
-      }
-
-      @Override
-      public void onFailure(Throwable reason) {
-        warn(reason, "Loading Collide workspace ");
-      }
-    });
+    //  }
+    //
+    //  @Override
+    //  public void onFailure(Throwable reason) {
+    //    warn(reason, "Loading Collide workspace ");
+    //  }
+    //});
   }
 
   private void addGwtCompiler(final AppContext context, final DemoView body) {
-    GWT.runAsync(GwtRecompile.class, new RunAsyncCallback() {
-      @Override
-      public void onSuccess() {
+    //GWT.runAsync(GwtRecompile.class, new RunAsyncCallback() {
+    //  @Override
+    //  public void onSuccess() {
         // Inject css
         Resources res = GWT.create(Resources.class);
         res.gwtCompilerCss().ensureInjected();
@@ -124,14 +132,11 @@ public class ParentModule implements EntryPoint{
         // Attach compiler
         body.initGwt(gwt);
 
-        ResizeHandler handler = new ResizeHandler() {
-          @Override
-          public void onResize(ResizeEvent event) {
+        ResizeHandler handler = e -> {
             Elements.getBody().getStyle().setWidth(Browser.getWindow().getInnerWidth()+"px");
             Elements.getBody().getStyle().setHeight(Browser.getWindow().getInnerHeight()+"px");
-          }
         };
-        Elements.getBody().getStyle().setPosition("absolue");
+        Elements.getBody().getStyle().setPosition("absolute");
 
         Window.addResizeHandler(handler);
         handler.onResize(null);
@@ -145,21 +150,19 @@ public class ParentModule implements EntryPoint{
             }
             @Override
             public void onMessageReceived(GwtSettings response) {
-              new Timer() {
-                @Override
-                public void run() {}
-              }.schedule(1000);
               gwt.showResults(response);
+              GwtRecompile defaultModule = response.getModules().get(0);
+
             }
           }
         );
-      }
-
-      @Override
-      public void onFailure(Throwable reason) {
-        warn(reason, "Loading GWT compiler ");
-      }
-    });
+    //  }
+    //
+    //  @Override
+    //  public void onFailure(Throwable reason) {
+    //    warn(reason, "Loading GWT compiler ");
+    //  }
+    //});
   }
 
   private native void setupNatives()
