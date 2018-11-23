@@ -90,6 +90,8 @@ public class EditorBundle implements FileContent {
         cubeClient,
         editorPopupController);
 
+    // Here is where to add support for rendering links / nested content
+
     SelectionRestorer selectionRestorer = new SelectionRestorer(editor);
 
     DebuggingModel debuggingModel = new DebuggingModel();
@@ -258,7 +260,7 @@ public class EditorBundle implements FileContent {
       textActionsRemover = null;
     }
   }
-  
+
   @Override
   public PathUtil filePath() {
     return path;

@@ -5,37 +5,40 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
-import xapi.inject.impl.LazyPojo;
+import xapi.fu.Lazy;
 import xapi.log.X_Log;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VertxLauncher extends LazyPojo<Vertx> {
+public class VertxLauncher {
 
   private static AtomicInteger unusedPort = new AtomicInteger(13370);
   private int port;
+  private final Lazy<Vertx> vertx;
 
-  @Override
-  protected Vertx initialValue() {
-    while (true) {
-      synchronized (unusedPort) {
-        int port = unusedPort.getAndAdd(1 + (int)(Math.random() * 20));
-        try {
-          Vertx vertx = Vertx.vertx();
-          initialize(vertx, port);
-          return vertx;
-        } catch (Exception e) {
-          e.printStackTrace();
-          if (port > 15000) {
-            synchronized (unusedPort) {
-              unusedPort.set(10002);
+  public VertxLauncher() {
+    vertx = Lazy.deferred1Unsafe(()->{
+      while (true) {
+        synchronized (unusedPort) {
+          int port = unusedPort.getAndAdd(1 + (int) (Math.random() * 20));
+          try {
+            Vertx vertx = Vertx.vertx();
+            initialize(vertx, port);
+            return vertx;
+          } catch (Exception e) {
+            e.printStackTrace();
+            if (port > 15000) {
+              synchronized (unusedPort) {
+                unusedPort.set(10002);
+              }
+              return null;
             }
-            return null;
           }
         }
       }
-    }
+    });
+
   }
 
   protected NetServer initialize(Vertx vertx, int port) {
@@ -54,13 +57,17 @@ public class VertxLauncher extends LazyPojo<Vertx> {
             try{
               handleBuffer(event, buffer);
             }catch (Exception e) {
-              X_Log.error(getClass(), "Error handling buffer", e);
+              X_Log.error(VertxLauncher.class, "Error handling buffer", e);
             }
         });
         event.endHandler(e->X_Log.debug("Ending"));
     })
     .listen(port, "0.0.0.0");
     this.port = port;
+    vertx.setTimer(1000, e-> {
+      //keep heap clean; the generated gwt classes will fill permgen quickly if they survive;
+      System.gc();
+    });
     return server;
 
   }
@@ -74,4 +81,7 @@ public class VertxLauncher extends LazyPojo<Vertx> {
     return port;
   }
 
+  public Vertx ensureStarted() {
+      return vertx.out1();
+  }
 }

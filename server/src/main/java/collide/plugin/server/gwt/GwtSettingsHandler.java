@@ -112,7 +112,7 @@ public class GwtSettingsHandler implements Handler<Message<JsonObject>> {
 
   public static void main(String ... a) throws ParseException {
     final JsonContainerExpr expr = JavaParser
-        .parseJsonContainer("[maven(\"net.wetheinter:xapi-gwt:0.6-SNAPSHOT\")]");
+        .parseJsonContainer("[maven(\"net.wetheinter:xapi-gwt:0.5.1-SNAPSHOT\")]");
     new GwtSettingsHandler().extractClasspath(expr);
   }
 

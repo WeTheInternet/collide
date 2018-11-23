@@ -5,9 +5,8 @@ import com.google.collide.client.history.Place;
 import com.google.collide.client.ui.panel.MultiPanel;
 import com.google.collide.shared.plugin.PublicService;
 import com.google.collide.shared.plugin.PublicServices;
+import xapi.fu.Out1;
 import xapi.inject.X_Inject;
-
-import javax.inject.Provider;
 
 public class ClientPluginService {
 
@@ -15,12 +14,12 @@ public class ClientPluginService {
   protected ClientPluginService() {
   }
 
-  private static final Provider<ClientPluginService> SINGLETON = X_Inject.singletonLazy(ClientPluginService.class);
+  private static final Out1<ClientPluginService> SINGLETON = X_Inject.singletonLazy(ClientPluginService.class);
 
   public static ClientPluginService initialize(AppContext appContext, MultiPanel<?,?> masterPanel
     , Place workspacePlace) {
 
-    ClientPluginService plugins = SINGLETON.get();
+    ClientPluginService plugins = SINGLETON.out1();
     plugins.init(appContext, masterPanel, workspacePlace);
 
     return plugins;
@@ -39,7 +38,7 @@ public class ClientPluginService {
   }
 
   public static ClientPlugin<?>[] getPlugins() {
-    return SINGLETON.get().plugins();
+    return SINGLETON.out1().plugins();
   }
   @SuppressWarnings("unchecked")
   public static <T extends ClientPlugin<?>> T getPlugin(Class<T> cls) {

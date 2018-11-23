@@ -2,9 +2,9 @@ package collide.server.handler;
 
 import com.github.javaparser.ast.expr.UiContainerExpr;
 import xapi.log.X_Log;
-import xapi.scope.api.RequestScope;
-import xapi.server.gen.WebAppGenerator;
+import xapi.scope.request.RequestScope;
 import xapi.server.vertx.VertxRequest;
+import xapi.server.vertx.VertxResponse;
 import xapi.time.X_Time;
 
 /**
@@ -18,11 +18,10 @@ public class WebAppHandler {
         this.xapiRoot = xapiRoot;
     }
 
-    public boolean handle(RequestScope<VertxRequest> scope, UiContainerExpr app) {
+    public boolean handle(RequestScope<VertxRequest, VertxResponse> scope, UiContainerExpr app) {
         X_Time.runLater(()->{
-            WebAppGenerator generator = new WebAppGenerator();
-            generator.generateWebApp("root", app);
             X_Log.warn(getClass(), scope, app);
+
         });
         return true;
     }

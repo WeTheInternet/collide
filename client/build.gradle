@@ -1,8 +1,10 @@
+plugins {
+    id "de.esoco.gwt" version "1.0.6"
+}
 apply plugin: 'java'
-apply plugin: 'fr.putnami.gwt'
 
 group = 'de.mocra.cy'
-version = '0.6-SNAPSHOT'
+version = '0.5.1-SNAPSHOT'
 
 description = "CollIDE Client Code"
 
@@ -10,22 +12,25 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    compile group: 'net.wetheinter', name: 'xapi-dev', version:'0.6-SNAPSHOT', changing: true
+    compile group: 'net.wetheinter', name: 'xapi-gwt', version:'0.5.1-SNAPSHOT', changing: true
+    compile group: 'net.wetheinter', name: 'xapi-gwt-test', version:'0.5.1-SNAPSHOT', changing: true
     compile project(':shared')
+    compile 'junit:junit:4.12'
+    implementation group: 'net.wetheinter', name: 'gwt-user', version:versionGwt, changing: true
+    implementation group: 'net.wetheinter', name: 'gwt-dev', version:versionGwt, changing: true
     compileOnly files(project(':api').sourceSets.main.allJava.srcDirs)
     compileOnly files(project(':api').sourceSets.main.output.resourcesDir)
     compileOnly files(project(':shared').sourceSets.main.allJava.srcDirs)
     compileOnly files(project(':shared').sourceSets.main.output.resourcesDir)
     compileOnly files('../deps/codemirror2')
 }
-putnami {
+gwt {
 
     buildDir         = 'out'
-    gwtVersion = '2.8.0'
-    module     = ['collide.demo.Parent']
+    module     'collide.demo.Parent'
     compile {
         logLevel         = 'INFO'
-        style            = 'PRETTY'
+        style            = 'OBF'
         saveSource       = true
         extra            = file(war.absolutePath + "/../extra")
         saveSourceOutput = file(war.absolutePath + "/../sourcemaps")

@@ -4,7 +4,7 @@ import collide.server.configuration.CollideOpts;
 import io.vertx.core.Vertx;
 import io.vertx.spi.cluster.hazelcast.HazelcastClusterManager;
 import xapi.fu.In1;
-import xapi.server.vertx.ScopeServiceVertx;
+import xapi.server.vertx.scope.ScopeServiceVertx;
 
 /**
  * Created by James X. Nelson (james @wetheinter.net) on 10/3/16.

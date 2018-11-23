@@ -14,7 +14,7 @@
 
 package com.google.collide.server.fe;
 
-import collide.server.XapiServer;
+import collide.server.CollideServer;
 import com.google.collide.dto.shared.JsonFieldConstants;
 import com.google.collide.server.maven.MavenResources;
 import com.google.collide.server.shared.BusModBase;
@@ -32,15 +32,19 @@ import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.shareddata.LocalMap;
 import io.vertx.core.shareddata.Shareable;
+import io.vertx.ext.bridge.PermittedOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
-import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 import io.vertx.ext.web.handler.sockjs.SockJSHandlerOptions;
 import org.apache.http.HttpStatus;
 import xapi.gwtc.api.CompiledDirectory;
 import xapi.log.X_Log;
 import xapi.reflect.X_Reflect;
+import xapi.server.vertx.VertxContext;
+import xapi.server.vertx.scope.RequestScopeVertx;
+import xapi.server.vertx.VertxRequest;
+import xapi.server.vertx.VertxResponse;
 import xapi.util.api.Pointer;
 
 import java.io.File;
@@ -108,7 +112,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   private SockJSHandler sjsServer;
   private Router router;
   private String collideHome;
-  private XapiServer xapiServer;
+  private CollideServer server;
 
   @Override
   public void start() {
@@ -172,7 +176,9 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     workDir = workDirectory + File.separator;
     warDir = warDirectory + File.separator;
     collideHome = collide + File.separator;
-    xapiServer = new XapiServer(bundledStaticFilesPrefix, webRootPrefix, workDir, warDir, collideHome);
+    this.server = new CollideServer(
+        bundledStaticFilesPrefix, webRootPrefix, workDir, warDir, collideHome
+    );
     int port = getOptionalIntConfig("port", 8080);
     String host = getOptionalStringConfig("host", "127.0.0.1");
     System.out.println("Connecting to "+host+":"+port);
@@ -214,10 +220,10 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
 
   @Override
   public void handle(HttpServerRequest req) {
-    //if (req.path().equals("/")) {
-    //  handleXapi(req);
-    //  return;
-    //}
+    if (req.path().startsWith("/xapi")) {
+      handleXapi(req);
+      return;
+    }
     if (req.path().equals("/") || req.path().equals("/demo")) {
       //send login page
       authAndWriteHostPage(req);
@@ -227,18 +233,19 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
     if (path.contains("..")) {
       //sanitize hack attempts
       sendStatusCode(req, 404);
+        return;
     } else if (path.startsWith(EVENTBUS_FRAGMENT)) {
       System.out.println("Sending to event bus: " + router.get(req.path()));
       router.accept(req);
 //      req.upgrade()
+        return;
     } else if (path.startsWith(CODESERVER_FRAGMENT)) {
       sendToCodeServer(req);//listen on http so we can send compile requests without sockets hooked up.
-    } else{
-      if (path.startsWith(AUTH_PATH)) {
+        return;
+    } else if (path.startsWith(AUTH_PATH)) {
         writeSessionCookie(req);
         return;
-      }
-      else if (path.startsWith(WEBROOT_PATH) && (webRootPrefix != null)){
+      } else if (path.startsWith(WEBROOT_PATH) && (webRootPrefix != null)){
         //TODO: sanitize this path
         //check for symlinks
         logger.info(path);
@@ -249,8 +256,7 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
         SymlinkResponse response = processSymlink(request);
         if (response.handled)
           return;
-      }
-      else if (path.contains(SOURCEMAP_PATH)){
+      } else if (path.contains(SOURCEMAP_PATH)){
         //forward sourcemap paths to appropriate internal server
         SymlinkRequest request = new SymlinkRequest();
         request.urlFragment = path;
@@ -275,7 +281,6 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
       }
       //if we didn't return, we're out of options.
       doFail(req);
-    }
   }
 
   private void doFail(HttpServerRequest req) {
@@ -654,10 +659,27 @@ public class WebFE extends BusModBase implements Handler<HttpServerRequest> {
   }
 
   private void handleXapi(HttpServerRequest req) {
-    if (xapiServer.serve(req)) {
-      return;
+//    VertxContext.fromNative()
+    final VertxRequest request = new VertxRequest(req, null);
+    final VertxResponse resp = new VertxResponse(req.response());
+    Cookie cookie = Cookie.getCookie(AUTH_COOKIE_NAME, req);
+    String sessionId = null;
+    if (cookie != null) {
+      sessionId = cookie.value.split("__")[0];
     }
-    authAndWriteHostPage(req);
+    server.inScope(sessionId, session->(RequestScopeVertx) session.getRequestScope(request, resp), (scope, fail, onDone)->{
+      if (fail != null) {
+          authAndWriteHostPage(req);
+          onDone.done();
+      } else {
+          server.serviceRequest(scope, (r, error)-> {
+            if (error != null) {
+              authAndWriteHostPage(req);
+            }
+            onDone.done();
+          });
+      }
+    });
   }
 
 }

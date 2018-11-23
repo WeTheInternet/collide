@@ -2,8 +2,8 @@ package collide.gwtc.ui;
 
 import xapi.collect.X_Collect;
 import xapi.collect.api.IntTo;
+import xapi.fu.Lazy;
 import xapi.gwtc.api.GwtManifest;
-import xapi.inject.impl.LazyPojo;
 import xapi.time.impl.RunOnce;
 import xapi.util.api.SuccessHandler;
 import collide.gwtc.ui.GwtCompilerShell.Resources;
@@ -28,7 +28,7 @@ import com.google.gwt.core.shared.GWT;
 import elemental.util.ArrayOfString;
 import elemental.util.Collections;
 
-public class GwtCompileNavigationHandler 
+public class GwtCompileNavigationHandler
 extends PlaceNavigationHandler<GwtCompilePlace.NavigationEvent>
 implements GwtCompilerService
 {
@@ -37,8 +37,8 @@ implements GwtCompilerService
   private final MultiPanel<? extends PanelModel,?> contentArea;
   private final Place currentPlace;
   private final GwtManifest model;
-  private final LazyPojo<GwtCompilerShell> gwtContainer;
-  private final LazyPojo<Resources> gwtResources;
+  private final Lazy<GwtCompilerShell> gwtContainer;
+  private final Lazy<Resources> gwtResources;
 
   public GwtCompileNavigationHandler(AppContext context, MultiPanel<?,?> masterPanel, Place currentPlace) {
     this.context = context;
@@ -46,29 +46,21 @@ implements GwtCompilerService
     this.currentPlace = currentPlace;
     this.model = GWT.create(GwtManifest.class);
     //TODO load defaults from local storage
-    
+
     //create our view lazily
-    this.gwtContainer = new LazyPojo<GwtCompilerShell>(){
-      @Override
-      protected GwtCompilerShell initialValue() {
-        return initializeView();
-      }
-    };
-    this.gwtResources = new LazyPojo<Resources>(){
-      @Override
-      protected Resources initialValue() {
+    this.gwtContainer = Lazy.deferred1(this::initializeView);
+    this.gwtResources = Lazy.deferred1(()->{
         Resources res = GWT.create(Resources.class);
         res.gwtCompilerCss().ensureInjected();
         res.gwtLogCss().ensureInjected();
         res.gwtClasspathCss().ensureInjected();
         res.gwtModuleCss().ensureInjected();
         return res;
-      };
-    };
+    });
   }
 
   protected GwtCompilerShell initializeView() {
-    View view = new GwtCompilerShell.View(context,model,gwtResources.get());
+    View view = new GwtCompilerShell.View(context,model,gwtResources.out1());
     return GwtCompilerShell.create(view, context);
   }
 
@@ -92,20 +84,20 @@ implements GwtCompilerService
         all.push(src);
       }
       model.setSources(all);
-      
+
       all = X_Collect.newList(String.class);
       for (String src : navigationEvent.getLibsDirectory().asIterable()) {
         all.push(src);
       }
       model.setDependencies(all);
-      
-      gwtContainer.get().setPlace(navigationEvent);
+
+      gwtContainer.out1().setPlace(navigationEvent);
       return;
     }
-    
 
-    
-    PanelContent panelContent = gwtContainer.get();
+
+
+    PanelContent panelContent = gwtContainer.out1();
     contentArea.setContent(panelContent,
       contentArea.newBuilder().setCollapseIcon(true).setClearNavigator(true).build());
     contentArea.getToolBar().hide();
@@ -128,7 +120,7 @@ implements GwtCompilerService
 
           @Override
           public void onMessageReceived(GwtSettings response) {
-            gwtContainer.get().showResults(response);
+            gwtContainer.out1().showResults(response);
             message.expire(1);
           }
         });
@@ -140,29 +132,29 @@ implements GwtCompilerService
   }
 
   public GwtCompileImpl getValue() {
-    return gwtContainer.get().getValue();
+    return gwtContainer.out1().getValue();
   }
 
   @Override
   public void compile(GwtRecompile module,
       SuccessHandler<CompileResponse> response) {
     // We lazy-load the gwt shell, and just defer to it.
-    gwtContainer.get().compile(module, response);
+    gwtContainer.out1().compile(module, response);
   }
 
   @Override
   public void recompile(String module, SuccessHandler<CompileResponse> response) {
-    gwtContainer.get().recompile(module, response);
+    gwtContainer.out1().recompile(module, response);
   }
 
   @Override
   public void kill(String module) {
-    gwtContainer.get().kill(module);
+    gwtContainer.out1().kill(module);
   }
 
   @Override
   public GwtCompilerShell getShell() {
-    return gwtContainer.get();
+    return gwtContainer.out1();
   }
-  
+
 }

@@ -173,7 +173,7 @@ public class WorkspaceNavigationToolBar extends UiComponent<WorkspaceNavigationT
   }
 
   /**
-   * Events reported by the EditorToolBar's View.
+   * Events reported by the DefaultEditorToolBar's View.
    */
   interface ViewEvents {
     void onCollaborateButtonClicked();

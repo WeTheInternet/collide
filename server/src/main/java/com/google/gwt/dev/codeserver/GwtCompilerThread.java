@@ -9,15 +9,18 @@ import com.google.collide.dto.CompileResponse.CompilerState;
 import com.google.collide.dto.GwtRecompile;
 import com.google.collide.dto.server.DtoServerImpls.CompileResponseImpl;
 import com.google.collide.dto.server.DtoServerImpls.GwtRecompileImpl;
-import com.google.collide.server.shared.launcher.VertxLauncher;
 import com.google.collide.server.shared.util.ReflectionChannel;
 import com.google.collide.shared.util.DebugUtil;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetSocket;
 import xapi.collect.X_Collect;
+import xapi.dev.gwtc.api.GwtcJob;
+import xapi.dev.gwtc.api.GwtcProjectGenerator;
+import xapi.dev.gwtc.api.GwtcService;
 import xapi.dev.gwtc.impl.GwtcManifestImpl;
 import xapi.gwtc.api.CompiledDirectory;
 import xapi.gwtc.api.GwtManifest;
+import xapi.inject.X_Inject;
 import xapi.time.X_Time;
 
 import java.io.IOException;
@@ -46,9 +49,10 @@ implements IsCompileThread<GwtRecompile> {
   protected TreeLogger logger() {
     return logger == null ? new PrintWriterTreeLogger() : logger;
   }
-  RecompileController controller;
+  GwtcJob controller;
   private String module;
   private String messageKey;
+  final GwtcService service = X_Inject.instance(GwtcService.class);
 
   // these are native objects, created using reflection
   @Override
@@ -85,46 +89,49 @@ implements IsCompileThread<GwtRecompile> {
 
         io.send(response.toJson());
 
-        server.get();
+        server.ensureStarted();
 
-        controller = SuperDevUtil.getOrMakeController(
-            logger, toManifest(request));
+        final GwtcProjectGenerator project = service.getProject(module);
+        final GwtManifest manifest = project.getManifest();
+        toManifest(request, manifest);
 
-        CompiledDirectory dir = controller.recompile();
+        controller = service.getJobManager().getJob(module);
+        service.doCompile(manifest, 0, null, (dir, err)->{
+          modules.put(messageKey, dir);
+          // notify user we completed successfully
+          response.setCompilerStatus(CompilerState.FINISHED);
 
-        modules.put(messageKey, dir);
-        // notify user we completed successfully
-        response.setCompilerStatus(CompilerState.FINISHED);
-
-        try {
-          // also notify our frontend that the compiled output has changed
-          // start or update a proxy server to pull source files from this
-          // compile.
-          synchronized (getClass()) {
-            status = response;
-            startOrUpdateProxy(dir, controller);
-          }
-          initialize(server.get(), server.getPort());
-        } finally {
-          final String status = response.toJson();
-          X_Time.runLater(new Runnable() {
-            @Override
-            public void run() {
-              X_Time.trySleep(500, 0);
-              io.send(status);
+          try {
+            // also notify our frontend that the compiled output has changed
+            // start or update a proxy server to pull source files from this
+            // compile.
+            synchronized (getClass()) {
+              status = response;
+              startOrUpdateProxy(dir, controller);
             }
-          });
-        }
+            initialize(server.ensureStarted(), server.getPort());
+          } finally {
+            final String status = response.toJson();
+            X_Time.runLater(new Runnable() {
+              @Override
+              public void run() {
+                X_Time.trySleep(500, 0);
+                io.send(status);
+              }
+            });
+          }
 
 
-        // This message is routed to WebFE
-        io.send("_frontend.symlink_" + dir.toString());
+          // This message is routed to WebFE
+          io.send("_frontend.symlink_" + dir.toString());
 
-        logger.log(Type.INFO, "Finished gwt compile for "
-            + request.getModule());
+          logger.log(Type.INFO, "Finished gwt compile for "
+              + request.getModule());
 
+        });
         // reset interrupted flag so we loop back to the beginning
         Thread.interrupted();
+
 
       } catch (Throwable e) {
         System.out.println("Exception caught...");
@@ -156,8 +163,8 @@ implements IsCompileThread<GwtRecompile> {
       }
   }
 
-  private GwtManifest toManifest(GwtRecompile request) {
-    GwtManifest manifest = new GwtcManifestImpl(request.getModule());
+  private GwtManifest toManifest(GwtRecompile request, GwtManifest manifest) {
+//    GwtManifest manifest = new GwtcManifestImpl(request.getModule());
     manifest.setPort(request.getPort());
     manifest.setAutoOpen(request.getAutoOpen());
     manifest.setSources(X_Collect.asList(String.class, request.getSources().asIterable()));
@@ -237,7 +244,7 @@ implements IsCompileThread<GwtRecompile> {
   @Override
   public void kill() {
     if (controller != null) {
-      controller.cleanup();
+      controller.destroy();
     }
   }
 

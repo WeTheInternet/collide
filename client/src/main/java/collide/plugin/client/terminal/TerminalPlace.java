@@ -1,7 +1,5 @@
 package collide.plugin.client.terminal;
 
-import xapi.inject.impl.LazyPojo;
-
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationEvent;
@@ -14,6 +12,7 @@ import com.google.collide.json.shared.JsonStringMap;
 import elemental.client.Browser;
 import elemental.dom.Node;
 import elemental.dom.NodeList;
+import xapi.fu.Lazy;
 
 public class TerminalPlace extends Place{
 
@@ -63,10 +62,8 @@ public class TerminalPlace extends Place{
     super(PlaceConstants.TERMINAL_PLACE_NAME);
   }
 
-  private final LazyPojo<String> guessModuleFromHostPage
-    = new LazyPojo<String>(){
-      @Override
-      protected String initialValue() {
+  private final Lazy<String> guessModuleFromHostPage
+    = new Lazy<>(() -> {
         //first try guessing from head
         NodeList kids = Browser.getDocument().getHead().getChildNodes();
         int limit = kids.getLength();
@@ -86,8 +83,7 @@ public class TerminalPlace extends Place{
         }
 
         return null;
-      };
-    };
+    });
 
   @Override
   public PlaceNavigationEvent<? extends Place> createNavigationEvent(
@@ -103,7 +99,7 @@ public class TerminalPlace extends Place{
     String module = decodedState.get(NavigationEvent.MODULE_KEY);
     if (module == null){
       //guess our own module source
-      module = guessModuleFromHostPage.get();
+      module = guessModuleFromHostPage.out1();
     }
     GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
@@ -118,7 +114,7 @@ public class TerminalPlace extends Place{
 
 
   /**
-   * @param module the gwt module to compile
+   * @param compile the gwt module to compile
    * @return a new navigation event
    */
   public PlaceNavigationEvent<TerminalPlace> createNavigationEvent(GwtRecompile compile) {

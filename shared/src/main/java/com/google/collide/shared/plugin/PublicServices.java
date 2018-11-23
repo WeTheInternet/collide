@@ -3,6 +3,7 @@ package com.google.collide.shared.plugin;
 import com.google.common.base.Preconditions;
 import xapi.collect.X_Collect;
 import xapi.collect.api.IntTo;
+import xapi.fu.Out1;
 import xapi.inject.X_Inject;
 
 import javax.inject.Provider;
@@ -11,7 +12,7 @@ public class PublicServices {
 
   private final IntTo<PublicService<?>> services;
 
-  private static final Provider<PublicServices> SINGLETON = X_Inject.singletonLazy(PublicServices.class);
+  private static final Out1<PublicServices> SINGLETON = X_Inject.singletonLazy(PublicServices.class);
 
   //don't construct these, we're running statically
   protected PublicServices() {
@@ -20,7 +21,7 @@ public class PublicServices {
 
   @SuppressWarnings("unchecked")
   public static <S> S getService(Class<? super S> serviceClass) {
-    PublicService<?> service = SINGLETON.get().services.get(serviceClass.hashCode());
+    PublicService<?> service = SINGLETON.out1().services.get(serviceClass.hashCode());
     Preconditions.checkNotNull(service, "No service implementation registered for "+serviceClass);
     return (S)service.get();
   }
@@ -31,7 +32,7 @@ public class PublicServices {
   }
   public static <S> void registerService(
     Class<? super S> serviceClass, PublicService<S> provider) {
-    IntTo<PublicService<?>> serviceMap = SINGLETON.get().services;
+    IntTo<PublicService<?>> serviceMap = SINGLETON.out1().services;
     PublicService<?> old = serviceMap.get(serviceClass.hashCode());
     if (old != null) {
       if (old.priority() > provider.priority())

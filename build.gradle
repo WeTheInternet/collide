@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+//    id 'com.vertispan.j2cl' version '0.1'
 }
 
 group = 'de.mocra.cy'
-version = '0.6-SNAPSHOT'
+version = '0.5.1-SNAPSHOT'
 
 description = """CollIDE main package"""
 
@@ -12,19 +13,17 @@ configurations.all {
 }
 
 allprojects {
-
     repositories {
-        mavenLocal()
-        mavenCentral()
+        maven {
+            name = "xapiLocal"
+            url = new URI("file://$rootDir.parent/xapi/repo")
+        }
+        jcenter()
     }
 
-    buildscript {
-        repositories {
-            mavenLocal()
-            jcenter()
-        }
-        dependencies {
-            classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.5.0-SNAPSHOT'
-        }
-    }
+}
+
+wrapper {
+    gradleVersion = '5.0-rc-4'
+    distributionType = 'ALL'
 }

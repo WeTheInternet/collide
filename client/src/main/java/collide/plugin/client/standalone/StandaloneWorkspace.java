@@ -318,7 +318,7 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
 
   }
 
-  public static interface ViewController {
+  public interface ViewController {
   }
 
   @Override
@@ -380,12 +380,12 @@ public class StandaloneWorkspace extends MultiPanel<StandaloneWorkspace.Model,St
     return new ShowableUiComponent<View>() {
 
       @Override
-      public void hide() {
+      public void doHide() {
         X_Log.trace("Hiding panel");
       }
 
       @Override
-      public void show() {
+      public void doShow() {
         X_Log.trace("Showing panel");
       }
 

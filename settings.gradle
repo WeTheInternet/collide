@@ -1,2 +1,17 @@
+pluginManagement {
+    repositories {
+        maven {
+            url "$gradle.gradleUserHomeDir/../.vertispan/repo"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            name = 'xapiLocal'
+            url = new URI("file://$rootDir/repo")
+        }
+        jcenter()
+    }
+}
 rootProject.name = 'collide-core'
 include 'api', 'shared', 'client', 'server'

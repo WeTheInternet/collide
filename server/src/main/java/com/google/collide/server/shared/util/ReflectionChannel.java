@@ -3,36 +3,31 @@ package com.google.collide.server.shared.util;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import xapi.inject.impl.LazyPojo;
-
 import com.google.collide.shared.util.Channel;
+import xapi.fu.Lazy;
+import xapi.fu.lazy.ResettableLazy;
 
 public class ReflectionChannel implements Channel<String>{
 
   private ClassLoader cl;
   private Object that;
-  private final LazyPojo<Method> in = new LazyPojo<Method>(){
-    @Override
-    protected Method initialValue() {
+  private final ResettableLazy<Method> in = new ResettableLazy<>(() -> {
       try {
         return getInputMethod(getClassLoader(), that);
       } catch (Exception e) {
         e.printStackTrace();
         throw new RuntimeException(e);
       }
-    };
-  };
-  private final LazyPojo<Method> out = new LazyPojo<Method>(){
-    @Override
-    protected Method initialValue() {
+  });
+  private final ResettableLazy<Method> out = new ResettableLazy<>(() -> {
       try {
         return getOutputMethod(getClassLoader(), that);
       } catch (Exception e) {
         e.printStackTrace();
         throw new RuntimeException(e);
       }
-    };
-  };
+  });
+
   private Object destroy;
 
   public ReflectionChannel(ClassLoader cl, Object otherChannel) {
@@ -64,7 +59,7 @@ public class ReflectionChannel implements Channel<String>{
   @Override
   public void send(String t) {
     try{
-      invokeSend(out.get(),that, t);
+      invokeSend(out.out1(),that, t);
     }catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException(e);
@@ -75,7 +70,7 @@ public class ReflectionChannel implements Channel<String>{
   @Override
   public String receive() {
     try{
-      return invokeReceive(in.get(), that);
+      return invokeReceive(in.out1(), that);
     }catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException(e);

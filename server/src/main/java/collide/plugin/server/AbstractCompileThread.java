@@ -12,8 +12,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetSocket;
+import xapi.dev.gwtc.api.GwtcJob;
 import xapi.gwtc.api.CompiledDirectory;
-import xapi.gwtc.api.IsRecompiler;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
@@ -51,7 +51,7 @@ implements CompilerRunner
   protected boolean working = false;
   protected int port;
 
-  protected IsRecompiler controller;
+  protected GwtcJob controller;
 
   protected final VertxLauncher server;
 
@@ -77,15 +77,11 @@ implements CompilerRunner
     io.send(status.toJson());
   }
 
-  protected synchronized void startOrUpdateProxy(CompiledDirectory impl, IsRecompiler compiler) {
+  protected synchronized void startOrUpdateProxy(CompiledDirectory impl, GwtcJob compiler) {
     this.compileRequest = impl;
     this.controller = compiler;
     System.out.println("Starting plugin thread "+getClass());
-    server.get()//performs actual initialization in the LazyPojo class
-    .setTimer(1000, e-> {
-        //keep heap clean; the generated gwt classes will fill permgen quickly if they survive;
-        System.gc();
-    });
+    server.ensureStarted();
 
     logger().log(Type.INFO, "Started plugin thread on port "+server.getPort());
     impl.setPort(server.getPort());

@@ -1,5 +1,8 @@
 package collide.demo.controller;
 
+import collide.client.editor.DefaultEditorConfiguration;
+import collide.client.editor.EditorConfiguration;
+import collide.client.editor.EditorToolbar;
 import collide.client.filetree.AppContextFileTreeController;
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
@@ -128,12 +131,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
     }, true);
 
     // Track this for removal in cleanup
-    keyListenerRemoverManager.track(new Remover() {
-      @Override
-      public void remove() {
-        eventRemover.remove();
-      }
-    });
+    keyListenerRemoverManager.track(eventRemover::remove);
 
     codePanelBundle = new StandaloneCodeBundle(appContext, shell, fileTreeController, fileTreeModel, searchIndex,
         documentManager, participantModel, docOpRecipient, workspacePlace){
@@ -143,7 +141,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
       }
     };
 
-    codePanelBundle.attach(true);
+    codePanelBundle.attach(true, new DefaultEditorConfiguration());
     codePanelBundle.setMasterPanel(view);
 
     // Attach to the DOM.
@@ -167,6 +165,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
       @Override
       public void onDocumentLinkedToFile(Document document,
           FileContents fileContents) {
+        X_Log.info("linked to file",document);
 
       }
 
@@ -178,6 +177,7 @@ implements ClientPlugin<WorkspacePlace>, LauncherService
 
       @Override
       public void onDocumentCreated(Document document) {
+        X_Log.info("created",document);
 
       }
 

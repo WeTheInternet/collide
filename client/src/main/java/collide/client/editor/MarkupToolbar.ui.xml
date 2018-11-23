@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
   <ui:with field="res"
-    type="com.google.collide.client.code.EditorToolBar.Resources" />
+    type="com.google.collide.client.code.DefaultEditorToolBar.Resources" />
   <div ui:field="toolButtons" class="{res.editorToolBarCss.toolButtons}">
     <div ui:field="historyButton" class="{res.editorToolBarCss.historyButton}">
       <div class="{res.editorToolBarCss.button}">

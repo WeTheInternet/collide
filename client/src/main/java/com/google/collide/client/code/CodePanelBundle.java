@@ -14,6 +14,7 @@
 
 package com.google.collide.client.code;
 
+import collide.client.editor.EditorConfiguration;
 import org.waveprotocol.wave.client.common.util.SignalEvent;
 
 import collide.client.filetree.FileTreeController;
@@ -172,7 +173,7 @@ public class CodePanelBundle {
     GlobalHotKey.unregister(appContext.getKeyBindings().snapshot());
   }
 
-  public void attach(boolean detached) {
+  public void attach(boolean detached, EditorConfiguration config) {
     // Construct the Root View for the CodePerspective.
     CodePerspective.Resources res = appContext.getResources();
     CodePerspective.View codePerspectiveView = initCodePerspective(res, detached);

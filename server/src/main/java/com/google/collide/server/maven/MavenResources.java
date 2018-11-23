@@ -1,10 +1,11 @@
 package com.google.collide.server.maven;
 
+import xapi.fu.Lazy;
+import xapi.fu.lazy.ResettableLazy;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-
-import xapi.inject.impl.LazyPojo;
 
 /**
  *
@@ -22,43 +23,19 @@ public class MavenResources implements Serializable{
   private String workDir="";
 
 
-  private final LazyPojo<File> srcRootFolder
-  = new LazyPojo<File>(){
-    @Override
-    protected File initialValue() {
-      return initSourceRoot();
-    };
-  };
+  private final ResettableLazy<File> srcRootFolder = new ResettableLazy<>(this::initSourceRoot);
 
-  private final LazyPojo<File> warSrcFolder
-    = new LazyPojo<File>(){
-    @Override
-    protected File initialValue() {
-      return initWarSource();
-    };
-  };
+  private final ResettableLazy<File> warSrcFolder = new ResettableLazy<>(this::initWarSource);
 
-  private final LazyPojo<File> warTargetFolder
-  = new LazyPojo<File>(){
-    @Override
-    protected File initialValue() {
-      return initWarTarget();
-    };
-  };
+  private final ResettableLazy<File> warTargetFolder = new ResettableLazy<>(this::initWarTarget);
 
-  private final LazyPojo<File> workFolder
-  = new LazyPojo<File>(){
-    @Override
-    protected File initialValue() {
-      return initWorkFolder();
-    };
-  };
+  private final ResettableLazy<File> workFolder = new ResettableLazy<>(this::initWorkFolder);
 
   /**
    * @return the srcRoot
    */
   public File getSrcRoot() {
-    return srcRootFolder.get();
+    return srcRootFolder.out1();
   }
 
   /**
@@ -75,7 +52,7 @@ public class MavenResources implements Serializable{
    * This is the folder containing your "clean" Web App Resource files (no generated source)
    */
   public File getWarSrcDir() {
-    return warSrcFolder.get();
+    return warSrcFolder.out1();
   }
 
   /**
@@ -92,7 +69,7 @@ public class MavenResources implements Serializable{
    * This is the folder to which your clean Web App BaseResources will be merged with generated war.
    */
   public File getWarTargetDir() {
-    return warTargetFolder.get();
+    return warTargetFolder.out1();
   }
 
   /**
@@ -100,13 +77,14 @@ public class MavenResources implements Serializable{
    */
   public void setWarTargetDir(String warTargetDir) {
     this.warTargetDir = warTargetDir;
+    warTargetFolder.reset();
   }
 
   /**
    * @return the workDir, where temporary files are written.
    */
   public File getWorkDir() {
-    return workFolder.get();
+    return workFolder.out1();
   }
 
   /**
@@ -114,6 +92,7 @@ public class MavenResources implements Serializable{
    */
   public void setWorkDir(String workDir) {
     this.workDir = workDir;
+    workFolder.reset();
   }
 
 

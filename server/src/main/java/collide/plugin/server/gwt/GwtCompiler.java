@@ -13,6 +13,8 @@ import java.security.PrivilegedAction;
 import org.apache.xerces.parsers.SAXParser;
 import org.apache.xerces.parsers.XIncludeParserConfiguration;
 import org.apache.xerces.xni.parser.XMLParserConfiguration;
+import xapi.dev.api.MavenLoader;
+import xapi.dev.impl.ReflectiveMavenLoader;
 import xapi.file.X_File;
 import xapi.fu.Do;
 import xapi.gwtc.api.GwtManifest;
@@ -169,7 +171,7 @@ public class GwtCompiler {
     //Thread launchThread = new Thread(()->{
     //
       try {
-    cl.setAllowSystem(true);
+    cl.setAllowSystem(false);
     //cl.setAllowSystem(false);
         Class<?> launcher = cl.loadClass("com.google.collide.server.shared.launcher.VertxLauncher");
         //assert launcher.getClassLoader() == cl;
@@ -223,7 +225,8 @@ public class GwtCompiler {
 
     String programArgs = manifest.toProgramArgs();
     String[] jvmArgs = manifest.toJvmArgArray();
-    String[] cp = manifest.toClasspathFullCompile(System.getProperty("java.io.tmpdir", "/tmp"), "lib");
+    ReflectiveMavenLoader loader = new ReflectiveMavenLoader();
+    String[] cp = manifest.toClasspathFullCompile();
 
     String tmpDir = System.getProperty("java.io.tmpdir");
     tmpSearch:

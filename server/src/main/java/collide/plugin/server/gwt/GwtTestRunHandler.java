@@ -7,6 +7,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import xapi.bytecode.ClassFile;
+import xapi.dev.gwtc.api.GwtcProjectGenerator;
 import xapi.dev.gwtc.impl.GwtcServiceImpl;
 import xapi.dev.scanner.X_Scanner;
 import xapi.file.X_File;
@@ -100,16 +101,17 @@ public class GwtTestRunHandler  implements Handler<Message<JsonObject>> {
     Set<URL> paths = new LinkedHashSet<URL>();
     GwtManifest manifest = compiler.resolveCompile(compileRequest);
     Class<?> c;
+    final GwtcProjectGenerator project = impl.getProject(module, loader);
     try {
       c = loader.loadClass(module);
-      impl.addClass(c);
+      project.addClass(c);
       log(module, "Found test class "+c.getCanonicalName());
     } catch (Exception e) {
       X_Log.info(getClass(), "Searching for tests in ",module);
       for (ClassFile cls : X_Scanner.findClassesInPackage(loader, module)) {
         try {
           c = loader.loadClass(cls.getQualifiedName());
-          if (impl.addJUnitClass(c)) {
+          if (project.addJUnitClass(c)) {
             log(module, "Found test class "+c.getCanonicalName());
             X_Log.info(getClass(), "Adding JUnit test class", c, cls.getResourceName());
           } else {
@@ -139,12 +141,12 @@ public class GwtTestRunHandler  implements Handler<Message<JsonObject>> {
       }
     }
     manifest.addSystemProp("gwt.usearchives=false");
-    manifest.setWarDir(impl.getTempDir().getAbsolutePath());
+    manifest.setWarDir(project.getTempDir().getAbsolutePath());
     compileRequest.setWarDir(X_File.createTempDir("Gwtc"+manifest.getModuleName()).getAbsolutePath());
-    log(module, "Generating module into "+impl.getTempDir());
+    log(module, "Generating module into "+project.getTempDir());
     impl.generateCompile(manifest);
-    impl.copyModuleTo(module, manifest);
-    String genDir = "file:"+impl.getTempDir().getAbsolutePath();
+    project.copyModuleTo(module, manifest);
+    String genDir = "file:"+project.getTempDir().getAbsolutePath();
     try {
       paths.add(new URL(genDir));
       X_Log.info(getClass(), "Added gen dir to classpath", genDir);
@@ -152,7 +154,7 @@ public class GwtTestRunHandler  implements Handler<Message<JsonObject>> {
       X_Log.error(getClass(),"Malformed temp dir", genDir, e);
     }
 
-    compileRequest.addSources(impl.getTempDir().getAbsolutePath());
+    compileRequest.addSources(project.getTempDir().getAbsolutePath());
 
     if (paths.size() > 0) {
       X_Log.info(getClass(), "Adding additional classpath elements", paths);

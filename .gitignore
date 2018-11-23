@@ -23,6 +23,8 @@ hs_err_pid*
 .gradle
 build/
 
+out
+
 # Ignore Gradle GUI config
 gradle-app.setting
 
@@ -78,7 +80,7 @@ buildNumber.properties
 
 ## Plugin-specific files:
 
-/out/
+out
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/

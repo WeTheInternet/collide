@@ -8,8 +8,8 @@
       "deps/codemirror2"
     ],
     classpath : [
-      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
-      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-gwt:0.5.1-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.5.1-SNAPSHOT"),
       maven("net.wetheinter:gwt-elemental:2.8.0"),
       maven("net.wetheinter:gwt-user:2.8.0"),
       maven("net.wetheinter:gwt-dev:2.8.0"),
@@ -28,8 +28,8 @@
       "client/src/main/java"
     ],
     classpath : [
-      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
-      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-gwt:0.5.1-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.5.1-SNAPSHOT"),
       maven("net.wetheinter:gwt-elemental:2.8.0"),
       maven("net.wetheinter:gwt-user:2.8.0"),
       maven("net.wetheinter:gwt-dev:2.8.0"),
@@ -48,8 +48,8 @@
       "client/src/main/java"
     ],
     classpath : [
-      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
-      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-gwt:0.5.1-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.5.1-SNAPSHOT"),
       maven("net.wetheinter:gwt-elemental:2.8.0"),
       maven("net.wetheinter:gwt-user:2.8.0"),
       maven("net.wetheinter:gwt-dev:2.8.0"),
@@ -68,8 +68,8 @@
       "client/src/main/java"
     ],
     classpath : [
-      maven("net.wetheinter:xapi-gwt:0.6-SNAPSHOT"),
-      maven("net.wetheinter:xapi-dev:0.6-SNAPSHOT"),
+      maven("net.wetheinter:xapi-gwt:0.5.1-SNAPSHOT"),
+      maven("net.wetheinter:xapi-dev:0.5.1-SNAPSHOT"),
       maven("net.wetheinter:gwt-elemental:2.8.0"),
       maven("net.wetheinter:gwt-user:2.8.0"),
       maven("net.wetheinter:gwt-dev:2.8.0"),

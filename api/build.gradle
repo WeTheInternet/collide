@@ -1,7 +1,10 @@
-apply plugin: 'java'
+plugins {
+    id 'java-library'
+    id "de.esoco.gwt-lib" version "1.0.6"
+}
 
 group = 'de.mocra.cy'
-version = '0.6-SNAPSHOT'
+version = '0.5.1-SNAPSHOT'
 
 description = "CollIDE API"
 
@@ -22,7 +25,8 @@ jar {
 dependencies {
     compile group: 'com.google.guava', name: 'guava', version:'19.0'
     compile group: 'com.google.guava', name: 'guava-gwt', version:'19.0'
+    compile group: 'net.wetheinter', name: 'xapi-core-util', version:versionXapi, changing: true, transitive: true
     compile group: 'net.wetheinter', name: 'xapi-gwtc-api', version:versionXapi, changing: true, transitive: true
-    compile group: 'net.wetheinter', name: 'gwt-user', version:versionGwt, changing: true
-    compile group: 'net.wetheinter', name: 'gwt-dev', version:versionGwt, changing: true, transitive: true
+    implementation group: 'net.wetheinter', name: 'gwt-user', version:versionGwt, changing: true
+    implementation group: 'net.wetheinter', name: 'gwt-dev', version:versionGwt, changing: true, transitive: true
 }

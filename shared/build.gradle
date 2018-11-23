@@ -1,7 +1,10 @@
+plugins {
+    id "de.esoco.gwt-lib" version "1.0.6"
+}
 apply plugin: 'java'
 
 group = 'de.mocra.cy'
-version = '0.6-SNAPSHOT'
+version = '0.5.1-SNAPSHOT'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -19,8 +22,10 @@ jar {
 }
 dependencies {
     compile group: 'net.wetheinter', name: 'gwt-elemental', version:versionGwt
-    compile group: 'net.wetheinter', name: 'xapi-gwt', version:versionXapi, changing: true
+    compile group: 'net.wetheinter', name: 'xapi-gwt-collect', version:versionXapi, changing: true
+    compile group: 'net.wetheinter', name: 'xapi-gwt-model', version:versionXapi, changing: true
     compile group: 'io.vertx', name: 'vertx-core', version:versionVertx
     compile project(':api')
+    implementation group: 'net.wetheinter', name: 'gwt-user', version:versionGwt, changing: true
 
 }

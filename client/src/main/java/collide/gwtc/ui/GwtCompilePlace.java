@@ -1,7 +1,5 @@
 package collide.gwtc.ui;
 
-import xapi.inject.impl.LazyPojo;
-
 import com.google.collide.client.history.Place;
 import com.google.collide.client.history.PlaceConstants;
 import com.google.collide.client.history.PlaceNavigationEvent;
@@ -16,6 +14,7 @@ import elemental.client.Browser;
 import elemental.dom.Node;
 import elemental.dom.NodeList;
 import elemental.dom.TimeoutHandler;
+import xapi.fu.Lazy;
 
 public class GwtCompilePlace extends Place{
 
@@ -59,7 +58,7 @@ public class GwtCompilePlace extends Place{
     public boolean isRecompile() {
       return recompile;
     }
-    
+
     public JsoArray<String> getSourceDirectory() {
       return srcDir;
     }
@@ -76,10 +75,8 @@ public class GwtCompilePlace extends Place{
     setIsStrict(false);
   }
 
-  private final LazyPojo<String> guessModuleFromHostPage
-    = new LazyPojo<String>(){
-      @Override
-      protected String initialValue() {
+  private final Lazy<String> guessModuleFromHostPage
+    = new Lazy<>(() -> {
         //first try guessing from head
         NodeList kids = Browser.getDocument().getHead().getChildNodes();
         int limit = kids.getLength();
@@ -99,8 +96,7 @@ public class GwtCompilePlace extends Place{
         }
 
         return null;
-      };
-    };
+      });
 
   @Override
   public PlaceNavigationEvent<? extends Place> createNavigationEvent(
@@ -116,7 +112,7 @@ public class GwtCompilePlace extends Place{
     String module = decodedState.get(NavigationEvent.MODULE_KEY);
     if (module == null){
       //guess our own module source
-      module = guessModuleFromHostPage.get();
+      module = guessModuleFromHostPage.out1();
     }
     GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
@@ -131,7 +127,7 @@ public class GwtCompilePlace extends Place{
 
 
   /**
-   * @param module the gwt module to compile
+   * @param compile the gwt module to compile
    * @return a new navigation event
    */
   public PlaceNavigationEvent<GwtCompilePlace> createNavigationEvent(GwtRecompile compile) {
@@ -166,7 +162,7 @@ public class GwtCompilePlace extends Place{
     WorkspacePlace.PLACE.enableHistorySnapshotting();
 
     Browser.getWindow().setTimeout(new TimeoutHandler() {
-      
+
       @Override
       public void onTimeoutHandler() {
         WorkspacePlace.PLACE.disableHistorySnapshotting();

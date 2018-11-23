@@ -12,7 +12,7 @@ import xapi.fu.In1;
 import xapi.inject.X_Inject;
 import xapi.log.X_Log;
 import xapi.scope.service.ScopeService;
-import xapi.server.vertx.ScopeServiceVertx;
+import xapi.server.vertx.scope.ScopeServiceVertx;
 import xapi.time.X_Time;
 
 /**

@@ -1,27 +1,44 @@
+buildscript {
+    repositories {
+        maven {
+            name = 'xapiLocal'
+            url = new URI("file://$rootDir.parent/xapi/repo")
+        }
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadowTest:4.0.3-SNAPSHOT'
+    }
+}
 plugins {
     id 'java'
+    id 'wrapper'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '1.2.3'
 }
 
+
 group = 'de.mocra.cy'
-version = '0.6-SNAPSHOT'
+version = '0.5.1-SNAPSHOT'
 description = "CollIDE Server Code"
+
+plugins.apply 'com.github.johnrengelman.shadow'
 
 versionVertx = "3.3.3"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+
 dependencies {
     compile project(':client')
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version:'2.7.4'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version:'2.7.0'
+
     compile group: 'net.wetheinter', name: 'xapi-server-vertx', version: versionXapi
 
     compile group: 'io.vertx', name: 'vertx-web', version: versionVertx
     compile group: 'io.vertx', name: 'vertx-hazelcast', version: versionVertx
-    compile group: 'de.mocra.cy', name: 'wti-server', version: '0.1-SNAPSHOT'
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.0.0'
     compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.4.1.201607150455-r'
-    compile group: 'com.google.code.gson', name: 'gson', version:'2.2.1'
 
     compile 'xerces:xercesImpl:2.8.1'
 }
@@ -45,6 +62,29 @@ shadowJar {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.8'
+
+tasks.create 'rebuildXapi', GradleBuild, {
+    GradleBuild b ->
+        File xapiDir = new File(rootDir.parentFile, 'xapi')
+        b.dir xapiDir
+        b.startParameter.excludedTaskNames = ['test']
+        b.startParameter.parallelProjectExecutionEnabled = true
+        b.startParameter.buildCacheEnabled = false
+        b.startParameter.refreshDependencies = true
+        b.startParameter.projectProperties.putAll([
+                'xapi.log.level': 'WARN',
+                'xapi.release': 'true',
+                'xapi.quick': 'true',
+                'xapi.false': 'true',
+        ])
+        b.startParameter.systemPropertiesArgs.put('xapi.composite', 'false')
+        b.tasks = ['build']
+        b.onlyIf {xapiDir.directory}
+        b.inputs.dir new File(xapiDir, 'server/vertx/src/main')
+        b.outputs.dir file("$buildDir/xapi")
+        b.doLast {
+            ant.touch(file: "$buildDir/xapi/uptodate", mkdirs: true)
+        }
 }
+
+build.dependsOn rebuildXapi

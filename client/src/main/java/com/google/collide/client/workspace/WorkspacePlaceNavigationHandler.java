@@ -14,6 +14,7 @@
 
 package com.google.collide.client.workspace;
 
+import collide.client.editor.DefaultEditorConfiguration;
 import collide.client.filetree.AppContextFileTreeController;
 import collide.client.filetree.FileTreeController;
 import collide.client.filetree.FileTreeModel;
@@ -156,7 +157,7 @@ public class WorkspacePlaceNavigationHandler extends PlaceNavigationHandler<Work
 
     codePanelBundle = createCodePanelBundle(appContext, shell, fileTreeController, fileTreeModel, searchIndex, documentManager,
       participantModel, docOpRecipient, navigationEvent.getPlace());
-    codePanelBundle.attach(isDetached());
+    codePanelBundle.attach(isDetached(), new DefaultEditorConfiguration());
     codePanelBundle.setMasterPanel(createMasterPanel(res));
 
     // Attach to the DOM.

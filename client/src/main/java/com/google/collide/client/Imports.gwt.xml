@@ -12,6 +12,7 @@
   <inherits name="elemental.Elemental" />
 
   <inherits name="collide.client.FileTree" />
+  <inherits name="collide.client.Editor" />
 
   <inherits name="com.google.common.base.Base" />
   <inherits name="com.google.common.collect.Collect" />

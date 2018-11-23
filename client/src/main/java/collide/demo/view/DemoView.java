@@ -93,10 +93,10 @@ extends MultiPanel<PanelModel, ControllerView>
     bar = new ShowableUiComponent<View<?>>() {
       // We aren't using the toolbar just yet.
       @Override
-      public void hide() {
+      public void doHide() {
       }
       @Override
-      public void show() {
+      public void doShow() {
       }
     };
 

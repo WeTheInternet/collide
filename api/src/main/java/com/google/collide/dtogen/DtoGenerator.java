@@ -79,7 +79,7 @@ public class DtoGenerator {
         // then you will need to supply command line argument overrides.
         .replaceFirst(buildDir + "libs" + File.separator + ".*[.]jar", "")
     ;
-    dto_jar = myBase + "shared/build/libs/shared-0.6-SNAPSHOT.jar";
+    dto_jar = myBase + "shared/build/libs/shared-0.5.1-SNAPSHOT.jar";
     gen_file_name = myBase + "client/src/main/java/com/google/collide/dto/client/DtoClientImpls.java";
     impl = "client";
     package_base = "java";

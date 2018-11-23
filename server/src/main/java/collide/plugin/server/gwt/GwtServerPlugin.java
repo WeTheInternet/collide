@@ -6,11 +6,11 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.JsonObject;
 import xapi.collect.api.InitMap;
-import xapi.collect.impl.InitMapString;
-import xapi.inject.impl.LazyPojo;
+import xapi.collect.impl.InitMapDefault;
+import xapi.fu.In1Out1;
+import xapi.fu.Lazy;
 import xapi.log.X_Log;
 import xapi.util.X_Namespace;
-import xapi.util.api.ConvertsValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,20 +31,13 @@ public class GwtServerPlugin extends AbstractPluginServer //<GwtCompilerThread>
     return "gwt";
   }
 
-  final InitMap<String, GwtCompiler> compilers = new InitMapString<GwtCompiler>(
-      new ConvertsValue<String, GwtCompiler>() {
-        @Override
-        public GwtCompiler convert(String module) {
-          return new GwtCompiler(module);
-        }
-      });
+  final InitMap<String, GwtCompiler> compilers = new InitMapDefault<>(
+      In1Out1.identity(),
+      GwtCompiler::new);
 
-  private final LazyPojo<Map<String, Handler<Message<JsonObject>>>> allModules =
-      new LazyPojo<Map<String, Handler<Message<JsonObject>>>>() {
-        @Override
-        protected java.util.Map<String, Handler<Message<JsonObject>>> initialValue() {
-          Map<String, Handler<Message<JsonObject>>> map =
-              new HashMap<String, Handler<Message<JsonObject>>>();
+  private final Lazy<Map<String, Handler<Message<JsonObject>>>> allModules =
+      Lazy.deferred1(() -> {
+          Map<String, Handler<Message<JsonObject>>> map = new HashMap<>();
 
           map.put("recompile", new GwtRecompileHandler(GwtServerPlugin.this));
           map.put("compile", new GwtCompileHandler(GwtServerPlugin.this));
@@ -54,12 +47,11 @@ public class GwtServerPlugin extends AbstractPluginServer //<GwtCompilerThread>
           map.put("save", new GwtSaveHandler());
 
           return map;
-        };
-      };
+      });
 
   @Override
   public Map<String, Handler<Message<JsonObject>>> getHandlers() {
-    return ImmutableMap.copyOf(allModules.get());
+    return ImmutableMap.copyOf(allModules.out1());
   }
 
 }

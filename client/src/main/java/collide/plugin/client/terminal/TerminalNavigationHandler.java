@@ -2,6 +2,7 @@ package collide.plugin.client.terminal;
 
 import xapi.collect.impl.AbstractInitMap;
 import xapi.collect.impl.AbstractMultiInitMap;
+import xapi.fu.In1Out1;
 import xapi.inject.impl.SingletonProvider;
 import xapi.util.X_String;
 import xapi.util.api.ConvertsValue;
@@ -27,9 +28,10 @@ import com.google.gwt.core.shared.GWT;
 import elemental.dom.Element;
 import elemental.html.DivElement;
 
+@SuppressWarnings("ALL")
 public class TerminalNavigationHandler extends
     PlaceNavigationHandler<TerminalPlace.NavigationEvent>
-    implements ConvertsValue<Pair<String, TerminalLogHeader>, TerminalLogView> {
+    implements In1Out1<Pair<String, TerminalLogHeader>, TerminalLogView> {
 
   private final AppContext context;
   private final MultiPanel<? extends PanelModel,?> contentArea;
@@ -106,7 +108,7 @@ public class TerminalNavigationHandler extends
   }
 
   @Override
-  public TerminalLogView convert(Pair<String, TerminalLogHeader> from) {
+  public TerminalLogView io(Pair<String, TerminalLogHeader> from) {
     TerminalLogView view = initializeView(from.get0(), contentArea);
     view.setHeader(from.get1());
     return view;

@@ -14,6 +14,7 @@
 
 package com.google.collide.client.code;
 
+import collide.client.editor.EditorToolbar;
 import collide.client.filetree.FileTreeUiController;
 import collide.client.util.Elements;
 
@@ -41,7 +42,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
   public static EditableContentArea create(
       View view, AppContext appContext, EditorBundle editorBundle, FileTreeUiController controller) {
 
-    final EditorToolBar toolBar = EditorToolBar.create(
+    final EditorToolbar toolBar = DefaultEditorToolBar.create(
         view.getEditorToolBarView(), FileSelectedPlace.PLACE, appContext, editorBundle);
     // Hook presenter in the editor bundle to the view in the header
     editorBundle.getBreadcrumbs().setView(view.getBreadcrumbsView());
@@ -65,7 +66,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
   public interface Resources
       extends
       GoToDefinitionRenderer.Resources,
-      EditorToolBar.Resources,
+      DefaultEditorToolBar.Resources,
       WorkspaceLocationBreadcrumbs.Resources,
       NoFileSelectedPanel.Resources,
       UneditableDisplay.Resources {
@@ -81,7 +82,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
     private DivElement header;
     private DivElement content;
     private final WorkspaceLocationBreadcrumbs.View breadcrumbsView;
-    private final EditorToolBar.View editorToolBarView;
+    private final DefaultEditorToolBar.View editorToolBarView;
     private final Css css;
 
     public View(Resources res, boolean detached) {
@@ -90,7 +91,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
 
       // Instantiate sub-views.
       this.breadcrumbsView = new WorkspaceLocationBreadcrumbs.View(res);
-      this.editorToolBarView = new EditorToolBar.View(res, detached);
+      this.editorToolBarView = new DefaultEditorToolBar.View(res, detached);
 
       createDom();
     }
@@ -105,7 +106,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
       return header;
     }
 
-    public EditorToolBar.View getEditorToolBarView() {
+    public DefaultEditorToolBar.View getEditorToolBarView() {
       return editorToolBarView;
     }
 
@@ -129,7 +130,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
     }
   }
 
-  private final EditorToolBar toolBar;
+  private final EditorToolbar toolBar;
   private FileTreeUiController fileController;
 
   @Override
@@ -139,6 +140,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
 
   @Override
   public void setContent(PanelContent panelContent, PanelModel settings) {
+    // TODO consider deleting this superfluous override?
     if (panelContent instanceof FileContent) {
       super.setContent(panelContent, settings);
     }else {
@@ -147,7 +149,7 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
     }
   };
 
-  public EditableContentArea(View view, EditorToolBar toolBar, FileTreeUiController controller) {
+  public EditableContentArea(View view, EditorToolbar toolBar, FileTreeUiController controller) {
     super(view);
     this.toolBar = toolBar;
     this.fileController = controller;
@@ -155,10 +157,10 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
 
   @Override
   public ShowableUiComponent<?> getToolBar() {
-    return getEditorToolBar();
+    return getEditorToolBar().asComponent();
   }
 
-  public EditorToolBar getEditorToolBar() {
+  public EditorToolbar getEditorToolBar() {
     return toolBar;
   }
 
@@ -166,5 +168,5 @@ public class EditableContentArea extends MultiPanel<PanelModel, EditableContentA
   public Builder<PanelModel> newBuilder() {
     return defaultBuilder();
   }
-  
+
 }

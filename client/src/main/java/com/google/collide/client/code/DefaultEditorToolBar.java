@@ -14,6 +14,7 @@
 
 package com.google.collide.client.code;
 
+import collide.client.editor.EditorToolbar;
 import collide.client.util.CssUtils;
 import collide.client.util.Elements;
 
@@ -50,14 +51,20 @@ import elemental.events.EventListener;
  *
  *
  */
-public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
+public class DefaultEditorToolBar
+    extends ShowableUiComponent<DefaultEditorToolBar.View>
+    implements EditorToolbar {
 
   /**
    * Creates the default version of the toolbar to be used in the editor shell.
    */
-  public static EditorToolBar create(
+  public static DefaultEditorToolBar create(
       View view, Place currentPlace, final AppContext appContext, final EditorBundle editorBundle) {
-    return new EditorToolBar(view, currentPlace, appContext, editorBundle);
+    return new DefaultEditorToolBar(view, currentPlace, appContext, editorBundle);
+  }
+
+  @Override public ShowableUiComponent<?> asComponent() {
+    return this;
   }
 
   /**
@@ -84,7 +91,7 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
   }
 
   /**
-   * Images and CssResources consumed by the EditorToolBar.
+   * Images and CssResources consumed by the DefaultEditorToolBar.
    */
   public interface Resources extends ClientBundle, Tooltip.Resources {
     @Source("history_icon.png")
@@ -96,15 +103,15 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
     @Source("hspace.png")
     ImageResource hspaceIcon();
 
-    @Source("EditorToolBar.css")
+    @Source("DefaultEditorToolBar.css")
     Css editorToolBarCss();
   }
 
   /**
-   * The View for the EditorToolBar.
+   * The View for the DefaultEditorToolBar.
    */
   public static class View extends CompositeView<ViewEvents> {
-    @UiTemplate("EditorToolBar.ui.xml")
+    @UiTemplate("DefaultEditorToolBar.ui.xml")
     interface MyBinder extends UiBinder<DivElement, View> {
     }
 
@@ -128,7 +135,7 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
     @UiField(provided = true)
     final Resources res;
 
-    public View(EditorToolBar.Resources res, boolean detached) {
+    public View(DefaultEditorToolBar.Resources res, boolean detached) {
       this.res = res;
       setElement(Elements.asJsElement(binder.createAndBindUi(this)));
       attachHandlers();
@@ -180,7 +187,7 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
   }
 
   /**
-   * Events reported by the EditorToolBar's View.
+   * Events reported by the DefaultEditorToolBar's View.
    */
   private interface ViewEvents {
     void onDebugButtonClicked();
@@ -219,7 +226,7 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
    */
   private String pathRootId;
 
-  EditorToolBar(View view, Place currentPlace, AppContext appContext, EditorBundle editorBundle) {
+  public DefaultEditorToolBar(View view, Place currentPlace, AppContext appContext, EditorBundle editorBundle) {
     super(view);
     this.currentPlace = currentPlace;
     this.appContext = appContext;
@@ -235,13 +242,13 @@ public class EditorToolBar extends ShowableUiComponent<EditorToolBar.View> {
   /* Methods for toggling toolbar visibility */
 
   @Override
-  public void show() {
+  public void doShow() {
     Element toolBar = Elements.asJsElement(getView().toolButtons);
     CssUtils.setDisplayVisibility(toolBar, true);
   }
 
   @Override
-  public void hide() {
+  public void doHide() {
     Element toolBar = Elements.asJsElement(getView().toolButtons);
     CssUtils.setDisplayVisibility(toolBar, false);
   }

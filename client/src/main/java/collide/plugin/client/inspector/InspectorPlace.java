@@ -1,6 +1,6 @@
 package collide.plugin.client.inspector;
 
-import xapi.inject.impl.LazyPojo;
+import xapi.fu.Lazy;
 import xapi.util.X_String;
 
 import com.google.collide.client.CollideSettings;
@@ -65,10 +65,8 @@ public class InspectorPlace extends Place{
     super(PlaceConstants.INSPECTOR_PLACE_NAME);
   }
 
-  private final LazyPojo<String> guessModuleFromHostPage
-    = new LazyPojo<String>(){
-      @Override
-      protected String initialValue() {
+  private final Lazy<String> guessModuleFromHostPage
+    = new Lazy<>(() -> {
 
         // first try guessing from values embedded in page
         String module = CollideSettings.get().getModule();
@@ -93,8 +91,7 @@ public class InspectorPlace extends Place{
         }
 
         return null;
-      };
-    };
+    });
 
   @Override
   public PlaceNavigationEvent<? extends Place> createNavigationEvent(
@@ -110,7 +107,7 @@ public class InspectorPlace extends Place{
     String module = decodedState.get(NavigationEvent.MODULE_KEY);
     if (module == null){
       //guess our own module source
-      module = guessModuleFromHostPage.get();
+      module = guessModuleFromHostPage.out1();
     }
     GwtRecompileImpl compile = GwtRecompileImpl.make();
     compile.setModule(module);
@@ -125,7 +122,7 @@ public class InspectorPlace extends Place{
 
 
   /**
-   * @param module the gwt module to compile
+   * @param compile the gwt module to compile
    * @return a new navigation event
    */
   public PlaceNavigationEvent<InspectorPlace> createNavigationEvent(GwtRecompile compile) {

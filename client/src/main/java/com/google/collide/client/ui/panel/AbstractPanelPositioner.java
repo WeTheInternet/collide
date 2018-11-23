@@ -3,7 +3,7 @@ package com.google.collide.client.ui.panel;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import xapi.collect.impl.IteratorWrapper;
+import xapi.fu.itr.MappedIterable;
 import xapi.util.api.ConvertsValue;
 import xapi.util.api.RemovalHandler;
 import collide.client.util.Elements;
@@ -17,18 +17,18 @@ import elemental.dom.Element;
 
 /**
  * A default implementation of the {@link PanelPositioner} interface.
- * 
+ *
  * This positioner will attempt to fill horizontal space with new panels,
  * and will close the oldest visible panel (that is closable) when there is not enough space.
- * 
+ *
  * This positioner will be using the document viewport for maximum sizes;
  * override {@link #getMaxHeight()} and {@link #getMaxWidth()} to change this behaviour.
- * 
+ *
  * @author "James X. Nelson (james@wetheinter.net)"
  *
  */
 public class AbstractPanelPositioner implements PanelPositioner{
-  
+
   public static class PanelNode {
     float x, y, w, h;
     public final Panel<?, ?> panel;
@@ -39,35 +39,31 @@ public class AbstractPanelPositioner implements PanelPositioner{
     PanelNode[] onRight;
     PanelNode[] onTop;
     PanelNode[] onBottom;
-    
+
     void setPosition(float x, float y) {
       this.x = x;
       this.y = y;
       panel.setPosition(x, y);
     }
-    
+
     void setSize(float w, float h) {
       this.w = w;
       this.h = h;
       panel.setSize(w, h);
     }
 
-    public Iterable<PanelNode> toTheLeft() {
-      return 
-          new IteratorWrapper<PanelNode>(
-          new SiblingIterator(this, IterateLeft));
+    public MappedIterable<PanelNode> toTheLeft() {
+      return () -> new SiblingIterator(this, IterateLeft);
     }
 
-    public Iterable<PanelNode> toTheRight() {
-      return 
-          new IteratorWrapper<PanelNode>(
-              new SiblingIterator(this, IterateRight));
+    public MappedIterable<PanelNode> toTheRight() {
+      return () -> new SiblingIterator(this, IterateRight);
     }
 
     public float offerWidth(float deltaW) {
       ResizeBounds bounds = panel.getBounds();
       if (deltaW > 0) {
-        // We are being offered width 
+        // We are being offered width
         float maxWidth = bounds.getMaxWidth();
         Log.info(getClass(), panel.getId()+" Offered width "+deltaW+"; maxWidth: "+maxWidth+"; w: "+w);
         if (w < maxWidth) {
@@ -102,9 +98,9 @@ public class AbstractPanelPositioner implements PanelPositioner{
       return deltaW;
     }
   }
-  
+
   private static final PanelNode[] empty = new PanelNode[0];
-  
+
   private static final ConvertsValue<PanelNode, PanelNode[]> IterateLeft
     = new ConvertsValue<PanelNode, PanelNode[]>() {
       @Override
@@ -193,7 +189,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
       JsoStringMap<PanelNode> seen = JsoStringMap.create();
       recurse(node, provider, seen);
     }
-    
+
     private void recurse(PanelNode node, ConvertsValue<PanelNode, PanelNode[]> provider,
         JsoStringMap<PanelNode> seen) {
       for (PanelNode sibling : provider.convert(node)) {
@@ -221,12 +217,12 @@ public class AbstractPanelPositioner implements PanelPositioner{
     public void remove() {
       throw new UnsupportedOperationException();
     }
-    
+
   }
-  
+
   PanelNode leftMost, rightMost;
   JsoStringMap<PanelNode> panels = JsoStringMap.create();
-  
+
   public RemovalHandler addPanel(final Panel<?, ?> panel) {
     if (panels.size() == 0) {
       positionFirstPanel((
@@ -252,7 +248,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
       }
     };
   }
-  
+
   protected void addNewPanel(Panel<?, ?> panel) {
     PanelNode node = newNode(panel);
     panels.put(panel.getId(), node);
@@ -264,9 +260,9 @@ public class AbstractPanelPositioner implements PanelPositioner{
     Log.info(getClass(), "Making room on right", maxRight);
     return 0;
   }
-  
+
   protected float makeRoomOnLeft(float prefWidth, float maxRight) {
-    // Starting at the right-most panel, 
+    // Starting at the right-most panel,
     Log.info(getClass(), "Making room on left", maxRight);
     return 0;
   }
@@ -282,7 +278,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
     Panel<?, ?> panel = toFocus.panel;
     final Element el = panel.getView().getElement();
     Log.info(getClass(), "Focusing panel "+toFocus.panel.getId());
-    // First, try to get off easy.  
+    // First, try to get off easy.
     // If nothing else is visible, we can just open centered on screen.
     JsoArray<String> keys = panels.getKeys();
     JsoArray<PanelNode> visible = JsoArray.create();
@@ -295,7 +291,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
       // Nothing else is showing.  Let's fill the screen.
       centerOnScreen(toFocus);
     }
-    
+
     ResizeBounds bounds = panel.getBounds();
     float leftest = leftMost.x;
     float minLeft = getMinLeft();
@@ -339,9 +335,9 @@ public class AbstractPanelPositioner implements PanelPositioner{
     } else {
       // Slide everything to the left to make more roomt
       float roomMade = makeRoomOnRight(prefWidth, maxRight);
-      
+
     }
-//    
+//
 //    ClientRect bounds = fileNav.getBoundingClientRect();
 //    // First, chose whether to add to the left or the right based on
 //    // where there is more room.
@@ -400,7 +396,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
 //      }
 //    } else {
 //      if (minBound + w > parent.getRight()) {
-//        
+//
 //      }
 //    }
 //    middle = parent.getTop() + parent.getHeight() / 2;
@@ -408,7 +404,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
 //    el.getStyle().setTop(5,"px");
 //    el.getStyle().setHeight(bounds.getBottom()-15,"px");
 
-    
+
   }
 
   protected void centerOnScreen(PanelNode toFocus) {
@@ -445,14 +441,14 @@ public class AbstractPanelPositioner implements PanelPositioner{
     ResizeBounds bounds = panelNode.panel.getBounds();
     // first panel always gets its preferred size
     panelNode.setSize(
-        bounds.getPreferredWidth(), 
+        bounds.getPreferredWidth(),
         bounds.getPreferredHeight()
     );
     panelNode.setPosition(
         end - panelNode.w - getMinLeft(),
         panelNode.y = 0 - getMinTop()
     );
-    
+
   }
 
   @Override
@@ -482,7 +478,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
             return true;
         }
       }
-      
+
     }
     else if (deltaX < -0.001f) {
       // moving left; bring anyone to the right with us, squish anyone on the left
@@ -497,7 +493,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
         }
       }
       return newWidth == false;
-      
+
     } else if (newWidth) {
       // No delta in position, this is a drag resize event (on right or bottom axis).
       for (PanelNode onRight : node.toTheRight()) {
@@ -513,17 +509,17 @@ public class AbstractPanelPositioner implements PanelPositioner{
     }
     return false;
   }
-  
+
   @Override
   public boolean adjustVertical(Panel<?, ?> panel, float deltaY, float deltaH) {
     // TODO Auto-generated method stub
     return false;
   }
-  
+
   public void removePanel(Panel<?, ?> panel) {
-    
+
   }
-  
+
   protected float getMinLeft() {
     return 0;
   }
@@ -531,11 +527,11 @@ public class AbstractPanelPositioner implements PanelPositioner{
   protected float getMinTop() {
     return 0;
   }
-  
+
   protected float getMaxWidth() {
     return Elements.getWindow().getInnerWidth();
   }
-  
+
   protected float getMaxHeight() {
     return Elements.getWindow().getInnerHeight();
   }
@@ -562,7 +558,7 @@ public class AbstractPanelPositioner implements PanelPositioner{
     JsoArray<PanelNode> visible = JsoArray.create();
     for (String key : keys.asIterable()) {
       PanelNode node = panels.get(key);
-      if (!node.panel.isHidden()) 
+      if (!node.panel.isHidden())
         visible.add(node);
     }
     if (visible.size() < 2)
@@ -579,5 +575,5 @@ public class AbstractPanelPositioner implements PanelPositioner{
     }
     next.onRight = empty;
   }
-  
+
 }

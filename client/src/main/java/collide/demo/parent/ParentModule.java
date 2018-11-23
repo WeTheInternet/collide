@@ -130,7 +130,7 @@ public class ParentModule implements EntryPoint{
 
         final GwtCompilerShell gwt = gwtCompiler.getShell();
         // Attach compiler
-        body.initGwt(gwt);
+        //body.initGwt(gwt);
 
         ResizeHandler handler = e -> {
             Elements.getBody().getStyle().setWidth(Browser.getWindow().getInnerWidth()+"px");

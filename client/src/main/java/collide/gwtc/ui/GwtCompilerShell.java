@@ -44,6 +44,7 @@ import elemental.util.ArrayOf;
 import elemental.util.Collections;
 import elemental.util.MapFromStringTo;
 import xapi.collect.impl.InitMapDefault;
+import xapi.fu.In1Out1;
 import xapi.gwtc.api.GwtManifest;
 import xapi.log.X_Log;
 import xapi.util.X_String;
@@ -66,7 +67,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 
 public class GwtCompilerShell extends UiComponent<GwtCompilerShell.View>
-implements PluginContent, ConvertsValue<String, RunningGwtModule> {
+implements PluginContent, In1Out1<String, RunningGwtModule> {
 
   public interface Css extends CssResource {
     String container();
@@ -515,7 +516,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   }
 
   public static class LoggerMap extends InitMapDefault<String, RunningGwtModule> {
-    public LoggerMap(ConvertsValue<String, RunningGwtModule> factory) {
+    public LoggerMap(In1Out1<String, RunningGwtModule> factory) {
       super(PASS_THRU, factory);
     }
   }
@@ -627,7 +628,7 @@ implements PluginContent, ConvertsValue<String, RunningGwtModule> {
   }
 
   @Override
-  public RunningGwtModule convert(String from) {
+  public RunningGwtModule io(String from) {
     return new RunningGwtModule(from);
   }
 
